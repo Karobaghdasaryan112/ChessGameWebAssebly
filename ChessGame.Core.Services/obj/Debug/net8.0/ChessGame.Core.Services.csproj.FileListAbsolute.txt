@@ -1,0 +1,11 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\bin\Debug\net8.0\ChessGame.Core.Services.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\bin\Debug\net8.0\ChessGame.Core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\bin\Debug\net8.0\ChessGame.Core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\refint\ChessGame.Core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGame.Core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ref\ChessGame.Core.Services.dll

@@ -1,0 +1,44 @@
+[
+  {
+    "ContainingType": "IdentityService.API.IdentityAPI.Controllers.IdentityController",
+    "Method": "GetStatus",
+    "RelativePath": "api/Identity",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "IdentityService.API.IdentityAPI.Controllers.IdentityController",
+    "Method": "LoginAsync",
+    "RelativePath": "api/Identity/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequest",
+        "Type": "SharedResources.DTOs.IdentityDTOs.LoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "IdentityService.API.IdentityAPI.Controllers.IdentityController",
+    "Method": "RegistrationAsync",
+    "RelativePath": "api/Identity/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerRequest",
+        "Type": "SharedResources.DTOs.IdentityDTOs.RegistrationDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

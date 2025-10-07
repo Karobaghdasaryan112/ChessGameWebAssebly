@@ -1,0 +1,1593 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\identityresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\identityresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\handlers\\commands\\usersignincommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\handlers\\commands\\usersignincommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\requests\\commands\\usersignincommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\requests\\commands\\usersignincommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9C354B12-310A-46B9-AE63-4F4AD45E6473}|IdentityService.Domain.Domain\\IdentityService.Domain.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.domain.domain\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9C354B12-310A-46B9-AE63-4F4AD45E6473}|IdentityService.Domain.Domain\\IdentityService.Domain.csproj|solutionrelative:identityservice.domain.domain\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\dtos\\identitydtos\\signindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\identitydtos\\signindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\responsemessages\\identityresponsemesage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\responsemessages\\identityresponsemesage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\dtos\\identitydtos\\refreshtokendto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\identitydtos\\refreshtokendto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\dtos\\identitydtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\identitydtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\handlers\\commands\\userregistrationcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\handlers\\commands\\userregistrationcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\persistanceservicesregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\persistanceservicesregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\data\\contextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\data\\contextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chessgameapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|solutionrelative:webassemblychessgame.services.chessgameapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chessgameapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|solutionrelative:webassemblychessgame.services.chessgameapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\configurationservices\\authenticationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\configurationservices\\authenticationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\data\\context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\data\\context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\configurationservices\\defaultservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\configurationservices\\defaultservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\migrations\\identitycontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\migrations\\identitycontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\dtos\\identitydtos\\createuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\identitydtos\\createuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\dtos\\identitydtos\\registrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\identitydtos\\registrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\dtos\\iidentitydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\dtos\\iidentitydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\requests\\commands\\userregistrationcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\requests\\commands\\userregistrationcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\migrations\\20250923082423_initialcreate.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\migrations\\20250923082423_initialcreate.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\enums\\baseaddressenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\enums\\baseaddressenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\clientservice\\basehttpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\clientservice\\basehttpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\middlewares\\loggingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\middlewares\\loggingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\controllers\\identitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\controllers\\identitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\configurationservices\\contractsandimplementations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\configurationservices\\contractsandimplementations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\configurationservices\\cors_services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\configurationservices\\cors_services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\responsemessages\\chessgameresponsemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\responsemessages\\chessgameresponsemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\apiservices\\identityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\apiservices\\identityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\apiservices\\chessgameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\apiservices\\chessgameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\responsemessages\\chatresponsemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\responsemessages\\chatresponsemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\requestsandresponses\\imessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\requestsandresponses\\imessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\requestsandresponses\\iresponsetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\requestsandresponses\\iresponsetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\requestsandresponses\\irequesttypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\requestsandresponses\\irequesttypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\base\\mediatr_base.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\base\\mediatr_base.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\requests\\queries\\getuserbyuseridquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\requests\\queries\\getuserbyuseridquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\requests\\queries\\getuserbyusernamequery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\requests\\queries\\getuserbyusernamequery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\features\\mediatr\\requests\\commands\\usersignoutcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\features\\mediatr\\requests\\commands\\usersignoutcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\helpers\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\helpers\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\contracts\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\contracts\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.application\\contracts\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54D2CF49-F4BF-460E-B884-2C4D4C5741F8}|IdentityService.Application\\IdentityService.Application.csproj|solutionrelative:identityservice.application\\contracts\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chatapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|solutionrelative:webassemblychessgame.services.chatapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|solutionrelative:webassemblychessgame.services.chatapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\chessgameresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\chessgameresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\responses\\chatresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\responses\\chatresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\0e599f47268ea62b9af937dc43e1103c8accf8988ef11d1cec2bae5c647caaf7\\TaskAwaiter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\029042d646916ec1736bf533c14df4550d924ed6ed0c29e8f249e435538584af\\SwaggerUIMiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.api.identityapi\\identityservice.api.identityapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{DC234AED-50D7-4768-A85C-97DB91707D3C}|IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj|solutionrelative:identityservice.api.identityapi\\identityservice.api.identityapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\sharedresources.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\sharedresources.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\requests\\identityrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\requests\\identityrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\requests\\ichessgamerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\requests\\ichessgamerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\requests\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\requests\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\dtos\\ichatdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\dtos\\ichatdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chatapi\\webassemblychessgame.services.chatapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|solutionrelative:webassemblychessgame.services.chatapi\\webassemblychessgame.services.chatapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\sharedresources\\contracts\\dtos\\ichesegamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\contracts\\dtos\\ichesegamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|solutionrelative:webassemblychessgame.services.chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\apiservices\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\apiservices\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d0c982e0669e90cd9ac06b50cf56df85fd832c1997503dea695810f6fac4469a\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\gateway.api\\gateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{5E21A71F-AFAD-4DDC-B1AA-068FA7383C4A}|Gateway.API\\Gateway.API.csproj|solutionrelative:gateway.api\\gateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\blazorapp1\\webassemblychessgame.ui.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{44C9FB6C-F490-4968-814D-9D69EBD1617F}|BlazorApp1\\WebAssemblyChessGame.UI.csproj|solutionrelative:blazorapp1\\webassemblychessgame.ui.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\webassemblychessgame.services.chessgameapi\\chessservice.api.chessgameapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|solutionrelative:webassemblychessgame.services.chessgameapi\\chessservice.api.chessgameapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|c:\\users\\karob\\source\\repos\\webassemblychessgame\\identityservice.persistance\\migrations\\20251006185601_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}|IdentityService.Persistance\\IdentityService.Persistance.csproj|solutionrelative:identityservice.persistance\\migrations\\20251006185601_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 174,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UserRegistrationCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswCsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:59:32.243Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserSigninCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserSigninCommandHandler.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserSigninCommandHandler.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserSigninCommandHandler.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserSigninCommandHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T17:25:27.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\LoginDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\IdentityDTOs\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\LoginDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\IdentityDTOs\\LoginDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T06:37:23.57Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SignInDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\SignInDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\IdentityDTOs\\SignInDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\SignInDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\IdentityDTOs\\SignInDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAsAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T06:40:10.955Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Services\\AuthService.cs",
+              "RelativeToolTip": "IdentityService.Application\\Services\\AuthService.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAkwFAAAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:39:37.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IdentityResponse.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\IdentityResponse.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\IdentityResponse.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\IdentityResponse.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\IdentityResponse.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAADAAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:34:56.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RefreshTokenDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\RefreshTokenDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\IdentityDTOs\\RefreshTokenDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\RefreshTokenDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\IdentityDTOs\\RefreshTokenDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T20:58:52.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserSigninCommand.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswA4AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:52:42.407Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IdentityResponseMesage.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\IdentityResponseMesage.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\IdentityResponseMesage.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\IdentityResponseMesage.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\ResponseMessages\\IdentityResponseMesage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswBUAAAB6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:29:28.485Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "IdentityService.Domain.Domain\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\ApplicationUser.cs",
+              "RelativeToolTip": "IdentityService.Domain.Domain\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAkAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T11:56:56.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PersistanceServicesRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\PersistanceServicesRegistration.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\PersistanceServicesRegistration.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\PersistanceServicesRegistration.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\PersistanceServicesRegistration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T17:39:41.588Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\appsettings.Development.json",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-15T15:25:47.204Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\appsettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\appsettings.json",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-15T15:25:19.214Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ContextFactory.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Data\\ContextFactory.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\Data\\ContextFactory.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Data\\ContextFactory.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\Data\\ContextFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T17:49:55.069Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-16T07:46:56.9Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-08T21:25:37.565Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 98,
+              "Title": "20251006185601_init.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\20251006185601_init.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\Migrations\\20251006185601_init.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\20251006185601_init.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\Migrations\\20251006185601_init.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T18:56:01.258Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AuthenticationServices.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\AuthenticationServices.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\ConfigurationServices\\AuthenticationServices.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\AuthenticationServices.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\ConfigurationServices\\AuthenticationServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T17:59:45.934Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "DefaultServices.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\DefaultServices.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\ConfigurationServices\\DefaultServices.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\DefaultServices.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\ConfigurationServices\\DefaultServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T18:19:25.261Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "RegistrationDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\RegistrationDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\IdentityDTOs\\RegistrationDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\RegistrationDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\IdentityDTOs\\RegistrationDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T06:37:35.525Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Context.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Data\\Context.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\Data\\Context.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Data\\Context.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\Data\\Context.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:40:12.745Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Startup.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Startup.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Startup.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Startup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T18:14:56.954Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Program.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Program.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:05:08.17Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IIdentityDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\IIdentityDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\DTOs\\IIdentityDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\IIdentityDTO.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\DTOs\\IIdentityDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:40:46.916Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CreateUserDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\CreateUserDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\IdentityDTOs\\CreateUserDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\DTOs\\IdentityDTOs\\CreateUserDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\IdentityDTOs\\CreateUserDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T13:36:35.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "IdentityContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\IdentityContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\Migrations\\IdentityContextModelSnapshot.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\IdentityContextModelSnapshot.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\Migrations\\IdentityContextModelSnapshot.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAEwIcAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T17:14:14.949Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "UserRegistrationCommand.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:49:01.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "20250923082423_InitialCreate.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\20250923082423_InitialCreate.Designer.cs",
+              "RelativeDocumentMoniker": "IdentityService.Persistance\\Migrations\\20250923082423_InitialCreate.Designer.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\Migrations\\20250923082423_InitialCreate.Designer.cs",
+              "RelativeToolTip": "IdentityService.Persistance\\Migrations\\20250923082423_InitialCreate.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T17:13:39.246Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "LoggingMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Middlewares\\LoggingMiddleware.cs",
+              "RelativeDocumentMoniker": "Gateway.API\\Middlewares\\LoggingMiddleware.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Middlewares\\LoggingMiddleware.cs",
+              "RelativeToolTip": "Gateway.API\\Middlewares\\LoggingMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-10T07:21:02.818Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Program.cs",
+              "RelativeDocumentMoniker": "Gateway.API\\Program.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Program.cs",
+              "RelativeToolTip": "Gateway.API\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-05T13:09:44.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "IdentityController.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T10:12:18.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ContractsAndImplementations.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\ContractsAndImplementations.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\ConfigurationServices\\ContractsAndImplementations.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\ContractsAndImplementations.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\ConfigurationServices\\ContractsAndImplementations.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:08:15.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "CORS_Services.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\CORS_Services.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\ConfigurationServices\\CORS_Services.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\ConfigurationServices\\CORS_Services.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\ConfigurationServices\\CORS_Services.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T18:21:34.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Gateway.API\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Gateway.API\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-08T20:36:19.022Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "BaseHttpClient.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ClientService\\BaseHttpClient.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\ClientService\\BaseHttpClient.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ClientService\\BaseHttpClient.cs",
+              "RelativeToolTip": "BlazorApp1\\ClientService\\BaseHttpClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:20:53.44Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "BaseAddressEnum.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Enums\\BaseAddressEnum.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\Enums\\BaseAddressEnum.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Enums\\BaseAddressEnum.cs",
+              "RelativeToolTip": "BlazorApp1\\Enums\\BaseAddressEnum.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:25:56.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "ChessGameResponseMessage.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:31:50.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "IdentityService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\IdentityService.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\ApiServices\\IdentityService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\IdentityService.cs",
+              "RelativeToolTip": "BlazorApp1\\ApiServices\\IdentityService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:20:25.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "ChessGameService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\ChessGameService.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\ApiServices\\ChessGameService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\ChessGameService.cs",
+              "RelativeToolTip": "BlazorApp1\\ApiServices\\ChessGameService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:20:08.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "ChatResponseMessage.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\ChatResponseMessage.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ChatResponseMessage.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ResponseMessages\\ChatResponseMessage.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\ResponseMessages\\ChatResponseMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:33:21.561Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "IMessage.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IMessage.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\RequestsAndResponses\\IMessage.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IMessage.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\RequestsAndResponses\\IMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:30:34.004Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "IResponseTypes.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:18:45.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "IRequestTypes.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IRequestTypes.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\RequestsAndResponses\\IRequestTypes.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\RequestsAndResponses\\IRequestTypes.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\RequestsAndResponses\\IRequestTypes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:17:10.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "MediatR_Base.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Base\\MediatR_Base.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Base\\MediatR_Base.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Base\\MediatR_Base.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Base\\MediatR_Base.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T11:02:32.6Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "GetUserByUserIdQuery.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserIdQuery.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserIdQuery.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserIdQuery.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserIdQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:59:14.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "GetUserByUserNameQuery.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserNameQuery.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserNameQuery.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserNameQuery.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Requests\\Queries\\GetUserByUserNameQuery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:58:38.083Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "UserSignOutCommand.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSignOutCommand.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSignOutCommand.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSignOutCommand.cs",
+              "RelativeToolTip": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSignOutCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:55:46.6Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Services\\UserService.cs",
+              "RelativeToolTip": "IdentityService.Application\\Services\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:42:47.754Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "JwtSettings.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Helpers\\JwtSettings.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Helpers\\JwtSettings.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Helpers\\JwtSettings.cs",
+              "RelativeToolTip": "IdentityService.Application\\Helpers\\JwtSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:43:24.995Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Contracts\\IUserService.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Contracts\\IUserService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Contracts\\IUserService.cs",
+              "RelativeToolTip": "IdentityService.Application\\Contracts\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:43:35.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Contracts\\IAuthService.cs",
+              "RelativeDocumentMoniker": "IdentityService.Application\\Contracts\\IAuthService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\Contracts\\IAuthService.cs",
+              "RelativeToolTip": "IdentityService.Application\\Contracts\\IAuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T10:43:30.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "ExceptionHandlingMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T08:54:04.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Properties\\launchSettings.json",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAcAAAAAAAAAAABhwCkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-08T21:07:41.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "20250923073621_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250923073621_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T07:36:21.824Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "20250923073053_Initial-Create.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250923073053_Initial-Create.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T07:30:54.064Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChatAPI\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\appsettings.Development.json",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChatAPI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-16T07:46:49.494Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChatAPI\\appsettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\appsettings.json",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChatAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-08T20:13:06.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "ChessGameResponse.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ChessGameResponse.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\ChessGameResponse.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ChessGameResponse.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\ChessGameResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:48:33.411Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ChatResponse.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ChatResponse.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Responses\\ChatResponse.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Responses\\ChatResponse.cs",
+              "RelativeToolTip": "SharedResources\\Responses\\ChatResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIBJwAcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:00:09.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "ExecutionContext.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
+              "ToolTip": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:32:34.067Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "TaskAwaiter.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\0e599f47268ea62b9af937dc43e1103c8accf8988ef11d1cec2bae5c647caaf7\\TaskAwaiter.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0e599f47268ea62b9af937dc43e1103c8accf8988ef11d1cec2bae5c647caaf7\\TaskAwaiter.cs",
+              "ToolTip": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\0e599f47268ea62b9af937dc43e1103c8accf8988ef11d1cec2bae5c647caaf7\\TaskAwaiter.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0e599f47268ea62b9af937dc43e1103c8accf8988ef11d1cec2bae5c647caaf7\\TaskAwaiter.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:31:41.369Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "20250919214706_InitialCreate11.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919214706_InitialCreate11.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T21:47:06.47Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "20250919212955_InitialCreate5.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919212955_InitialCreate5.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T21:29:55.941Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Home.razor",
+              "RelativeToolTip": "BlazorApp1\\Pages\\Home.razor",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAiwDQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-08T08:47:52.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "20250919204909_Init2.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919204909_Init2.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:49:10.025Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "20250919205336_Init3.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919205336_Init3.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:53:36.604Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "20250919203707_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919203707_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:37:07.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "20250919203318_Init.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919203318_Init.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:33:18.583Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "20250919203423_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919203423_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:34:23.999Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "20250919203550_InitialCreateForChessGameIdentityDataBase.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919203550_InitialCreateForChessGameIdentityDataBase.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:35:50.598Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "20250919192310_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919192310_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T19:23:11.08Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\appsettings.json",
+              "RelativeDocumentMoniker": "Gateway.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\appsettings.json",
+              "RelativeToolTip": "Gateway.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-08T20:13:26.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "Gateway.API\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\appsettings.Development.json",
+              "RelativeToolTip": "Gateway.API\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-10T06:58:14.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "SwaggerUIMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\029042d646916ec1736bf533c14df4550d924ed6ed0c29e8f249e435538584af\\SwaggerUIMiddleware.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\029042d646916ec1736bf533c14df4550d924ed6ed0c29e8f249e435538584af\\SwaggerUIMiddleware.cs",
+              "ToolTip": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\029042d646916ec1736bf533c14df4550d924ed6ed0c29e8f249e435538584af\\SwaggerUIMiddleware.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\029042d646916ec1736bf533c14df4550d924ed6ed0c29e8f249e435538584af\\SwaggerUIMiddleware.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T09:23:04.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "Microsoft.Common.CurrentVersion.targets",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ViewState": "AgIAABUTAAAAAAAAAAAwwDkTAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-09-19T20:01:08.088Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "20250919201100_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919201100_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T20:11:00.767Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "20250919192025_InitialCreateIdentity.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\Migrations\\20250919192025_InitialCreateIdentity.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T19:20:26.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "IdentityService.API.IdentityAPI.http",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.http",
+              "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.http",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.http",
+              "RelativeToolTip": "IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-09-18T22:49:21.27Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Program.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\Program.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Program.cs",
+              "RelativeToolTip": "BlazorApp1\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T08:48:01.588Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "BlazorApp1\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Properties\\launchSettings.json",
+              "RelativeToolTip": "BlazorApp1\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAEAAAAAAAAAAABxwB0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-09T06:53:06.125Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\_Imports.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\_Imports.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\_Imports.razor",
+              "RelativeToolTip": "BlazorApp1\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-03T08:25:26.352Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "App.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\App.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\App.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\App.razor",
+              "RelativeToolTip": "BlazorApp1\\App.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-03T08:25:27.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\Pages\\Counter.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Counter.razor",
+              "RelativeToolTip": "BlazorApp1\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-03T08:25:43.799Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "Weather.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Weather.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\Pages\\Weather.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Pages\\Weather.razor",
+              "RelativeToolTip": "BlazorApp1\\Pages\\Weather.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-03T08:26:04.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "BlazorApp1\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-16T07:54:56.943Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "BlazorApp1\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "BlazorApp1\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-16T07:54:59.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "SharedResources.csproj",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj",
+              "RelativeDocumentMoniker": "SharedResources\\SharedResources.csproj",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj",
+              "RelativeToolTip": "SharedResources\\SharedResources.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-15T20:06:58.991Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "IdentityRequest.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\IdentityRequest.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Requests\\IdentityRequest.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\IdentityRequest.cs",
+              "RelativeToolTip": "SharedResources\\Requests\\IdentityRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:09:45.235Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "IChessGameRequest.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\IChessGameRequest.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Requests\\IChessGameRequest.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\IChessGameRequest.cs",
+              "RelativeToolTip": "SharedResources\\Requests\\IChessGameRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:11:56.745Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "ChatRequest.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\ChatRequest.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Requests\\ChatRequest.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Requests\\ChatRequest.cs",
+              "RelativeToolTip": "SharedResources\\Requests\\ChatRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:10:59.081Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "IChatDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\IChatDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\DTOs\\IChatDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\IChatDTO.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\DTOs\\IChatDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:50:05.021Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "webAssemblyChessGame.Services.ChatAPI.http",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\webAssemblyChessGame.Services.ChatAPI.http",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChatAPI\\webAssemblyChessGame.Services.ChatAPI.http",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\webAssemblyChessGame.Services.ChatAPI.http",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChatAPI\\webAssemblyChessGame.Services.ChatAPI.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-09-15T20:06:59.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 91,
+              "Title": "ICheseGameDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
+              "RelativeToolTip": "SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:49:50.466Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 92,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\Program.cs",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChatAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChatAPI\\Program.cs",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChatAPI\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T20:13:12.239Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 93,
+              "Title": "NotificationService.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\NotificationService.cs",
+              "RelativeDocumentMoniker": "BlazorApp1\\ApiServices\\NotificationService.cs",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\ApiServices\\NotificationService.cs",
+              "RelativeToolTip": "BlazorApp1\\ApiServices\\NotificationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T09:20:17.233Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 94,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d0c982e0669e90cd9ac06b50cf56df85fd832c1997503dea695810f6fac4469a\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\d0c982e0669e90cd9ac06b50cf56df85fd832c1997503dea695810f6fac4469a\\Program.cs",
+              "ToolTip": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d0c982e0669e90cd9ac06b50cf56df85fd832c1997503dea695810f6fac4469a\\Program.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\d0c982e0669e90cd9ac06b50cf56df85fd832c1997503dea695810f6fac4469a\\Program.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:13:11.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 95,
+              "Title": "Gateway.API.csproj",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Gateway.API.csproj",
+              "RelativeDocumentMoniker": "Gateway.API\\Gateway.API.csproj",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\Gateway.API\\Gateway.API.csproj",
+              "RelativeToolTip": "Gateway.API\\Gateway.API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-05T13:09:44.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 96,
+              "Title": "WebAssemblyChessGame.UI.csproj",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+              "RelativeDocumentMoniker": "BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+              "RelativeToolTip": "BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-08T09:19:39.252Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 97,
+              "Title": "ChessService.API.ChessGameAPI.csproj",
+              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj",
+              "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj",
+              "ToolTip": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj",
+              "RelativeToolTip": "webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-05T13:09:44.994Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

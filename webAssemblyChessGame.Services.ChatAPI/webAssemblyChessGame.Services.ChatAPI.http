@@ -1,0 +1,6 @@
+@webAssemblyChessGame.Services.ChatAPI_HostAddress = http://localhost:5185
+
+GET {{webAssemblyChessGame.Services.ChatAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

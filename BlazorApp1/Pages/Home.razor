@@ -1,0 +1,68 @@
+﻿@page "/Home"
+@using SharedResources.DTOs.IdentityDTOs
+@using WebAssemblyChessGame.UI.ApiServices
+@inject IdentityService identityService
+
+<PageTitle>Register</PageTitle>
+
+<h1>Register</h1>
+
+<hr />
+
+<input @bind="FirstName" placeholder="First Name" />
+<input @bind="LastName" placeholder="Last Name" />
+<input @bind="Email" placeholder="Email" />
+<input @bind="Password" type="password" placeholder="Password" />
+<input @bind="ConfirmPassword" type="password" placeholder="Confirm Password" />
+
+<button @onclick="Register">Register</button>
+
+@if (!string.IsNullOrEmpty(SuccessMessage))
+{
+    <p style="color:green"><b>@SuccessMessage</b></p>
+}
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <p style="color:red"><b>Error:</b> @ErrorMessage</p>
+}
+
+@code {
+    private string FirstName { get; set; } = string.Empty;
+    private string LastName { get; set; } = string.Empty;
+    private string Email { get; set; } = string.Empty;
+    private string Password { get; set; } = string.Empty;
+    private string ConfirmPassword { get; set; } = string.Empty;
+
+    private string? SuccessMessage { get; set; }
+    private string? ErrorMessage { get; set; }
+
+    private async Task Register()
+    {
+        try
+        {
+            ErrorMessage = null;
+            SuccessMessage = null;
+
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Passwords do not match!";
+                return;
+            }
+
+            var result = await identityService.RegisterUserAsync(new RegistrationDTO
+                {
+                    firstName = FirstName,
+                    lastName = LastName,
+                    email = Email,
+                    password = Password
+                });
+
+            SuccessMessage = "Registration successful!";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+}

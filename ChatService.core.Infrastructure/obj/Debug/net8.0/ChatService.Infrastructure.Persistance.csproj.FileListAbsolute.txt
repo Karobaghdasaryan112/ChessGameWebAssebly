@@ -1,0 +1,11 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\refint\ChatService.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ref\ChatService.Infrastructure.Persistance.dll

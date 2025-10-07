@@ -1,0 +1,11 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\refint\ChatService.core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ref\ChatService.core.Services.dll

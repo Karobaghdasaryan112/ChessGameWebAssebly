@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ChatService.Infrastructure.Persistance/1.0.0": {
+        "runtime": {
+          "ChatService.Infrastructure.Persistance.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ChatService.Infrastructure.Persistance/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

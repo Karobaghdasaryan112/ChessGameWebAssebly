@@ -1,0 +1,17 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.csproj.AssemblyReference.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Persistance.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Domain.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\Identity.4F25C7F1.Up2Date
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\refint\IdentityService.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\ref\IdentityService.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\bin\Debug\net8.0\IdentityService.Persistance.runtimeconfig.json
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.genruntimeconfig.cache

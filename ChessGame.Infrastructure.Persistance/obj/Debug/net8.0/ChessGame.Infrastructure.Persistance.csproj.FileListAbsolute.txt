@@ -1,0 +1,11 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Infrastructure.Persistance.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Infrastructure.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\refint\ChessGame.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ref\ChessGame.Infrastructure.Persistance.dll

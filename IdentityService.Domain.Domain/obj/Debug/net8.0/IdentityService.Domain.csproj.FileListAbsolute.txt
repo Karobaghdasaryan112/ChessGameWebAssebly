@@ -1,0 +1,12 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.csproj.AssemblyReference.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\refint\IdentityService.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\ref\IdentityService.Domain.dll

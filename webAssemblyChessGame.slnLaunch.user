@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway.API\\Gateway.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

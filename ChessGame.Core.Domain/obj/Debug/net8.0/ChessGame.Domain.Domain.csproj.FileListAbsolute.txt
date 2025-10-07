@@ -1,0 +1,11 @@
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.deps.json
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.AssemblyInfo.cs
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\refint\ChessGame.Domain.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ref\ChessGame.Domain.Domain.dll
