@@ -5,7 +5,8 @@ using System.Net;
 
 namespace SharedResources.Responses
 {
-    public class ChatResponse : IResponseTypes<IChatDTO, ChatResponseMessage>
+    public class ChatResponse<TDto> : IResponseTypes<TDto, ChatResponseMessage>
+        where TDto : IChatResponseDTO
     {
         public bool IsSuccess { get; set; }
         public ChatResponseMessage Message { get; set; }
@@ -14,43 +15,46 @@ namespace SharedResources.Responses
         public List<string> Errors { get; set; }
         public DateTime Timestamp { get; set; }
         public string _message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IChatDTO IResponseTypes<IChatDTO, ChatResponseMessage>.Data { get; set; }
+        public TDto Data { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public Task<IResponseTypes<IChatDTO, ChatResponseMessage>> CreateErrorResponse(
+        public static ChatResponse<TDto> _chatResponse { get => new ChatResponse<TDto>(); }
+
+        public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
             string errorMessage,
             HttpStatusCode statusCode)
         {
-            this.CustomError = errorMessage;
-            this.StatusCode = statusCode;
-            this.IsSuccess = false;
-            this.Timestamp = DateTime.UtcNow;
-            return Task.FromResult<IResponseTypes<IChatDTO, ChatResponseMessage>>(this);
+            _chatResponse.CustomError = errorMessage;
+            _chatResponse.StatusCode = statusCode;
+            _chatResponse.IsSuccess = false;
+            _chatResponse.Timestamp = DateTime.UtcNow;
+            return _chatResponse;
         }
 
-        public Task<IResponseTypes<IChatDTO, ChatResponseMessage>> CreateErrorResponse(
+        public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
             ChatResponseMessage responseMessage,
             HttpStatusCode statusCode,
             List<string> errors)
         {
-            this.Message = responseMessage;
-            this.StatusCode = statusCode;
-            this.Errors = errors;
-            this.IsSuccess = false;
-            this.Timestamp = DateTime.UtcNow;
-            return Task.FromResult<IResponseTypes<IChatDTO, ChatResponseMessage>>(this);
+            _chatResponse.Message = responseMessage;
+            _chatResponse.StatusCode = statusCode;
+            _chatResponse.Errors = errors;
+            _chatResponse.IsSuccess = false;
+            _chatResponse.Timestamp = DateTime.UtcNow;
+            return _chatResponse;
         }
 
-        public Task<IResponseTypes<IChatDTO, ChatResponseMessage>> CreateSuccessResponse(
-            IChatDTO data,
+        public IResponseTypes<TDto, ChatResponseMessage> CreateSuccessResponse(
+            TDto data,
             ChatResponseMessage message,
             HttpStatusCode statusCode)
         {
-            this.Message = message;
-            ((IResponseTypes<IChatDTO, ChatResponseMessage>)this).Data = data;
-            this.StatusCode = statusCode;
-            this.IsSuccess = true;
-            this.Timestamp = DateTime.UtcNow;
-            return Task.FromResult<IResponseTypes<IChatDTO, ChatResponseMessage>>(this);
+            _chatResponse.Message = message;
+            _chatResponse.Data = data;
+            _chatResponse.StatusCode = statusCode;
+            _chatResponse.IsSuccess = true;
+            _chatResponse.Timestamp = DateTime.UtcNow;
+            return _chatResponse;
         }
+
     }
 }

@@ -9,3 +9,15 @@ C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Infrastructure\
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Infrastructure\obj\Debug\net8.0\refint\IdentityService.Infrastructure.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Infrastructure\obj\Debug\net8.0\ref\IdentityService.Infrastructure.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\bin\Debug\net8.0\IdentityService.Infrastructure.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\bin\Debug\net8.0\IdentityService.Infrastructure.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\bin\Debug\net8.0\IdentityService.Infrastructure.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\refint\IdentityService.Infrastructure.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\IdentityService.Infrastructure.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Infrastructure\obj\Debug\net8.0\ref\IdentityService.Infrastructure.dll

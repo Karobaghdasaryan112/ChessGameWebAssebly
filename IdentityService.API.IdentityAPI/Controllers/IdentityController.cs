@@ -1,6 +1,7 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using SharedResources.DTOs.IdentityDTOs;
+using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
+using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses;
 
 namespace IdentityService.API.IdentityAPI.Controllers
@@ -32,8 +33,7 @@ namespace IdentityService.API.IdentityAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)
         {
-            await _authService.CreateUserAsync(registerRequest);
-            return Ok(new { response = IdentityResponse<CreateUserDTO>.identityResponse });
+            return Ok(await _authService.CreateUserAsync(registerRequest));
         }
     }
 }

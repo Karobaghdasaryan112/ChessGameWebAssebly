@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using SharedResources.Contracts.DTOs;
+using System.Net;
 
 namespace SharedResources.Contracts.RequestsAndResponses
 {
@@ -13,7 +14,7 @@ namespace SharedResources.Contracts.RequestsAndResponses
     /// <typeparam name="TData"></typeparam>
     /// <typeparam name="TMessage"></typeparam>
     public interface IResponseTypes<TData, TMessage>
-    where TData : class where TMessage : IMessage
+    where TData : IResponseDTO where TMessage : IMessage
     {
 
         TData Data { get; set; }
@@ -22,20 +23,19 @@ namespace SharedResources.Contracts.RequestsAndResponses
         HttpStatusCode StatusCode { get; set; }
         string _message { get; set; }
 
-        // Optional: A list to hold multiple error messages
         List<string> Errors { get; set; }
         DateTime Timestamp { get; set; }
 
-          Task<IResponseTypes<TData, TMessage>> CreateSuccessResponse(
+          IResponseTypes<TData, TMessage> CreateSuccessResponse(
           TData data,
           TMessage message,
           HttpStatusCode statusCode);
 
-        Task<IResponseTypes<TData, TMessage>> CreateErrorResponse(
+        IResponseTypes<TData, TMessage> CreateErrorResponse(
             string errorMessage,
             HttpStatusCode statusCode);
 
-        Task<IResponseTypes<TData, TMessage>> CreateErrorResponse(
+        IResponseTypes<TData, TMessage> CreateErrorResponse(
             TMessage responseMessage,
             HttpStatusCode statusCode,
             List<string> errors = null);

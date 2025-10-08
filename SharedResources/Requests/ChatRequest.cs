@@ -3,10 +3,10 @@ using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests
 {
-    public class ChatRequest : IRequestTypes<IChatDTO>
+    public class ChatRequest : IRequestTypes<IChatRequestDTO>
     {
-        public IChatDTO requestType { get; set; }
-        public ChatRequest(IChatDTO requestType)
+        public IChatRequestDTO requestType { get; set; }
+        public ChatRequest(IChatRequestDTO requestType)
         {
             this.requestType = requestType;
         }

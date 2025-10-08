@@ -4,11 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace IdentityService.Application.Features.MediatR.Base
 {
     public class MediatR_Base
-        <
-        TValidationType,
+        <TValidationType,
         TloggerType,
-        TService,
-        TDto
+        TService
         >
     {
         protected readonly IValidator<TValidationType> _validator;

@@ -1,4 +1,4 @@
-﻿using SharedResources.DTOs.IdentityDTOs;
+﻿using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using WebAssemblyChessGame.UI.ClientService;
 
 namespace WebAssemblyChessGame.UI.ApiServices

@@ -3,10 +3,10 @@ using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests
 {
-    public class IChessGameRequest : IRequestTypes<ICheseGameDTO>
+    public class ChessGameRequest : IRequestTypes<ICheseGameRequestDTO>
     {
-        public ICheseGameDTO requestType { get; set; }
-        public IChessGameRequest(ICheseGameDTO requestType)
+        public ICheseGameRequestDTO requestType { get; set; }
+        public ChessGameRequest(ICheseGameRequestDTO requestType)
         {
             this.requestType = requestType;
         }

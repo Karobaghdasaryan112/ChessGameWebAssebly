@@ -9,3 +9,15 @@ C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\D
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\refint\ChatService.core.Services.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Services\obj\Debug\net8.0\ref\ChatService.core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\bin\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\refint\ChatService.core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Services\obj\Debug\net8.0\ref\ChatService.core.Services.dll

@@ -10,3 +10,16 @@ C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\o
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\refint\IdentityService.Domain.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\ref\IdentityService.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\bin\Debug\net8.0\IdentityService.Domain.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.csproj.AssemblyReference.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\refint\IdentityService.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\ref\IdentityService.Domain.dll

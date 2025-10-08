@@ -9,3 +9,15 @@ C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\refint\ChatService.Infrastructure.Persistance.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ref\ChatService.Infrastructure.Persistance.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\bin\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\refint\ChatService.Infrastructure.Persistance.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ref\ChatService.Infrastructure.Persistance.dll

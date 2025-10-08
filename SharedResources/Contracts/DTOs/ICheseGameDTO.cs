@@ -1,6 +1,11 @@
 ﻿namespace SharedResources.Contracts.DTOs
 {
-    public interface ICheseGameDTO
+    public interface ICheseGameResponseDTO : IResponseDTO
     {
+    }
+
+    public interface ICheseGameRequestDTO
+    {
+
     }
 }

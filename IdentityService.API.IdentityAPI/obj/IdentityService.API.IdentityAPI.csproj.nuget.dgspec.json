@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj": {}
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj": {
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj",
+        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj",
         "projectName": "IdentityService.API.IdentityAPI",
-        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj",
-        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.API.IdentityAPI\\obj\\",
+        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\IdentityService.API.IdentityAPI.csproj",
+        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,23 +27,24 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.sitefinity.com/nuget": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\IdentityService.Application.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\IdentityService.Application.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\IdentityService.Application.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\IdentityService.Application.csproj"
               },
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
               },
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj"
               },
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj"
               }
             }
           }
@@ -120,6 +121,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -128,24 +147,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\IdentityService.Application.csproj": {
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\IdentityService.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\IdentityService.Application.csproj",
+        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\IdentityService.Application.csproj",
         "projectName": "IdentityService.Application",
-        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\IdentityService.Application.csproj",
-        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Application\\obj\\",
+        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\IdentityService.Application.csproj",
+        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -155,20 +174,21 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.sitefinity.com/nuget": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
               },
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj"
               },
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj"
               }
             }
           }
@@ -203,7 +223,7 @@
             },
             "MediatR": {
               "target": "Package",
-              "version": "[13.0.0, )"
+              "version": "[11.1.0, )"
             },
             "MediatR.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
@@ -229,29 +249,43 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj",
         "projectName": "IdentityService.Domain",
-        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj",
-        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\obj\\",
+        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj",
+        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -261,7 +295,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.sitefinity.com/nuget": {}
         },
         "frameworks": {
           "net8.0": {
@@ -310,20 +345,20 @@
         }
       }
     },
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj",
+        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj",
         "projectName": "IdentityService.Persistance",
-        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\IdentityService.Persistance.csproj",
-        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Persistance\\obj\\",
+        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\IdentityService.Persistance.csproj",
+        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -333,14 +368,15 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.sitefinity.com/nuget": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
-                "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
+              "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj": {
+                "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\IdentityService.Domain.csproj"
               }
             }
           }
@@ -412,20 +448,20 @@
         }
       }
     },
-    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj": {
+    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj",
+        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj",
         "projectName": "SharedResources",
-        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\SharedResources.csproj",
-        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\SharedResources\\obj\\",
+        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj",
+        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -435,7 +471,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.sitefinity.com/nuget": {}
         },
         "frameworks": {
           "net8.0": {
@@ -483,12 +520,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

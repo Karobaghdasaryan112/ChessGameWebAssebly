@@ -9,3 +9,15 @@ C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\refint\ChessGame.Domain.Domain.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ref\ChessGame.Domain.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\bin\Debug\net8.0\ChessGame.Domain.Domain.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\refint\ChessGame.Domain.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ref\ChessGame.Domain.Domain.dll

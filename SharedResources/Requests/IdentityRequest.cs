@@ -3,10 +3,10 @@ using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests
 {
-    public class IdentityRequest : IRequestTypes<IIdentityDTO>
+    public class IdentityRequest : IRequestTypes<IIdentityRequestDTO>
     {
-        public IIdentityDTO requestType { get; set; }
-        public IdentityRequest(IIdentityDTO requestType)
+        public IIdentityRequestDTO requestType { get; set; }
+        public IdentityRequest(IIdentityRequestDTO requestType)
         {
             this.requestType = requestType;
         }

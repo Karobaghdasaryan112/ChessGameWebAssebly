@@ -10,3 +10,16 @@ C:\Users\karob\source\repos\webAssemblyChessGame\SharedResources\obj\Debug\net8.
 C:\Users\karob\source\repos\webAssemblyChessGame\SharedResources\obj\Debug\net8.0\refint\SharedResources.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\SharedResources\obj\Debug\net8.0\SharedResources.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\SharedResources\obj\Debug\net8.0\ref\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.csproj.AssemblyReference.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.AssemblyInfoInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.AssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.csproj.CoreCompileInputs.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\refint\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\SharedResources.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\bin\Debug\net8.0\SharedResources.deps.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\bin\Debug\net8.0\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\bin\Debug\net8.0\SharedResources.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\ref\SharedResources.dll

@@ -1,13 +1,15 @@
 ﻿using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
 namespace SharedResources.Responses
 {
-    public class ChessGameResponse : IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>
+    public class ChessGameResponse<TDto> : IResponseTypes<TDto, ChessGameResponseMessage>
+        where TDto : ICheseGameResponseDTO
     {
-        public ICheseGameDTO Data { get; set; }
+        public TDto Data { get; set; }
         public bool IsSuccess { get; set; }
         public ChessGameResponseMessage Message { get; set; }
         public string CustomError { get; set; }
@@ -16,40 +18,43 @@ namespace SharedResources.Responses
         public DateTime Timestamp { get; set; }
         public string _message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public Task<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>> CreateErrorResponse(
+        public static ChessGameResponse<TDto> _chessGameResponse { get => new ChessGameResponse<TDto>(); }
+
+        public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
             string errorMessage,
             HttpStatusCode statusCode)
         {
-            this.Data = default;
-            this.IsSuccess = false;
-            this.CustomError = errorMessage;
-            this.StatusCode = statusCode;
-            return Task.FromResult<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>>(this);
+            _chessGameResponse.Data = default;
+            _chessGameResponse.IsSuccess = false;
+            _chessGameResponse.CustomError = errorMessage;
+            _chessGameResponse.StatusCode = statusCode;
+            return _chessGameResponse;
         }
 
-        public Task<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>> CreateErrorResponse(
+        public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
             ChessGameResponseMessage responseMessage,
             HttpStatusCode statusCode,
             List<string> errors = null)
         {
-            this.Data = default;
-            this.IsSuccess = false;
-            this.Message = responseMessage;
-            this.StatusCode = statusCode;
-            this.Errors = errors ?? new List<string>();
-            return Task.FromResult<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>>(this);
+            _chessGameResponse.Data = default;
+            _chessGameResponse.IsSuccess = false;
+            _chessGameResponse.Message = responseMessage;
+            _chessGameResponse.StatusCode = statusCode;
+            _chessGameResponse.Errors = errors ?? new List<string>();
+            return _chessGameResponse;
         }
 
-        public Task<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>> CreateSuccessResponse(
-            ICheseGameDTO data,
+        public IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
+            TDto data,
             ChessGameResponseMessage message,
             HttpStatusCode statusCode)
         {
-            this.Data = data;
-            this.IsSuccess = true;
-            this.Message = message;
-            this.StatusCode = statusCode;
-            return Task.FromResult<IResponseTypes<ICheseGameDTO, ChessGameResponseMessage>>(this);
+            _chessGameResponse.Data = data;
+            _chessGameResponse.IsSuccess = true;
+            _chessGameResponse.Message = message;
+            _chessGameResponse.StatusCode = statusCode;
+            return _chessGameResponse;
         }
+
     }
 }

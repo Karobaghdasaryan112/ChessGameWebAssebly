@@ -1,8 +1,8 @@
 ﻿using SharedResources.Contracts.DTOs;
 
-namespace SharedResources.DTOs.IdentityDTOs
+namespace SharedResources.DTOs.IdentityDTOs.ResponseDTOs
 {
-    public class SignInDTO : IIdentityDTO
+    public class SignInDTO : IIdentityResponseDTO
     {
         public string userName { get; set; }
         public string password { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SharedResources.Contracts.RequestsAndResponses;
-using SharedResources.DTOs.IdentityDTOs;
+using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
+using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace IdentityService.API.IdentityAPI.Contracts

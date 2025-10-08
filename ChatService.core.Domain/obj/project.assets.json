@@ -8,23 +8,23 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\karob\\.nuget\\packages\\": {},
+    "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChatService.core.Domain\\ChatService.Domain.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChatService.core.Domain\\ChatService.Domain.Domain.csproj",
       "projectName": "ChatService.Domain.Domain",
-      "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChatService.core.Domain\\ChatService.Domain.Domain.csproj",
-      "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChatService.core.Domain\\obj\\",
+      "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChatService.core.Domain\\ChatService.Domain.Domain.csproj",
+      "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChatService.core.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -34,7 +34,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.sitefinity.com/nuget": {}
       },
       "frameworks": {
         "net8.0": {

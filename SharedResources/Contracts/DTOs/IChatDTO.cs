@@ -1,6 +1,9 @@
 ﻿namespace SharedResources.Contracts.DTOs
 {
-    public interface IChatDTO
+    public interface IChatRequestDTO 
+    {
+    }
+    public interface IChatResponseDTO : IResponseDTO
     {
     }
 }

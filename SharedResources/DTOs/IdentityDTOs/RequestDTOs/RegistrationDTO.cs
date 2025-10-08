@@ -1,8 +1,8 @@
 ﻿using SharedResources.Contracts.DTOs;
 
-namespace SharedResources.DTOs.IdentityDTOs
+namespace SharedResources.DTOs.IdentityDTOs.RequestDTOs
 {
-    public class RegistrationDTO : IIdentityDTO
+    public class RegistrationDTO : IIdentityRequestDTO
     {
         public string firstName { get; set; }
         public string lastName { get; set; }

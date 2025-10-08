@@ -1,17 +1,21 @@
 ﻿using MediatR;
 using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
-using SharedResources.DTOs.IdentityDTOs;
+using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
+using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace IdentityService.Application.Features.MediatR.Requests.Commands
 {
-    public class UserRegistrationCommand<TDto> : IRequest<IResponseTypes<TDto, IdentityResponseMesage>> where TDto : class, IIdentityDTO
+    public class UserRegistrationCommand<TRequest, TResponse> : IRequest<TResponse>
     {
-        public TDto UserForRegistrationDTO { get; set; }
-        public UserRegistrationCommand(TDto userForRegistrationDTO)
+        public TRequest RequestDTO { get; }
+
+        public UserRegistrationCommand(TRequest request)
         {
-            UserForRegistrationDTO = userForRegistrationDTO;
+            RequestDTO = request;
         }
     }
+
 }
+
