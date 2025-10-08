@@ -1,5 +1,5 @@
-﻿using IdentityService.API.IdentityAPI.AuthenticationConfiguration;
-using IdentityService.API.IdentityAPI.ConfigurationServices;
+﻿using IdentityService.API.IdentityAPI.ConfigurationServices;
+using IdentityService.Application;
 using IdentityService.Persistance;
 
 namespace IdentityService.API.IdentityAPI
@@ -13,20 +13,17 @@ namespace IdentityService.API.IdentityAPI
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDefaultServices(Configuration);
+            services.AddApplicationServices();
 
-            services.AddContractsAndImplementations();
+            services.AddPersistanceServices(Configuration);
 
             services.AddCorsServices();
 
-            services.AddAuthenticationConfiguration(Configuration);
-
-            services.AddPersistanceServices(Configuration);
+            services.AddDefaultServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseRouting();
 
             app.UseAuthentication();
@@ -39,10 +36,9 @@ namespace IdentityService.API.IdentityAPI
             }
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers(); 
+                endpoints.MapControllers();
             });
             app.UseCors("AllowGateway_CORS");
-
         }
     }
 }

@@ -18,10 +18,9 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
          IRequestHandler<
              UserRegistrationCommand<
                  IRequestTypes<RegistrationDTO>, IResponseTypes<CreateUserDTO, IdentityResponseMesage>>,
-                 IResponseTypes<CreateUserDTO, IdentityResponseMesage>
-                        >
+                 IResponseTypes<CreateUserDTO, IdentityResponseMesage>>
     {
-        public UserRegistrationCommandHandler(IValidator<RegistrationDTO> validator, ILogger<UserRegistrationCommandHandler> logger, AuthService service)
+        public UserRegistrationCommandHandler(IValidator<RegistrationDTO> validator, ILogger<UserRegistrationCommandHandler> logger, IAuthService service)
             : base(validator, logger, service)
         {
 
@@ -39,7 +38,7 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
                     IdentityResponse<CreateUserDTO>.
                     _identityResponse.
                     CreateSuccessResponse(
-                    new CreateUserDTO() { UserId = response.Data.UserId },
+                    new CreateUserDTO() { UserId = response.IsSuccess ? response.Data.UserId : 0 },
                     IdentityResponseMesage.UserCreated,
                     System.Net.HttpStatusCode.Created);
             }

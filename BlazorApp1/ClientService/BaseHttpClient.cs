@@ -11,7 +11,7 @@ namespace WebAssemblyChessGame.UI.ClientService
         {
             _httpClient = httpClient;
 
-            _httpClient.Timeout = TimeSpan.FromSeconds(30);
+            //_httpClient.Timeout = TimeSpan.FromSeconds(30);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "WebAssemblyChessGame.UI");
@@ -23,8 +23,8 @@ namespace WebAssemblyChessGame.UI.ClientService
         {
             try
             {
-                var fullUrl = new Uri(_httpClient.BaseAddress, url).ToString();
-                var response = await _httpClient.PostAsJsonAsync(url, data);
+                //var fullUrl = new Uri(_httpClient.BaseAddress, url).ToString();
+                var response = await _httpClient.PostAsJsonAsync(new Uri("http://localhost:5247/api/Identity/register"), data);
 
                 return await response.Content.ReadFromJsonAsync<T>();
             }

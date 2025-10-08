@@ -1,8 +1,14 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
+using IdentityService.Application.Features.MediatR.Handlers.Commands;
+using IdentityService.Application.Features.MediatR.Requests.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
+using SharedResources.Requests;
 using SharedResources.Responses;
+using SharedResources.Responses.ResponseMessages;
 
 namespace IdentityService.API.IdentityAPI.Controllers
 {
@@ -11,8 +17,10 @@ namespace IdentityService.API.IdentityAPI.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public IdentityController(IAuthService authService)
+        private readonly IMediator _mediator;
+        public IdentityController(IAuthService authService,IMediator mediator)
         {
+            _mediator = mediator;
             _authService = authService;
         }
         [HttpPost]
@@ -33,7 +41,8 @@ namespace IdentityService.API.IdentityAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)
         {
-            return Ok(await _authService.CreateUserAsync(registerRequest));
+            var userRegistrationCommand = new UserRegistrationCommand<IRequestTypes<RegistrationDTO>, IResponseTypes<CreateUserDTO, IdentityResponseMesage>>(new IdentityRequest<RegistrationDTO>(registerRequest));
+            return Ok(await _mediator.Send(userRegistrationCommand));
         }
     }
 }

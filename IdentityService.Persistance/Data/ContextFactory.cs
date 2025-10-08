@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
@@ -10,8 +11,8 @@ namespace IdentityService.Persistance.Data
         public IdentityContext CreateDbContext(string[] args)
         {
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-            string? jsonFile = @"C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\appsettings.json";
-            
+            string? jsonFile = @"C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.API.IdentityAPI\appsettings.json";
+
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile(jsonFile, optional: false)
@@ -21,7 +22,8 @@ namespace IdentityService.Persistance.Data
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
+
             return new IdentityContext(optionsBuilder.Options);
         }
     }

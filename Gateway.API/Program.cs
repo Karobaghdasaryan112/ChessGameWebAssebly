@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseMiddleware<LoggingMiddleware>();
 
-app.UseHttpsRedirection();
+
 app.UseRouting();
 app.UseCors("AllowUI_CORS");
 app.UseAuthorization();

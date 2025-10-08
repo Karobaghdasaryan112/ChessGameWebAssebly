@@ -19,7 +19,7 @@
     "Parameters": [
       {
         "Name": "loginRequest",
-        "Type": "SharedResources.DTOs.IdentityDTOs.LoginDTO",
+        "Type": "SharedResources.DTOs.IdentityDTOs.RequestDTOs.LoginDTO",
         "IsRequired": true
       }
     ],
@@ -35,7 +35,7 @@
     "Parameters": [
       {
         "Name": "registerRequest",
-        "Type": "SharedResources.DTOs.IdentityDTOs.RegistrationDTO",
+        "Type": "SharedResources.DTOs.IdentityDTOs.RequestDTOs.RegistrationDTO",
         "IsRequired": true
       }
     ],

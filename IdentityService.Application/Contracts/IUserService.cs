@@ -1,6 +1,6 @@
 ﻿namespace IdentityService.API.IdentityAPI.Contracts
 {
-    public class IUserService
+    public interface IUserService
     {
     }
 }
