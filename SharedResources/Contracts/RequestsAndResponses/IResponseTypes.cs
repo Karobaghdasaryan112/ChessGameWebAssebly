@@ -21,24 +21,10 @@ namespace SharedResources.Contracts.RequestsAndResponses
         bool IsSuccess { get; set; }
         string CustomError { get; set; }
         HttpStatusCode StatusCode { get; set; }
-        string _message { get; set; }
+        TMessage message { get; set; }
 
         List<string> Errors { get; set; }
         DateTime Timestamp { get; set; }
-
-          IResponseTypes<TData, TMessage> CreateSuccessResponse(
-          TData data,
-          TMessage message,
-          HttpStatusCode statusCode);
-
-        IResponseTypes<TData, TMessage> CreateErrorResponse(
-            string errorMessage,
-            HttpStatusCode statusCode);
-
-        IResponseTypes<TData, TMessage> CreateErrorResponse(
-            TMessage responseMessage,
-            HttpStatusCode statusCode,
-            List<string> errors = null);
-
     }
 }
+

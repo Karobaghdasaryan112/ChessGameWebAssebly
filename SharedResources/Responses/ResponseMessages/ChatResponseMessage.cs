@@ -4,6 +4,7 @@ namespace SharedResources.Responses.ResponseMessages
 
     public class ChatResponseMessage : IMessage
     {
+        public string MessageOutput { get; }
         public string MessageSent => "Message sent successfully.";
         public string MessageFailed => "Failed to send message.";
         public string MessageReceived => "Message received successfully.";

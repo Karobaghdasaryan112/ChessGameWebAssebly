@@ -4,6 +4,7 @@ namespace SharedResources.Responses.ResponseMessages
 {
     public class ChessGameResponseMessage : IMessage
     {
+        public string MessageOutput { get; }
         public string GameCreated => "Chess game created successfully.";
         public string GameCreationFailed => "Failed to create chess game.";
         public string GameNotFound => "Chess game not found.";

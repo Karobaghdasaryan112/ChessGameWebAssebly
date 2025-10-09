@@ -1,4 +1,5 @@
-﻿using SharedResources.Contracts.DTOs;
+﻿using SharedResources.Contracts;
+using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests
@@ -11,7 +12,7 @@ namespace SharedResources.Requests
     //        this.requestType = requestType;
     //    }
     //}
-    public class IdentityRequest<T> : IRequestTypes<T>
+    public class IdentityRequest<T> : IRequestTypes<T> where T : IRequestDTO
     {
         public T requestType { get; set; }
 

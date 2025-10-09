@@ -14,10 +14,10 @@ namespace SharedResources.Responses
         public HttpStatusCode StatusCode { get; set; }
         public List<string> Errors { get; set; }
         public DateTime Timestamp { get; set; }
-        public string _message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public TDto Data { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TDto Data { get ; set ; }
 
         public static ChatResponse<TDto> _chatResponse { get => new ChatResponse<TDto>(); }
+        public ChatResponseMessage message { get ; set ; }
 
         public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
             string errorMessage,

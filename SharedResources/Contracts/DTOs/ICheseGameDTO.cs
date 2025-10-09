@@ -4,7 +4,7 @@
     {
     }
 
-    public interface ICheseGameRequestDTO
+    public interface ICheseGameRequestDTO : IRequestDTO
     {
 
     }

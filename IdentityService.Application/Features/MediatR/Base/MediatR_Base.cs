@@ -3,6 +3,22 @@ using Microsoft.Extensions.Logging;
 
 namespace IdentityService.Application.Features.MediatR.Base
 {
+    /// <summary>
+    /// Provides a reusable base class for MediatR handlers that includes validation, logging, and service dependencies.
+    /// </summary>
+    /// <typeparam name="TValidationType">
+    /// The type of the request object that will be validated.
+    /// </typeparam>
+    /// <typeparam name="TloggerType">
+    /// The type used by the logger to categorize log entries.
+    /// </typeparam>
+    /// <typeparam name="TService">
+    /// The service dependency used to handle the business logic (e.g., authentication, user management).
+    /// </typeparam>
+    /// <remarks>
+    /// This base class helps reduce boilerplate code in MediatR handlers by injecting common dependencies.
+    /// </remarks>
+
     public class MediatR_Base
         <TValidationType,
         TloggerType,

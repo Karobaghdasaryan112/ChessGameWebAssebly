@@ -1,6 +1,6 @@
 ﻿namespace SharedResources.Contracts.DTOs
 {
-    public interface IIdentityRequestDTO
+    public interface IIdentityRequestDTO : IRequestDTO
     {
         public int UserId { get; set; }
     }

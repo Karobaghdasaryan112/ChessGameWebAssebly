@@ -18,7 +18,7 @@ namespace IdentityService.API.IdentityAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IMediator _mediator;
-        public IdentityController(IAuthService authService,IMediator mediator)
+        public IdentityController(IAuthService authService, IMediator mediator)
         {
             _mediator = mediator;
             _authService = authService;
@@ -41,7 +41,11 @@ namespace IdentityService.API.IdentityAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)
         {
-            var userRegistrationCommand = new UserRegistrationCommand<IRequestTypes<RegistrationDTO>, IResponseTypes<CreateUserDTO, IdentityResponseMesage>>(new IdentityRequest<RegistrationDTO>(registerRequest));
+            var userRegistrationCommand = new UserRegistrationCommand<
+                IRequestTypes<RegistrationDTO>,
+                IResponseTypes<CreateUserDTO, IdentityResponseMesage>>
+                (new IdentityRequest<RegistrationDTO>(registerRequest));
+
             return Ok(await _mediator.Send(userRegistrationCommand));
         }
     }

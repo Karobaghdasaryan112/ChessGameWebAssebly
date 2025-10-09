@@ -16,9 +16,9 @@ namespace SharedResources.Responses
         public HttpStatusCode StatusCode { get; set; }
         public List<string> Errors { get; set; }
         public DateTime Timestamp { get; set; }
-        public string _message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public static ChessGameResponse<TDto> _chessGameResponse { get => new ChessGameResponse<TDto>(); }
+        public ChessGameResponseMessage message { get ; set ; }
 
         public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
             string errorMessage,
