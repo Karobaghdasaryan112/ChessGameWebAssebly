@@ -53,7 +53,7 @@ namespace IdentityService.API.IdentityAPI.Services
         public async Task<IResponseTypes<CreateUserDTO, IdentityResponseMesage>> CreateUserAsync(RegistrationDTO registrationDTO)
         {
 
-            var failedResult = IdentityResponse<CreateUserDTO>.CreateErrorResponse(IdentityResponseMesage.UserCreationFailed, System.Net.HttpStatusCode.BadRequest);
+            var failedResult = IdentityResponse<CreateUserDTO>.CreateErrorResponse(IdentityResponseMesage.UserCreationFailed, System.Net.HttpStatusCode.BadRequest, new List<string>());
 
             var IsExistingUser = await _userManager.FindByNameAsync(registrationDTO.userName);
             if (IsExistingUser != null)
@@ -72,6 +72,7 @@ namespace IdentityService.API.IdentityAPI.Services
             var result = await _userManager.CreateAsync(applicationUser, registrationDTO.password);
             if (!result.Succeeded)
             {
+                result.Errors.ToList().ForEach(e => failedResult.Errors.Add(e.Description));
                 return failedResult;
             }
             var CreatingUser = await _userManager.FindByNameAsync(registrationDTO.userName);
@@ -82,7 +83,7 @@ namespace IdentityService.API.IdentityAPI.Services
 
                 return IdentityResponse<CreateUserDTO>.CreateSuccessResponse(responseDTO, IdentityResponseMesage.UserCreated, System.Net.HttpStatusCode.OK);
             }
-            return IdentityResponse<CreateUserDTO>.CreateErrorResponse(IdentityResponseMesage.InternalServerError, System.Net.HttpStatusCode.InternalServerError);
+            return IdentityResponse<CreateUserDTO>.CreateErrorResponse(IdentityResponseMesage.InternalServerError, System.Net.HttpStatusCode.InternalServerError, new List<string>());
         }
 
         public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> LoginAsync(LoginDTO loginDTO)
@@ -90,7 +91,7 @@ namespace IdentityService.API.IdentityAPI.Services
             var result = await _signInManager.PasswordSignInAsync(loginDTO.email, loginDTO.password, false, false);
             if (!result.Succeeded)
             {
-                return  IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized);
+                return  IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized, new List<string>());
             }
             var user = await _userManager.FindByNameAsync(loginDTO.email);
             if (user != null)
@@ -109,7 +110,7 @@ namespace IdentityService.API.IdentityAPI.Services
                     return IdentityResponse<SignInDTO>.CreateSuccessResponse(responseDTO, IdentityResponseMesage.UserSignedIn, System.Net.HttpStatusCode.OK);
                 }
             }
-            return IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized);
+            return IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized, new List<string>());
         }
 
         public async Task<IdentityResult> RegisterAsync(RegistrationDTO registrationDTO)
@@ -174,7 +175,7 @@ namespace IdentityService.API.IdentityAPI.Services
             if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 return  IdentityResponse<SignInDTO>.CreateErrorResponse(
-                    IdentityResponseMesage.InvalidaRefreshToken, System.Net.HttpStatusCode.Unauthorized);
+                    IdentityResponseMesage.InvalidaRefreshToken, System.Net.HttpStatusCode.Unauthorized, new List<string>());
             }
 
 

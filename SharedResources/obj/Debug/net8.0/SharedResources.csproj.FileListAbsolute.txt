@@ -23,3 +23,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\bin\Debug\net8.0\SharedResources.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\bin\Debug\net8.0\SharedResources.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\SharedResources\obj\Debug\net8.0\ref\SharedResources.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\SharedResources\obj\Debug\net8.0\SharedResources.sourcelink.json

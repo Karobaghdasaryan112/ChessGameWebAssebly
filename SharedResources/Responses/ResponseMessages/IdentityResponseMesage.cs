@@ -1,11 +1,16 @@
 ﻿using SharedResources.Contracts.RequestsAndResponses;
+using System.Text.Json.Serialization;
 
 namespace SharedResources.Responses.ResponseMessages
 {
     public class IdentityResponseMesage : IMessage
     {
-        public string MessageOutput { get; }
+        public string MessageOutput { get; set; }
+        [JsonConstructor]
+        private IdentityResponseMesage()
+        {
 
+        }
         private IdentityResponseMesage(string message)
         {
             MessageOutput = message;

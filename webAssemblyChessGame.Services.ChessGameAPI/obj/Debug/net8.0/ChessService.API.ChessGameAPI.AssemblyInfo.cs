@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChessService.API.ChessGameAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c8f6b4bfde90fdb9eea51758bf9b073d386a6c3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b1312ca36dc4df68928aad8ae445be93ff09db0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChessService.API.ChessGameAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChessService.API.ChessGameAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

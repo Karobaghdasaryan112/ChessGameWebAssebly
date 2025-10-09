@@ -21,3 +21,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\refint\ChessGame.Infrastructure.Persistance.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ref\ChessGame.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.sourcelink.json

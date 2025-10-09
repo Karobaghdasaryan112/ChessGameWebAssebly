@@ -21,3 +21,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\refint\ChatService.Infrastructure.Persistance.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Infrastructure\obj\Debug\net8.0\ref\ChatService.Infrastructure.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Infrastructure\obj\Debug\net8.0\ChatService.Infrastructure.Persistance.sourcelink.json

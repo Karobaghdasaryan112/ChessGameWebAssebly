@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 
 namespace IdentityService.Application.Features.MediatR.Handlers.Commands
@@ -51,22 +50,8 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         {
             await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
 
-            var response = await _service.CreateUserAsync(request.RequestDTO.requestType);
-            if (response != null && response.IsSuccess)
-            {
-                return
-                    IdentityResponse<CreateUserDTO>
-                    .CreateSuccessResponse(
-                    new CreateUserDTO() { UserId = response.Data.UserId },
-                    IdentityResponseMesage.UserCreated,
-                    System.Net.HttpStatusCode.Created);
-            }
-            return
-                IdentityResponse<CreateUserDTO>
-                .CreateErrorResponse(
-                IdentityResponseMesage.UserCreationFailed,
-                System.Net.HttpStatusCode.BadRequest,
-                new List<string>());
+            return await _service.CreateUserAsync(request.RequestDTO.requestType);
+
         }
     }
 }

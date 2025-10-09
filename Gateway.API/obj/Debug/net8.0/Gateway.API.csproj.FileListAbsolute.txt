@@ -73,3 +73,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\obj\Debug\net8.0\Gateway.API.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\obj\Debug\net8.0\Gateway.API.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\obj\Debug\net8.0\ref\Gateway.API.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\Gateway.API\obj\Debug\net8.0\Gateway.API.sourcelink.json

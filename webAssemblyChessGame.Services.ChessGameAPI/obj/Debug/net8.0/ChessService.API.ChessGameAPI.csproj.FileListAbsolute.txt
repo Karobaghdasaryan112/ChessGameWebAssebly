@@ -141,3 +141,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessSer.B463FB9A.Up2Date
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ref\ChessService.API.ChessGameAPI.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.sourcelink.json

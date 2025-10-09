@@ -21,3 +21,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Domain\obj\Debug\net8.0\refint\ChatService.Domain.Domain.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Domain\obj\Debug\net8.0\ChatService.Domain.Domain.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChatService.core.Domain\obj\Debug\net8.0\ref\ChatService.Domain.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChatService.core.Domain\obj\Debug\net8.0\ChatService.Domain.Domain.sourcelink.json

@@ -1,15 +1,15 @@
 {
   "mainAssemblyName": "WebAssemblyChessGame.UI",
   "resources": {
-    "hash": "sha256-QkkOnqRJbLv+Afde0QrcVW8NK2dWS6thVlMsLVqLnkg=",
+    "hash": "sha256-FuEo7yR8iroI92W11Vxcy/KmpZaHuYtwnmC4lHxbIDI=",
     "jsModuleNative": {
-      "dotnet.native.js": "sha256-D0bzod5lwwSzPR43JC8TTCcZKw+3jIHOk8CZFCRj5is="
+      "dotnet.native.js": "sha256-O/NCYcAN9uPocD7ns7AzF/cqx7f5vL1PTJCQs0vEXyk="
     },
     "jsModuleRuntime": {
-      "dotnet.runtime.js": "sha256-OH8zlJkheyf8H9oAbu0wu1oQm9FKy/BKjDk4Bj/va3s="
+      "dotnet.runtime.js": "sha256-91CDXCvYTrWqTidtPWAY6j9w/EQtJKjSj9VneQwl020="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-1FiXHTP4dewtkVEvJ/s93FNwgKHgjajc/MAN3sofq6Q="
+      "dotnet.native.wasm": "sha256-ejEStOt2QNSl51aw0kg/9b8HrrVebvgm5k7AdzN/5VQ="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -291,12 +291,12 @@
       "mscorlib.wasm": "sha256-RLW/7NVuhoPfq151II3kX2kWHgBwQgpCw9aemQNg3to=",
       "netstandard.wasm": "sha256-lAg5WvTiA8wbsIwlr51xh0YWpXT9F5EX3Cnv+11O/mU=",
       "System.Private.CoreLib.wasm": "sha256-3O3muuRQwoLRecYRjfIFWUURvTjP4EmD2O8wYg2UDNY=",
-      "SharedResources.wasm": "sha256-hGDgfY9Ju4s3t3iPcR2pN9jR8xz20ehpIVfBsbrw6bM=",
-      "WebAssemblyChessGame.UI.wasm": "sha256-YGRJIe+PpZjx93UHjBHv8avNnsDk5gFWp7Q22gimRec="
+      "SharedResources.wasm": "sha256-VbKdAelJ9g1OdYUFBCzVZzbg2nYZWe6g1ebV0jRv/EM=",
+      "WebAssemblyChessGame.UI.wasm": "sha256-rcp2g/ohJ5O7w+fr3v6zRhaR+2qvXOU+ORy2IcnBlio="
     },
     "pdb": {
-      "SharedResources.pdb": "sha256-jlzkGdjzBpGJyj3Zo1Iowuej62vV37Nl/9GgFK69iKc=",
-      "WebAssemblyChessGame.UI.pdb": "sha256-e1WbQ/Vw/jl0pj8UIDece5oPERDziNJYmaZHoNoMLHo="
+      "SharedResources.pdb": "sha256-TO6AYccNvo3XcsiWqp7lujgySOsL9vm4z9pIv7XlIPA=",
+      "WebAssemblyChessGame.UI.pdb": "sha256-JR19sw0kzBTsvsceO2SDv99Ww2OxcXfz0rn3MPY1Y9g="
     }
   },
   "cacheBootResources": true,

@@ -37,3 +37,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Application\bin\Debug\net8.0\SharedResources.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Application\obj\Debug\net8.0\Identity.52144512.Up2Date
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Application\obj\Debug\net8.0\ref\IdentityService.Application.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Application\obj\Debug\net8.0\IdentityService.Application.sourcelink.json

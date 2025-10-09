@@ -23,3 +23,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\refint\IdentityService.Domain.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Domain.Domain\obj\Debug\net8.0\ref\IdentityService.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Domain.Domain\obj\Debug\net8.0\IdentityService.Domain.sourcelink.json

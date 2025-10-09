@@ -33,3 +33,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.Persistance\obj\Debug\net8.0\ref\IdentityService.Persistance.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.Persistance\obj\Debug\net8.0\IdentityService.Persistance.sourcelink.json

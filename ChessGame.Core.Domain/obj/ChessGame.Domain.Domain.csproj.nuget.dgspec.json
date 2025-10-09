@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj": {}
+    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj": {
+    "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj",
         "projectName": "ChessGame.Domain.Domain",
-        "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj",
-        "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Domain\\obj\\",
+        "projectPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChessGame.Core.Domain\\ChessGame.Domain.Domain.csproj",
+        "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karob\\source\\repos\\webAssemblyChessGame\\ChessGame.Core.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,8 +27,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.sitefinity.com/nuget": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {

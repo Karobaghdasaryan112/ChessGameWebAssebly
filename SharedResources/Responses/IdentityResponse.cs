@@ -2,14 +2,12 @@
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SharedResources.Responses
 {
     public class IdentityResponse<TDto> : IResponseTypes<TDto, IdentityResponseMesage>
        where TDto : class, IIdentityResponseDTO
     {
-
 
         public TDto? Data { get ; set; }
         public bool IsSuccess { get; set; }
@@ -38,7 +36,7 @@ namespace SharedResources.Responses
             return new IdentityResponse<TDto>
             {
                 message = responseMessage,
-                IsSuccess = true,
+                IsSuccess = false,
                 StatusCode = statusCode,
                 Timestamp = DateTime.UtcNow,
                 Errors = errors

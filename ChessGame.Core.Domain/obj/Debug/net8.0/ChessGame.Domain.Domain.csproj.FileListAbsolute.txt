@@ -21,3 +21,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\refint\ChessGame.Domain.Domain.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Domain\obj\Debug\net8.0\ref\ChessGame.Domain.Domain.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Domain\obj\Debug\net8.0\ChessGame.Domain.Domain.sourcelink.json
