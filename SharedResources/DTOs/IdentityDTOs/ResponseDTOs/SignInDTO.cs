@@ -8,8 +8,9 @@ namespace SharedResources.DTOs.IdentityDTOs.ResponseDTOs
         public string password { get; set; }
         public bool isPersistent { get; set; } = false;
         public bool lockoutOnFailure { get; set; } = false;
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }    
+        public string RefreshToken { get; set; }
+        int IIdentityResponseDTO.UserId { get ; set ; }
     }
 }

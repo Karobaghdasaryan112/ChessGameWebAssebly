@@ -9,7 +9,7 @@ namespace IdentityService.API.IdentityAPI.Contracts
     public interface IAuthService
     {
         Task<SignInResult> PasswordSignInAsync(SignInDTO signInDTO);
-        Task<IResponseTypes<CreateUserDTO, IdentityResponseMesage>> CreateUserAsync(RegistrationDTO registrationDTO);
+        Task<IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> CreateUserAsync(RegistrationDTO registrationDTO, CancellationToken cancellationToken);
         Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> LoginAsync(LoginDTO loginDTO);
         Task SignOutAsync();
     }

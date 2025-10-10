@@ -24,6 +24,9 @@ namespace IdentityService.Persistance.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(256)
@@ -71,7 +74,6 @@ namespace IdentityService.Persistance.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("RefreshTokenExpiryTime")

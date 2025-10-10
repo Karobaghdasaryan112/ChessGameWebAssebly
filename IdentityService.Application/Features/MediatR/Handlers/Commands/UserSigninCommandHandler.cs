@@ -48,7 +48,10 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         /// </returns>
 
 
-        public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> Handle(UserSigninCommand<IRequestTypes<LoginDTO>, IResponseTypes<SignInDTO, IdentityResponseMesage>> request, CancellationToken cancellationToken)
+        public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> Handle(
+            UserSigninCommand<IRequestTypes<LoginDTO>, 
+                IResponseTypes<SignInDTO, IdentityResponseMesage>> request, 
+            CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request._requestDTO.requestType, cancellationToken);
 

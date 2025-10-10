@@ -1,5 +1,6 @@
 ﻿using IdentityService.API.IdentityAPI.Helpers;
 using IdentityService.Domain.Domain;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,23 +17,21 @@ namespace IdentityService.Persistance
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
             var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecurityKey)),
-                ClockSkew = TimeSpan.Zero
-            });
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+                {
+                    options.LoginPath = "/Login";
+                    options.SlidingExpiration = true;
+                    options.AccessDeniedPath = "/Registration";
+                }
+            );
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<IdentityContext>()

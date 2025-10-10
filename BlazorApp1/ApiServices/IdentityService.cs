@@ -43,14 +43,25 @@ namespace WebAssemblyChessGame.UI.ApiServices
         /// <param name="queryParamAndValues">Optional query parameters to include in the request URI.</param>
         /// <returns>A response containing the created user information.</returns>
 
-        public async Task<IdentityResponse<CreateUserDTO>?> RegisterUserAsync(RegistrationDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
+        public async Task<IdentityResponse<RegistrationResponseDTO>?> RegisterUserAsync(RegistrationDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
         {
             var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Register, new List<KeyValuePair<string, string>>());
 
             return
                 await PostAsync<RegistrationDTO,
-                                   IdentityResponse<CreateUserDTO>,
-                                   CreateUserDTO,
+                                   IdentityResponse<RegistrationResponseDTO>,
+                                   RegistrationResponseDTO,
+                                   IdentityResponseMesage>
+                                   (requestUri, registerRequest);
+        }
+        public async Task<IdentityResponse<SignInDTO>?> LoginUserAsync(LoginDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
+        {
+            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new List<KeyValuePair<string, string>>());
+
+            return
+                await PostAsync<LoginDTO,
+                                   IdentityResponse<SignInDTO>,
+                                   SignInDTO,
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
         }

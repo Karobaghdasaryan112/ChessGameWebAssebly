@@ -1,4 +1,8 @@
-﻿namespace IdentityService.API.IdentityAPI.Middlewares
+﻿using SharedResources.DTOs.ErrorResponseDTOs;
+using SharedResources.Responses;
+using SharedResources.Responses.ResponseMessages;
+
+namespace IdentityService.API.IdentityAPI.Middlewares
 {
     public class ExceptionHandlingMiddleware
     {
@@ -13,9 +17,16 @@
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                throw new NotImplementedException();
+                ErrorResponse<ErrorDTO>.
+                    CreateErrorResponse(
+                        new ErrorDTO()
+                        {
+                            Exception = exception
+                        },
+                        ErrorResponseMessage.InternalServerError,
+                        System.Net.HttpStatusCode.InternalServerError);
             }
         }
     }

@@ -7,7 +7,9 @@ using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
+using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
+using System.Net;
 
 namespace IdentityService.Application.Features.MediatR.Handlers.Commands
 {
@@ -23,8 +25,8 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
          MediatR_Base<RegistrationDTO, UserRegistrationCommandHandler, IAuthService>,
          IRequestHandler<
              UserRegistrationCommand<
-                 IRequestTypes<RegistrationDTO>, IResponseTypes<CreateUserDTO, IdentityResponseMesage>>,
-                 IResponseTypes<CreateUserDTO, IdentityResponseMesage>>
+                 IRequestTypes<RegistrationDTO>, IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>,
+                 IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>
     {
         public UserRegistrationCommandHandler(IValidator<RegistrationDTO> validator, ILogger<UserRegistrationCommandHandler> logger, IAuthService service)
             : base(validator, logger, service)
@@ -42,16 +44,32 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         /// or an error response if it fails.
         /// </returns>
 
-        public async Task<IResponseTypes<CreateUserDTO, IdentityResponseMesage>> Handle(
+        public async Task<IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> Handle(
             UserRegistrationCommand<
                 IRequestTypes<RegistrationDTO>,
-                IResponseTypes<CreateUserDTO, IdentityResponseMesage>> request,
+                IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> request,
                 CancellationToken cancellationToken)
         {
-            await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
+            if (!validationResult.IsValid)
+                return IdentityResponse<RegistrationResponseDTO>.
+                    CreateErrorResponse(
+                        IdentityResponseMesage.UserCreationFailed,
+                        System.Net.HttpStatusCode.BadRequest,
+                        validationResult.Errors.Select(error => error.ErrorMessage).ToList());
 
-            return await _service.CreateUserAsync(request.RequestDTO.requestType);
-
+            try
+            {
+                return await _service.CreateUserAsync(request.RequestDTO.requestType, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during registration.");
+                return IdentityResponse<RegistrationResponseDTO>.CreateErrorResponse(
+                    IdentityResponseMesage.UserCreationFailed,
+                    System.Net.HttpStatusCode.InternalServerError,
+                    new List<string>());
+            }
         }
     }
 }

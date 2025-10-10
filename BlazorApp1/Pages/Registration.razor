@@ -1,0 +1,126 @@
+﻿@page "/Registration"
+@using Microsoft.AspNetCore.Http
+@using SharedResources.DTOs.IdentityDTOs
+@using SharedResources.DTOs.IdentityDTOs.RequestDTOs
+@using System.Text
+@using WebAssemblyChessGame.UI.ApiServices
+@inject IdentityService identityService
+<link href="~/css/Registration.css" rel="stylesheet" />
+<PageTitle>Register</PageTitle>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card registration-card p-5 shadow-lg">
+        <h2 class="text-center mb-4">Create Account</h2>
+        @if (!string.IsNullOrEmpty(SuccessMessage))
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @SuccessMessage
+                <button type="button" class="btn-close" @onclick="() => SuccessMessage = null"></button>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <b>Error:</b> @ErrorMessage
+                <button type="button" class="btn-close" @onclick="() => ErrorMessage = null"></button>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(IdentityErrorMessage))
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                @IdentityErrorMessage
+                <button type="button" class="btn-close" @onclick="() => IdentityErrorMessage = null"></button>
+            </div>
+        }
+
+        <div class="form-floating mb-3">
+            <input @bind="FirstName" type="text" class="form-control" id="firstName" placeholder="First Name" />
+            <label for="firstName">First Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input @bind="LastName" type="text" class="form-control" id="lastName" placeholder="Last Name" />
+            <label for="lastName">Last Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input @bind="Email" type="email" class="form-control" id="email" placeholder="Email" />
+            <label for="email">Email</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input @bind="Password" type="password" class="form-control" id="password" placeholder="Password" />
+            <label for="password">Password</label>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input @bind="ConfirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" />
+            <label for="confirmPassword">Confirm Password</label>
+        </div>
+
+        <button @onclick="Register" class="btn btn-gradient w-100 py-2">Register</button>
+        <small>Already Have an Account? <a href="/Login">Login</a></small>
+    </div>
+</div>
+
+@code {
+    private string FirstName { get; set; } = string.Empty;
+    private string LastName { get; set; } = string.Empty;
+    private string Email { get; set; } = string.Empty;
+    private string Password { get; set; } = string.Empty;
+    private string ConfirmPassword { get; set; } = string.Empty;
+
+    private string? SuccessMessage { get; set; }
+    private string? ErrorMessage { get; set; }
+    private string? IdentityErrorMessage { get; set; }
+
+    private async Task Register()
+    {
+        try
+        {
+            ErrorMessage = null;
+            SuccessMessage = null;
+            IdentityErrorMessage = null;
+
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Passwords do not match!";
+                return;
+            }
+
+            var result = await identityService.RegisterUserAsync(new RegistrationDTO
+            {
+                firstName = FirstName,
+                lastName = LastName,
+                email = Email,
+                password = Password,
+                confirmPassword = ConfirmPassword,
+                userName = Email
+            }, new List<KeyValuePair<string, string>>());
+
+            if (result == null)
+            {
+                ErrorMessage = "Registration failed. Please try again.";
+                return;
+            }
+
+            if (!result.IsSuccess)
+            {
+                var sb = new StringBuilder();
+                result.Errors.ForEach(e => sb.AppendLine(e));
+                IdentityErrorMessage = sb.ToString();
+                ErrorMessage = result.message.MessageOutput;
+                return;
+            }
+
+            SuccessMessage = "Registration successful!";
+            FirstName = LastName = Email = Password = ConfirmPassword = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+}

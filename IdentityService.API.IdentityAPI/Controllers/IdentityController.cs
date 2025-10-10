@@ -2,6 +2,7 @@
 using IdentityService.Application.Features.MediatR.Handlers.Commands;
 using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
@@ -29,13 +30,14 @@ namespace IdentityService.API.IdentityAPI.Controllers
             return Ok(new { status = "Auth service is running." });
         }
         [HttpPost("login")]
-        public Task<IActionResult> LoginAsync(LoginDTO loginRequest)
+        public async Task<IActionResult> LoginAsync(LoginDTO loginRequest)
         {
-            if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
-            {
-                return Task.FromResult<IActionResult>(Ok(new { message = "User is already authenticated." }));
-            }
-            return null;
+            var userRegistrationCommand = new UserSigninCommand<
+                IRequestTypes<LoginDTO>,
+                IResponseTypes<SignInDTO, IdentityResponseMesage>>
+                (new IdentityRequest<LoginDTO>(loginRequest));
+
+            return Ok(await _mediator.Send(userRegistrationCommand));
         }
 
         [HttpPost("register")]
@@ -43,7 +45,7 @@ namespace IdentityService.API.IdentityAPI.Controllers
         {
             var userRegistrationCommand = new UserRegistrationCommand<
                 IRequestTypes<RegistrationDTO>,
-                IResponseTypes<CreateUserDTO, IdentityResponseMesage>>
+                IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>
                 (new IdentityRequest<RegistrationDTO>(registerRequest));
 
             return Ok(await _mediator.Send(userRegistrationCommand));

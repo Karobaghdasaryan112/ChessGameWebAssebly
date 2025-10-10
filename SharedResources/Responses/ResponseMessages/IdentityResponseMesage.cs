@@ -6,6 +6,7 @@ namespace SharedResources.Responses.ResponseMessages
     public class IdentityResponseMesage : IMessage
     {
         public string MessageOutput { get; set; }
+
         [JsonConstructor]
         private IdentityResponseMesage()
         {
@@ -50,5 +51,8 @@ namespace SharedResources.Responses.ResponseMessages
 
         public static readonly IdentityResponseMesage SuccessRefreshToken =
             new IdentityResponseMesage("refresh token Success.");
+
+        public static readonly IdentityResponseMesage RequestCanceled =
+            new IdentityResponseMesage("The request was canceled.");
     }
 }
