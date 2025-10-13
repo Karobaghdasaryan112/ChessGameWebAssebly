@@ -60,7 +60,7 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
                 var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 return IdentityResponse<SignInDTO>.
                     CreateErrorResponse(
-                    IdentityResponseMesage.Initialize,
+                    default,
                     System.Net.HttpStatusCode.BadRequest,
                     errors);
             }

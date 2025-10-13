@@ -54,14 +54,14 @@ namespace WebAssemblyChessGame.UI.ApiServices
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
         }
-        public async Task<IdentityResponse<SignInDTO>?> LoginUserAsync(LoginDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
+        public async Task<IdentityResponse<IIdentityResponseDTO>?> LoginUserAsync(LoginDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
         {
             var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new List<KeyValuePair<string, string>>());
 
             return
                 await PostAsync<LoginDTO,
-                                   IdentityResponse<SignInDTO>,
-                                   SignInDTO,
+                                   IdentityResponse<IIdentityResponseDTO>,
+                                   IIdentityResponseDTO,
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
         }

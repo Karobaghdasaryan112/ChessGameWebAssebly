@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "WebAssemblyChessGame.UI",
   "resources": {
-    "hash": "sha256-ZDqjkIycVwWCap5wLl42P355IgAijGIzWNkJ2vGXn9w=",
+    "hash": "sha256-GqKFc1Gg13TPvZ8zSEht19tRB/J+blGXqGhd/Pj4tDo=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-D0bzod5lwwSzPR43JC8TTCcZKw+3jIHOk8CZFCRj5is="
     },
@@ -291,12 +291,12 @@
       "mscorlib.wasm": "sha256-8qWtIcy8fV43tlcx4DxsF45RlkcfK6588vVoxF7be2E=",
       "netstandard.wasm": "sha256-eOgz2RiO4YaPLOMIGgVLNrcfsQhmLQJzR0N7Pu2teXc=",
       "System.Private.CoreLib.wasm": "sha256-F8T63QCIbMPXPQPqTcuyBAw+oVvZSrWjy88j7fiJQZ4=",
-      "SharedResources.wasm": "sha256-fXGqWQPDCTV4HS1WLOxjfs+86jwyjrGDM0k6LkqIpzc=",
-      "WebAssemblyChessGame.UI.wasm": "sha256-4TsNQVQGlMAiMuDKgC+FFdZKeT5Pze+xIRDJHqVX9Oc="
+      "SharedResources.wasm": "sha256-q/wt4FpxpItjHRWYMSXArKFV5vvS1Mep0zKmxpwfv5I=",
+      "WebAssemblyChessGame.UI.wasm": "sha256-cX9loKpU0G2DBCYsN7ZumZ29Uc1kVxRxiI6kf4T659A="
     },
     "pdb": {
-      "SharedResources.pdb": "sha256-w6sIwHBEMlxNuWQwUvWNyVA/aqfub+1zEvyd4g8Bl64=",
-      "WebAssemblyChessGame.UI.pdb": "sha256-PlaZqHHIueGV1aRd/Ant0/oRUJFti1SVwTIkK9BOB9k="
+      "SharedResources.pdb": "sha256-ug8trLFxd6l2yK4ktxe2YhywmyJqI6F6MFJlu7Pgeaw=",
+      "WebAssemblyChessGame.UI.pdb": "sha256-4x6K1nX229KuzC2r8LtE8I01hihMhJi5UhOZQC72gO4="
     }
   },
   "cacheBootResources": true,

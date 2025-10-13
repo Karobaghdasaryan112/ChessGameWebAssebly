@@ -28,6 +28,14 @@
             </div>
         }
 
+        @if (!string.IsNullOrEmpty(IdentityErrorMessage))
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                @IdentityErrorMessage
+                <button type="button" class="btn-close" @onclick="() => IdentityErrorMessage = null"></button>
+            </div>
+        }
+
         <div class="form-floating mb-3">
             <input @bind="Email" type="email" class="form-control" id="email" placeholder="Email" />
             <label for="email">Email</label>
@@ -49,7 +57,7 @@
 @code {
     private string Email { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
-
+    private string? IdentityErrorMessage { get; set; } = string.Empty;
     private string? SuccessMessage { get; set; }
     private string? ErrorMessage { get; set; }
 
@@ -70,6 +78,12 @@
 
             if (result == null || !result.IsSuccess)
             {
+                if (result.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    ErrorMessage = "Login failed. Please try again.";
+                    return;
+                }
+                IdentityErrorMessage = string.Join(",",result.Errors);
                 ErrorMessage = result?.message?.MessageOutput ?? "Login failed. Please try again.";
                 return;
             }

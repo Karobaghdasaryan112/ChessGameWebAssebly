@@ -1,5 +1,6 @@
 ﻿using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
@@ -19,6 +20,7 @@ namespace SharedResources.Responses
 
         public static ChessGameResponse<TDto> _chessGameResponse { get => new ChessGameResponse<TDto>(); }
         public ChessGameResponseMessage message { get ; set ; }
+        public IdentityErrorDTO? IdentityErrorDTO { get ; set ; }
 
         public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
             string errorMessage,

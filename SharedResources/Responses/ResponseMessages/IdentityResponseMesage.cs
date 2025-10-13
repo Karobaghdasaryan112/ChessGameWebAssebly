@@ -8,7 +8,7 @@ namespace SharedResources.Responses.ResponseMessages
         public string MessageOutput { get; set; }
 
         [JsonConstructor]
-        private IdentityResponseMesage()
+        public IdentityResponseMesage()
         {
 
         }

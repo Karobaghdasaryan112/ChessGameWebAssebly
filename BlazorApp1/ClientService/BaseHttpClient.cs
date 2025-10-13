@@ -1,4 +1,5 @@
-﻿using SharedResources.Contracts;
+﻿using Newtonsoft.Json;
+using SharedResources.Contracts;
 using SharedResources.Contracts.RequestsAndResponses;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -45,6 +46,12 @@ namespace WebAssemblyChessGame.UI.ClientService
         where TResponse : IResponseTypes<TData, TMessage>
         {
             var response = await _httpClient.PostAsJsonAsync(uri, data);
+
+            var settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+            };
 
             return await response.Content.ReadFromJsonAsync<TResponse>();
         }

@@ -1,4 +1,5 @@
 ﻿using SharedResources.Contracts.DTOs;
+using SharedResources.DTOs.ErrorResponseDTOs;
 using System.Net;
 
 namespace SharedResources.Contracts.RequestsAndResponses
@@ -16,7 +17,7 @@ namespace SharedResources.Contracts.RequestsAndResponses
     public interface IResponseTypes<TData, TMessage>
     where TData : IResponseDTO where TMessage : IMessage
     {
-
+        IdentityErrorDTO? IdentityErrorDTO { get; set; }
         TData Data { get; set; }
         bool IsSuccess { get; set; }
         string CustomError { get; set; }

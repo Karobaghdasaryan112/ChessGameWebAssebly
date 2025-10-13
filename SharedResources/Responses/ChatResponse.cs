@@ -1,5 +1,6 @@
 ﻿using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -18,6 +19,7 @@ namespace SharedResources.Responses
 
         public static ChatResponse<TDto> _chatResponse { get => new ChatResponse<TDto>(); }
         public ChatResponseMessage message { get ; set ; }
+        public IdentityErrorDTO? IdentityErrorDTO { get ; set ; }
 
         public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
             string errorMessage,

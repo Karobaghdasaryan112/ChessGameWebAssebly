@@ -17,4 +17,9 @@
     <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ChessGameLogic\Moves\" />
+    <Folder Include="Contracts\ChessGameContracts\" />
+  </ItemGroup>
+
 </Project>

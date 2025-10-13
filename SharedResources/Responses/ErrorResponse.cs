@@ -1,5 +1,6 @@
 ﻿using SharedResources.Contracts;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -16,6 +17,7 @@ namespace SharedResources.Responses
         public ErrorResponseMessage message { get; set; }
         public List<string> Errors { get; set; }
         public DateTime Timestamp { get; set; }
+        public IdentityErrorDTO? IdentityErrorDTO { get; set; }
 
         public static IResponseTypes<TDto, ErrorResponseMessage> CreateErrorResponse(TDto errorDto,
             ErrorResponseMessage responseMessage, HttpStatusCode statusCode)
