@@ -1,6 +1,6 @@
 ﻿namespace SharedResources.ChessGameResource.Enums.FigureTypes
 {
-    public enum Figures
+    public enum FigureType
     {
         None,
         Pawn,

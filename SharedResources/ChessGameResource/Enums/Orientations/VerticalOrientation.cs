@@ -2,14 +2,13 @@
 {
     public enum VerticalOrientation
     {
-        None,
+        zero,
         one,
         two,
         tree,
         four,
         five,
         six,
-        seven,
-        eight
+        seven
     }
 }

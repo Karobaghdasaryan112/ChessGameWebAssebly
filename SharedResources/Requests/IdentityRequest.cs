@@ -4,14 +4,6 @@ using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests
 {
-    //public class IdentityRequest<TDto> : IRequestTypes<IIdentityRequestDTO>
-    //{
-    //    public IIdentityRequestDTO requestType { get; set; }
-    //    public IdentityRequest(IIdentityRequestDTO requestType)
-    //    {
-    //        this.requestType = requestType;
-    //    }
-    //}
     public class IdentityRequest<T> : IRequestTypes<T> where T : IRequestDTO
     {
         public T requestType { get; set; }

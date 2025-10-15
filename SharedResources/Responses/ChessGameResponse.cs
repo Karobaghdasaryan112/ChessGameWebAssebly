@@ -1,7 +1,6 @@
 ﻿using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ErrorResponseDTOs;
-using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 

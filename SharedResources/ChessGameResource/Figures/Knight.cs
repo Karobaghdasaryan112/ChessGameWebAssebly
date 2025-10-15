@@ -6,9 +6,9 @@ using SharedResources.Contracts.ChessGameResourceContracts;
 
 namespace SharedResources.ChessGameResource.Figures
 {
-    public class Pawn : IFigure
+    public class Knight : IFigure
     {
-        public FigureType FigureType => FigureType.Pawn;
+        public FigureType FigureType => FigureType.Knight;
         public FigureColors FigureColor { get; set; }
 
         public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position)
@@ -24,39 +24,33 @@ namespace SharedResources.ChessGameResource.Figures
 
             var currentBlock = Board.GetBlockByPosition(startRow, startCol);
 
-            var stepRow = startRow == 6 ? -2 : -1;
 
-            AddMovablePositions(startRow, startCol, stepRow, result);
+            var row = startRow;
+            var col = startCol;
 
+            AddPositions(row, col, +1, +2, result);
 
+            AddPositions(row, col, +1, -2, result);
+
+            AddPositions(row, col, -1, +2, result);
+
+            AddPositions(row, col, -1, -2, result);
+
+            AddPositions(row, col, +2, -1, result);
+
+            AddPositions(row, col, +2, +1, result);
+
+            AddPositions(row, col, -2, -1, result);
+
+            AddPositions(row, col, -2, +1, result);
 
             return result;
         }
-        private void AddMovablePositions(int row, int col, int rowStep, MovableAndCutablePositions positions)
+
+        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions)
         {
-            for (int i = 1; i <= rowStep; i++)
-            {
-                row += i;
-
-                if (row != (int)CriticalPositions.lowCriticalValue || row != (int)CriticalPositions.highCriticalValue)
-                {
-                    var block = Board.GetBlockByPosition(row, col);
-                    var figure = block.Figure;
-
-                    if (figure == null)
-                        positions.MovablePositions.Add(new Position(row, col));
-                }
-            }
-        }
-
-        private void AddCutablePositions(int row,int col, MovableAndCutablePositions result)
-        {
-            int columnLeftStep = -1;
-            int columnRightStep = +1;
-            int rowStep = -1;
-
-            col += columnLeftStep;
             row += rowStep;
+            col += colStep;
 
             if ((
                 row != (int)CriticalPositions.lowCriticalValue ||
@@ -68,10 +62,11 @@ namespace SharedResources.ChessGameResource.Figures
                 var block = Board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != Board.MyColor)
-                    result.CutablePositions.Add(new Position(row, col));
+                if (figure == null)
+                    positions.MovablePositions.Add(new Position(row, col));
+                else if (figure.FigureColor != Board.MyColor)
+                    positions.CutablePositions.Add(new Position(row, col));
             }
         }
-
     }
 }

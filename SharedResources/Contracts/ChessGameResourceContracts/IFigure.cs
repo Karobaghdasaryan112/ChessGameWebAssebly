@@ -6,8 +6,9 @@ namespace SharedResources.Contracts.ChessGameResourceContracts
 {
     public interface IFigure
     {
-        FigureType FigureType { get; set; }
+        string FigurePath => $"{FigureType}{FigureColor}.png";
+        FigureType FigureType { get; }
         FigureColors FigureColor {  get; set; }
-        List<Position> GetMovableAndCutableBlocks(Position position);
+        MovableAndCutablePositions GetMovableAndCutableBlocks(Position position);
     }
 }
