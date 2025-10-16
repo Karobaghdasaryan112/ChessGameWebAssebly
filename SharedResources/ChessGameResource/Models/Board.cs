@@ -10,24 +10,30 @@ namespace SharedResources.ChessGameResource.Models
     /// </summary>
     public class Board
     {
-        private Board() { }
+        public Board(FigureColors figureColor = default)
+        {
+            if (BoardBlocks != default)
+                return;
+
+            CreateBoard(figureColor);
+            MyColor =
+                figureColor == default ?
+                FigureColors.White :
+                figureColor;
+        }
         /// <summary>
         /// 8x8 grid representing the chess board. Each Block may contain a chess piece or be empty.
         /// </summary>
         public static Block[][]? BoardBlocks { get; set; }
-        public static FigureColors MyColor { get;private set; }
 
-        private static void InitializeNewBoard(FigureColors figureColor = default)
+        public static FigureColors MyColor { get; private set; }
+
+        private static void CreateBoard(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)
                 return;
 
             CreateBlocks(figureColor);
-        }
-
-        public static void CreateBoard(FigureColors figureColor = default)
-        {
-            InitializeNewBoard(figureColor);
         }
 
         /// <summary>
@@ -86,7 +92,7 @@ namespace SharedResources.ChessGameResource.Models
         /// </summary>
         public static Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
         {
-            InitializeNewBoard();
+            CreateBoard();
 
             return BoardBlocks[(int)verticalOrientation][(int)horizontalOrientation];
         }
@@ -96,7 +102,7 @@ namespace SharedResources.ChessGameResource.Models
         /// </summary>
         public static Block GetBlockByPosition(Position position)
         {
-            InitializeNewBoard();
+            CreateBoard();
 
             return BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
         }
@@ -106,7 +112,7 @@ namespace SharedResources.ChessGameResource.Models
         /// </summary>
         public static Block GetBlockByPosition(int verticalOrientation, int horizontalOrientation)
         {
-            InitializeNewBoard();
+            CreateBoard();
 
             return BoardBlocks[verticalOrientation][horizontalOrientation];
         }

@@ -17,45 +17,45 @@ namespace SharedResources.Responses
         public List<string> Errors { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public static ChessGameResponse<TDto> _chessGameResponse { get => new ChessGameResponse<TDto>(); }
-        public ChessGameResponseMessage message { get ; set ; }
-        public IdentityErrorDTO? IdentityErrorDTO { get ; set ; }
+        public ChessGameResponseMessage message { get; set; }
+        public IdentityErrorDTO? IdentityErrorDTO { get; set; }
 
         public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
-            string errorMessage,
-            HttpStatusCode statusCode)
+        string errorMessage,HttpStatusCode statusCode)
         {
-            _chessGameResponse.Data = default;
-            _chessGameResponse.IsSuccess = false;
-            _chessGameResponse.CustomError = errorMessage;
-            _chessGameResponse.StatusCode = statusCode;
-            return _chessGameResponse;
+            return new ChessGameResponse<TDto>
+            {
+                Data = default,
+                IsSuccess = false,
+                CustomError = errorMessage,
+                StatusCode = statusCode
+
+            };
         }
 
-        public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
-            ChessGameResponseMessage responseMessage,
-            HttpStatusCode statusCode,
-            List<string> errors = null)
-        {
-            _chessGameResponse.Data = default;
-            _chessGameResponse.IsSuccess = false;
-            _chessGameResponse.Message = responseMessage;
-            _chessGameResponse.StatusCode = statusCode;
-            _chessGameResponse.Errors = errors ?? new List<string>();
-            return _chessGameResponse;
-        }
+        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
+        ChessGameResponseMessage responseMessage,HttpStatusCode statusCode,List<string> errors = null)
+            {
+                return new ChessGameResponse<TDto>()
+                {
+                    Data = default,
+                    IsSuccess = false,
+                    Errors = errors,
+                    Message = responseMessage,
+                    StatusCode = statusCode
+                };
+            }
 
-        public IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
-            TDto data,
-            ChessGameResponseMessage message,
-            HttpStatusCode statusCode)
+        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
+            TDto data,ChessGameResponseMessage message,HttpStatusCode statusCode)
         {
-            _chessGameResponse.Data = data;
-            _chessGameResponse.IsSuccess = true;
-            _chessGameResponse.Message = message;
-            _chessGameResponse.StatusCode = statusCode;
-            return _chessGameResponse;
+            return new ChessGameResponse<TDto>()
+            {
+                Data = data,
+                IsSuccess = true,
+                message = message,
+                StatusCode = statusCode
+            };
         }
-
     }
 }

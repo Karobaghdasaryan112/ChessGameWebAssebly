@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 
-namespace IdentityService.Application.Validation
+namespace SharedResources.Validation.IdentityValidations
 {
     public class RegistrationDTOValidator : AbstractValidator<RegistrationDTO>
     {

@@ -1,11 +1,9 @@
 ﻿using FluentValidation;
 using IdentityService.API.IdentityAPI.Contracts;
 using IdentityService.API.IdentityAPI.Services;
-using IdentityService.Application.Features.MediatR.Base;
 using IdentityService.Application.Features.MediatR.Handlers.Commands;
 using IdentityService.Application.Validation;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityService.Application

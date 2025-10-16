@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace IdentityService.Application.Features.MediatR.Base
+namespace SharedResources.MediatR
 {
     /// <summary>
     /// Provides a reusable base class for MediatR handlers that includes validation, logging, and service dependencies.

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "FALcjVyVSzw=",
+  "dgSpecHash": "OpajU0ZFXxw=",
   "success": true,
   "projectFilePath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\ChessGame.Core.Services.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\fluentvalidation\\12.0.0\\fluentvalidation.12.0.0.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\mediatr\\12.0.1\\mediatr.12.0.1.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\microsoft.aspnetcore\\2.3.0\\microsoft.aspnetcore.2.3.0.nupkg.sha512",

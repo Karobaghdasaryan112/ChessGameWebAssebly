@@ -1,6 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.CriticalValues;
-using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.Contracts.ChessGameResourceContracts;
 

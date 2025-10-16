@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="MediatR\Handlers\Commands\" />
     <Folder Include="MediatR\Handlers\Queries\" />
     <Folder Include="MediatR\Requests\Queries\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
   </ItemGroup>
 

@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using IdentityService.API.IdentityAPI.Contracts;
-using IdentityService.Application.Features.MediatR.Base;
 using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
+using SharedResources.MediatR;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 

@@ -1,11 +1,11 @@
-﻿using ChessGame.Core.Services.MediatR.Base;
-using ChessGame.Core.Services.MediatR.Requests.Queries;
+﻿using ChessGame.Core.Services.MediatR.Requests.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.MediatR;
 using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries

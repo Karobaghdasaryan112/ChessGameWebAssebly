@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "/QeIRCweEmc=",
+  "dgSpecHash": "MA5QgbyktUM=",
   "success": true,
   "projectFilePath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\fluentvalidation\\12.0.0\\fluentvalidation.12.0.0.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\microsoft.aspnetcore\\2.3.0\\microsoft.aspnetcore.2.3.0.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.3.0\\microsoft.aspnetcore.antiforgery.2.3.0.nupkg.sha512",
     "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.3.0\\microsoft.aspnetcore.authentication.2.3.0.nupkg.sha512",
