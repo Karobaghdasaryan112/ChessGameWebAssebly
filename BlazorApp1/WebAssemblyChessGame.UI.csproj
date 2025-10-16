@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ChessGameLogic\Moves\" />
+    <Folder Include="ChessGameLogic\" />
     <Folder Include="Contracts\ChessGameContracts\" />
   </ItemGroup>
 

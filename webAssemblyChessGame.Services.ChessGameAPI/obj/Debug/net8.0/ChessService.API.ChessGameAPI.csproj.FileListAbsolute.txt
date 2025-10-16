@@ -52,7 +52,6 @@ C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.C
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.AssemblyInfoInputs.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.AssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.csproj.CoreCompileInputs.cache
-C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
@@ -142,3 +141,17 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ref\ChessService.API.ChessGameAPI.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.sourcelink.json
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\MediatR.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Core.Services.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Infrastructure.Infrastructure.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Core.Services.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Infrastructure.Infrastructure.pdb
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cs

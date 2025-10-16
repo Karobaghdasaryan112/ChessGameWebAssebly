@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 
 namespace SharedResources.Validation.ChessGameValidations
@@ -8,13 +7,17 @@ namespace SharedResources.Validation.ChessGameValidations
     {
         public BoardInitializeDTOValidator()
         {
-            RuleFor(x => x.MyFigureColor)
-                .IsInEnum()
-                .WithMessage("MyFigureColor must be a valid enum value (e.g., White or Black).");
+            RuleFor(x => x.Player1Id)
+                .NotEmpty()
+                .WithMessage("Player1Id is required.");
 
-            RuleFor(x => x.MyFigureColor)
-                .Must(color => color == FigureColors.White || color == FigureColors.Black)
-                .WithMessage("Only White or Black colors are allowed.");
+            RuleFor(x => x.Player2Id)
+                .NotEmpty()
+                .WithMessage("Player2Id is required.");
+
+            RuleFor(x => x)
+                .Must(dto => dto.Player1Id != dto.Player2Id)
+                .WithMessage("Player1Id and Player2Id cannot be the same.");
         }
     }
 }

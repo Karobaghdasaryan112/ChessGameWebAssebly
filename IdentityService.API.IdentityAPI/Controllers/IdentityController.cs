@@ -1,14 +1,11 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
-using IdentityService.Application.Features.MediatR.Handlers.Commands;
 using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Requests;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 
 namespace IdentityService.API.IdentityAPI.Controllers

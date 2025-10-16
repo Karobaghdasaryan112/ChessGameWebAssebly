@@ -1,5 +1,4 @@
 ﻿using SharedResources.Contracts;
-using SharedResources.Contracts.DTOs;
 using SharedResources.Contracts.RequestsAndResponses;
 
 namespace SharedResources.Requests

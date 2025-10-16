@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Persistance", "IdentityService.Persistance\IdentityService.Persistance.csproj", "{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Infrastructure.Infrastructure", "ChessGame.Infrastructure.Infrastructure\ChessGame.Infrastructure.Infrastructure.csproj", "{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,10 @@ Global
 		{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,6 +179,7 @@ Global
 		{54D2CF49-F4BF-460E-B884-2C4D4C5741F8} = {614A785B-BBE3-4D0C-9005-2931F4F3489A}
 		{E454C9DB-22AB-4DAA-BF4E-C551133D2642} = {614A785B-BBE3-4D0C-9005-2931F4F3489A}
 		{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6} = {614A785B-BBE3-4D0C-9005-2931F4F3489A}
+		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E} = {16437C4E-94C0-4E16-973E-2586B8DB1F0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {784BFF5F-447C-45A5-875A-3122ADD2F85E}

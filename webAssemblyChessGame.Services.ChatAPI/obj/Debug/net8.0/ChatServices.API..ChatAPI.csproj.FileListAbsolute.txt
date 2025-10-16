@@ -52,7 +52,6 @@ C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.C
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.AssemblyInfoInputs.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.AssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.csproj.CoreCompileInputs.cache
-C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
@@ -142,3 +141,5 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ref\ChatServices.API..ChatAPI.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.sourcelink.json
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.MvcApplicationPartsAssemblyInfo.cs

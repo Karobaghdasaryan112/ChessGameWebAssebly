@@ -2,9 +2,9 @@
 using IdentityService.API.IdentityAPI.Contracts;
 using IdentityService.API.IdentityAPI.Services;
 using IdentityService.Application.Features.MediatR.Handlers.Commands;
-using IdentityService.Application.Validation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using SharedResources.Validation.IdentityValidations;
 
 namespace IdentityService.Application
 {

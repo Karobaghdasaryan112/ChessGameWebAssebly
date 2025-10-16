@@ -5,4 +5,16 @@ wwwroot\css\Registration.css
 wwwroot\favicon.png
 wwwroot\icon-192.png
 wwwroot\index.html
+wwwroot\PNGs\BishopBlack.png
+wwwroot\PNGs\BishopWhite.png
+wwwroot\PNGs\KingBlack.png
+wwwroot\PNGs\KingWhite.png
+wwwroot\PNGs\KnightBlack.png
+wwwroot\PNGs\KnightWhite.png
+wwwroot\PNGs\PawnBlack.png
+wwwroot\PNGs\PawnWhite.png
+wwwroot\PNGs\QueenBlack.png
+wwwroot\PNGs\QueenWhite.png
+wwwroot\PNGs\RookBlack.png
+wwwroot\PNGs\RookWhite.png
 wwwroot\sample-data\weather.json

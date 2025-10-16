@@ -187,7 +187,6 @@ C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.AssemblyInfoInputs.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.AssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.csproj.CoreCompileInputs.cache
-C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
@@ -482,3 +481,4 @@ C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\bin\Debug\net8.0\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\IdentityService.API.IdentityAPI\obj\Debug\net8.0\IdentityService.API.IdentityAPI.MvcApplicationPartsAssemblyInfo.cs

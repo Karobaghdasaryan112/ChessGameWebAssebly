@@ -2736,11 +2736,6 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\WebAssemblyChessGame.UI.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\ref\WebAssemblyChessGame.UI.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\WebAssemblyChessGame.UI.sourcelink.json
-C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\sh0rs4sea7-hhyncqncfk.gz
-C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\mnhh7se6f4-09zd276gtf.gz
-C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\7b857bevoc-z4yuxbanup.gz
-C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\2bgbeqb5cv-jm7164ntmw.gz
-C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\52e87yq4ti-t73srgeji5.gz
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\5102jm9zmm-9op7i42gol.gz
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\6eg81tp66o-culj9t543z.gz
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\6v2xduk8rd-i1og8jnctz.gz
@@ -2914,3 +2909,13 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\7b857bevoc-v078vjchtf.gz
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\2bgbeqb5cv-1z7v7wot18.gz
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\52e87yq4ti-gp3jr0mags.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\bin\Debug\net8.0\wwwroot\_framework\FluentValidation.wasm
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\bin\Debug\net8.0\wwwroot\_framework\FluentValidation.wasm.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\webcil\FluentValidation.wasm
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\pe9z8mfvw9-b28mz0qrx7.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\sh0rs4sea7-hsj9dtme1q.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\mnhh7se6f4-c77n80x8qv.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\7b857bevoc-9nqgudtrao.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\2bgbeqb5cv-s3zkw4rq6m.gz
+C:\Users\karob\source\repos\webAssemblyChessGame\BlazorApp1\obj\Debug\net8.0\compressed\52e87yq4ti-xk9ih6xzvh.gz
