@@ -30,3 +30,11 @@ C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persis
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\SharedResources.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.csproj.AssemblyReference.cache
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGam.708178F9.Up2Date
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Domain.Domain.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Domain.Domain.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Core.Services.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\SharedResources.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.csproj.AssemblyReference.cache
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGam.708178F9.Up2Date

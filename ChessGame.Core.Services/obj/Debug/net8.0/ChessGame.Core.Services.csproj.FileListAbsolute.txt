@@ -27,3 +27,6 @@ C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Deb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\bin\Debug\net8.0\SharedResources.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\bin\Debug\net8.0\SharedResources.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\ChessGame.Core.Services\obj\Debug\net8.0\ChessGam.672D1C49.Up2Date
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Services\bin\Debug\net8.0\SharedResources.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Services\bin\Debug\net8.0\SharedResources.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Core.Services\obj\Debug\net8.0\ChessGam.672D1C49.Up2Date

@@ -155,3 +155,16 @@ C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.C
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Core.Services.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Infrastructure.Infrastructure.pdb
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\MediatR.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\MediatR.Contracts.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChatService.core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Core.Services.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Infrastructure.Infrastructure.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChatService.core.Services.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Core.Services.pdb
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\ChessGame.Infrastructure.Infrastructure.pdb

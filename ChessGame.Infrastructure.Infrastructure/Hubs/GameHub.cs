@@ -33,6 +33,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             _mediator = mediator;
         }
 
+        public static ConcurrentDictionary<string,string> Connections  => _connections;
+        public static ConcurrentDictionary<string,string> pendingInvites => _pendingInvites;
+
         /// <summary>
         /// Stores active connections between clients and their corresponding players.
         /// Key — PlayerId ConnectionId (identifier of the player associated with the connection),
@@ -137,7 +140,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                             Player1Id = fromPlayerId,
                             Player2Id = Context.UserIdentifier ?? Context.ConnectionId
                         }));
+
                 var result = await _mediator.Send(command);
+
                 if (!result.IsSuccess)
                 {
                     await Clients.Clients(new[] { connectionId, Context.ConnectionId }).SendAsync("GameInitializationFailed", result);
@@ -148,12 +153,11 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
 
                 await Clients.Clients(new[] { connectionId, Context.ConnectionId }).SendAsync("GameInitialized", "Game started!");
+
                 _logger.LogInformation($"Invite accepted by {Context.ConnectionId} from player {fromPlayerId}");
             }
             else
-            {
                 await Clients.Caller.SendAsync("NoPendingInvite", fromPlayerId);
-            }
         }
 
 

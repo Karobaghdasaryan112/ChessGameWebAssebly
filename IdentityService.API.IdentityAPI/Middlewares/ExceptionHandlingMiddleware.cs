@@ -42,7 +42,6 @@ namespace IdentityService.API.IdentityAPI.Middlewares
                         statisCodeAsHttp,
                         []);
 
-            //var json = JsonConvert.SerializeObject(errorResponse);
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
     }

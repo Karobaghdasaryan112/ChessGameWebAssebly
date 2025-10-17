@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "ChessService.API.ChessGameAPI.Controllers.ChessGameController",
+    "Method": "AcceptGame",
+    "RelativePath": "api/ChessGame/accept",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SharedResources.DTOs.ChessGameDTOs.RequestDTOs.BoardInitializeRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ChessService.API.ChessGameAPI.Controllers.ChessGameController",
+    "Method": "SubmitMove",
+    "RelativePath": "api/ChessGame/move",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SharedResources.DTOs.ChessGameDTOs.RequestDTOs.SubmitMoveRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

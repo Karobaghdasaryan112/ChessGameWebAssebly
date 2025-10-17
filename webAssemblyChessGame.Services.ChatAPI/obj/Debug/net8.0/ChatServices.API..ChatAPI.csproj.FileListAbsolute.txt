@@ -143,3 +143,4 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.sourcelink.json
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\bin\Debug\net8.0\FluentValidation.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\webAssemblyChessGame.Services.ChatAPI\obj\Debug\net8.0\ChatServices.API..ChatAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChatAPI\bin\Debug\net8.0\FluentValidation.dll
