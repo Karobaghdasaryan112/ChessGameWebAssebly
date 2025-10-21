@@ -12,9 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChatService.core.Infrastructure\ChatService.Infrastructure.Persistance.csproj" />
     <ProjectReference Include="..\ChatService.core.Services\ChatService.core.Services.csproj" />
     <ProjectReference Include="..\ChessGame.Core.Services\ChessGame.Core.Services.csproj" />
     <ProjectReference Include="..\ChessGame.Infrastructure.Infrastructure\ChessGame.Infrastructure.Infrastructure.csproj" />
+    <ProjectReference Include="..\ChessGame.Infrastructure.Persistance\ChessGame.Infrastructure.Persistance.csproj" />
     <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
   </ItemGroup>
 

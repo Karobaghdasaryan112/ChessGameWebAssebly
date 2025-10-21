@@ -1,42 +1,14 @@
-﻿@using ChessGame.Infrastructure.Infrastructure.Hubs
+﻿@page "/Dashboard"
+@using ChessGame.Infrastructure.Infrastructure.Hubs
 @using Microsoft.AspNetCore.Http.Connections
 @using Microsoft.AspNetCore.SignalR.Client
-@using Microsoft.AspNetCore.SignalR
 @using WebAssemblyChessGame.UI.ServiceEndpoints
-
+@using WebAssemblyChessGame.UI.Services
+@inject SignalRService SignalRService
 @inject NavigationManager Navigation
-@inject IHttpClientFactory HttpClientFactory
-@inject IJSRuntime JSRuntime
 
-<h3>dashboard</h3>
+<h3>Dashboard 2</h3>
 
-@code {
-    List<string> activeGamers = new();
-    public void InitializeActiveGamers()
-    {
-        activeGamers = GameHub.Connections.Where(KeyValuePair => !String.IsNullOrEmpty(KeyValuePair.Value)).Select(notNulKvp => notNulKvp.Key).ToList();
-    }
-    
-    private HubConnection? _hubConnection;
-    private List<string> _activeGamers = new();
-    protected override async Task OnInitializedAsync()
-    {
-        _hubConnection = new HubConnectionBuilder().
-            WithUrl(
-                $"{BasePaths.baseUrl}",
-                option =>
-                    {
-                        option.Transports = HttpTransportType.WebSockets;
-
-                    }).Build();
-
-        await _hubConnection.StartAsync();
-    }
-    public async Task SendInviteAsync(string playerId)
-    {
-        await _hubConnection!.InvokeAsync("SendInvite");
-    }
-}
 @if (activeGamers.Count == 0)
 {
     <p>No players online</p>
@@ -48,8 +20,32 @@ else
         {
             <li>
                 @player
-                <button @onclick="async () => await SendInviteAsync(player)">Invite</button>
+                <button @onclick="() => SendInviteAsync(player)">Invite</button> 
             </li>
         }
     </ul>
+}
+
+@code {
+    List<string> activeGamers = new();
+    private HubConnection? _hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = SignalRService.GetHubConnection();
+
+        await _hubConnection.StartAsync();
+
+
+        await _hubConnection.SendAsync("AcceptInvite","Id");//void 
+        // await _hubConnection.Invoke("AcceptInvite");with rturn type 
+
+        // activeGamers = gamers ?? new();
+
+    }
+
+    public async Task SendInviteAsync(string playerId)
+    {
+        await _hubConnection!.InvokeAsync("AcceptInvite", playerId);
+    }
 }

@@ -1,12 +1,11 @@
 ﻿using IdentityService.API.IdentityAPI.Helpers;
 using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityService.Persistance
 {
@@ -25,13 +24,32 @@ namespace IdentityService.Persistance
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
-                {
-                    options.LoginPath = "/Login";
-                    options.SlidingExpiration = true;
-                    options.AccessDeniedPath = "/Registration";
-                }
-            );
+            })
+                //.AddApplicationCookie()
+                //.Configure(options =>
+                //{
+                //    options.LoginPath = "/Login";
+                //    options.SlidingExpiration = true;
+                //    options.AccessDeniedPath = "/Registration";
+                //    options.Cookie.Name = ".YourAppAuth";
+                //    options.Cookie.HttpOnly = true;
+                //    options.Cookie.SameSite = SameSiteMode.None;
+                //})
+                ;
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                options.SlidingExpiration = true;
+                options.AccessDeniedPath = "/Registration";
+                options.Cookie.Name = ".YourAppAuth";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.Domain = "localhost:7225";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+                options.Cookie.Expiration = TimeSpan.FromDays(14);
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<IdentityContext>()

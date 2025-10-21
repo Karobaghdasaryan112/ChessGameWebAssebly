@@ -26,7 +26,7 @@ namespace SharedResources.Responses.ResponseMessages
             new IdentityResponseMesage("User creation failed.");
 
         public static readonly IdentityResponseMesage UserAlreadyExists =
-            new IdentityResponseMesage("User already exists.");
+            new IdentityResponseMesage("User already exists."); 
 
         public static readonly IdentityResponseMesage InvalidCredentials =
             new IdentityResponseMesage("Invalid username or password.");

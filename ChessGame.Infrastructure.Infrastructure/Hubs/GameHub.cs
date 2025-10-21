@@ -61,8 +61,14 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         /// <returns>A completed task representing the asynchronous operation.</returns>
         public override Task OnConnectedAsync()
         {
-            var playerId = Context.UserIdentifier ?? Context.ConnectionId;
-            _connections[playerId] = Context.ConnectionId;
+            try
+            {
+                var playerId = Context.UserIdentifier ?? Context.ConnectionId;
+                _connections[playerId] = Context.ConnectionId;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return base.OnConnectedAsync();
         }
 
@@ -233,5 +239,6 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 await Clients.Caller.SendAsync("NoPendingInvite", targetPlayerId);
             }
         }
+
     }
 }

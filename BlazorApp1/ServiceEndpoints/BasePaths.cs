@@ -6,7 +6,10 @@ namespace WebAssemblyChessGame.UI.ServiceEndpoints
     public static class BasePaths
     {
         internal static readonly string baseUrl = "http://localhost:5247/";
-        internal static readonly string baseUrlHub = "http://localhost:5247/gamehub";
+        /// <summary>
+        /// GameHub mapping Url for ChessGame Service
+        /// </summary>
+        internal static readonly string baseUrlHub = "http://localhost:5203/gameHub";
 
         /// <summary>
         /// Builds the URI for the specified identity controller and identity action.
