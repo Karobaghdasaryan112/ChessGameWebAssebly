@@ -8,8 +8,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowUI_CORS", policy =>
     {
         policy.WithOrigins("https://localhost:7225")
-              .AllowAnyOrigin()
               .AllowAnyMethod()
+              .AllowCredentials()
               .AllowAnyHeader();
     });
 });

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Net;
+using System.Net.WebSockets;
 using WebAssemblyChessGame.UI.ServiceEndpoints;
 
 namespace WebAssemblyChessGame.UI.Services

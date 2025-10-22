@@ -158,7 +158,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 await Clients.Clients(new[] { connectionId, Context.ConnectionId }).SendAsync("GameInitialized", result);
 
 
-                await Clients.Clients(new[] { connectionId, Context.ConnectionId }).SendAsync("GameInitialized", "Game started!");
+                //await Clients.Clients(new[] { connectionId, Context.ConnectionId }).SendAsync("GameInitialized", "Game started!");
 
                 _logger.LogInformation($"Invite accepted by {Context.ConnectionId} from player {fromPlayerId}");
             }

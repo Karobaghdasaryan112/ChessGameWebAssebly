@@ -1,6 +1,7 @@
 ﻿@page "/Dashboard"
 @using ChessGame.Infrastructure.Infrastructure.Hubs
 @using Microsoft.AspNetCore.Http.Connections
+@using Microsoft.AspNetCore.SignalR
 @using Microsoft.AspNetCore.SignalR.Client
 @using WebAssemblyChessGame.UI.ServiceEndpoints
 @using WebAssemblyChessGame.UI.Services
@@ -20,7 +21,7 @@ else
         {
             <li>
                 @player
-                <button @onclick="() => SendInviteAsync(player)">Invite</button> 
+                <button @onclick="() => SendInviteAsync(player)">Invite</button>
             </li>
         }
     </ul>
@@ -36,12 +37,7 @@ else
 
         await _hubConnection.StartAsync();
 
-
-        await _hubConnection.SendAsync("AcceptInvite","Id");//void 
-        // await _hubConnection.Invoke("AcceptInvite");with rturn type 
-
-        // activeGamers = gamers ?? new();
-
+        await _hubConnection.SendAsync("AcceptInvite", "Id");
     }
 
     public async Task SendInviteAsync(string playerId)

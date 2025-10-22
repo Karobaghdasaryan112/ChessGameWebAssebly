@@ -23,27 +23,31 @@ namespace IdentityService.API.IdentityAPI
 
             services.AddDefaultServices(Configuration);
 
-
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMiddleware<CancellationMiddleware>();
-            app.UseAuthentication();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
             app.UseCors("AllowGateway_CORS");
         }
     }

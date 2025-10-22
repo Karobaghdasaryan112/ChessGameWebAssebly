@@ -6,6 +6,7 @@ using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace IdentityService.API.IdentityAPI.Middlewares
@@ -22,6 +23,7 @@ namespace IdentityService.API.IdentityAPI.Middlewares
             try
             {
                 await _next(context);
+
             }
             catch (Exception exception)
             {

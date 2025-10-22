@@ -4,13 +4,14 @@
     {
         public static void AddDefaultServices(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddAuthentication();
             services.AddAuthorizationCore();
             services.AddHttpContextAccessor();
-
+            services.AddHttpClient();
         }
     }
 }

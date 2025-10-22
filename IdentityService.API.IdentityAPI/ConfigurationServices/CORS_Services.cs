@@ -9,9 +9,9 @@
                 options.AddPolicy("AllowGateway_CORS", policy =>
                 {
                     policy.WithOrigins("http://localhost:7185")
-                          .AllowAnyOrigin()
                           .AllowAnyMethod()
-                          .AllowAnyHeader();
+                          .AllowAnyHeader()
+                          .AllowCredentials();
                 });
             });
         }

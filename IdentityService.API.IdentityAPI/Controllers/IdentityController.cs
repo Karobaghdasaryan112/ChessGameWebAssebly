@@ -7,6 +7,10 @@ using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 
 namespace IdentityService.API.IdentityAPI.Controllers
 {
@@ -15,9 +19,11 @@ namespace IdentityService.API.IdentityAPI.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IHttpClientFactory _httpClient;
         private readonly IMediator _mediator;
-        public IdentityController(IAuthService authService, IMediator mediator)
+        public IdentityController(IAuthService authService, IMediator mediator, IHttpClientFactory httpClient)
         {
+            _httpClient = httpClient;
             _mediator = mediator;
             _authService = authService;
         }
@@ -26,16 +32,32 @@ namespace IdentityService.API.IdentityAPI.Controllers
         {
             return Ok(new { status = "Auth service is running." });
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginDTO loginRequest)
         {
+
             var userRegistrationCommand = new UserSigninCommand<
                 IRequestTypes<LoginDTO>,
                 IResponseTypes<SignInDTO, IdentityResponseMesage>>
                 (new IdentityRequest<LoginDTO>(loginRequest));
 
+            var loginResult = await _mediator.Send(userRegistrationCommand);
+
+            if (loginResult.IsSuccess)
+            {
+                Response.Cookies.Append("X-Access-Token", loginResult.Data.AccessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddHours(1)
+                });
+            }
             return Ok(await _mediator.Send(userRegistrationCommand));
         }
+
+
 
         [HttpPost("register")]
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)

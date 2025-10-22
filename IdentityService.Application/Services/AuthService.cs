@@ -1,6 +1,7 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
 using IdentityService.API.IdentityAPI.Helpers;
 using IdentityService.Domain.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,12 +25,17 @@ namespace IdentityService.API.IdentityAPI.Services
         private readonly ILogger<AuthService> _logger;
         private readonly JwtSettings _jwtSettings;
         private readonly IdentityContext identityContext;
+        private readonly IHttpContextAccessor _contextAccessor;
         public AuthService(
+            IHttpContextAccessor context,
+            IOptions<JwtSettings> jwtSettings,
             IdentityContext identityContext,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<AuthService> logger)
         {
+            _contextAccessor = context;
+            _jwtSettings = jwtSettings.Value;
             this.identityContext = identityContext;
             _logger = logger;
             _signInManager = signInManager;
@@ -98,12 +104,21 @@ namespace IdentityService.API.IdentityAPI.Services
             {
                 var responseDTO = new SignInDTO
                 {
-                    userName = user.UserName,
+                    userName = user.UserName!,
                     isPersistent = true,
-                    AccessToken = user.RefreshToken,
+                    AccessToken = user.AccessToken!,
                     lockoutOnFailure = false,
                     UserId = user.Id
                 };
+                var token = await GenerateToken(user);
+                responseDTO.AccessToken = token;
+                _contextAccessor.HttpContext.Response.Cookies.Append("jwtBearer", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    //Secure = false, // true in production (HTTPS)
+                    SameSite = SameSiteMode.None, // Required for cross-origin cookies
+                    Expires = DateTime.UtcNow.AddHours(1)
+                });
                 return IdentityResponse<SignInDTO>.CreateSuccessResponse(responseDTO, IdentityResponseMesage.UserSignedIn, System.Net.HttpStatusCode.OK);
             }
             return IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized, new List<string>());
@@ -158,7 +173,6 @@ namespace IdentityService.API.IdentityAPI.Services
         {
             var refreshToken = Guid.NewGuid().ToString();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
             return refreshToken;
         }
         public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> RefreshTokenAsync(RefreshTokenDTO refreshDTO)

@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "WebAssemblyChessGame.UI",
   "resources": {
-    "hash": "sha256-KTITimNEBzBhaGfHOKAm8fy8TXn0kAMqR3CFtJDGdDE=",
+    "hash": "sha256-UHUpFXItMFSmuSL4HQQ5tMROW7Cz0PdzI/BfsTOLPWQ=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-D0bzod5lwwSzPR43JC8TTCcZKw+3jIHOk8CZFCRj5is="
     },
@@ -313,17 +313,17 @@
       "netstandard.wasm": "sha256-eOgz2RiO4YaPLOMIGgVLNrcfsQhmLQJzR0N7Pu2teXc=",
       "System.Private.CoreLib.wasm": "sha256-F8T63QCIbMPXPQPqTcuyBAw+oVvZSrWjy88j7fiJQZ4=",
       "ChatService.core.Services.wasm": "sha256-vg4T8434eZYJVz3pMVptYAcpWyBJKUAf6m0PknRpcZQ=",
-      "ChessGame.Core.Services.wasm": "sha256-qPMkkyur1Ruajyh5lMcdCXMNgsTGR9dkuRmbV3Osi+E=",
-      "ChessGame.Infrastructure.Infrastructure.wasm": "sha256-YGnzHzBZHXW4drzZMhrNiYtleFBjiIEpySUZp+Xam8k=",
-      "SharedResources.wasm": "sha256-ouJXbnGrym+OMZUkGlMC9+spsctdYWvzMv54Q3OcLNM=",
-      "WebAssemblyChessGame.UI.wasm": "sha256-EvaYavzz+f+AFFcB7jUoJ4GaGrszblb35BBSRkhKMYI="
+      "ChessGame.Core.Services.wasm": "sha256-WIlnA87e5M3yLrckj+2JZlNnPiPKjT+cKtDv5Ehnu/A=",
+      "ChessGame.Infrastructure.Infrastructure.wasm": "sha256-rGyLlpaklXH7uO//2O3qfxBId+48XwK3PmFEF2lO0lE=",
+      "SharedResources.wasm": "sha256-27xClxpFpD+fEzaizyZryMQoEvdeUUk/Dz1LxKJwg14=",
+      "WebAssemblyChessGame.UI.wasm": "sha256-ZEWFiAt7T5DxRW48wFewTYvJIGS0GxdVtN8SQ2AXaZM="
     },
     "pdb": {
-      "ChessGame.Infrastructure.Infrastructure.pdb": "sha256-Iz9L+i88OJ+YyFNks35/sYCD0HQG948lvR1fh8dmpUA=",
-      "SharedResources.pdb": "sha256-+PsxYLHWHQakk3dUiv+FHOumP3wmGSZeBOrBscjYDAU=",
+      "ChessGame.Infrastructure.Infrastructure.pdb": "sha256-dXB9AX58SUU3ZIYAMpln1G3kTCmikhwXMKFzEVRlMXE=",
+      "SharedResources.pdb": "sha256-vQHfQltRh/wYWeePoFvPYRNPH/hY0ug45IU6WkkwE4o=",
       "ChatService.core.Services.pdb": "sha256-jD3B7edydd1SbsTPfKpZ4rJhyOaPfZpv3qotLq5/xdQ=",
-      "ChessGame.Core.Services.pdb": "sha256-HFGsKq/NvLZbLf4zgyTTtDD6nPE+1lzMXIboT4GXdl4=",
-      "WebAssemblyChessGame.UI.pdb": "sha256-kOd2BhM0r8CGL+roGg+HLGdBoSsNcdASLS30oqyYVtk="
+      "ChessGame.Core.Services.pdb": "sha256-7cuiMTWp8bBUiEBNGNzo1sdbToPcj1clePRbkCR8N9w=",
+      "WebAssemblyChessGame.UI.pdb": "sha256-WwfQ/0Qe2qz+Ubx0GeR+085Ku9LGJqEyj0A70l36RTI="
     }
   },
   "cacheBootResources": true,

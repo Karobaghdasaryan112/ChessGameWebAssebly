@@ -1,11 +1,12 @@
 ﻿using IdentityService.API.IdentityAPI.Helpers;
 using IdentityService.Domain.Domain;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace IdentityService.Persistance
 {
@@ -16,44 +17,33 @@ namespace IdentityService.Persistance
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-            var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+            var jwtSettings = configuration.Get<JwtSettings>();
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                //.AddApplicationCookie()
-                //.Configure(options =>
-                //{
-                //    options.LoginPath = "/Login";
-                //    options.SlidingExpiration = true;
-                //    options.AccessDeniedPath = "/Registration";
-                //    options.Cookie.Name = ".YourAppAuth";
-                //    options.Cookie.HttpOnly = true;
-                //    options.Cookie.SameSite = SameSiteMode.None;
-                //})
-                ;
-
-            services.ConfigureApplicationCookie(options =>
+                options.DefaultAuthenticateScheme = BearerTokenDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = BearerTokenDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
             {
-                options.LoginPath = "/Login";
-                options.SlidingExpiration = true;
-                options.AccessDeniedPath = "/Registration";
-                options.Cookie.Name = ".YourAppAuth";
-                options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Domain = "localhost:7225";
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                var jwtSettings = configuration.Get<JwtSettings>();
+                var securityKeyAsBytes = Encoding.UTF8.GetBytes(jwtSettings?.SecurityKey!);
 
-                options.Cookie.Expiration = TimeSpan.FromDays(14);
+                option.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = jwtSettings?.Issuer!,
+                    ValidAudience = jwtSettings?.Audience!,
+                    RequireExpirationTime = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(securityKeyAsBytes)
+                };
             });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<IdentityContext>()
-                    .AddDefaultTokenProviders();
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>()  
+                .AddDefaultTokenProviders();
+
             return services;
         }
     }
