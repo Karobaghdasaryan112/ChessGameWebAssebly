@@ -18,14 +18,15 @@ namespace WebAssemblyChessGame.UI.Services
             _navigationManager = navigationManager;
         }
 
-        public HubConnection GetHubConnection()
+        public HubConnection GetHubConnection(string? jwtToken)
         {
             if (_hubConnection == null)
             {
+
                 _hubConnection = new HubConnectionBuilder()
-                    .WithUrl(_navigationManager.ToAbsoluteUri($"{BasePaths.baseUrlHub}"), options =>
+                    .WithUrl(new Uri(BasePaths.baseUrlHub), options =>
                     {
-                        options.Transports = HttpTransportType.WebSockets;
+                        options.AccessTokenProvider = () => Task.FromResult(jwtToken);
                     })
                     .Build();
             }

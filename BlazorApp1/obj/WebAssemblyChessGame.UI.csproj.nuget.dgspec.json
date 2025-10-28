@@ -99,6 +99,14 @@
               "target": "Package",
               "version": "[9.0.9, )",
               "autoReferenced": true
+            },
+            "OpenIddict.Abstractions": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
+            "OpenIddict.Client": {
+              "target": "Package",
+              "version": "[7.1.0, )"
             }
           },
           "imports": [

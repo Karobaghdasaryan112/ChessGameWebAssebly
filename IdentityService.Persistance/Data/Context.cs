@@ -1,14 +1,23 @@
-﻿using IdentityService.Domain.Domain;
+﻿using IdentityService.Domain;
+using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OpenIddict.EntityFrameworkCore.Models;
 
-public class IdentityContext : IdentityDbContext<ApplicationUser>
+public class IdentityContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
 {
     public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
     {
     }
+
+    public DbSet<OpenIddictEntityFrameworkCoreApplication> OpenIddictApplications { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreAuthorization> OpenIddictAuthorizations { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreScope> OpenIddictScopes { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreToken> OpenIddictTokens { get; set; }
+
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

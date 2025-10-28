@@ -6,6 +6,7 @@ namespace SharedResources.DTOs.IdentityDTOs.ResponseDTOs
     public class UserDTO : IIdentityResponseDTO
     {
         public int UserId { get; set; }
+        public string UserGuid { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string RefreshToken { get; set; }

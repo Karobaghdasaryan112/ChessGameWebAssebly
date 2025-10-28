@@ -1,6 +1,7 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
 using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
@@ -44,25 +45,13 @@ namespace IdentityService.API.IdentityAPI.Controllers
 
             var loginResult = await _mediator.Send(userRegistrationCommand);
 
-            if (loginResult.IsSuccess)
-            {
-                Response.Cookies.Append("X-Access-Token", loginResult.Data.AccessToken, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = false,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTime.UtcNow.AddHours(1)
-                });
-            }
             return Ok(await _mediator.Send(userRegistrationCommand));
         }
-
-
 
         [HttpPost("register")]
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)
         {
-            var userRegistrationCommand = new UserRegistrationCommand<
+           var userRegistrationCommand = new UserRegistrationCommand<
                 IRequestTypes<RegistrationDTO>,
                 IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>
                 (new IdentityRequest<RegistrationDTO>(registerRequest));

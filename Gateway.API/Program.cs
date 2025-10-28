@@ -1,4 +1,5 @@
 using Gateway.API.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,16 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:7101";
+        options.RequireHttpsMetadata = true;
+        options.Audience = "gateway";
+
+    });
+
 
 var proxySection = builder.Configuration.GetSection("ReverseProxy");
 

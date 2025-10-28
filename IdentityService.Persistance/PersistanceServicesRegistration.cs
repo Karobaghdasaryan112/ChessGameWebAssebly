@@ -1,6 +1,5 @@
 ﻿using IdentityService.API.IdentityAPI.Helpers;
 using IdentityService.Domain.Domain;
-using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,34 +14,66 @@ namespace IdentityService.Persistance
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseOpenIddict();
+                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var jwtSettings = configuration.Get<JwtSettings>();
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddOpenIddict()
+                .AddCore(openIdBuilder =>
+                {
+                    openIdBuilder.UseEntityFrameworkCore().UseDbContext<IdentityContext>();
+                })
+                .AddServer(serverBuilder =>
+                {
+                    //serverBuilder.AllowPasswordFlow(); TO DO:
+
+                    serverBuilder.AllowRefreshTokenFlow();
+
+                    serverBuilder.AllowClientCredentialsFlow();
+
+                    serverBuilder.SetTokenEndpointUris("/connect/Token");
+
+                    serverBuilder.SetAuthorizationEndpointUris("/connect/authorize");
+
+                    serverBuilder.SetUserInfoEndpointUris("connect/userinfo");
+
+                    //serverBuilder.AcceptAnonymousClients(); this is Without Clinet_id and Clinet_Secrets
+
+                    serverBuilder
+                    .UseAspNetCore()
+                    .EnableUserInfoEndpointPassthrough()
+                    .EnableTokenEndpointPassthrough()
+                    .EnableAuthorizationEndpointPassthrough();
+
+
+                    serverBuilder
+                        .AddDevelopmentSigningCertificate()
+                        .AddDevelopmentEncryptionCertificate();
+
+                    serverBuilder.AddSigningKey(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.SecurityKey!)));
+
+                })
+                .AddValidation(validationBuilder =>
+                {
+                    validationBuilder.UseLocalServer();
+                    validationBuilder.UseAspNetCore();
+                });
+
+
+            //var jwtSettings = configuration.Get<JwtSettings>();
+
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = BearerTokenDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = BearerTokenDefaults.AuthenticationScheme;
-            }).AddJwtBearer(option =>
-            {
-                var jwtSettings = configuration.Get<JwtSettings>();
-                var securityKeyAsBytes = Encoding.UTF8.GetBytes(jwtSettings?.SecurityKey!);
-
-                option.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = jwtSettings?.Issuer!,
-                    ValidAudience = jwtSettings?.Audience!,
-                    RequireExpirationTime = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(securityKeyAsBytes)
-                };
+                options.DefaultAuthenticateScheme = OpenIddict.Validation.AspNetCore.OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIddict.Validation.AspNetCore.OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
             });
-
-                services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>()  
-                .AddDefaultTokenProviders();
 
             return services;
         }

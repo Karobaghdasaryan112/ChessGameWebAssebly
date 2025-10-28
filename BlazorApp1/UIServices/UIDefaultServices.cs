@@ -17,7 +17,7 @@ namespace WebAssemblyChessGame.UI.UIServices
                     policy.AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials()
-                          .AllowAnyOrigin();
+                          .AllowAnyOrigin(); 
                 });
             });
 
@@ -34,7 +34,6 @@ namespace WebAssemblyChessGame.UI.UIServices
                      AllowAutoRedirect = false
                  };
              });
-
         }
     }
 }

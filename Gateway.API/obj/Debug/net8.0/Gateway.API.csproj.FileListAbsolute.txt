@@ -74,3 +74,11 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\obj\Debug\net8.0\Gateway.API.genruntimeconfig.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\obj\Debug\net8.0\ref\Gateway.API.dll
 C:\Users\karob\source\repos\webAssemblyChessGame\Gateway.API\obj\Debug\net8.0\Gateway.API.sourcelink.json
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

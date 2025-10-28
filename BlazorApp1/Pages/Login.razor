@@ -3,7 +3,7 @@
 @using WebAssemblyChessGame.UI.ApiServices
 @inject IdentityService identityService
 @inject NavigationManager Navigation
-
+@inject IJSRuntime JS;
 <PageTitle>Login</PageTitle>
 <link href="~/css/Login.css" rel="stylesheet" />
 
@@ -74,7 +74,7 @@
                 password = Password
             };
 
-            var result = await identityService.LoginUserAsync(loginDto,new List<KeyValuePair<string, string>>());
+            var result = await identityService.LoginUserAsync(loginDto, new List<KeyValuePair<string, string>>());
 
             if (result == null || !result.IsSuccess)
             {
@@ -83,10 +83,14 @@
                     ErrorMessage = "Login failed. Please try again.";
                     return;
                 }
-                IdentityErrorMessage = string.Join(",",result.Errors);
+                IdentityErrorMessage = string.Join(",", result.Errors);
                 ErrorMessage = result?.message?.MessageOutput ?? "Login failed. Please try again.";
                 return;
             }
+
+            await JS.InvokeVoidAsync("setCookie", "access_token", result.Data.AccessToken, 7);
+            await JS.InvokeVoidAsync("setCookie", "musrId", result.Data.UserId, 7);
+
             Navigation.NavigateTo("/Dashboard");
         }
         catch (Exception ex)

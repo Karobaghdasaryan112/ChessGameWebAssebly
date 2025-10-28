@@ -24,7 +24,6 @@ namespace IdentityService.API.IdentityAPI
             services.AddDefaultServices(Configuration);
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -33,7 +32,7 @@ namespace IdentityService.API.IdentityAPI
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMiddleware<CancellationMiddleware>();
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

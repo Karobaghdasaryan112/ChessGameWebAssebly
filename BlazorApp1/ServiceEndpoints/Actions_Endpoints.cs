@@ -6,7 +6,8 @@
         {
             Register,
             Login,
-            RefreshToken
+            RefreshToken,
+            GetUsersByIds
         }
 
         public enum UserAction

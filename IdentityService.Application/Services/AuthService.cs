@@ -112,13 +112,7 @@ namespace IdentityService.API.IdentityAPI.Services
                 };
                 var token = await GenerateToken(user);
                 responseDTO.AccessToken = token;
-                _contextAccessor.HttpContext.Response.Cookies.Append("jwtBearer", token, new CookieOptions
-                {
-                    HttpOnly = true,
-                    //Secure = false, // true in production (HTTPS)
-                    SameSite = SameSiteMode.None, // Required for cross-origin cookies
-                    Expires = DateTime.UtcNow.AddHours(1)
-                });
+
                 return IdentityResponse<SignInDTO>.CreateSuccessResponse(responseDTO, IdentityResponseMesage.UserSignedIn, System.Net.HttpStatusCode.OK);
             }
             return IdentityResponse<SignInDTO>.CreateErrorResponse(IdentityResponseMesage.UserSignInFailed, System.Net.HttpStatusCode.Unauthorized, new List<string>());

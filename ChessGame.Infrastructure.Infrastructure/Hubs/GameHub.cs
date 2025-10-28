@@ -65,10 +65,12 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             {
                 var playerId = Context.UserIdentifier ?? Context.ConnectionId;
                 _connections[playerId] = Context.ConnectionId;
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
             return base.OnConnectedAsync();
         }
 
@@ -239,6 +241,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 await Clients.Caller.SendAsync("NoPendingInvite", targetPlayerId);
             }
         }
+
 
     }
 }

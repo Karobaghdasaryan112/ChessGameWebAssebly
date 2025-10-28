@@ -23,6 +23,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="OpenIddict.Abstractions" Version="7.1.0" />
+    <PackageReference Include="OpenIddict.Client" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>

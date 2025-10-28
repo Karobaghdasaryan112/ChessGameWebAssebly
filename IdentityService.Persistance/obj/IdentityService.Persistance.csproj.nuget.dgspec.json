@@ -180,6 +180,14 @@
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "OpenIddict.AspNetCore": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
+            "OpenIddict.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.1.0, )"
             }
           },
           "imports": [

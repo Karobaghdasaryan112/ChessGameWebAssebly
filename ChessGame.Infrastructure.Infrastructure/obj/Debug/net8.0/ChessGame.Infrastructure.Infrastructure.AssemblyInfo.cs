@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChessGame.Infrastructure.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79470cad7bc9e4174183a4e6daee8d5426eee77a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e231bc768de6f2d4b0fd8dc0f42f6eeb60d94c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChessGame.Infrastructure.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChessGame.Infrastructure.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

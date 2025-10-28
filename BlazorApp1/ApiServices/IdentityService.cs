@@ -1,4 +1,5 @@
-﻿using SharedResources.Contracts.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using SharedResources.Contracts.DTOs;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses;
@@ -45,7 +46,7 @@ namespace WebAssemblyChessGame.UI.ApiServices
 
         public async Task<IdentityResponse<RegistrationResponseDTO>?> RegisterUserAsync(RegistrationDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
         {
-            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Register, new List<KeyValuePair<string, string>>());
+            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Register, new());
 
             return
                 await PostAsync<RegistrationDTO,
@@ -54,16 +55,36 @@ namespace WebAssemblyChessGame.UI.ApiServices
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
         }
-        public async Task<IdentityResponse<SignInDTO>?> LoginUserAsync(LoginDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
+
+        public async Task<IdentityResponse<UserDTO>?> GetUsersByIdsAsync(List<string> Ids, List<KeyValuePair<string, string>> queryParamAndValues)
         {
-            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new List<KeyValuePair<string, string>>());
+            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.GetUsersByIds, new());
 
             return
-                await PostAsync<LoginDTO,
+                await PostAsync<List<string>,
+                                   IdentityResponse<UserDTO>,
+                                   UserDTO,
+                                   IdentityResponseMesage>
+                                   (requestUri, Ids);
+        }
+
+        public async Task<IdentityResponse<SignInDTO>?> LoginUserAsync(LoginDTO registerRequest, List<KeyValuePair<string, string>> queryParamAndValues)
+        {
+            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new());
+
+
+
+            var result
+                = await PostAsync<LoginDTO,
                                    IdentityResponse<SignInDTO>,
                                    SignInDTO,
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
+
+            if (result.IsSuccess)
+                _httpClient.DefaultRequestHeaders.Add("set-cookie", result.Data.AccessToken);
+
+            return result;
         }
 
     }

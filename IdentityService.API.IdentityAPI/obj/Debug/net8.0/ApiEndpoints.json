@@ -18,7 +18,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
+        "Name": "loginRequest",
         "Type": "SharedResources.DTOs.IdentityDTOs.RequestDTOs.LoginDTO",
         "IsRequired": true
       }
