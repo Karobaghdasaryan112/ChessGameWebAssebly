@@ -27,8 +27,4 @@
     <ProjectReference Include="..\IdentityService.Domain.Domain\IdentityService.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

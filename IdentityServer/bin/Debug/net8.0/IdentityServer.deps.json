@@ -18,7 +18,9 @@
           "OpenIddict": "7.1.0",
           "OpenIddict.Abstractions": "7.1.0",
           "OpenIddict.AspNetCore": "7.1.0",
-          "OpenIddict.EntityFrameworkCore": "7.1.0"
+          "OpenIddict.EntityFrameworkCore": "7.1.0",
+          "OpenIddict.Server": "7.1.0",
+          "OpenIddict.Validation.AspNetCore": "7.1.0"
         },
         "runtime": {
           "IdentityServer.dll": {}

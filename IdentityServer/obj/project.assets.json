@@ -10300,27 +10300,29 @@
       "OpenIddict >= 7.1.0",
       "OpenIddict.Abstractions >= 7.1.0",
       "OpenIddict.AspNetCore >= 7.1.0",
-      "OpenIddict.EntityFrameworkCore >= 7.1.0"
+      "OpenIddict.EntityFrameworkCore >= 7.1.0",
+      "OpenIddict.Server >= 7.1.0",
+      "OpenIddict.Validation.AspNetCore >= 7.1.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\karob\\.nuget\\packages\\": {},
+    "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\IdentityServer.csproj",
+      "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\IdentityServer.csproj",
       "projectName": "IdentityServer",
-      "projectPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\IdentityServer.csproj",
-      "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\obj\\",
+      "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\IdentityServer.csproj",
+      "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -10330,7 +10332,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.sitefinity.com/nuget": {}
       },
       "frameworks": {
         "net8.0": {
@@ -10399,6 +10402,14 @@
           "OpenIddict.EntityFrameworkCore": {
             "target": "Package",
             "version": "[7.1.0, )"
+          },
+          "OpenIddict.Server": {
+            "target": "Package",
+            "version": "[7.1.0, )"
+          },
+          "OpenIddict.Validation.AspNetCore": {
+            "target": "Package",
+            "version": "[7.1.0, )"
           }
         },
         "imports": [
@@ -10412,6 +10423,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.20, 8.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.20, 8.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.20, 8.0.20]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.20, 8.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -10420,7 +10449,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

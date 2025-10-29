@@ -1,12 +1,13 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager Navigation
+@attribute [Authorize]
 @code{
-
 
 protected override void OnInitialized()
 {
-        Navigation.NavigateTo("https://localhost:7101/Identity/Account/Login", replace: true);
+        Navigation.NavigateTo("authentication/login");
 }
 }
 

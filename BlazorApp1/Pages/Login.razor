@@ -88,8 +88,8 @@
                 return;
             }
 
-            await JS.InvokeVoidAsync("setCookie", "access_token", result.Data.AccessToken, 7);
-            await JS.InvokeVoidAsync("setCookie", "musrId", result.Data.UserId, 7);
+            // await JS.InvokeVoidAsync("setCookie", "access_token", result.Data.AccessToken, 7);
+            // await JS.InvokeVoidAsync("setCookie", "musrId", result.Data.UserId, 7);
 
             Navigation.NavigateTo("/Dashboard");
         }

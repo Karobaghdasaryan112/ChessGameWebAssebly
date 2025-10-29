@@ -1,4 +1,6 @@
-﻿using OpenIddict.Abstractions;
+﻿using IdentityServer.Data;
+using Microsoft.EntityFrameworkCore;
+using OpenIddict.Abstractions;
 using OpenIddict.EntityFrameworkCore.Models;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
@@ -7,12 +9,16 @@ namespace IdentityServer.Areas.Identity.Data
 {
     public static class OpenIddictSeeder
     {
-        public static async Task Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(this IServiceProvider serviceProvider)
         {
             var scope = serviceProvider.CreateScope();
             var applications = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
             var scopes = scope.ServiceProvider.GetRequiredService<IOpenIddictScopeManager>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+            await dbContext.Database.MigrateAsync();
+
+            //var clientIds = dbContext.Applications.Select(app => app.ClientId).ToList();
 
             if (await applications.FindByClientIdAsync("ChessGame-BlazorUI") is null)
             {
@@ -24,15 +30,26 @@ namespace IdentityServer.Areas.Identity.Data
                     DisplayName = "BlazorUI",
                     Permissions =
                     {
-                         OpenIddictConstants.Permissions.Endpoints.Token,
+                         OpenIddictConstants.Permissions.Endpoints.Authorization,
                          OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                         OpenIddictConstants.Permissions.Scopes.Profile,
+                         OpenIddictConstants.Permissions.Prefixes.Scope + "openid",
                          OpenIddictConstants.Permissions.ResponseTypes.Code,
                          OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.read",
                          OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.write",
                          OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.read",
                          OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.write"
                     },
+                    RedirectUris =
+                    {
+                        new Uri("https://localhost:7225/authentication/login-callback")
+                    },
 
+                    PostLogoutRedirectUris =
+                    {
+                        new Uri("https://localhost:7225/authentication/logout-callback")
+                    }
+                    
                 });
             }
             if (await scopes.FindByNameAsync("gateway.read") is null)

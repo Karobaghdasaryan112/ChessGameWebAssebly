@@ -1,18 +1,22 @@
+using IdentityServer.Areas.Identity.Data;
 using IdentityServer.Areas.Identity.helpers;
 using IdentityServer.Data;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Text;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
     options.UseSqlite(connectionString);
     options.UseOpenIddict();
 });
@@ -36,22 +40,17 @@ builder.Services.AddOpenIddict()
     .AddServer(serverBuilder =>
     {
 
-        serverBuilder.AllowRefreshTokenFlow();
-
-        serverBuilder.AllowClientCredentialsFlow();
-
-        serverBuilder.SetTokenEndpointUris("/connect/Token");
-
-        serverBuilder.SetAuthorizationEndpointUris("/connect/authorize");
-
-        serverBuilder.SetUserInfoEndpointUris("connect/userinfo");
-
-
         serverBuilder
-        .UseAspNetCore()
-        .EnableUserInfoEndpointPassthrough()
-        .EnableTokenEndpointPassthrough()
-        .EnableAuthorizationEndpointPassthrough();
+            .AllowRefreshTokenFlow()
+            //.AllowClientCredentialsFlow()
+            .AllowAuthorizationCodeFlow()
+            .RequireProofKeyForCodeExchange()
+            .SetTokenEndpointUris("/connect/token")
+            .SetAuthorizationEndpointUris("/connect/authorize")
+            .SetConfigurationEndpointUris(".well-known/openid-configuration")
+            .SetUserInfoEndpointUris("connect/userinfo")
+            .RegisterScopes("openid", "profile", "gateway.read", "gateway.write", "chessgame.read", "chessgame.write") //, 
+            .UseAspNetCore();
 
 
         serverBuilder
@@ -67,6 +66,16 @@ builder.Services.AddOpenIddict()
         validationBuilder.UseAspNetCore();
     });
 
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("allow-blazorPolicy", builder =>
+    {
+        builder.WithOrigins("https://localhost:7225");
+        builder.AllowCredentials();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
 
 //var jwtSettings = configuration.Get<JwtSettings>();
 
@@ -79,6 +88,7 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
+    await scope.ServiceProvider.Initialize();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await dbContext.Database.MigrateAsync();
 }
@@ -95,17 +105,16 @@ else
     app.UseHsts();
 }
 
+app.UseCors("allow-blazorPolicy");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 app.MapRazorPages();
 
 app.Run();
