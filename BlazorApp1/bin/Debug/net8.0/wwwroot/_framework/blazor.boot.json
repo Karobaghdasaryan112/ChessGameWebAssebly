@@ -1,15 +1,15 @@
 {
   "mainAssemblyName": "WebAssemblyChessGame.UI",
   "resources": {
-    "hash": "sha256-v8W7a7bhtP0V9TYQFpgeZpteLEP4xudbbamWjA2nsWk=",
+    "hash": "sha256-rB1aNhIYGgs+VtC85VEYHmUwT91pY72/a3OXQqozlUM=",
     "jsModuleNative": {
-      "dotnet.native.js": "sha256-D0bzod5lwwSzPR43JC8TTCcZKw+3jIHOk8CZFCRj5is="
+      "dotnet.native.js": "sha256-O/NCYcAN9uPocD7ns7AzF/cqx7f5vL1PTJCQs0vEXyk="
     },
     "jsModuleRuntime": {
-      "dotnet.runtime.js": "sha256-OH8zlJkheyf8H9oAbu0wu1oQm9FKy/BKjDk4Bj/va3s="
+      "dotnet.runtime.js": "sha256-91CDXCvYTrWqTidtPWAY6j9w/EQtJKjSj9VneQwl020="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-1FiXHTP4dewtkVEvJ/s93FNwgKHgjajc/MAN3sofq6Q="
+      "dotnet.native.wasm": "sha256-ejEStOt2QNSl51aw0kg/9b8HrrVebvgm5k7AdzN/5VQ="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -31,9 +31,11 @@
       "Microsoft.AspNetCore.Authorization.wasm": "sha256-CIM53npv8kv5/uGr88/I/2uQg6vZB8VXDHhutlLrSBI=",
       "Microsoft.AspNetCore.Authorization.Policy.wasm": "sha256-d8NNLZQJd+CbQtkhk8YaiPHZQZb7dW9dVfxbbJXDKIw=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-2EE+BqrYN9CyvrKhH38PD1iZjwur10b6YDWXWsUlgqk=",
+      "Microsoft.AspNetCore.Components.Authorization.wasm": "sha256-EFv+L1YnGvKwdvpSUAgxwhBJoxTLebypp66mmnzNKr4=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-UkLAztNoC3Vgp7krjrhW7r9D5BEMOR2Uq9Ka9MAE1bk=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-75EolXe3EvNVu89DaRnEKWeQxHt8yE0WZZanHY7tKZs=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-OyFtsQpr8ZRdoFT4enZ770s46hMy7sx2MaraAwkCC0w=",
+      "Microsoft.AspNetCore.Components.WebAssembly.Authentication.wasm": "sha256-wkDZcde70UgE//S8rIWu1Lda/JLfQaUpvgst+8EF7XQ=",
       "Microsoft.AspNetCore.Connections.Abstractions.wasm": "sha256-PgCcfvxDTZqlX/kFZQZwxrrwVMDrJccFsFQCOsgJJGU=",
       "Microsoft.AspNetCore.Cors.wasm": "sha256-jj/29EezJA7fbtpJ5QS3w7Hhu6VT5B7bRNYLkCKm3mI=",
       "Microsoft.AspNetCore.Cryptography.Internal.wasm": "sha256-EtqKKu/nPY+E2MxYNwXh7HfStwg85pXwdU56PW8qsCU=",
@@ -315,22 +317,26 @@
       "mscorlib.wasm": "sha256-8qWtIcy8fV43tlcx4DxsF45RlkcfK6588vVoxF7be2E=",
       "netstandard.wasm": "sha256-eOgz2RiO4YaPLOMIGgVLNrcfsQhmLQJzR0N7Pu2teXc=",
       "System.Private.CoreLib.wasm": "sha256-F8T63QCIbMPXPQPqTcuyBAw+oVvZSrWjy88j7fiJQZ4=",
-      "ChatService.core.Services.wasm": "sha256-vg4T8434eZYJVz3pMVptYAcpWyBJKUAf6m0PknRpcZQ=",
-      "ChessGame.Core.Services.wasm": "sha256-5XJCGqaq2Tt0CiRuxF+mugKltwYsn2q3XWExcE6v9Lc=",
-      "ChessGame.Infrastructure.Infrastructure.wasm": "sha256-OMp6SO6PZocPNCaO/OGJzbGtuHSiQ6wF/t8v1C+do9k=",
-      "SharedResources.wasm": "sha256-qRIc1FeotqSHfFXJoovR1KsfxtqfHW/36arEWnSNQCU=",
-      "WebAssemblyChessGame.UI.wasm": "sha256-HTTKDmzJdNYh3IAagh+f4/VGGAL52xf2PLJjsa/IG5U="
+      "ChatService.core.Services.wasm": "sha256-RwrbIB/l4wgs1cF3PgbZg9AcaMspF9HYlIGAk0nVRZs=",
+      "ChessGame.Core.Services.wasm": "sha256-OuxAffX1w3qEXwu8kIYi3TD2JQ5ajqG5qvXfV166BOE=",
+      "ChessGame.Infrastructure.Infrastructure.wasm": "sha256-wZH7BYkyw7BbvdLVT35I+/Ob/MyGEpuW/3oZhGaqWg0=",
+      "SharedResources.wasm": "sha256-ld73i+KEYgJYuFJ8HHT1ZhHxu/phtcz5SQiicJ8vkFU=",
+      "WebAssemblyChessGame.UI.wasm": "sha256-UjAbI/756PAoEbEtJ0FtTDTO0GlQIRnD4JA9VB7mLWY="
     },
     "pdb": {
-      "ChessGame.Infrastructure.Infrastructure.pdb": "sha256-FAv0iUs70s7beSJE8QW7zv3hFetk50EtuHNfPcGvM7M=",
-      "SharedResources.pdb": "sha256-ozR6kaGodaJvbe8mwXaAwjxFEXXJmBmyMYji3bkV1Ek=",
-      "ChatService.core.Services.pdb": "sha256-jD3B7edydd1SbsTPfKpZ4rJhyOaPfZpv3qotLq5/xdQ=",
-      "ChessGame.Core.Services.pdb": "sha256-q2c4RprEX7eewf1pzg2l+xNq9pMHVc1fxTpwBfab5BE=",
-      "WebAssemblyChessGame.UI.pdb": "sha256-47JuWjiRHnAlHxdlyVGaSZOHNrXjXpaKv7YOXE8LnP4="
+      "ChessGame.Infrastructure.Infrastructure.pdb": "sha256-Og8bBdHZkXwtVsVJ5uwg6BMkgUJHNAXm7L6Td3msi/Q=",
+      "SharedResources.pdb": "sha256-BFtq2uFASev9IT/BunCnLkfgc6UFdSnaw9Afnhx400Y=",
+      "ChatService.core.Services.pdb": "sha256-LrPJCn0Quhtevb9ior6NDbe8r8njai3Bf8MxnGH/YZo=",
+      "ChessGame.Core.Services.pdb": "sha256-X7pcF0L1r+Sv0hUoiEC9JLEdHaIUTEBMn7fgvG4z30g=",
+      "WebAssemblyChessGame.UI.pdb": "sha256-PpmMiS4985FZEtXHmOWBgYB71m1aK7Um3qe2yp46NTQ="
     }
   },
   "cacheBootResources": true,
   "debugLevel": -1,
+  "appsettings": [
+    "../appsettings.Development.json",
+    "../appsettings.json"
+  ],
   "globalizationMode": "sharded",
   "extensions": {
     "blazor": {}

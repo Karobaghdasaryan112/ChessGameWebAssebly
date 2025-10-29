@@ -248,6 +248,23 @@
           "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets": {}
         }
       },
+      "Microsoft.AspNetCore.Components.Authorization/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authorization": "8.0.0",
+          "Microsoft.AspNetCore.Components": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Components.Forms/8.0.19": {
         "type": "package",
         "dependencies": {
@@ -306,6 +323,29 @@
         },
         "build": {
           "build/net8.0/Microsoft.AspNetCore.Components.WebAssembly.props": {}
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly.Authentication/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Authorization": "8.0.0",
+          "Microsoft.AspNetCore.Components.Web": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props": {}
         }
       },
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer/8.0.19": {
@@ -2322,13 +2362,13 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.20": {
+      "Microsoft.NET.ILLink.Tasks/8.0.19": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
       },
-      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.9": {
+      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.8": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
@@ -4249,6 +4289,23 @@
           "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets": {}
         }
       },
+      "Microsoft.AspNetCore.Components.Authorization/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authorization": "8.0.0",
+          "Microsoft.AspNetCore.Components": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Components.Forms/8.0.19": {
         "type": "package",
         "dependencies": {
@@ -4307,6 +4364,29 @@
         },
         "build": {
           "build/net8.0/Microsoft.AspNetCore.Components.WebAssembly.props": {}
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly.Authentication/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Authorization": "8.0.0",
+          "Microsoft.AspNetCore.Components.Web": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props": {}
         }
       },
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer/8.0.19": {
@@ -6323,13 +6403,13 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.20": {
+      "Microsoft.NET.ILLink.Tasks/8.0.19": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
       },
-      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.9": {
+      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.8": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
@@ -8186,6 +8266,21 @@
         "microsoft.aspnetcore.components.analyzers.nuspec"
       ]
     },
+    "Microsoft.AspNetCore.Components.Authorization/8.0.0": {
+      "sha512": "GlaNfvmRQAmXMrNlJcQJcB/K8ptShc121sQdqc82Yigd6d7lMVbMKI/P+rNr1ReEhPgMQNd66uh1INF9QlxI6Q==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.components.authorization/8.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.txt",
+        "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.dll",
+        "lib/net8.0/Microsoft.AspNetCore.Components.Authorization.xml",
+        "microsoft.aspnetcore.components.authorization.8.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.components.authorization.nuspec"
+      ]
+    },
     "Microsoft.AspNetCore.Components.Forms/8.0.19": {
       "sha512": "77zXqGgneGoz23+Nw3GTIYJ+DFjFdpaTTdakBoK1T+m9CnKrxqpCTNUj80UFumSlHqwZ6Sq97joAP6DH2ZzTmA==",
       "type": "package",
@@ -8231,6 +8326,26 @@
         "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.xml",
         "microsoft.aspnetcore.components.webassembly.8.0.19.nupkg.sha512",
         "microsoft.aspnetcore.components.webassembly.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Components.WebAssembly.Authentication/8.0.0": {
+      "sha512": "a+AFFp03ksHDZWiWqlqJdYbs5xmnrasdiqBKiMIU19yXBWVrb/hA7ndvp3z6+SJ02v/UAFBIGxTt0R+MfefoOg==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.components.webassembly.authentication/8.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props",
+        "buildTransitive/Microsoft.AspNetCore.Components.WebAssembly.Authentication.props",
+        "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll",
+        "lib/net8.0/Microsoft.AspNetCore.Components.WebAssembly.Authentication.xml",
+        "microsoft.aspnetcore.components.webassembly.authentication.8.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.components.webassembly.authentication.nuspec",
+        "staticwebassets/AuthenticationService.js"
       ]
     },
     "Microsoft.AspNetCore.Components.WebAssembly.DevServer/8.0.19": {
@@ -10584,10 +10699,10 @@
         "microsoft.net.http.headers.nuspec"
       ]
     },
-    "Microsoft.NET.ILLink.Tasks/8.0.20": {
-      "sha512": "Rhcto2AjGvTO62+/VTmBpumBOmqIGp7nYEbTbmEXkCq4yPGxV8whju3/HsIA/bKyo2+DggaYk5+/8sxb1AbPTw==",
+    "Microsoft.NET.ILLink.Tasks/8.0.19": {
+      "sha512": "IhHf+zeZiaE5EXRyxILd4qM+Hj9cxV3sa8MpzZgeEhpvaG3a1VEGF6UCaPFLO44Kua3JkLKluE0SWVamS50PlA==",
       "type": "package",
-      "path": "microsoft.net.illink.tasks/8.0.20",
+      "path": "microsoft.net.illink.tasks/8.0.19",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -10601,7 +10716,7 @@
         "build/Microsoft.NET.ILLink.Analyzers.props",
         "build/Microsoft.NET.ILLink.Tasks.props",
         "build/Microsoft.NET.ILLink.targets",
-        "microsoft.net.illink.tasks.8.0.20.nupkg.sha512",
+        "microsoft.net.illink.tasks.8.0.19.nupkg.sha512",
         "microsoft.net.illink.tasks.nuspec",
         "tools/net472/ILLink.Tasks.dll",
         "tools/net472/ILLink.Tasks.dll.config",
@@ -10635,10 +10750,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.9": {
-      "sha512": "Nx4yF/l8YyzwHM+xBRFOSGv77mjBZP0XkImzLMdrSBGYPB32nEZNXTSwhH9viDhxMhGij+fVUjJj5iAtUdMBww==",
+    "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.8": {
+      "sha512": "+JJYRyS8YoLMzLquskLfdF8RFp2PhN5v+lGCGDLHsywj3JHfSV/Zqo8+T0Fl0Xvoc9Js8YkrAWTnm7M2/3CniA==",
       "type": "package",
-      "path": "microsoft.net.sdk.webassembly.pack/9.0.9",
+      "path": "microsoft.net.sdk.webassembly.pack/9.0.8",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -10669,7 +10784,7 @@
         "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets",
         "build/Wasm.web.config",
         "build/browser.runtimeconfig.template.json",
-        "microsoft.net.sdk.webassembly.pack.9.0.9.nupkg.sha512",
+        "microsoft.net.sdk.webassembly.pack.9.0.8.nupkg.sha512",
         "microsoft.net.sdk.webassembly.pack.nuspec",
         "tools/net472/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
         "tools/net472/Microsoft.NET.WebAssembly.Webcil.dll",
@@ -15174,37 +15289,38 @@
     "net8.0": [
       "ChessGame.Infrastructure.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.Components.WebAssembly >= 8.0.19",
+      "Microsoft.AspNetCore.Components.WebAssembly.Authentication >= 8.0.0",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 8.0.19",
       "Microsoft.AspNetCore.SignalR.Client >= 8.0.0",
       "Microsoft.AspNetCore.SignalR.Client.Core >= 8.0.0",
       "Microsoft.Extensions.DependencyInjection >= 8.0.1",
       "Microsoft.Extensions.DependencyInjection.Abstractions >= 8.0.2",
       "Microsoft.Extensions.Http >= 8.0.1",
-      "Microsoft.NET.ILLink.Tasks >= 8.0.20",
-      "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.9",
+      "Microsoft.NET.ILLink.Tasks >= 8.0.19",
+      "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.8",
       "OpenIddict.Abstractions >= 7.1.0",
       "OpenIddict.Client >= 7.1.0",
       "SharedResources >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\": {},
+    "C:\\Users\\karob\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+      "projectUniqueName": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
       "projectName": "WebAssemblyChessGame.UI",
-      "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
-      "packagesPath": "C:\\Users\\karapet.baghdasaryan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorApp1\\obj\\",
+      "projectPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorApp1\\WebAssemblyChessGame.UI.csproj",
+      "packagesPath": "C:\\Users\\karob\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorApp1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\karapet.baghdasaryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\karob\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -15214,18 +15330,17 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://nuget.sitefinity.com/nuget": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj"
+            "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj"
             },
-            "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj": {
-              "projectPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\SharedResources.csproj"
+            "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\SharedResources.csproj": {
+              "projectPath": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\SharedResources.csproj"
             }
           }
         }
@@ -15249,6 +15364,10 @@
           "Microsoft.AspNetCore.Components.WebAssembly": {
             "target": "Package",
             "version": "[8.0.19, )"
+          },
+          "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+            "target": "Package",
+            "version": "[8.0.0, )"
           },
           "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
             "suppressParent": "All",
@@ -15278,13 +15397,13 @@
           "Microsoft.NET.ILLink.Tasks": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[8.0.20, )",
+            "version": "[8.0.19, )",
             "autoReferenced": true
           },
           "Microsoft.NET.Sdk.WebAssembly.Pack": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[9.0.9, )",
+            "version": "[9.0.8, )",
             "autoReferenced": true
           },
           "OpenIddict.Abstractions": {
@@ -15309,20 +15428,8 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.20, 8.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.20, 8.0.20]"
-          },
-          {
             "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-            "version": "[8.0.20, 8.0.20]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.20, 8.0.20]"
+            "version": "[8.0.19, 8.0.19]"
           }
         ],
         "frameworkReferences": {
@@ -15330,7 +15437,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

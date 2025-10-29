@@ -44,7 +44,6 @@ namespace IdentityService.Persistance
 
                     serverBuilder.SetUserInfoEndpointUris("connect/userinfo");
 
-                    //serverBuilder.AcceptAnonymousClients(); this is Without Clinet_id and Clinet_Secrets
 
                     serverBuilder
                     .UseAspNetCore()

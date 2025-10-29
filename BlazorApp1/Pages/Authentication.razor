@@ -1,0 +1,13 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Components
+<RemoteAuthenticatorView Action="@Action" />
+@code{
+    [Parameter] public string? Action { get; set; }
+    @inject NavigationManager Navigation
+
+protected override void OnInitialized()
+{
+        Navigation.NavigateTo("https://localhost:7101//authentication/login", forceLoad: true);
+}
+}

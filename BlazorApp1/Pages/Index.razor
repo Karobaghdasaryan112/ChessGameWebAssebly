@@ -1,9 +1,9 @@
-﻿@page "/"
+﻿@page "/index"
 @inject NavigationManager Navigation
 @code {
 @using Microsoft.AspNetCore.Components
 protected override void OnInitialized()
 {
-    Navigation.NavigateTo("/Registration", forceLoad: true);
+    Navigation.NavigateTo("/authentication/login", forceLoad: true);
 }
 }

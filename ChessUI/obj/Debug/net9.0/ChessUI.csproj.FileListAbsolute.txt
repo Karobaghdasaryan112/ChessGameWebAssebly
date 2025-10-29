@@ -1,0 +1,8 @@
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.csproj.AssemblyReference.cache
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.AssemblyInfoInputs.cache
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.AssemblyInfo.cs
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.csproj.CoreCompileInputs.cache
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\karob\source\repos\ChessGameDiploma\ChessUI\obj\Debug\net9.0\ChessUI.sourcelink.json

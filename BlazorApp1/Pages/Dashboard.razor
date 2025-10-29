@@ -1,5 +1,6 @@
 ﻿@page "/Dashboard"
 @using ChessGame.Infrastructure.Infrastructure.Hubs
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Http.Connections
 @using Microsoft.AspNetCore.SignalR
 @using Microsoft.AspNetCore.SignalR.Client
@@ -12,7 +13,7 @@
 @inject NavigationManager Navigation
 @inject IdentityService identityService
 @inject IJSRuntime JS;
-
+@attribute [Authorize]
 <h3>Dashboard 2</h3>
 
 @if (activeGamers.Count == 0)
