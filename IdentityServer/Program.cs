@@ -50,7 +50,9 @@ builder.Services.AddOpenIddict()
             .SetConfigurationEndpointUris(".well-known/openid-configuration")
             .SetUserInfoEndpointUris("connect/userinfo")
             .RegisterScopes("openid", "profile", "gateway.read", "gateway.write", "chessgame.read", "chessgame.write") //, 
-            .UseAspNetCore();
+
+            .UseAspNetCore()
+            .EnableAuthorizationEndpointPassthrough();
 
 
         serverBuilder

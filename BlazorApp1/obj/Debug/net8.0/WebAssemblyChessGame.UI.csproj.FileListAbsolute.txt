@@ -4688,6 +4688,6 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\refint\WebAssemblyChessGame.UI.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\WebAssemblyChessGame.UI.pdb
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\ref\WebAssemblyChessGame.UI.dll
-C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\7b857bevoc-z5yb29tp9n.gz
-C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\2bgbeqb5cv-5c90gmp54h.gz
-C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\52e87yq4ti-ovssvniuh1.gz
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\7b857bevoc-0yxp1tjkql.gz
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\2bgbeqb5cv-7rwwvomtrn.gz
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\BlazorApp1\obj\Debug\net8.0\compressed\52e87yq4ti-wdrs1g4qgb.gz
