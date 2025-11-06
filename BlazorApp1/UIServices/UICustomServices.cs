@@ -12,10 +12,6 @@ namespace WebAssemblyChessGame.UI.UIServices
             services.AddScoped<SignalRService>();
             services.AddScoped<IdentityService>();
             services.AddScoped<IQueryBuilder, QueryBuilder>();
-
-            services.AddAuthentication(option =>
-            {
-            });
         }
     }
 }

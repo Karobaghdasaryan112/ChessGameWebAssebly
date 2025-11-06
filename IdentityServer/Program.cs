@@ -1,18 +1,13 @@
 using IdentityServer.Areas.Identity.Data;
 using IdentityServer.Areas.Identity.helpers;
 using IdentityServer.Data;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
 using System.Text;
-using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,45 +23,36 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+var secretKey = builder.Configuration.GetSection("JwtSettings")["SecurityKey"];
 
-var key = builder.Configuration.GetValue<string>("JwtSettings:SecurityKey");
 
-
-builder.Services.AddOpenIddict()
-    .AddCore(openIdBuilder =>
+builder.Services.AddOpenIddict(builder =>
+{
+    builder.AddServer(serverBuilder =>
     {
-        openIdBuilder.UseEntityFrameworkCore().UseDbContext<ApplicationDbContext>();
-    })
-    .AddServer(serverBuilder =>
+        serverBuilder
+        .AllowAuthorizationCodeFlow()
+        .RequireProofKeyForCodeExchange()
+        .AllowClientCredentialsFlow()
+        .SetTokenEndpointUris("/connect/token")
+        .SetAuthorizationEndpointUris("connect/authorize")
+        .AddDevelopmentEncryptionCertificate()
+        .AddDevelopmentSigningCertificate()
+        .UseAspNetCore()
+        .EnableAuthorizationEndpointPassthrough();
+
+    }).AddCore(coreBuilder =>
     {
+        coreBuilder.UseEntityFrameworkCore()
+        .UseDbContext<ApplicationDbContext>();
 
-        serverBuilder
-            .AllowRefreshTokenFlow()
-            //.AllowClientCredentialsFlow()
-            .AllowAuthorizationCodeFlow()
-            .RequireProofKeyForCodeExchange()
-            .SetTokenEndpointUris("/connect/token")
-            .SetAuthorizationEndpointUris("/connect/authorize")
-            .SetConfigurationEndpointUris(".well-known/openid-configuration")
-            .SetUserInfoEndpointUris("connect/userinfo")
-            .RegisterScopes("openid", "profile", "gateway.read", "gateway.write", "chessgame.read", "chessgame.write") //, 
-
-            .UseAspNetCore()
-            .EnableAuthorizationEndpointPassthrough();
-
-
-        serverBuilder
-            .AddDevelopmentSigningCertificate()
-            .AddDevelopmentEncryptionCertificate();
-
-        serverBuilder.AddSigningKey(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)));
-
-    })
-    .AddValidation(validationBuilder =>
+    }).AddValidation(validationBuilder =>
     {
         validationBuilder.UseLocalServer();
-        validationBuilder.UseAspNetCore();
+        validationBuilder.AddSigningKey(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)));
     });
+});
+
 
 builder.Services.AddCors(option =>
 {
@@ -79,7 +65,6 @@ builder.Services.AddCors(option =>
     });
 });
 
-//var jwtSettings = configuration.Get<JwtSettings>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -95,7 +80,6 @@ using (var scope = app.Services.CreateScope())
     await dbContext.Database.MigrateAsync();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -103,7 +87,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

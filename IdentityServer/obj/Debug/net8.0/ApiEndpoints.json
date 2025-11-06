@@ -6,48 +6,7 @@
     "HttpMethod": "",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "client_id",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "redirect_uri",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "response_type",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "response_mode",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "scope",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "state",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "code_challenge",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "code_challenge_method",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

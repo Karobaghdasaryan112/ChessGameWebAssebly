@@ -1,4 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IAccessTokenProvider TokenProvider
+@inject IJSRuntime JS
+
+
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
@@ -17,3 +22,4 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+

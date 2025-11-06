@@ -15,25 +15,35 @@ builder.Services.AddUIDefaultServices();
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.MetadataUrl = "https://localhost:7101/.well-known/openid-configuration";
-    options.AuthenticationPaths.LogInPath = "/authentication/Login";
-    options.AuthenticationPaths.LogOutPath = "/authentication/logout";
+    builder.Configuration.Bind("Oidc", options.ProviderOptions);
+    options.ProviderOptions.DefaultScopes.Clear();
+    options.ProviderOptions.Authority = "https://localhost:7101";
+    options.ProviderOptions.ClientId = "BlazorUI";
+    options.ProviderOptions.ResponseType = "code";
+
+
+    options.ProviderOptions.DefaultScopes.Add("openid");
+
+    // API scopes
+    //options.ProviderOptions.DefaultScopes.Add("gateway.read");
+    //options.ProviderOptions.DefaultScopes.Add("gateway.write");
+    //options.ProviderOptions.DefaultScopes.Add("chessgame.read");
+    //options.ProviderOptions.DefaultScopes.Add("chessgame.write");
+
+    // Callback paths
+    options.AuthenticationPaths.LogInPath = "/authentication/login";
     options.AuthenticationPaths.LogInCallbackPath = "/authentication/login-callback";
     options.AuthenticationPaths.LogOutCallbackPath = "/authentication/logout-callback";
-    options.AuthenticationPaths.LogInFailedPath = "/authentication/login-failed";
-    options.AuthenticationPaths.ProfilePath = "/authentication/profile";
-    options.ProviderOptions.Authority = "https://localhost:7101";
-    options.ProviderOptions.ResponseType = "code";
-    options.ProviderOptions.ResponseMode = "query";
-    options.ProviderOptions.ClientId = "ChessGame-BlazorUI";
-    options.ProviderOptions.DefaultScopes.Add("gateway.read");
-    options.ProviderOptions.DefaultScopes.Add("gateway.write");
-    options.ProviderOptions.DefaultScopes.Add("chessgame.read");
-    options.ProviderOptions.DefaultScopes.Add("chessgame.write");
-    options.ProviderOptions.DefaultScopes.Remove("profile");
-    options.ProviderOptions.DefaultScopes.Remove("openid");
-    
-
 });
+
+builder.Services.AddHttpClient("Blazor_client", client =>
+{
+    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+});
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("Blazor_client")
+);
+
 
 await builder.Build().RunAsync();

@@ -18,27 +18,27 @@ namespace IdentityServer.Areas.Identity.Data
 
             await dbContext.Database.MigrateAsync();
 
-            //var clientIds = dbContext.Applications.Select(app => app.ClientId).ToList();
-
-            if (await applications.FindByClientIdAsync("ChessGame-BlazorUI") is null)
+            var clientIds = dbContext.Applications.Select(app => app.ClientId).ToList();
+            if (await applications.FindByClientIdAsync("BlazorUI") is null)
             {
                 await applications.CreateAsync(new OpenIddictApplicationDescriptor()
                 {
-                    ClientId = "ChessGame-BlazorUI",
+                    ClientId = "BlazorUI",
                     ApplicationType = OpenIddictConstants.ApplicationTypes.Native,
                     ClientType = OpenIddictConstants.ClientTypes.Public,
-                    DisplayName = "BlazorUI",
+                    DisplayName = "BlazorUI_Display",
                     Permissions =
                     {
-                         OpenIddictConstants.Permissions.Endpoints.Authorization,
-                         OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
-                         OpenIddictConstants.Permissions.Scopes.Profile,
-                         OpenIddictConstants.Permissions.Prefixes.Scope + "openid",
-                         OpenIddictConstants.Permissions.ResponseTypes.Code,
-                         OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.read",
-                         OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.write",
-                         OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.read",
-                         OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.write"
+                     OpenIddictConstants.Permissions.Endpoints.Authorization,
+                        OpenIddictConstants.Permissions.Endpoints.Token, 
+                        OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                        OpenIddictConstants.Permissions.ResponseTypes.Code,
+                        OpenIddictConstants.Permissions.Scopes.Profile,
+                        OpenIddictConstants.Permissions.Prefixes.Scope + "openid",
+                         //OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.read",
+                         //OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.write",
+                         //OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.read",
+                         //OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.write"
                     },
                     RedirectUris =
                     {

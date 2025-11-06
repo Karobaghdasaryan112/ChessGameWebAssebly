@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IdentityService.Persistance")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4a7fd17cd2f6736fe9221085bcb97f4992ecab8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb34835ce02ce2696666c349cf33988f89f5884a")]
 [assembly: System.Reflection.AssemblyProductAttribute("IdentityService.Persistance")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IdentityService.Persistance")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

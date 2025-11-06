@@ -1,5 +1,5 @@
 using Gateway.API.Middlewares;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using OpenIddict.Server.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +15,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = "https://localhost:7101";
         options.RequireHttpsMetadata = true;
         options.Audience = "gateway";
-
     });
 
 

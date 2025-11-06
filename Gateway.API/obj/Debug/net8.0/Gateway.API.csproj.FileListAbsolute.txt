@@ -128,3 +128,11 @@ C:\Users\karob\source\repos\ChessGameDiploma\Gateway.API\obj\Debug\net8.0\refint
 C:\Users\karob\source\repos\ChessGameDiploma\Gateway.API\obj\Debug\net8.0\Gateway.API.pdb
 C:\Users\karob\source\repos\ChessGameDiploma\Gateway.API\obj\Debug\net8.0\Gateway.API.genruntimeconfig.cache
 C:\Users\karob\source\repos\ChessGameDiploma\Gateway.API\obj\Debug\net8.0\ref\Gateway.API.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Abstractions.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.AspNetCore.dll
