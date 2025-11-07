@@ -24,32 +24,31 @@ namespace IdentityServer.Areas.Identity.Data
                 await applications.CreateAsync(new OpenIddictApplicationDescriptor()
                 {
                     ClientId = "BlazorUI",
-                    ApplicationType = OpenIddictConstants.ApplicationTypes.Native,
+                    DisplayName = "Blazor UI",
                     ClientType = OpenIddictConstants.ClientTypes.Public,
-                    DisplayName = "BlazorUI_Display",
-                    Permissions =
-                    {
-                     OpenIddictConstants.Permissions.Endpoints.Authorization,
-                        OpenIddictConstants.Permissions.Endpoints.Token, 
-                        OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
-                        OpenIddictConstants.Permissions.ResponseTypes.Code,
-                        OpenIddictConstants.Permissions.Scopes.Profile,
-                        OpenIddictConstants.Permissions.Prefixes.Scope + "openid",
-                         //OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.read",
-                         //OpenIddictConstants.Permissions.Prefixes.Scope + "gateway.write",
-                         //OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.read",
-                         //OpenIddictConstants.Permissions.Prefixes.Scope + "chessgame.write"
-                    },
+                    ApplicationType = OpenIddictConstants.ApplicationTypes.Native,
+
                     RedirectUris =
                     {
                         new Uri("https://localhost:7225/authentication/login-callback")
                     },
-
-                    PostLogoutRedirectUris =
+                                    PostLogoutRedirectUris =
                     {
                         new Uri("https://localhost:7225/authentication/logout-callback")
+                    },
+                                    Permissions =
+                    {
+                        OpenIddictConstants.Permissions.Endpoints.Authorization,
+                        OpenIddictConstants.Permissions.Endpoints.Token, 
+                        OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                        OpenIddictConstants.Permissions.ResponseTypes.Code,
+                        OpenIddictConstants.Permissions.Prefixes.Endpoint + "openid",
+                        OpenIddictConstants.Permissions.Scopes.Profile
+                    },
+                                    Requirements =
+                    {
+                        OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange 
                     }
-                    
                 });
             }
             if (await scopes.FindByNameAsync("gateway.read") is null)

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAssemblyChessGame.UI", "BlazorApp1\WebAssemblyChessGame.UI.csproj", "{44C9FB6C-F490-4968-814D-9D69EBD1617F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7AA5F15B-1869-4EED-9F22-D51C4D8887CF}"
@@ -73,16 +71,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame.Infrastructure.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{3F72DC2F-908C-49A7-AF63-C98519C81F08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGameBlazorClient", "ChessGameBlazorClient\ChessGameBlazorClient.csproj", "{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{44C9FB6C-F490-4968-814D-9D69EBD1617F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44C9FB6C-F490-4968-814D-9D69EBD1617F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44C9FB6C-F490-4968-814D-9D69EBD1617F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44C9FB6C-F490-4968-814D-9D69EBD1617F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -151,12 +147,15 @@ Global
 		{3F72DC2F-908C-49A7-AF63-C98519C81F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F72DC2F-908C-49A7-AF63-C98519C81F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F72DC2F-908C-49A7-AF63-C98519C81F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{44C9FB6C-F490-4968-814D-9D69EBD1617F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{9736B46E-566B-4652-8C4B-ED4BE26BB3B3} = {D1EA530E-FFFC-4B07-9AF1-68BD766335AA}
 		{8DACADB7-F962-4861-9178-B3569B6EB47F} = {C5967F9A-55AC-40C0-B540-B89EC94B149F}
 		{0F00D5E3-EDA0-480E-B484-D24DE2EC6CC7} = {7AA5F15B-1869-4EED-9F22-D51C4D8887CF}
@@ -187,6 +186,7 @@ Global
 		{8B32BA38-F9F8-46DE-9E11-34BEF38DB8F6} = {614A785B-BBE3-4D0C-9005-2931F4F3489A}
 		{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E} = {16437C4E-94C0-4E16-973E-2586B8DB1F0D}
 		{3F72DC2F-908C-49A7-AF63-C98519C81F08} = {EB85DC21-834F-4242-90D7-52E87AE3F4AA}
+		{0936B6FA-A1B2-463E-B2A2-BAA7DFD6321A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {784BFF5F-447C-45A5-875A-3122ADD2F85E}

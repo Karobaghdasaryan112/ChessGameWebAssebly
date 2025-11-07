@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Net;
 using WebAssemblyChessGame.UI;
 using WebAssemblyChessGame.UI.UIServices;
 
@@ -34,11 +35,18 @@ builder.Services.AddOidcAuthentication(options =>
     options.AuthenticationPaths.LogInPath = "/authentication/login";
     options.AuthenticationPaths.LogInCallbackPath = "/authentication/login-callback";
     options.AuthenticationPaths.LogOutCallbackPath = "/authentication/logout-callback";
+
 });
 
 builder.Services.AddHttpClient("Blazor_client", client =>
 {
     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+}).ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler();
+    handler.UseCookies = true;
+    handler.CookieContainer = new CookieContainer();
+    return handler;
 });
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped(sp =>
