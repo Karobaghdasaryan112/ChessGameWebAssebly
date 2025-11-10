@@ -1,6 +1,8 @@
 ﻿@page "/Dashboard"
 @using ChessGameBlazorClient.UI.Services
 @using SharedResources.ChessGameResource.Models
+@using System.Security.Claims
+@using System.Threading
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
@@ -15,14 +17,33 @@
 else
 {
     <ul>
+        @{
+            var authState = AuthStateProvider.GetAuthenticationStateAsync().Result;
+            var currentUserGuid = authState.User?.Claims?.FirstOrDefault(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+        @if (activeGamers.Count() == 0)
+        {
+            <li>No Online player </li>
+        }
         @foreach (var player in activeGamers)
         {
-            @if (player.Key != AuthStateProvider.GetAuthenticationStateAsync().Result.User.Claims.First(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value){
-            
-            <li>
-                @player.Value.UserName
-                <button @onclick="() => SendInviteAsync(player.Key)">Invite</button>
-            </li>
+            @if (player.Key != currentUserGuid)
+            {
+                if (player.Value.Gameinfo == null)
+                {
+                    <li>
+                        @player.Value.UserName
+                        <button @onclick="() => SendInviteAsync(player)">Invite</button>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @player.Value.UserName
+                        <p>Is In Game</p>
+                        @* <button @onclick="() => SendInviteAsync(player)">Invite</button> *@
+                    </li>
+                }
             }
         }
     </ul>
@@ -30,11 +51,14 @@ else
 
 @code {
     private List<KeyValuePair<string, UserConnection>> activeGamers = new();
-
-    protected override async Task OnInitializedAsync()
+    private Timer? _timer;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender) return;
+
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+
         if (!user.Identity?.IsAuthenticated ?? false)
         {
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
@@ -47,17 +71,27 @@ else
             InvokeAsync(StateHasChanged);
         };
 
-        var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+        var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
 
-        HubClient.GetHubConnection();
-        await HubClient.InitializeAsync(userGuid!, userName!);
+        await HubClient.GetHubConnection();
+        await HubClient.InitializeAsync(userGuid, userName);
+        _timer = new Timer(async _ => await RefreshGamers(userName),default, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+    private async Task RefreshGamers(object obj)
+    {
+        if (obj is string userGuid){
+           await HubClient.GetOnlinePlayersAsync(userGuid);
+        }
     }
 
-    private async Task SendInviteAsync(string playerId)
+
+    private async Task SendInviteAsync(KeyValuePair<string, UserConnection> player)
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var myGuid = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
-        await HubClient.SendInviteAsync(playerId, myGuid);
+        await HubClient.GetHubConnection();
+        await HubClient.SendInviteAsync(player.Key, myGuid);
     }
+
 }

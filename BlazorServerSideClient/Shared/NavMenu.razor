@@ -1,4 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using ChessGameBlazorClient.UI.Services
+@using System.Security.Claims
+@using SharedResources.ChessGameResource.Models
+@inject NavigationManager NavigationManager
+@inject SignalRService HubClient
+@inject IJSRuntime JS
+@inject AuthenticationStateProvider AuthState
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">BlazorServerSideClient</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -10,22 +17,12 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="HomeClicked">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dashboard">
+            <NavLink class="nav-link" href="dashboard" @onclick="DashboardClicked">
                 <span class="oi oi-people" aria-hidden="true"></span> Dashboard
             </NavLink>
         </div>
@@ -34,11 +31,44 @@
 
 @code {
     private bool collapseNavMenu = true;
-
+    private ClaimsPrincipal user => AuthState.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task HomeClicked(MouseEventArgs e)
+    {
+        Console.WriteLine("Home clicked!");
+        if (user.Identity?.IsAuthenticated == false)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        var hubConnection = await HubClient.GetHubConnection();
+        HubClient.RegisterHandlers();
+        var UserGuid = user.Claims.First(Claim => Claim.Type == ClaimTypes.NameIdentifier)?.Value;
+        var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnection), new object[] { UserGuid! });
+        if (userConnection is UserConnection connectionState)
+        {
+            if (connectionState.Gameinfo != default)
+            {
+                var confirmResult = await JS.InvokeAsync<bool>("confirm", "Do you want to pakinut igru?");
+                if (confirmResult)
+                {
+                     await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnection), new object[] { UserGuid! });
+
+                }
+            }
+        }
+    }
+
+    private void DashboardClicked(MouseEventArgs e)
+    {
+        Console.WriteLine("Dashboard clicked!");
+
+        NavigationManager.NavigateTo("/dashboard");
     }
 }

@@ -70,8 +70,6 @@ namespace ChessGameBlazorClient.ApiServices
         {
             var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new());
 
-
-
             var result
                 = await PostAsync<LoginDTO,
                                    IdentityResponse<SignInDTO>,
@@ -79,11 +77,7 @@ namespace ChessGameBlazorClient.ApiServices
                                    IdentityResponseMesage>
                                    (requestUri, registerRequest);
 
-            if (result.IsSuccess)
-                _httpClient.DefaultRequestHeaders.Add("set-cookie", result.Data.AccessToken);
-
             return result;
         }
-
     }
 }

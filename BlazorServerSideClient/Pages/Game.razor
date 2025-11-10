@@ -1,13 +1,16 @@
 ﻿@page "/game"
 
+@using ChessGameBlazorClient.ServiceEndpoints
+@using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Models
+@inject SignalRService HubClient
 @inject NavigationManager Navigation
-
+@attribute [Authorize]
 <h3>Game Page</h3>
 
-<p>Player 1: @Player1</p>
-<p>Player 2: @Player2</p>
+<p>Player 1: @Player1?.UserName</p>
+<p>Player 2: @Player2?.UserName</p>
 <div class="chessboard">
     @for (int row = 8; row >= 1; row--)
     {
@@ -16,7 +19,7 @@
             {
                 var isBlack = (row + col) % 2 == 0;
                 <div class="cell @(isBlack ? "black" : "white")">
-                </div>A
+                </div>
             }
         </div>
     }
@@ -25,7 +28,7 @@
 <style>
     .chessboard { display: inline-block; border: 2px solid #333; }
     .row { display: flex; }
-    .cell { width: 50px; height: 50px; }
+    .cell { width: 100px; height: 100px; }
     .white { background-color: #f0d9b5; }
     .black { background-color: #b58863; }
 </style>
@@ -41,30 +44,34 @@ else
 
 @code {
     [Parameter]
-    [SupplyParameterFromQuery(Name = "player1")]
-    public string Player1 { get; set; }
+    [SupplyParameterFromQuery(Name = "GameId")]
+    public Guid GameId { get; set; }
+    private UserConnection Player1{ get; set; }
+    private UserConnection Player2{ get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "player2")]
-    public string Player2 { get; set; }
 
     private HubConnection? _hubConnection;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:5001/gamehub") 
-            .WithAutomaticReconnect()
-            .Build();
+        _hubConnection = await HubClient.GetHubConnection();
 
-        _hubConnection.On<string, string>("ReceiveMove", (fromPlayer, move) =>
+        // _hubConnection.On<string, string>("ReceiveMove", (fromPlayer, move) =>
+        // {
+        //     Console.WriteLine($"{fromPlayer} сделал ход: {move}");
+        // });
+        await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
+
+        _hubConnection.On<List<UserConnection>>("ReceivePlayers", async (connections) =>
         {
-            Console.WriteLine($"{fromPlayer} сделал ход: {move}");
+            Player1 = connections.First();
+            Player2 = connections.Last();
+
+            await InvokeAsync(StateHasChanged);
         });
 
-        await _hubConnection.StartAsync();
 
-        await _hubConnection.InvokeAsync("StartGame", Player1, Player2);
+        // await _hubConnection.InvokeAsync("StartGame", Player1, Player2);
     }
 
     public async Task SendMoveAsync(string move)

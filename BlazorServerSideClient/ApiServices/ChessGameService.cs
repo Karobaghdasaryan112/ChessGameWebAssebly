@@ -7,6 +7,7 @@ namespace ChessGameBlazorClient.ApiServices
     {
         public ChessGameService(HttpClient httpClient,IQueryBuilder queryBuilder) : base(httpClient,queryBuilder)
         {
+
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ChessGameBlazorClient.Contracts
+﻿namespace ChessGameBlazorClient.Contracts
 {
     public interface IQueryBuilder
     {

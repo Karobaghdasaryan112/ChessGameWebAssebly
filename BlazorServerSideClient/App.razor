@@ -1,4 +1,8 @@
-﻿<CascadingAuthenticationState>
+﻿@using ChessGameBlazorClient.UI.Services
+@using ChessGame.Infrastructure.Infrastructure.Hubs
+@inject AuthenticationStateProvider AuthStateProvider
+@inject SignalRService HubClient
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -12,3 +16,19 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User?.Identity?.IsAuthenticated == true)
+        {
+            var user = authState.User;
+            var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+            await HubClient.GetHubConnection();
+            await HubClient.InitializeAsync(userGuid!, userName!);
+        }
+    }
+}
