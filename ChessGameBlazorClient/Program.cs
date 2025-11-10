@@ -56,15 +56,24 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"Request path: {context.Request.Path}");
+    await next.Invoke();
+});
 
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
-
+app.MapRazorComponents<App>();
+app.UseStaticFiles();
+app.UseRouting();
+app.MapBlazorHub();
+app.UseAntiforgery();
+app.UseAuthentication();
+app.UseAuthorization();
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 

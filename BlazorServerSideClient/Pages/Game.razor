@@ -1,0 +1,74 @@
+﻿@page "/game"
+
+@using Microsoft.AspNetCore.SignalR.Client
+@using SharedResources.ChessGameResource.Models
+@inject NavigationManager Navigation
+
+<h3>Game Page</h3>
+
+<p>Player 1: @Player1</p>
+<p>Player 2: @Player2</p>
+<div class="chessboard">
+    @for (int row = 8; row >= 1; row--)
+    {
+        <div class="row">
+            @for (int col = 1; col <= 8; col++)
+            {
+                var isBlack = (row + col) % 2 == 0;
+                <div class="cell @(isBlack ? "black" : "white")">
+                </div>A
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .chessboard { display: inline-block; border: 2px solid #333; }
+    .row { display: flex; }
+    .cell { width: 50px; height: 50px; }
+    .white { background-color: #f0d9b5; }
+    .black { background-color: #b58863; }
+</style>
+
+@if (_hubConnection == null)
+{
+    <p>Connecting to game server...</p>
+}
+else
+{
+    <p>Connected to game hub</p>
+}
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "player1")]
+    public string Player1 { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "player2")]
+    public string Player2 { get; set; }
+
+    private HubConnection? _hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:5001/gamehub") 
+            .WithAutomaticReconnect()
+            .Build();
+
+        _hubConnection.On<string, string>("ReceiveMove", (fromPlayer, move) =>
+        {
+            Console.WriteLine($"{fromPlayer} сделал ход: {move}");
+        });
+
+        await _hubConnection.StartAsync();
+
+        await _hubConnection.InvokeAsync("StartGame", Player1, Player2);
+    }
+
+    public async Task SendMoveAsync(string move)
+    {
+        await _hubConnection!.InvokeAsync("SendMove", Player1, move);
+    }
+}

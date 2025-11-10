@@ -53,6 +53,7 @@ else
     }
 
 
+
     public async Task SendInviteAsync(string playerId)
     {
         await _hubConnection!.InvokeAsync("SendInvite", playerId);

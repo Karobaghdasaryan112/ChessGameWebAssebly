@@ -136,3 +136,11 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Abstractions.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.AspNetCore.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\OpenIddict.Abstractions.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.dll
+C:\Users\karob\Source\Repos\ChessGameDiploma\Gateway.API\bin\Debug\net8.0\OpenIddict.Server.AspNetCore.dll

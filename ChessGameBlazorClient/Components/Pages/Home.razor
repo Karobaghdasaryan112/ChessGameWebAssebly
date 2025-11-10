@@ -1,7 +1,22 @@
-﻿@page "/"
-
+﻿@page "/home"
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Blazor Server App</title>
 
-Welcome to your new app.
+    <!-- Подключаем CSS -->
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    <!-- Подключаем Blazor Server JS -->
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

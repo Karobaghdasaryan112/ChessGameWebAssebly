@@ -1,0 +1,63 @@
+﻿@page "/Dashboard"
+@using ChessGameBlazorClient.UI.Services
+@using SharedResources.ChessGameResource.Models
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+@inject SignalRService HubClient
+
+<h3>Dashboard</h3>
+
+@if (activeGamers.Count == 0)
+{
+    <p>No players online</p>
+}
+else
+{
+    <ul>
+        @foreach (var player in activeGamers)
+        {
+            @if (player.Key != AuthStateProvider.GetAuthenticationStateAsync().Result.User.Claims.First(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value){
+            
+            <li>
+                @player.Value.UserName
+                <button @onclick="() => SendInviteAsync(player.Key)">Invite</button>
+            </li>
+            }
+        }
+    </ul>
+}
+
+@code {
+    private List<KeyValuePair<string, UserConnection>> activeGamers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (!user.Identity?.IsAuthenticated ?? false)
+        {
+            Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+            return;
+        }
+
+        HubClient.OnlinePlayersUpdated += (players) =>
+        {
+            activeGamers = players;
+            InvokeAsync(StateHasChanged);
+        };
+
+        var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+
+        HubClient.GetHubConnection();
+        await HubClient.InitializeAsync(userGuid!, userName!);
+    }
+
+    private async Task SendInviteAsync(string playerId)
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var myGuid = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
+        await HubClient.SendInviteAsync(playerId, myGuid);
+    }
+}

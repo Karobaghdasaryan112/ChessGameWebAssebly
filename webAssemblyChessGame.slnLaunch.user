@@ -15,7 +15,7 @@
         "Action": "Start"
       },
       {
-        "Path": "ChessGameBlazorClient\\ChessGameBlazorClient.csproj",
+        "Path": "BlazorServerSideClient\\BlazorServerSideClient.csproj",
         "Action": "Start"
       }
     ]
