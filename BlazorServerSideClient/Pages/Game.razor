@@ -1,5 +1,4 @@
 ﻿@page "/game"
-
 @using ChessGameBlazorClient.ServiceEndpoints
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
@@ -46,7 +45,9 @@ else
     [Parameter]
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
+
     private UserConnection Player1{ get; set; }
+
     private UserConnection Player2{ get; set; }
 
 
@@ -56,10 +57,7 @@ else
     {
         _hubConnection = await HubClient.GetHubConnection();
 
-        // _hubConnection.On<string, string>("ReceiveMove", (fromPlayer, move) =>
-        // {
-        //     Console.WriteLine($"{fromPlayer} сделал ход: {move}");
-        // });
+
         await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
 
         _hubConnection.On<List<UserConnection>>("ReceivePlayers", async (connections) =>
@@ -70,8 +68,11 @@ else
             await InvokeAsync(StateHasChanged);
         });
 
+    }
 
-        // await _hubConnection.InvokeAsync("StartGame", Player1, Player2);
+    protected override async Task OnInitializedAsync()
+    {
+        
     }
 
     public async Task SendMoveAsync(string move)

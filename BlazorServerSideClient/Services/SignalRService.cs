@@ -77,7 +77,7 @@ namespace ChessGameBlazorClient.UI.Services
             _hubConnection.On<string>("WinNotifierAsync", async (userId) =>
             {
                  await _js.InvokeVoidAsync("alert", "the Opponent left the game.You Win!");
-                _navigation.NavigateTo($"/Dashboard");
+                _navigation.NavigateTo("/Dashboard");
             });
         }
 

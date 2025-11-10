@@ -44,7 +44,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 .Where(c => c.Key != userId)
                 .ToList();
 
-            await Clients.Caller.SendAsync("ReceiveOnlinePlayers", players);
+            await Clients.All.SendAsync("ReceiveOnlinePlayers", players);
             return players;
         }
         public async Task GetPlayersInformation(Guid gameId)
@@ -57,7 +57,11 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         {
             if(_connections.TryGetValue(userId,out var connection))
             {
-                var anotherUserId = connection.Gameinfo.Players.Key == userId ? connection.Gameinfo.Players.Value : connection.Gameinfo.Players.Key;
+                var anotherUserId = 
+                    connection.Gameinfo.Players.Key == userId ? 
+                    connection.Gameinfo.Players.Value : 
+                    connection.Gameinfo.Players.Key;
+
                 if (_connections.TryGetValue(anotherUserId, out var anotherConnection))
                 {
                     await Clients.Client(anotherConnection.ConnectionId).SendAsync("WinNotifierAsync", anotherUserId);

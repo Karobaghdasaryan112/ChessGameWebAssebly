@@ -41,7 +41,6 @@
 
     private async Task HomeClicked(MouseEventArgs e)
     {
-        Console.WriteLine("Home clicked!");
         if (user.Identity?.IsAuthenticated == false)
         {
             NavigationManager.NavigateTo("/");
@@ -55,11 +54,10 @@
         {
             if (connectionState.Gameinfo != default)
             {
-                var confirmResult = await JS.InvokeAsync<bool>("confirm", "Do you want to pakinut igru?");
+                var confirmResult = await JS.InvokeAsync<bool>("confirm", "are you sure to want to Leave?");
                 if (confirmResult)
                 {
-                     await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnection), new object[] { UserGuid! });
-
+                    await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnection), new object[] { UserGuid! });
                 }
             }
         }
@@ -67,8 +65,6 @@
 
     private void DashboardClicked(MouseEventArgs e)
     {
-        Console.WriteLine("Dashboard clicked!");
-
         NavigationManager.NavigateTo("/dashboard");
     }
 }
