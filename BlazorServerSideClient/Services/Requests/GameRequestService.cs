@@ -9,6 +9,7 @@ namespace BlazorServerSideClient.Services.Requests
 {
     public class GameRequestService : IGameRequestService
     {
+
         private readonly SignalRService _signalRService;
         public GameRequestService(SignalRService signalRService)
         {
@@ -19,18 +20,33 @@ namespace BlazorServerSideClient.Services.Requests
         public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
         {
             var hubConnection = await _signalRService.GetHubConnection();
-            return await hubConnection.InvokeAsync<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>>("GetOnlinePlayersAsync", currentUserGuid);
+            return await hubConnection.
+                InvokeAsync<
+                    IResponseTypes<
+                        UserConnectionResponseDTO, 
+                        ChessGameResponseMessage>>
+                        ("GetOnlinePlayersAsync", currentUserGuid);
         }
         public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(Guid gameId)
         {
             var hubConnection = await (_signalRService.GetHubConnection());
-            return await hubConnection.InvokeAsync<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>>("SendGameStateAsync", gameId);
+            return await hubConnection.
+                InvokeAsync<
+                    IResponseTypes<
+                        UserConnectionResponseDTO, 
+                        ChessGameResponseMessage>>
+                        ("SendGameStateAsync", gameId);
         }
 
         public async Task ClearGameAsync(Guid gameId)
         {
             var hubConnection = await (_signalRService.GetHubConnection());
-            await hubConnection.InvokeAsync<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>>("ClearGameAsync", gameId);
+            await hubConnection.
+                InvokeAsync<
+                    IResponseTypes<
+                        UserConnectionResponseDTO, 
+                        ChessGameResponseMessage>>
+                        ("ClearGameAsync", gameId);
         }
 
     }

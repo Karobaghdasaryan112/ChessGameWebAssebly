@@ -1,26 +1,37 @@
 ﻿using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 namespace ChessGameBlazorClient.UI.Services
 {
     public class SignalRService
     {
         private HubConnection? _hubConnection;
+
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         public async Task<HubConnection> GetHubConnection()
         {
-            if (_hubConnection == null)
+            await _semaphore.WaitAsync();
+            try
             {
-                _hubConnection = new HubConnectionBuilder()
-                    .WithUrl(BasePaths.baseUrlHub)
-                    .WithAutomaticReconnect()
-                    .Build();
+                if (_hubConnection == null)
+                {
+                    _hubConnection = new HubConnectionBuilder()
+                        .WithUrl(BasePaths.baseUrlHub)
+                        .WithAutomaticReconnect()
+                        .Build();
 
-                await _hubConnection.StartAsync();
+                    await _hubConnection.StartAsync();
+                }
+                while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
+                {
+                    await Task.Delay(500);
+                }
+                return _hubConnection;
             }
-            while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
+            finally
             {
-                await Task.Delay(500);
+                _semaphore.Release();
             }
-            return _hubConnection;
         }
 
         //public async Task InitializeAsync(string userGuid, string userName)
