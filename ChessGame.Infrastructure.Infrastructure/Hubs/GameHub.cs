@@ -1,129 +1,71 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using SharedResources.ChessGameResource.Models;
-using System.Collections;
-using System.Collections.Concurrent;
+﻿using ChessGame.Core.Services.Contracts.Hub;
+using Microsoft.AspNetCore.SignalR;
+using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
-    /// <summary>
-    /// Represents the central SignalR hub that manages all real-time interactions in the chess game.
-    /// This hub handles:
-    /// <list type="bullet">
-    /// <item><description>Connecting and disconnecting players.</description></item>
-    /// <item><description>Sending, accepting, declining, and cancelling game invitations.</description></item>
-    /// <item><description>Submitting and broadcasting chess moves between players.</description></item>
-    /// </list>
-    /// It ensures synchronized gameplay and player communication across connected clients.
-    /// </summary>
     public class GameHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, UserConnection> _connections = new();
-        //PlayerIds when they play in real Time
+        private readonly IInvitationService<GameHub> _invitationService;
+        private readonly IGameService<GameHub> _gameService;
+        private readonly IConnectionService<GameHub> _connectionService;
+        public GameHub(
+            IInvitationService<GameHub> invitationService,
+            IGameService<GameHub> gameService,
+            IConnectionService<GameHub> connectionService)
+        {
+            _connectionService = connectionService;
+            _invitationService = invitationService;
+            _gameService = gameService;
+        }
+        public override async Task OnConnectedAsync()
+        {
+
+            await base.OnConnectedAsync();
+        }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var user = _connections.FirstOrDefault(x => x.Value.ConnectionId == Context.ConnectionId);
-            if (!user.Equals(default))
-            {
-                _connections.TryRemove(user.Key, out _);
-                await Clients.All.SendAsync("ReceiveOnlinePlayers", _connections.ToList());
-            }
+            await _connectionService.RemoveConnectionAsync(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task OnInitializedAsync(string userGuid, UserConnection connection)
-        {
-            if (!_connections.TryGetValue(userGuid, out var currentConnection))
-                _connections[userGuid] = connection;
-            await Clients.All.SendAsync("ReceiveOnlinePlayers", _connections.ToList());
-        }
 
-        public async Task<List<KeyValuePair<string, UserConnection>>> GetOnlinePlayersAsync(string userId)
-        {
-            var players = _connections
-                .Where(c => c.Key != userId)
-                .ToList();
+        //InivtationService 
+        public async Task SendInvite(UserConnectionResponseDTO inviterUserConnection, UserConnectionResponseDTO receiverUserConnection)
+           => await _invitationService.SendInvite(inviterUserConnection, receiverUserConnection);
 
-            await Clients.All.SendAsync("ReceiveOnlinePlayers", players);
-            return players;
-        }
-        public async Task GetPlayersInformation(Guid gameId)
-        {
-            var selectedGame = _connections.Where(kvp => kvp.Value.Gameinfo?.GameId == gameId).ToList();
-            var returnValues = selectedGame.Select(selectedKvp => selectedKvp.Value).ToList();
-            await Clients.Group(gameId.ToString()).SendAsync("ReceivePlayers", returnValues);
-        }
-        public async Task RemovePlayerFromGameAsync(string userId)
-        {
-            if(_connections.TryGetValue(userId,out var connection))
-            {
-                var anotherUserId = 
-                    connection.Gameinfo.Players.Key == userId ? 
-                    connection.Gameinfo.Players.Value : 
-                    connection.Gameinfo.Players.Key;
+        public async Task<IResponseTypes<InvitationResponseDTO, ChessGameResponseMessage>> AcceptInvite(Guid inviterUserGuid, Guid receiverUserGuid)
+             => await _invitationService.AcceptInviteAsync(inviterUserGuid, receiverUserGuid);
 
-                if (_connections.TryGetValue(anotherUserId, out var anotherConnection))
-                {
-                    await Clients.Client(anotherConnection.ConnectionId).SendAsync("WinNotifierAsync", anotherUserId);
-                    anotherConnection.Gameinfo = null;
-                }
-                connection.Gameinfo = null;
-            }
-        }
-        public async Task<UserConnection> IsUserInGame(string UserId)
-        {
-            _connections.TryGetValue(UserId, out var currentConnection);
-            return currentConnection!;
-        }
+        public async Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
+            => await _invitationService.CancelInviteAsync(inviterUserGuid, receiverUserGuid);
 
-        public async Task SendInvite(string targetPlayerId, string myPlayerId)
-        {
-            if (_connections.TryGetValue(targetPlayerId, out var target))
-            {
-                await Clients.Client(target.ConnectionId)
-                    .SendAsync("ReceiveInvite", _connections.Where(kvp => kvp.Key == myPlayerId).First(), _connections.Where(kvp => kvp.Key == targetPlayerId).First());
-            }
-        }
 
-        public async Task<Guid> AcceptInvite(KeyValuePair<string, UserConnection> inviter, KeyValuePair<string, UserConnection> target)
-        {
-            var players = new KeyValuePair<string, string>(inviter.Key, target.Key);
-            var gameGuid = Guid.NewGuid();
-            if (_connections.TryGetValue(inviter.Key, out var inviterConnection))
-                inviterConnection.Gameinfo = new Gameinfo() { GameId = gameGuid, Players = players };
+        //GameService
+        //TO:DO
+        public async Task ClearGameAsync(Guid gameId)
+            => await _gameService.ClearGameAsync(gameId);
 
-            if (_connections.TryGetValue(target.Key, out var targetConnection))
-                targetConnection.Gameinfo = new Gameinfo() { GameId = gameGuid, Players = players };
+        //TO:DO
+        public async Task SendGameStateAsync(Guid gameId)
+            => await _gameService.SendGameStateAsync(gameId);
 
-            await Groups.AddToGroupAsync(inviter.Value.ConnectionId, gameGuid.ToString());
-            await Groups.AddToGroupAsync(target.Value.ConnectionId, gameGuid.ToString());
+        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+            => await _gameService.GetOnlinePlayersAsync(currentUserGuid);
 
-            await Clients.Client(inviter.Value.ConnectionId)
-               .SendAsync("InviteAccepted", inviterConnection?.Gameinfo?.GameId);
 
-            return gameGuid;
-        }
-    }
-    public class IsInGameEqualityComparer : IEqualityComparer
-    {
-        public new bool Equals(object? x, object? y)
-        {
-            if (x == null || y == null) return false;
+        //connectionService
+        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(Guid currentUserGuid)
+            => await _connectionService.RemoveConnectionAsync(currentUserGuid);
 
-            return x.Equals(y);
-        }
+        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(Guid currentUserGuid, UserConnectionResponseDTO currentUserConnection)
+            => await _connectionService.AddConnectionAsync(currentUserGuid, currentUserConnection);
 
-        public int GetHashCode(object obj)
-        {
-            if (obj == null) throw new ArgumentNullException();
-
-            if (obj is KeyValuePair<string, string> pair)
-            {
-                return HashCode.Combine(pair.Value, pair.Key);
-            }
-            throw new ArgumentException();
-
-        }
+        public IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnectionAsync(Guid userGuid)
+             => _connectionService.GetUserConnection(userGuid);
 
     }
 }

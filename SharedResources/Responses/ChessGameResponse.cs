@@ -10,6 +10,7 @@ namespace SharedResources.Responses
         where TDto : ICheseGameResponseDTO
     {
         public TDto Data { get; set; }
+        public List<TDto> Datas { get; set; }
         public bool IsSuccess { get; set; }
         public ChessGameResponseMessage Message { get; set; }
         public string CustomError { get; set; }
@@ -21,7 +22,7 @@ namespace SharedResources.Responses
         public IdentityErrorDTO? IdentityErrorDTO { get; set; }
 
         public IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
-        string errorMessage,HttpStatusCode statusCode)
+        string errorMessage, HttpStatusCode statusCode)
         {
             return new ChessGameResponse<TDto>
             {
@@ -34,20 +35,20 @@ namespace SharedResources.Responses
         }
 
         public static IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(
-        ChessGameResponseMessage responseMessage,HttpStatusCode statusCode,List<string> errors = null)
+        ChessGameResponseMessage responseMessage, HttpStatusCode statusCode, List<string> errors = null)
+        {
+            return new ChessGameResponse<TDto>()
             {
-                return new ChessGameResponse<TDto>()
-                {
-                    Data = default,
-                    IsSuccess = false,
-                    Errors = errors,
-                    Message = responseMessage,
-                    StatusCode = statusCode
-                };
-            }
+                Data = default,
+                IsSuccess = false,
+                Errors = errors,
+                Message = responseMessage,
+                StatusCode = statusCode
+            };
+        }
 
         public static IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
-            TDto data,ChessGameResponseMessage message,HttpStatusCode statusCode)
+            TDto data, ChessGameResponseMessage message, HttpStatusCode statusCode)
         {
             return new ChessGameResponse<TDto>()
             {
@@ -57,5 +58,17 @@ namespace SharedResources.Responses
                 StatusCode = statusCode
             };
         }
+        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
+            List<TDto> datas, ChessGameResponseMessage message, HttpStatusCode statusCode)
+        {
+            return new ChessGameResponse<TDto>()
+            {
+                Datas = datas,
+                IsSuccess = true,
+                message = message,
+                StatusCode = statusCode
+            };
+        }
+
     }
 }

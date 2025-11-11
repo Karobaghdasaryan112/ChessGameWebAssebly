@@ -16,6 +16,23 @@ namespace SharedResources.Responses.ResponseMessages
         {
 
         }
+        public static readonly ChessGameResponseMessage SuccessUserConnections =
+            new ChessGameResponseMessage("Get User Connections Success.");
+
+        public static readonly ChessGameResponseMessage UserConnectionNotFound =
+            new ChessGameResponseMessage("User Connection Is Not Found.");
+
+        public static readonly ChessGameResponseMessage UserConnectionFoundSuccess =
+            new ChessGameResponseMessage("User Connection Is Found SuccessFuly.");
+
+        public static readonly ChessGameResponseMessage SuccessInvitation =
+             new ChessGameResponseMessage("Invitation Create Success.");
+
+        public static readonly ChessGameResponseMessage UserConnectionRemovedSuccess =
+            new ChessGameResponseMessage("User Connection Is Removed Success.");
+
+        public static readonly ChessGameResponseMessage ConnectionAddedSuccess =
+            new ChessGameResponseMessage("User Connection Is Added Success.");
 
         public static readonly ChessGameResponseMessage GameCreated =
             new ChessGameResponseMessage("Chess game created successfully.");

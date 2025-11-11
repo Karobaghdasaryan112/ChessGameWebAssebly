@@ -1,4 +1,5 @@
-﻿using ChessGame.Infrastructure.Infrastructure.Hubs;
+﻿using ChessGame.Core.Services.Services.HubServices;
+using ChessGame.Infrastructure.Infrastructure.Hubs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,9 +9,10 @@ namespace ChessGame.Infrastructure.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddSignalR();
 
             services.AddSingleton<GameHub>();
+            services.AddSingleton<BaseHubService<GameHub>>();
+
         }
     }
 }

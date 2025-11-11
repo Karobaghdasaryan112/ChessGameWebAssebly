@@ -5,8 +5,8 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 {
     public class BoardInitializeRequestDTO : ICheseGameRequestDTO
     {
-        public int GameId { get; set; }
         public string Player1Id { get; set; }
         public string Player2Id { get; set; }
+        public Guid GameId { get; set; }
     }
 }

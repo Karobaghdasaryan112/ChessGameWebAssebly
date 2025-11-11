@@ -18,7 +18,7 @@ namespace SharedResources.Contracts.RequestsAndResponses
     where TData : IResponseDTO where TMessage : IMessage
     {
         IdentityErrorDTO? IdentityErrorDTO { get; set; }
-        TData Data { get; set; }
+        TData? Data { get; set; }
         bool IsSuccess { get; set; }
         string CustomError { get; set; }
         HttpStatusCode StatusCode { get; set; }
