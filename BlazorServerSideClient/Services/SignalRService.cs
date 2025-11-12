@@ -1,6 +1,5 @@
 ﻿using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.SignalR.Client;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 namespace ChessGameBlazorClient.UI.Services
 {
     public class SignalRService
@@ -24,7 +23,7 @@ namespace ChessGameBlazorClient.UI.Services
                 }
                 while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(200);
                 }
                 return _hubConnection;
             }

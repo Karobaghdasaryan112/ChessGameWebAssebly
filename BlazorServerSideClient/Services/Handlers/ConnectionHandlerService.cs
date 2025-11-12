@@ -1,19 +1,23 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using ChessGameBlazorClient.UI.Services;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using System.Collections.Concurrent;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
     public class ConnectionHandlerService : IConnectionHandlerService
     {
         private JSRunetimeService _jsRunetimeService;
-        public Action<List<KeyValuePair<string, UserConnectionResponseDTO>>>? OnlinePlayersUpdated;
-        public ConnectionHandlerService(JSRunetimeService jSRunetimeService)
+        private SignalRService _signalRService;
+        public Action<KeyValuePair<Guid, UserConnectionResponseDTO>>? OnlinePlayersUpdated { get; set; }
+        public ConnectionHandlerService(JSRunetimeService jSRunetimeService, SignalRService signalRService)
         {
+            _signalRService = signalRService;
             _jsRunetimeService = jSRunetimeService;
         }
-        public Task ReceiveOnlinePlayersAsync()
+        public async Task ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionResponseDTO> userConnection)
         {
-            throw new NotImplementedException();
+            OnlinePlayersUpdated.Invoke(userConnection);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SharedResources.Contracts.RequestsAndResponses
     /// <typeparam name="TData"></typeparam>
     /// <typeparam name="TMessage"></typeparam>
     public interface IResponseTypes<TData, TMessage>
-    where TData : IResponseDTO where TMessage : IMessage
+    where TMessage : IMessage
     {
         IdentityErrorDTO? IdentityErrorDTO { get; set; }
         TData? Data { get; set; }

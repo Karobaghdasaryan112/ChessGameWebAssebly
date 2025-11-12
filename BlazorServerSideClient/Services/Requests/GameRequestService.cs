@@ -17,13 +17,13 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
 
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+        public async Task<IResponseTypes<Dictionary<Guid, UserConnectionResponseDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
         {
             var hubConnection = await _signalRService.GetHubConnection();
             return await hubConnection.
                 InvokeAsync<
                     IResponseTypes<
-                        UserConnectionResponseDTO, 
+                        Dictionary<Guid, UserConnectionResponseDTO>, 
                         ChessGameResponseMessage>>
                         ("GetOnlinePlayersAsync", currentUserGuid);
         }

@@ -1,6 +1,7 @@
 ﻿@using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
 @using SharedResources.ChessGameResource.Models
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @inject NavigationManager NavigationManager
 @inject SignalRService HubClient
 @inject IJSRuntime JS
@@ -47,17 +48,16 @@
             return;
         }
         var hubConnection = await HubClient.GetHubConnection();
-        HubClient.RegisterHandlers();
         var UserGuid = user.Claims.First(Claim => Claim.Type == ClaimTypes.NameIdentifier)?.Value;
-        var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnection), new object[] { UserGuid! });
-        if (userConnection is UserConnection connectionState)
+        var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
+        if (userConnection is UserConnectionResponseDTO connectionState)
         {
             if (connectionState.Gameinfo != default)
             {
                 var confirmResult = await JS.InvokeAsync<bool>("confirm", "are you sure to want to Leave?");
                 if (confirmResult)
                 {
-                    await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnection), new object[] { UserGuid! });
+                    await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
                 }
             }
         }

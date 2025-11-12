@@ -1,6 +1,10 @@
 using BlazorServerSideClient.Areas.Identity;
+using BlazorServerSideClient.Contracts.Handlers;
+using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Data;
 using BlazorServerSideClient.Services;
+using BlazorServerSideClient.Services.Handlers;
+using BlazorServerSideClient.Services.Requests;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.Services;
@@ -25,6 +29,13 @@ builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SignalRService>();
+builder.Services.AddScoped<JSRunetimeService>();
+builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
+builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
+builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
+builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
+builder.Services.AddScoped<IGameRequestService, GameRequestService>();
+builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
 builder.Services.AddSignalR();
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
 {

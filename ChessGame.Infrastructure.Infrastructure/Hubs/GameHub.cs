@@ -22,7 +22,6 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         }
         public override async Task OnConnectedAsync()
         {
-
             await base.OnConnectedAsync();
         }
 
@@ -53,7 +52,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task SendGameStateAsync(Guid gameId)
             => await _gameService.SendGameStateAsync(gameId);
 
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+        public async Task<IResponseTypes<Dictionary<Guid,UserConnectionResponseDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
             => await _gameService.GetOnlinePlayersAsync(currentUserGuid);
 
 

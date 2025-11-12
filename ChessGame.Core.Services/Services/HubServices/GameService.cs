@@ -1,5 +1,4 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
-using Microsoft.AspNetCore.SignalR;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.Responses;
@@ -20,15 +19,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+        public async Task<IResponseTypes<Dictionary<Guid,UserConnectionResponseDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
         {
             var onlinePlayers = _connectionService.
                 CurrentConnectionState
                 .Where(connectionKeyValuePair => connectionKeyValuePair.Key != currentUserGuid)
-                .Select(selectedKvp => selectedKvp.Value)
-                .ToList();
+                .ToDictionary();
             return
-                ChessGameResponse<UserConnectionResponseDTO>
+                ChessGameResponse<Dictionary<Guid, UserConnectionResponseDTO>>
                 .CreateSuccessResponse(
                     onlinePlayers,
                     ChessGameResponseMessage.SuccessUserConnections,

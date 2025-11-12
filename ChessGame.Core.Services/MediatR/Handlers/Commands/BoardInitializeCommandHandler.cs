@@ -68,7 +68,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     HttpStatusCode.InternalServerError, new());
             }
 
-            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = result };
+            //TO:DO change Game id from int to Guid
+            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = Guid.NewGuid() };
+
 
             return ChessGameResponse<BoardInitializeResponseDTO>.
                 CreateSuccessResponse(

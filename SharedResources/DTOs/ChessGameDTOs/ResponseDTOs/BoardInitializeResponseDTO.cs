@@ -5,7 +5,8 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 {
     public class BoardInitializeResponseDTO : ICheseGameResponseDTO
     {
-        public int GameId { get; set; }
+
         public Board board { get; set; }
+        public Guid GameId { get; set; }
     }
 }

@@ -7,7 +7,6 @@ using System.Net;
 namespace SharedResources.Responses
 {
     public class ChessGameResponse<TDto> : IResponseTypes<TDto, ChessGameResponseMessage>
-        where TDto : ICheseGameResponseDTO
     {
         public TDto Data { get; set; }
         public List<TDto> Datas { get; set; }

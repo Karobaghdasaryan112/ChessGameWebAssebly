@@ -1,13 +1,22 @@
 ﻿@page "/Dashboard"
-@using ChessGameBlazorClient.UI.Services
+@using BlazorServerSideClient.Contracts.Handlers
+@using BlazorServerSideClient.Contracts.Requests
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @using SharedResources.ChessGameResource.Models
+@using BlazorServerSideClient.Services.Handlers
+@using BlazorServerSideClient.Services.Requests
+@using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
 @using System.Threading
-@inject IJSRuntime JS
-@inject NavigationManager Navigation
+@using System.Collections.Concurrent
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IInivitationReqeustService InvitationRequest
+@inject IConnectionHandlerService ConnectionHandler
+@inject IGameRequestService GameRequest
+@inject IConnectionReqeustService ConnectionRequest
+@inject NavigationManager Navigation
 @inject SignalRService HubClient
-
+@inject IJSRuntime JS
 <div class="dashboard-container">
     <h2 class="dashboard-title">🎮 Player Dashboard</h2>
 
@@ -23,42 +32,44 @@
         <div class="players-list">
             @{
                 var authState = AuthStateProvider.GetAuthenticationStateAsync().Result;
-                var currentUserGuid = authState.User?.Claims?.FirstOrDefault(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var currentUserId = authState.User?.Claims?.FirstOrDefault(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             }
 
             @foreach (var player in activeGamers)
             {
-                if (player.Key != currentUserGuid)
+                if (Guid.TryParse(currentUserId, out var currentUserGuid))
                 {
-                    <div class="player-card">
-                        <div class="player-info">
-                            <div class="avatar">@player.Value.UserName.Substring(0, 1).ToUpper()</div>
-                            <div>
-                                <strong>@player.Value.UserName</strong>
-                                @if (player.Value.Gameinfo == null)
-                                {
-                                    <p class="status-online">🟢 Online</p>
-                                }
-                                else
-                                {
-                                    <p class="status-ingame">🎯 In Game</p>
-                                }
+                    if (player.Key != currentUserGuid)
+                    {
+                        <div class="player-card">
+                            <div class="player-info">
+                                <div class="avatar">@player.Value.UserName.Substring(0, 1).ToUpper()</div>
+                                <div>
+                                    <strong>@player.Value.UserName</strong>
+                                    @if (player.Value.Gameinfo == null)
+                                    {
+                                        <p class="status-online">🟢 Online</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="status-ingame">🎯 In Game</p>
+                                    }
+                                </div>
                             </div>
+                            @if (player.Value.Gameinfo == null)
+                            {
+                                <button class="invite-btn" @onclick="() => SendInviteAsync(player)">
+                                    Invite
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="invite-btn disabled" disabled>
+                                    Busy
+                                </button>
+                            }
                         </div>
-
-                        @if (player.Value.Gameinfo == null)
-                        {
-                            <button class="invite-btn" @onclick="() => SendInviteAsync(player)">
-                                Invite
-                            </button>
-                        }
-                        else
-                        {
-                            <button class="invite-btn disabled" disabled>
-                                Busy
-                            </button>
-                        }
-                    </div>
+                    }
                 }
             }
         </div>
@@ -66,48 +77,58 @@
 </div>
 
 @code {
-    private List<KeyValuePair<string, UserConnection>> activeGamers = new();
+    private Dictionary<Guid, UserConnectionResponseDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
         UnAuthorizedUser();
-
-        HubClient.OnlinePlayersUpdated += (players) =>
-        {
-            activeGamers = players;
-            InvokeAsync(StateHasChanged);
-        };
 
         var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
 
-        await HubClient.GetHubConnection();
-        await HubClient.InitializeAsync(userGuid, userName);
+
+
+        ConnectionHandler.OnlinePlayersUpdated += (player) =>
+        {
+            if (!activeGamers.TryGetValue(player.Key, out var playerConnection))
+                activeGamers.Add(player.Key, player.Value);
+
+            activeGamers[player.Key] = player.Value;
+
+            InvokeAsync(StateHasChanged);
+        };
+
+        var hubConnection = await HubClient.GetHubConnection();
+        if (Guid.TryParse(userGuid, out var userIdAsGuid))
+        {
+            await ConnectionRequest.
+                AddConnectionAsync(
+                    userIdAsGuid,
+                    new UserConnectionResponseDTO()
+                    {
+                        ConnectionId = hubConnection.ConnectionId!,
+                        GameId = default,
+                        Gameinfo = default!,
+                        UserName = userName
+                    });
+
+            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(userIdAsGuid);
+
+            if (allOnlinePlayers.IsSuccess)
+                activeGamers = allOnlinePlayers.Data!;
+            else
+                throw new InvalidOperationException();
+        }
     }
 
-    protected override async Task OnInitializedAsync()
+    private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionResponseDTO> receiverPlayer)
     {
-        UnAuthorizedUser();
+        var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        var receiverUserGuid = receiverPlayer.Key;
 
-        var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-        await RefreshGamers(userGuid);
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private async Task RefreshGamers(object obj)
-    {
-        if (obj is string userGuid)
-            await HubClient.GetOnlinePlayersAsync(userGuid);
-    }
-
-    private async Task SendInviteAsync(KeyValuePair<string, UserConnection> player)
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var myGuid = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
-        await HubClient.GetHubConnection();
-        await HubClient.SendInviteAsync(player.Key, myGuid);
+        if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
+            await InvitationRequest.SendInviteAsync(inviterUserGuid, receiverUserGuid);
     }
 
     private void UnAuthorizedUser()

@@ -73,10 +73,6 @@
       "BoardInitializeRequestDTO": {
         "type": "object",
         "properties": {
-          "gameId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "player1Id": {
             "type": "string",
             "nullable": true
@@ -84,6 +80,10 @@
           "player2Id": {
             "type": "string",
             "nullable": true
+          },
+          "gameId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -118,10 +118,6 @@
       "SubmitMoveRequestDTO": {
         "type": "object",
         "properties": {
-          "gameId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "currentPosition": {
             "$ref": "#/components/schemas/Position"
           },
@@ -131,6 +127,10 @@
           "player": {
             "type": "string",
             "nullable": true
+          },
+          "gameId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false

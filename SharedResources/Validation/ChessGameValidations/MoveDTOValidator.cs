@@ -11,8 +11,6 @@ namespace SharedResources.Validation.ChessGameValidations
                .NotEmpty().WithMessage("Player is required.")
                .Must(p => !string.IsNullOrWhiteSpace(p)).WithMessage("Player cannot be whitespace.");
 
-            RuleFor(x => x.GameId)
-                .GreaterThan(0).WithMessage("GameId must be greater than 0.");
 
             RuleFor(x => x.Block)
                 .NotNull().WithMessage("Block is required.")

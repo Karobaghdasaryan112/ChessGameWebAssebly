@@ -7,10 +7,6 @@ namespace SharedResources.Validation.ChessGameValidations
     {
         public SubmitMoveDTOValidator()
         {
-            RuleFor(x => x.GameId)
-                 .GreaterThan(0)
-                 .WithMessage("GameId must be greater than 0.");
-
             RuleFor(x => x.Player)
                 .NotEmpty()
                 .WithMessage("Player is required.")

@@ -51,7 +51,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                   HttpStatusCode.InternalServerError,
                   new List<string> { $"cannot Added the UserConnection for User {userGuid}" });
 
-            await _baseHubService.SendUsersChange(_connections);
+            await _baseHubService.SendUsersChange(CurrentConnectionState);
 
             return
                 ChessGameResponse<UserConnectionResponseDTO>.
@@ -70,7 +70,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                  HttpStatusCode.NotFound,
                  new List<string> { $"cannot Delete the UserConnection for User {userGuid}" });
 
-            await _baseHubService.SendUsersChange(_connections);
+            await _baseHubService.SendUsersChange(CurrentConnectionState);
 
             return ChessGameResponse<UserConnectionResponseDTO>.
                   CreateSuccessResponse(

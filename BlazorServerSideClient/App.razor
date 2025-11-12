@@ -28,7 +28,6 @@
             var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
             await HubClient.GetHubConnection();
-            await HubClient.InitializeAsync(userGuid!, userName!);
         }
     }
 }
