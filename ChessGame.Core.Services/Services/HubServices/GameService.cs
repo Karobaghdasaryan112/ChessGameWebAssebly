@@ -1,7 +1,10 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.Responses;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
@@ -19,16 +22,26 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<IResponseTypes<Dictionary<Guid, UserConnectionDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDTO)
         {
             var onlinePlayers = _connectionService.
                 CurrentConnectionState
-                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != currentUserGuid)
+                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != getOnlinePlayersRequestDTO.Data.UserGuid)
                 .ToDictionary();
+            if (onlinePlayers.Count == 0)
+                return
+                ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
+                .CreateErrorResponse(
+                    null,
+                    ChessGameResponseMessage.UserConnectionNotFound,
+                    System.Net.HttpStatusCode.OK);
             return
-                ChessGameResponse<Dictionary<Guid, UserConnectionDTO>>
+                ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
-                    onlinePlayers,
+                    new GetOnlinePlayersResponseDTO()
+                    {
+                        OnlinePlayers = onlinePlayers
+                    },
                     ChessGameResponseMessage.SuccessUserConnections,
                     System.Net.HttpStatusCode.OK);
         }

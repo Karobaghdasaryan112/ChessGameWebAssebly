@@ -83,10 +83,9 @@
 </div>
 
 @code {
-    private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
+    private static Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
         UnAuthorizedUser();
 
@@ -95,14 +94,12 @@
         var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
 
-
-
         ConnectionHandler.OnlinePlayersUpdated += (player) =>
         {
-            if (!activeGamers.TryGetValue(player.Key, out var playerConnection))
-                activeGamers.Add(player.Key, player.Value);
+            // if (!activeGamers.TryGetValue(player.Key, out var playerConnection))
+            activeGamers.TryAdd(player.Key, player.Value);
 
-            activeGamers[player.Key] = player.Value;
+            // activeGamers[player.Key] = player.Value;
 
             InvokeAsync(StateHasChanged);
         };
@@ -111,6 +108,17 @@
         var hubConnection = await HubClient.GetHubConnection();
         if (Guid.TryParse(userGuid, out var userIdAsGuid))
         {
+            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
+            {
+                Data = new GetONlinePlayersRequestDTO()
+                {
+                    UserGuid = userIdAsGuid
+                }
+            });
+
+            if (allOnlinePlayers.IsSuccess)
+                activeGamers = allOnlinePlayers.Data.OnlinePlayers!;
+
             var response = await ConnectionRequest.
                  AddConnectionAsync(
                      new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
@@ -127,20 +135,8 @@
                              userGuid = userIdAsGuid
                          }
                      });
-            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
-            {
-                Data = new GetONlinePlayersRequestDTO()
-                {
-                    UserGuid = userIdAsGuid
-                }
-            });
-
-
-            if (allOnlinePlayers.IsSuccess)
-                activeGamers = allOnlinePlayers.Data.OnlinePlayers!;
-            else
-                throw new InvalidOperationException();
         }
+
     }
 
     private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)

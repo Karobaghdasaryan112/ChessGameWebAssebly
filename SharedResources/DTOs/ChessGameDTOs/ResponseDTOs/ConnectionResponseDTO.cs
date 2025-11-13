@@ -5,11 +5,11 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 {
     public class ConnectionResponseDTO<TDto, TMessage> where TMessage : ChessGameResponseMessage
     {
-        public TDto Data;
-        public TMessage Message;
-        public HttpStatusCode HttpStatusCode;
-        public List<string> Errors;
-        public bool IsSuccess;
+        public TDto Data { get; set; }
+        public TMessage Message { get; set; }
+        public HttpStatusCode HttpStatusCode { get; set; }
+        public List<string> Errors { get; set; }
+        public bool IsSuccess { get; set; }
 
         public static ConnectionResponseDTO<TDto, TMessage> CreateErrorResponse(
             TDto responseDTO,

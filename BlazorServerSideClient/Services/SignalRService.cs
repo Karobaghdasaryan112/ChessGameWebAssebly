@@ -41,6 +41,7 @@ namespace ChessGameBlazorClient.UI.Services
         }
         public async Task RegisterConnectionHandlers()
         {
+            await GetHubConnection();
             _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>(
                     "ReceiveUpdatedUsers",
                     (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)

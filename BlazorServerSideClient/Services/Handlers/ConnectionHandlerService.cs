@@ -13,7 +13,13 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         public void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection)
         {
-            OnlinePlayersUpdated?.Invoke(userConnection);
+            try
+            {
+                OnlinePlayersUpdated?.Invoke(userConnection);
+            }catch(Exception ex)
+            {
+                var msg = ex.Message;
+            }
         }
     }
 }

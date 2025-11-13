@@ -45,7 +45,7 @@ namespace BlazorServerSideClient.Services.Requests
         public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>>
             SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)// Guid gameId
         {
-            var hubConnection = await (_signalRService.GetHubConnection());
+            var hubConnection = await _signalRService.GetHubConnection();
             return await hubConnection.
                 InvokeAsync<
                     ConnectionResponseDTO<

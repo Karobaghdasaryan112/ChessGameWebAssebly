@@ -36,13 +36,19 @@ namespace BlazorServerSideClient.Services.Requests
                 ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)//AddUserConnectionRequestDTO addUserConnectionRequestDTO
         {
             var hubConnection = await _signalRService.GetHubConnection();
-
-            return await hubConnection.
-                InvokeAsync<
-                    ConnectionResponseDTO<
-                        AddUserConnectionResponseDTO,
-                        ChessGameResponseMessage>>
-                        ("AddConnectionAsync", addUserConnectionRequestDTO.Data);
+            try
+            {
+                var result = await hubConnection.
+                    InvokeAsync<
+                        ConnectionResponseDTO<
+                            AddUserConnectionResponseDTO,
+                            ChessGameResponseMessage>>
+                            ("AddConnectionAsync", addUserConnectionRequestDTO);
+            }catch(Exception Ex)
+            {
+                var message = Ex.Message;
+            }
+            return null;
         }
         public async Task<
             ConnectionResponseDTO<

@@ -46,7 +46,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                   HttpStatusCode.Found);
         }
 
-        public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
+        public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
         {
 
             var existUserResult = GetUserConnection(
@@ -54,7 +54,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 {
                     Data = new GetUserConnectionRequestDTO()
                     {
-                        UserGuid = addUserConnectionRequestDTO.userGuid
+                        UserGuid = addUserConnectionRequestDTO.Data.userGuid
                     }
                 });
 
@@ -69,7 +69,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                         ChessGameResponseMessage.ConnectionAddedSuccess,
                         HttpStatusCode.Created);
 
-            if (!_connections.TryAdd(addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection))
+            if (!_connections.TryAdd(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection))
                 return ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateErrorResponse(
                   new AddUserConnectionResponseDTO()
@@ -78,9 +78,9 @@ namespace ChessGame.Core.Services.Services.HubServices
                   },
                   ChessGameResponseMessage.InternalServerError,
                   HttpStatusCode.InternalServerError,
-                  new List<string> { $"cannot Added the UserConnection for User {addUserConnectionRequestDTO.userGuid}" });
-
-            await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection));
+                  new List<string> { $"cannot Added the UserConnection for User {addUserConnectionRequestDTO.Data.userGuid}" });
+            
+            await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection));
 
             return
                 ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
