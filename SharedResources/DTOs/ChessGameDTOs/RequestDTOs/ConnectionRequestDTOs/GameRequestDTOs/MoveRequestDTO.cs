@@ -1,7 +1,7 @@
 ﻿using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.DTOs;
 
-namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs
+namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 {
     public class MoveRequestDTO : ICheseGameRequestDTO
     {

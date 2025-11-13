@@ -1,5 +1,4 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 
 namespace BlazorServerSideClient.Services.Handlers
 {

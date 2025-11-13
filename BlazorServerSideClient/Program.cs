@@ -12,6 +12,7 @@ using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,13 +31,17 @@ builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
-builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
 builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
 builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
+builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
-builder.Services.AddSignalR();
+builder.Services.AddSignalR()
+    .AddNewtonsoftJsonProtocol(options =>
+    {
+        options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+    }); 
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
 {
     client.BaseAddress = new Uri($"{BasePaths.baseUrl}");

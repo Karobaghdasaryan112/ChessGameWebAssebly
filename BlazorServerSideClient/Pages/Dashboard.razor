@@ -1,6 +1,12 @@
 ﻿@page "/Dashboard"
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @using SharedResources.ChessGameResource.Models
 @using BlazorServerSideClient.Services.Handlers
@@ -77,12 +83,14 @@
 </div>
 
 @code {
-    private Dictionary<Guid, UserConnectionResponseDTO> activeGamers = new();
+    private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         UnAuthorizedUser();
+
+        await HubClient.RegisterConnectionHandlers();
 
         var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
@@ -99,36 +107,59 @@
             InvokeAsync(StateHasChanged);
         };
 
+
         var hubConnection = await HubClient.GetHubConnection();
         if (Guid.TryParse(userGuid, out var userIdAsGuid))
         {
-            await ConnectionRequest.
-                AddConnectionAsync(
-                    userIdAsGuid,
-                    new UserConnectionResponseDTO()
-                    {
-                        ConnectionId = hubConnection.ConnectionId!,
-                        GameId = default,
-                        Gameinfo = default!,
-                        UserName = userName
-                    });
+            var response = await ConnectionRequest.
+                 AddConnectionAsync(
+                     new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
+                     {
+                         Data = new AddUserConnectionRequestDTO()
+                         {
+                             userConnection = new UserConnectionDTO()
+                             {
+                                 ConnectionId = hubConnection.ConnectionId!,
+                                 GameId = default,
+                                 Gameinfo = default!,
+                                 UserName = userName
+                             },
+                             userGuid = userIdAsGuid
+                         }
+                     });
+            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
+            {
+                Data = new GetONlinePlayersRequestDTO()
+                {
+                    UserGuid = userIdAsGuid
+                }
+            });
 
-            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(userIdAsGuid);
 
             if (allOnlinePlayers.IsSuccess)
-                activeGamers = allOnlinePlayers.Data!;
+                activeGamers = allOnlinePlayers.Data.OnlinePlayers!;
             else
                 throw new InvalidOperationException();
         }
     }
 
-    private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionResponseDTO> receiverPlayer)
+    private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
     {
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;
 
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
-            await InvitationRequest.SendInviteAsync(inviterUserGuid, receiverUserGuid);
+        {
+            var sendInviteRequest = new ConnectionRequestDTO<SendInvitationRequestDTO>()
+            {
+                Data = new SendInvitationRequestDTO()
+                {
+                    InviterPlayerId = inviterUserGuid,
+                    ReceiverPlayerId = receiverUserGuid
+                }
+            };
+            await InvitationRequest.SendInviteAsync(sendInviteRequest);
+        }
     }
 
     private void UnAuthorizedUser()

@@ -337,3 +337,4 @@ C:\Users\karob\source\repos\ChessGameDiploma\webAssemblyChessGame.Services.Chess
 C:\Users\karob\source\repos\ChessGameDiploma\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.pdb
 C:\Users\karob\source\repos\ChessGameDiploma\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.genruntimeconfig.cache
 C:\Users\karob\source\repos\ChessGameDiploma\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ref\ChessService.API.ChessGameAPI.dll
+C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll

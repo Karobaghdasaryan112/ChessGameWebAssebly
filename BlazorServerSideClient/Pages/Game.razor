@@ -3,6 +3,7 @@
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Models
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @inject SignalRService HubClient
 @inject NavigationManager Navigation
@@ -63,9 +64,9 @@ else
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
 
-    private UserConnectionResponseDTO Player1 { get; set; }
+    private UserConnectionDTO Player1 { get; set; }
 
-    private UserConnectionResponseDTO Player2 { get; set; }
+    private UserConnectionDTO Player2 { get; set; }
 
 
     private HubConnection? _hubConnection;
@@ -77,7 +78,7 @@ else
 
         await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
 
-        _hubConnection.On<List<UserConnectionResponseDTO>>("ReceivePlayers", async (connections) =>
+        _hubConnection.On<List<UserConnectionDTO>>("ReceivePlayers", async (connections) =>
         {
             Player1 = connections.First();
             Player2 = connections.Last();

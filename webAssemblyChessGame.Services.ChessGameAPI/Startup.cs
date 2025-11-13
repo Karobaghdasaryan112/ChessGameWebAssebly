@@ -33,36 +33,8 @@ namespace ChessService.API.ChessGameAPI
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "http://localhost:7287"; 
-                    options.Audience = "http://localhost:7287";
-                    options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = "http://localhost:7287",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("6FJTnf91RFneNeVRNY3Fpjb2/bDLx7jfJMOSyv36O4QMr9NoqgvbDytT0TPtzea1ACLA4NJZLHK2w3CwgpUjxQ==")),
-                        ValidateAudience = true,
-                        ValidAudience = "http://localhost:7287",
-                        ValidateLifetime = true
-                    };
-
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            var accessToken = context.Request.Query["access_token"];
-                            var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hub"))
-                                context.Token = accessToken;
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+            });
+ 
 
             services.AddCoreServices(_configuration);
 

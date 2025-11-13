@@ -1,13 +1,16 @@
-﻿using SharedResources.Contracts.RequestsAndResponses;
+﻿using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Contracts.Requests
 {
     public interface IInivitationReqeustService
     {
-        Task SendInviteAsync(Guid inviterPlayerId, Guid receiverPlayerId);
+        Task<ConnectionResponseDTO<SendInvitationRequestDTO, ChessGameResponseMessage>> SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionResponseDTO);
         Task CancelInviteAsync(Guid inviterPlayerGuid, Guid receiverUserGuid);
-        Task<IResponseTypes<InvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
+        Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest);
     }
 }

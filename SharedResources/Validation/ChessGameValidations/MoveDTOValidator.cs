@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 
 namespace SharedResources.Validation.ChessGameValidations
 {

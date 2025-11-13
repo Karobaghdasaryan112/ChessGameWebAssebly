@@ -1,7 +1,9 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
-using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
-using SharedResources.Responses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Collections.Concurrent;
 using System.Net;
@@ -10,97 +12,141 @@ namespace ChessGame.Core.Services.Services.HubServices
 {
     public class ConnetionService<THub> : IConnectionService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
     {
-        private BaseHubService<THub> _baseHubService;
-        internal static readonly ConcurrentDictionary<Guid, UserConnectionResponseDTO> _connections = new();
+        internal BaseHubService<THub> _baseHubService;
+        internal static readonly ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
 
         public ConnetionService(BaseHubService<THub> baseHubService)
         {
-            baseHubService = _baseHubService!;
+            _baseHubService = baseHubService;
         }
 
-        public ConcurrentDictionary<Guid, UserConnectionResponseDTO> CurrentConnectionState => _connections;
+        public ConcurrentDictionary<Guid, UserConnectionDTO> CurrentConnectionState => _connections;
 
-        public IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnection(Guid userGuid)
+        public ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
         {
 
-            if (!_connections.TryGetValue(userGuid, out var currentUserConnection))
-                return ChessGameResponse<UserConnectionResponseDTO>.
+            if (!_connections.TryGetValue(getUserConnectionRequestDTO.Data.UserGuid, out var currentUserConnection))
+                return ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
                     CreateErrorResponse(
+                    new GetUserConnectionResponseDTO()
+                    {
+                        UserConnectionDTO = default
+                    },
                     ChessGameResponseMessage.PlayerNotFound,
                     HttpStatusCode.NotFound,
-                    new List<string> { $"user connection Not Found for UserId {userGuid}" });
+                    new List<string> { $"user connection Not Found for UserId {getUserConnectionRequestDTO.Data.UserGuid}" });
 
-            return ChessGameResponse<UserConnectionResponseDTO>.
+            return ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
-                  currentUserConnection,
+                  new GetUserConnectionResponseDTO()
+                  {
+                      UserConnectionDTO = currentUserConnection
+                  },
                   ChessGameResponseMessage.UserConnectionFoundSuccess,
                   HttpStatusCode.Found);
         }
 
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(Guid userGuid, UserConnectionResponseDTO connection)
+        public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
         {
-            var existUserResult = GetUserConnection(userGuid);
+
+            var existUserResult = GetUserConnection(
+                new ConnectionRequestDTO<GetUserConnectionRequestDTO>()
+                {
+                    Data = new GetUserConnectionRequestDTO()
+                    {
+                        UserGuid = addUserConnectionRequestDTO.userGuid
+                    }
+                });
 
             if (existUserResult.IsSuccess)
-                return existUserResult;
+                return
+                    ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
+                    CreateSuccessResponse(
+                        new AddUserConnectionResponseDTO()
+                        {
+                            IsAdded = true
+                        },
+                        ChessGameResponseMessage.ConnectionAddedSuccess,
+                        HttpStatusCode.Created);
 
-            if (!_connections.TryAdd(userGuid, connection))
-                return ChessGameResponse<UserConnectionResponseDTO>.
+            if (!_connections.TryAdd(addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection))
+                return ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateErrorResponse(
+                  new AddUserConnectionResponseDTO()
+                  {
+                      IsAdded = false
+                  },
                   ChessGameResponseMessage.InternalServerError,
                   HttpStatusCode.InternalServerError,
-                  new List<string> { $"cannot Added the UserConnection for User {userGuid}" });
+                  new List<string> { $"cannot Added the UserConnection for User {addUserConnectionRequestDTO.userGuid}" });
 
-            await _baseHubService.SendUsersChange(CurrentConnectionState);
+            await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection));
 
             return
-                ChessGameResponse<UserConnectionResponseDTO>.
+                ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
-                  connection,
+                  new AddUserConnectionResponseDTO() { IsAdded = true },
                   ChessGameResponseMessage.ConnectionAddedSuccess,
                   HttpStatusCode.Created);
+
         }
 
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(Guid userGuid)
+        public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsUserGuidAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO)
         {
-            if (!_connections.TryRemove(userGuid, out var removedConnection))
-                return ChessGameResponse<UserConnectionResponseDTO>.
+            if (!_connections.TryRemove(removeUserConnectionRequestDTO.Data.UserGuid, out var removedConnection))
+                return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                  CreateErrorResponse(
+                 new RemoveUserConnectionResponseDTO()
+                 {
+                     IsRemoved = false
+                 },
                  ChessGameResponseMessage.PlayerNotFound,
                  HttpStatusCode.NotFound,
-                 new List<string> { $"cannot Delete the UserConnection for User {userGuid}" });
+                 new List<string> { $"cannot Delete the UserConnection for User {removeUserConnectionRequestDTO.Data.UserGuid}" });
 
-            await _baseHubService.SendUsersChange(CurrentConnectionState);
+            //TO DO _baseHubService.SwndRemoveUser
 
-            return ChessGameResponse<UserConnectionResponseDTO>.
+            return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
-                  removedConnection,
+                  new RemoveUserConnectionResponseDTO() { IsRemoved = true },
                   ChessGameResponseMessage.UserConnectionRemovedSuccess,
                   HttpStatusCode.Found);
 
         }
-        public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(string connectionId)
+        public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
-            var removeConnection = _connections.Where(connectionKvp => connectionKvp.Value.ConnectionId == connectionId).FirstOrDefault();
+            var removeConnection = _connections.Where(connectionKvp => connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId).FirstOrDefault();
+
             if (removeConnection.Equals(default))
-                return ChessGameResponse<UserConnectionResponseDTO>.
+                return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                 CreateErrorResponse(
+                new RemoveUserConnectionResponseDTO()
+                {
+                    IsRemoved = false
+                },
                 ChessGameResponseMessage.UserConnectionNotFound,
                 HttpStatusCode.NotFound,
-                new List<string> { $"cannot Delete the UserConnection ConnectionId-{connectionId}" });
+                new List<string> { $"cannot Delete the UserConnection ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}" });
 
             if (!_connections.TryRemove(removeConnection))
-                return ChessGameResponse<UserConnectionResponseDTO>.
+                return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                  CreateErrorResponse(
+                 new RemoveUserConnectionResponseDTO()
+                 {
+                     IsRemoved = false
+                 },
                  ChessGameResponseMessage.PlayerNotFound,
                  HttpStatusCode.NotFound,
-                 new List<string> { $"cannot Delete the UserConnection  ConnectionId-{connectionId}" });
+                 new List<string> { $"cannot Delete the UserConnection  ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}" });
 
-            await _baseHubService.SendUsersChange(_connections);
+            //TO DO _baseHubService.SwndRemoveUser
 
-            return ChessGameResponse<UserConnectionResponseDTO>.
+            return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
-                  removeConnection.Value,
+                  new RemoveUserConnectionResponseDTO()
+                  {
+                      IsRemoved = true
+                  },
                   ChessGameResponseMessage.UserConnectionRemovedSuccess,
                   HttpStatusCode.Found);
 

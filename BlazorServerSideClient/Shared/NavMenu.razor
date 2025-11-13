@@ -49,18 +49,18 @@
         }
         var hubConnection = await HubClient.GetHubConnection();
         var UserGuid = user.Claims.First(Claim => Claim.Type == ClaimTypes.NameIdentifier)?.Value;
-        var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
-        if (userConnection is UserConnectionResponseDTO connectionState)
-        {
-            if (connectionState.Gameinfo != default)
-            {
-                var confirmResult = await JS.InvokeAsync<bool>("confirm", "are you sure to want to Leave?");
-                if (confirmResult)
-                {
-                    await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
-                }
-            }
-        }
+        // var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
+        // if (userConnection is UserConnectionResponseDTO connectionState)
+        // {
+        //     if (connectionState.Gameinfo != default)
+        //     {
+        //         var confirmResult = await JS.InvokeAsync<bool>("confirm", "are you sure to want to Leave?");
+        //         if (confirmResult)
+        //         {
+        //             await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
+        //         }
+        //     }
+        // }
     }
 
     private void DashboardClicked(MouseEventArgs e)

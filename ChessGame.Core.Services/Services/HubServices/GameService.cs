@@ -1,6 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.Contracts.RequestsAndResponses;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 
@@ -19,14 +19,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<IResponseTypes<Dictionary<Guid,UserConnectionResponseDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
+        public async Task<IResponseTypes<Dictionary<Guid, UserConnectionDTO>, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
         {
             var onlinePlayers = _connectionService.
                 CurrentConnectionState
                 .Where(connectionKeyValuePair => connectionKeyValuePair.Key != currentUserGuid)
                 .ToDictionary();
             return
-                ChessGameResponse<Dictionary<Guid, UserConnectionResponseDTO>>
+                ChessGameResponse<Dictionary<Guid, UserConnectionDTO>>
                 .CreateSuccessResponse(
                     onlinePlayers,
                     ChessGameResponseMessage.SuccessUserConnections,
@@ -34,7 +34,7 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-        public Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(Guid gameId)
+        public Task<IResponseTypes<UserConnectionDTO, ChessGameResponseMessage>> SendGameStateAsync(Guid gameId)
         {
             throw new NotImplementedException();
         }

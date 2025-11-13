@@ -1,13 +1,11 @@
-﻿using SharedResources.Contracts.DTOs;
-
-namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
+﻿namespace SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 {
-    public class UserConnectionResponseDTO : ICheseGameResponseDTO
+    public class UserConnectionDTO
     {
         public string ConnectionId { get; set; }
         public string UserName { get; set; }
         public Gameinfo Gameinfo { get; set; }
-        public Guid GameId { get ; set ; }
+        public Guid GameId { get; set; }
     }
     public class Gameinfo
     {

@@ -11,7 +11,6 @@ namespace SharedResources.Responses
         public TDto Data { get; set; }
         public List<TDto> Datas { get; set; }
         public bool IsSuccess { get; set; }
-        public ChessGameResponseMessage Message { get; set; }
         public string CustomError { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public List<string> Errors { get; set; }
@@ -41,7 +40,6 @@ namespace SharedResources.Responses
                 Data = default,
                 IsSuccess = false,
                 Errors = errors,
-                Message = responseMessage,
                 StatusCode = statusCode
             };
         }

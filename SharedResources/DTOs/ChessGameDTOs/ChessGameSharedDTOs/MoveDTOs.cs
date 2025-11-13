@@ -1,6 +1,6 @@
 ﻿using SharedResources.Contracts.DTOs;
 
-namespace SharedResources.DTOs.ChessGameDTOs
+namespace SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 {
     public class MoveDTOs : ICheseGameRequestDTO, ICheseGameResponseDTO
     {

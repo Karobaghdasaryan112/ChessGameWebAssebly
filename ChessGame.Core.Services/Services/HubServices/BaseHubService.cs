@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using System.Collections.Concurrent;
 
@@ -12,7 +13,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             _hubContext = hubContext;
         }
         public async Task SendUsersChange(
-            ConcurrentDictionary<Guid, UserConnectionResponseDTO> connections) =>
+            KeyValuePair<Guid, UserConnectionDTO> connections) =>
             await _hubContext.Clients.All.SendAsync("ReceiveUpdatedUsers", connections);
 
         public async Task SendAcceptedInviteAsync(
@@ -22,8 +23,8 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task SendInviteAsync(
             string connectionId,
-            UserConnectionResponseDTO inviterUserConnection,
-            UserConnectionResponseDTO receiverUserConnection) =>
+            UserConnectionDTO inviterUserConnection,
+            UserConnectionDTO receiverUserConnection) =>
             await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveInvite", inviterUserConnection, receiverUserConnection);
 
 
