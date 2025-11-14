@@ -72,9 +72,9 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task SendInvite(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
+        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
         {
-            await _baseHubService.SendInviteAsync(connectionRequestDTO.Data.ReceiverUserConnection.ConnectionId, connectionRequestDTO.Data.InviterUserConnection, connectionRequestDTO.Data.ReceiverUserConnection);
+            await _baseHubService.SendInviteAsync(connectionRequestDTO);
         }
     }
-}
+}        

@@ -11,7 +11,7 @@ namespace ChessGame.Core.Services.Contracts.Hub
     {
 
         Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest);
-        Task SendInvite(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO);
+        Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO);
         Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
     }
 }

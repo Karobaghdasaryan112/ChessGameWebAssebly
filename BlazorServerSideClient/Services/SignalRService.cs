@@ -2,7 +2,6 @@
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 namespace ChessGameBlazorClient.UI.Services
 {
     public class SignalRService
@@ -10,8 +9,10 @@ namespace ChessGameBlazorClient.UI.Services
         private HubConnection? _hubConnection;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly IConnectionHandlerService _connectionHandlerService;
-        public SignalRService(IConnectionHandlerService connectionHandlerService)
+        private readonly IInvitationHandlerService _invitationHandlerService;
+        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService)
         {
+            _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
         }
         public async Task<HubConnection> GetHubConnection()
@@ -45,6 +46,10 @@ namespace ChessGameBlazorClient.UI.Services
                     "ReceiveUpdatedUsers",
                     (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)
                 );
+
+            _hubConnection.On<UserConnectionDTO, UserConnectionDTO>(
+                "ReceiveInvite",
+                (inviterUserConnection, receiverUserConnection) => _invitationHandlerService.ReceiveInvite(inviterUserConnection, receiverUserConnection));
         }
         //public async Task InitializeAsync(string userGuid, string userName)
         //{

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
-using System.Collections.Concurrent;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -22,10 +22,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             await _hubContext.Clients.Client(conectionId).SendAsync("InviteAccepted", gameId);
 
         public async Task SendInviteAsync(
-            string connectionId,
-            UserConnectionDTO inviterUserConnection,
-            UserConnectionDTO receiverUserConnection) =>
-            await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveInvite", inviterUserConnection, receiverUserConnection);
+            ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO) =>
+            await _hubContext.Clients.Client(connectionRequestDTO.Data.ReceiverUserConnection.ConnectionId).SendAsync("ReceiveInvite", connectionRequestDTO.Data.InviterUserConnection, connectionRequestDTO.Data.ReceiverUserConnection);
 
 
         public async Task AddToGroupAsync(string gruopName,string connectionId) 

@@ -37,7 +37,7 @@ namespace BlazorServerSideClient.Services.Requests
 
             if (allGamersResult.IsSuccess)
                 foreach (var guidAndConnections in allGamersResult.Data.OnlinePlayers!)
-                    _connectionHandlerService.OnlinePlayersUpdated!.Invoke(guidAndConnections);
+                    _connectionHandlerService.OnlinePlayersUpdated?.Invoke(guidAndConnections);
 
             return allGamersResult;
         }
@@ -45,7 +45,7 @@ namespace BlazorServerSideClient.Services.Requests
         public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>>
             SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)// Guid gameId
         {
-            var hubConnection = await (_signalRService.GetHubConnection());
+            var hubConnection = await _signalRService.GetHubConnection();
             return await hubConnection.
                 InvokeAsync<
                     ConnectionResponseDTO<

@@ -74,7 +74,6 @@ C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAsse
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.AssemblyInfoInputs.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.AssemblyInfo.cs
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.csproj.CoreCompileInputs.cache
-C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.sourcelink.json
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\webAssemblyChessGame.Services.ChessGameAPI\obj\Debug\net8.0\ChessService.API.ChessGameAPI.dll

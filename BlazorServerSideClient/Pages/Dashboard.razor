@@ -15,6 +15,8 @@
 @using System.Security.Claims
 @using System.Threading
 @using System.Collections.Concurrent
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IInivitationReqeustService InvitationRequest
 @inject IConnectionHandlerService ConnectionHandler
@@ -23,9 +25,12 @@
 @inject NavigationManager Navigation
 @inject SignalRService HubClient
 @inject IJSRuntime JS
+
+
+<DashboardInvitationRequest />
+
 <div class="dashboard-container">
     <h2 class="dashboard-title">🎮 Player Dashboard</h2>
-
     @if (activeGamers.Count == 0)
     {
         <div class="empty-state">
@@ -38,7 +43,7 @@
         <div class="players-list">
             @{
                 var authState = AuthStateProvider.GetAuthenticationStateAsync().Result;
-                var currentUserId = authState.User?.Claims?.FirstOrDefault(claim => claim.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var currentUserId = authState.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             }
 
             @foreach (var player in activeGamers)
@@ -62,17 +67,14 @@
                                     }
                                 </div>
                             </div>
+
                             @if (player.Value.Gameinfo == null)
                             {
-                                <button class="invite-btn" @onclick="() => SendInviteAsync(player)">
-                                    Invite
-                                </button>
+                                <button class="invite-btn" @onclick="() => SendInviteAsync(player)">Invite</button>
                             }
                             else
                             {
-                                <button class="invite-btn disabled" disabled>
-                                    Busy
-                                </button>
+                                <button class="invite-btn disabled" disabled>Busy</button>
                             }
                         </div>
                     }
@@ -86,74 +88,103 @@
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+
+    // private bool showInviteModal = false;
+    // private string inviterName = "";
+    // private SendInvitationsResponseDTO? lastInvite;
+
+
+    // private int timerValue = 15;
+    // private CancellationTokenSource? timerCts;
+    
+    protected override async Task OnInitializedAsync()
     {
+
         UnAuthorizedUser();
 
+        var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        var userName = user.FindFirst(ClaimTypes.Name)?.Value!;
+
+        await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
-        var userGuid = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
 
+            // InvitationHandlerService.InvitationAction += async (invitationResponse) =>
+            // {
+            //     lastInvite = invitationResponse;
+            //     inviterName = invitationResponse.InviterUserConnection.UserName;
 
+            //     showInviteModal = true;
+            //     timerValue = 10;
+            //     StartTimer();
 
-        ConnectionHandler.OnlinePlayersUpdated += (player) =>
-        {
-            if (!activeGamers.TryGetValue(player.Key, out var playerConnection))
-                activeGamers.Add(player.Key, player.Value);
-
-            activeGamers[player.Key] = player.Value;
-
-            InvokeAsync(StateHasChanged);
-        };
-
+            //     await InvokeAsync(StateHasChanged);
+            // };
 
         var hubConnection = await HubClient.GetHubConnection();
+
         if (Guid.TryParse(userGuid, out var userIdAsGuid))
         {
-            var response = await ConnectionRequest.
-                 AddConnectionAsync(
-                     new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
-                     {
-                         Data = new AddUserConnectionRequestDTO()
-                         {
-                             userConnection = new UserConnectionDTO()
-                             {
-                                 ConnectionId = hubConnection.ConnectionId!,
-                                 GameId = default,
-                                 Gameinfo = default!,
-                                 UserName = userName
-                             },
-                             userGuid = userIdAsGuid
-                         }
-                     });
-            var allOnlinePlayers = await GameRequest.GetOnlinePlayersAsync(new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
-            {
-                Data = new GetONlinePlayersRequestDTO()
+            await ConnectionRequest.AddConnectionAsync(
+                new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
                 {
-                    UserGuid = userIdAsGuid
-                }
-            });
+                    Data = new AddUserConnectionRequestDTO()
+                    {
+                        userConnection = new UserConnectionDTO()
+                        {
+                            ConnectionId = hubConnection.ConnectionId!,
+                            Gameinfo = null,
+                            GameId = default,
+                            UserName = userName
+                        },
+                        userGuid = userIdAsGuid
+                    }
+                });
 
+            var allGamers = await GameRequest.GetOnlinePlayersAsync(
+                new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
+                {
+                    Data = new GetONlinePlayersRequestDTO()
+                    {
+                        UserGuid = userIdAsGuid
+                    }
+                });
 
-            if (allOnlinePlayers.IsSuccess)
-                activeGamers = allOnlinePlayers.Data.OnlinePlayers!;
-            else
-                throw new InvalidOperationException();
+            if (allGamers.IsSuccess)
+                activeGamers = allGamers.Data.OnlinePlayers!;
         }
     }
 
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+     
+
+        ConnectionHandler.OnlinePlayersUpdated += (player) =>
+        {
+            activeGamers[player.Key] = player.Value;
+            InvokeAsync(StateHasChanged);
+        };
+
+        return Task.CompletedTask;
+    }
+
+
     private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
     {
+        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;
-
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
         {
             var sendInviteRequest = new ConnectionRequestDTO<SendInvitationRequestDTO>()
             {
                 Data = new SendInvitationRequestDTO()
                 {
+                    ReceiverUserConnection = receiverPlayer.Value,
+                    InviterUserConnection = new UserConnectionDTO()
+                    {
+                        UserName = userName
+                    },
                     InviterPlayerId = inviterUserGuid,
                     ReceiverPlayerId = receiverUserGuid
                 }

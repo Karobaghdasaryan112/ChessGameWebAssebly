@@ -42,7 +42,7 @@ namespace BlazorServerSideClient.Services.Requests
                     ConnectionResponseDTO<
                         AddUserConnectionResponseDTO,
                         ChessGameResponseMessage>>
-                        ("AddConnectionAsync", addUserConnectionRequestDTO.Data);
+                        ("AddConnectionAsync", addUserConnectionRequestDTO);
         }
         public async Task<
             ConnectionResponseDTO<

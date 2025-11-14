@@ -3,8 +3,8 @@ using System.Net;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 {
-    public class ConnectionRequestDTO<TDto> 
+    public class ConnectionRequestDTO<TDto>
     {
-        public TDto Data;
+        public TDto Data { get; set; }
     }
 }
