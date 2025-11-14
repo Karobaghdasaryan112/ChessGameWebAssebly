@@ -1,0 +1,93 @@
+﻿@using BlazorServerSideClient.Contracts.Handlers
+@using BlazorServerSideClient.Services.Handlers
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+@inject IInvitationHandlerService InvitationHandlerService
+
+<h3>DashboardInvitationRequest</h3>
+@if (showInviteModal)
+{
+    <div class="invite-backdrop">
+        <div class="invite-modal bounce-in">
+            <h3>🎯 Game Invitation</h3>
+
+            <p>
+                <strong>@inviterName</strong> invited you to a chess match!
+            </p>
+
+            <p class="timer">Auto-decline in <strong>@timerValue</strong> sec...</p>
+
+            <div class="modal-buttons">
+                <button class="accept-btn" @onclick="AcceptInvite">Accept</button>
+                <button class="decline-btn" @onclick="DeclineInvite">Decline</button>
+            </div>
+        </div>
+    </div>
+
+}
+@code {
+
+    private static string inviterName;
+    private static int timerValue;
+    private static SendInvitationsResponseDTO? lastInvite;
+    private static bool showInviteModal;
+    private static CancellationTokenSource? timerCts;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        InvitationHandlerService.InvitationAction += async (invitationResponse) =>
+        {
+            lastInvite = invitationResponse;
+            inviterName = invitationResponse.InviterUserConnection.UserName;
+
+            showInviteModal = true;
+            timerValue = 10;
+            StartTimer();
+
+            await InvokeAsync(StateHasChanged);
+        };
+        base.OnAfterRender(firstRender);
+    }
+
+    private void StartTimer()
+    {
+
+        timerCts?.Cancel();
+        timerCts = new CancellationTokenSource();
+        var token = timerCts.Token;
+
+        timerValue = 10;
+
+        _ = Task.Run(async () =>
+        {
+            while (timerValue > 0 && !token.IsCancellationRequested)
+            {
+                await Task.Delay(1000, token);
+
+                if (token.IsCancellationRequested)
+                    return;
+
+                timerValue--;
+                await InvokeAsync(() => StateHasChanged());
+            }
+
+            if (!token.IsCancellationRequested)
+            {
+                await InvokeAsync(async () =>
+                {
+                    await DeclineInvite();
+                });
+            }
+        });
+    }
+
+
+    private async Task AcceptInvite()
+    {
+
+    }
+
+
+    private async Task DeclineInvite()
+    {
+
+    }
+}

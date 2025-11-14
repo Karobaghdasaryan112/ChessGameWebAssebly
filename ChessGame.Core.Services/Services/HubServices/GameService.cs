@@ -22,27 +22,24 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDTO)
+        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
         {
             var onlinePlayers = _connectionService.
                 CurrentConnectionState
-                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != getOnlinePlayersRequestDTO.Data.UserGuid)
+                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.Data.UserGuid)
                 .ToDictionary();
-            if (onlinePlayers.Count == 0)
+            if (onlinePlayers.Count() == 0)
                 return
-                ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
+                    ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                 .CreateErrorResponse(
-                    null,
+                    default,
                     ChessGameResponseMessage.UserConnectionNotFound,
-                    System.Net.HttpStatusCode.OK);
+                    System.Net.HttpStatusCode.BadRequest);
             return
                 ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
-                    new GetOnlinePlayersResponseDTO()
-                    {
-                        OnlinePlayers = onlinePlayers
-                    },
-                    ChessGameResponseMessage.SuccessUserConnections,
+                    new GetOnlinePlayersResponseDTO() { OnlinePlayers = onlinePlayers },
+                    ChessGameResponseMessage.UserConnectionFoundSuccess,
                     System.Net.HttpStatusCode.OK);
         }
 

@@ -6,7 +6,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
     {
         public UserConnectionDTO InviterUserConnection { get; set; }
         public UserConnectionDTO ReceiverUserConnection { get; set; }
-        public Guid InviterPlayerId;
-        public Guid ReceiverPlayerId;
+        public Guid InviterPlayerId { get; set; }
+        public Guid ReceiverPlayerId { get; set; }
     }
 }

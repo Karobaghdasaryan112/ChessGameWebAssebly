@@ -1,7 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Services.HubServices;
 using Microsoft.AspNetCore.SignalR;
-using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
@@ -50,16 +49,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
 
         //InivtationService 
-        public async Task SendInvite(UserConnectionDTO inviterUserConnection, UserConnectionDTO receiverUserConnection)
-           => await _invitationService.SendInvite(
-               new ConnectionRequestDTO<SendInvitationRequestDTO>()
-               {
-                   Data = new SendInvitationRequestDTO()
-                   {
-                       InviterUserConnection = inviterUserConnection,
-                       ReceiverUserConnection = receiverUserConnection
-                   }
-               });
+        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
+           => await _invitationService.SendInviteAsync(connectionRequestDTO);
 
         public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInvite(Guid inviterUserGuid, Guid receiverUserGuid)
              => await _invitationService.AcceptInviteAsync(new ConnectionRequestDTO<AcceptInvitationRequestDTO>()
@@ -84,9 +75,11 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task SendGameStateAsync(Guid gameId)
             => await _gameService.SendGameStateAsync(gameId);
 
-        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDTO)
-            => await _gameService.GetOnlinePlayersAsync(getOnlinePlayersRequestDTO);
+        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
+            => await _gameService.GetOnlinePlayersAsync(connectionRequestDTO);
 
+        //public async Task ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> connection)
+        //    => _connectionService.R
 
         //connectionService
         public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(Guid currentUserGuid)
@@ -99,8 +92,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                      }
                  });
 
-        public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> connectionRequestDTO)
-            => await _connectionService.AddConnectionAsync(connectionRequestDTO);
+        public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
+            => await _connectionService.AddConnectionAsync(addUserConnectionRequestDTO);
 
         public ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnectionAsync(Guid userGuid)
              => _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>()

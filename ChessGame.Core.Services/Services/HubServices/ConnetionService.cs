@@ -79,7 +79,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                   ChessGameResponseMessage.InternalServerError,
                   HttpStatusCode.InternalServerError,
                   new List<string> { $"cannot Added the UserConnection for User {addUserConnectionRequestDTO.Data.userGuid}" });
-            
+
             await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection));
 
             return

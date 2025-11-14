@@ -37,7 +37,7 @@ namespace BlazorServerSideClient.Services.Requests
 
             if (allGamersResult.IsSuccess)
                 foreach (var guidAndConnections in allGamersResult.Data.OnlinePlayers!)
-                    _connectionHandlerService.OnlinePlayersUpdated!.Invoke(guidAndConnections);
+                    _connectionHandlerService.OnlinePlayersUpdated?.Invoke(guidAndConnections);
 
             return allGamersResult;
         }
