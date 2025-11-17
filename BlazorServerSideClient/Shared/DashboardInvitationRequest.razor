@@ -1,29 +1,29 @@
 ﻿@using BlazorServerSideClient.Contracts.Handlers
+@using BlazorServerSideClient.Services
 @using BlazorServerSideClient.Services.Handlers
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
 @inject IInvitationHandlerService InvitationHandlerService
-
+@inject JSRunetimeService JSRuneTimeService
+@implements IDisposable
 <h3>DashboardInvitationRequest</h3>
-@if (showInviteModal)
-{
-    <div class="invite-backdrop">
-        <div class="invite-modal bounce-in">
-            <h3>🎯 Game Invitation</h3>
 
-            <p>
-                <strong>@inviterName</strong> invited you to a chess match!
-            </p>
+<div class="invite-backdrop" id="invite-backdrop-Id" hidden>
+    <div class="invite-modal bounce-in">
+        <h3>🎯 Game Invitation</h3>
 
-            <p class="timer">Auto-decline in <strong>@timerValue</strong> sec...</p>
+        <p>
+            <strong>@inviterName</strong> invited you to a chess match!
+        </p>
 
-            <div class="modal-buttons">
-                <button class="accept-btn" @onclick="AcceptInvite">Accept</button>
-                <button class="decline-btn" @onclick="DeclineInvite">Decline</button>
-            </div>
+        <p class="timer">Auto-decline in <strong>@timerValue</strong> sec...</p>
+
+        <div class="modal-buttons">
+            <button class="accept-btn" @onclick="AcceptInvite">Accept</button>
+            <button class="decline-btn" @onclick="DeclineInvite">Decline</button>
         </div>
     </div>
+</div>
 
-}
 @code {
 
     private static string inviterName;
@@ -31,20 +31,37 @@
     private static SendInvitationsResponseDTO? lastInvite;
     private static bool showInviteModal;
     private static CancellationTokenSource? timerCts;
+
+    protected override Task OnInitializedAsync()
+    {
+        JSRuneTimeService.HideInviteModal();
+
+        return Task.CompletedTask;
+    }
     protected override void OnAfterRender(bool firstRender)
     {
-        InvitationHandlerService.InvitationAction += async (invitationResponse) =>
-        {
-            lastInvite = invitationResponse;
-            inviterName = invitationResponse.InviterUserConnection.UserName;
-
-            showInviteModal = true;
-            timerValue = 10;
-            StartTimer();
-
-            await InvokeAsync(StateHasChanged);
-        };
+        InvitationHandlerService.InvitationAction += OnInvitationReceived;
         base.OnAfterRender(firstRender);
+    }
+    public void Dispose()
+    {
+        InvitationHandlerService.InvitationAction -= OnInvitationReceived;
+    }
+    private async void OnInvitationReceived(SendInvitationsResponseDTO invitationResponseDTO)
+    {
+        lastInvite = invitationResponseDTO;
+        inviterName = invitationResponseDTO.InviterUserConnection.UserName;
+
+        showInviteModal = true;
+        timerValue = 10;
+        StartTimer();
+        await InvokeAsync(async () =>
+        {
+            await JSRuneTimeService.ShowInviteModal();
+            StateHasChanged();
+        });
+        await InvokeAsync(StateHasChanged);
+        // InvitationHandlerService.InvitationAction -= OnInvitationReceived;
     }
 
     private void StartTimer()
@@ -68,7 +85,6 @@
                 timerValue--;
                 await InvokeAsync(() => StateHasChanged());
             }
-
             if (!token.IsCancellationRequested)
             {
                 await InvokeAsync(async () =>
@@ -76,6 +92,8 @@
                     await DeclineInvite();
                 });
             }
+            showInviteModal = false;
+            await InvokeAsync(() => StateHasChanged());
         });
     }
 
@@ -88,6 +106,7 @@
 
     private async Task DeclineInvite()
     {
-
+        showInviteModal = false;
+        await InvokeAsync(() => StateHasChanged());
     }
 }

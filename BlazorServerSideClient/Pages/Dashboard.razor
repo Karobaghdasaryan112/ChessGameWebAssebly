@@ -17,6 +17,7 @@
 @using System.Collections.Concurrent
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
 
+@inject IInvitationHandlerService InvitationHandlerService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IInivitationReqeustService InvitationRequest
 @inject IConnectionHandlerService ConnectionHandler
@@ -96,7 +97,7 @@
 
     // private int timerValue = 15;
     // private CancellationTokenSource? timerCts;
-    
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -108,18 +109,24 @@
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
+        ConnectionHandler.OnlinePlayersUpdated += (player) =>
+        {
+           activeGamers[player.Key] = player.Value;
+           InvokeAsync(StateHasChanged);
+        };
 
-            // InvitationHandlerService.InvitationAction += async (invitationResponse) =>
-            // {
-            //     lastInvite = invitationResponse;
-            //     inviterName = invitationResponse.InviterUserConnection.UserName;
 
-            //     showInviteModal = true;
-            //     timerValue = 10;
-            //     StartTimer();
+        // InvitationHandlerService.InvitationAction += async (invitationResponse) =>
+        // {
+        //     lastInvite = invitationResponse;
+        //     inviterName = invitationResponse.InviterUserConnection.UserName;
 
-            //     await InvokeAsync(StateHasChanged);
-            // };
+        //     showInviteModal = true;
+        //     timerValue = 10;
+        //     StartTimer();
+
+        //     await InvokeAsync(StateHasChanged);
+        // };
 
         var hubConnection = await HubClient.GetHubConnection();
 
@@ -153,19 +160,6 @@
             if (allGamers.IsSuccess)
                 activeGamers = allGamers.Data.OnlinePlayers!;
         }
-    }
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-     
-
-        ConnectionHandler.OnlinePlayersUpdated += (player) =>
-        {
-            activeGamers[player.Key] = player.Value;
-            InvokeAsync(StateHasChanged);
-        };
-
-        return Task.CompletedTask;
     }
 
 

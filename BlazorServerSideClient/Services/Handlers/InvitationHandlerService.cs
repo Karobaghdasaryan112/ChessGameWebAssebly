@@ -6,17 +6,18 @@ namespace BlazorServerSideClient.Services.Handlers
 {
     public class InvitationHandlerService : IInvitationHandlerService
     {
-        private JSRunetimeService _jsRunetimeService { get; set; }
-        public Action<SendInvitationsResponseDTO> InvitationAction { get; set; }
-        public InvitationHandlerService(JSRunetimeService jSRunetimeService)
+        JSRunetimeService _jSRunetimeService { get; set; }
+        public  Action<SendInvitationsResponseDTO> InvitationAction { get; set; }
+
+        public InvitationHandlerService(JSRunetimeService JSRunetimeService)
         {
-            _jsRunetimeService = jSRunetimeService;
-        }
-        public async void ReceiveInvite(UserConnectionDTO inviterUserConnection, UserConnectionDTO receiverUserCOnnection)
-        {
-            InvitationAction?.Invoke(new SendInvitationsResponseDTO() { InviterUserConnection = inviterUserConnection, });
+            _jSRunetimeService = JSRunetimeService;
         }
 
+        public async void ReceiveInvite(UserConnectionDTO inviterUserConnection, UserConnectionDTO receiverUserCOnnection)
+        {
+            InvitationAction?.Invoke(new SendInvitationsResponseDTO() { InviterUserConnection = inviterUserConnection });
+        }
     }
 }
 

@@ -5,14 +5,25 @@ namespace BlazorServerSideClient.Services
     public class JSRunetimeService
     {
         private readonly IJSRuntime _js;
-        public JSRunetimeService(IJSRuntime jS)
+
+        public JSRunetimeService(IJSRuntime js)
         {
-            _js = jS;
+            _js = js;
         }
-        public ValueTask<bool> InviteReceiverMessage(string inviterUserName) =>  _js.InvokeAsync<bool>("confirm", $"{inviterUserName} invited you to a game!");
-        public async ValueTask InviteAcceptedMessage() => await _js.InvokeVoidAsync("alert", "Your Invie was accepted!");
 
-        public async ValueTask WinNotifier_opponentLeft() => await _js.InvokeVoidAsync("alert", "the Opponent left the game.You Win!");
+        public ValueTask<bool> InviteReceiverMessage(string inviterUserName)
+            => _js.InvokeAsync<bool>("confirm", $"{inviterUserName} invited you to a game!");
 
+        public ValueTask InviteAcceptedMessage()
+            => _js.InvokeVoidAsync("alert", "Your Invite was accepted!");
+
+        public ValueTask WinNotifier_opponentLeft()
+            => _js.InvokeVoidAsync("alert", "The opponent left. You win!");
+
+        public ValueTask HideInviteModal()
+            => _js.InvokeVoidAsync("inviteModal.hide");
+
+        public ValueTask ShowInviteModal()
+            => _js.InvokeVoidAsync("inviteModal.show");
     }
 }

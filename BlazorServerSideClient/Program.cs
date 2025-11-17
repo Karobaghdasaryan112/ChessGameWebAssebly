@@ -41,7 +41,7 @@ builder.Services.AddSignalR()
     .AddNewtonsoftJsonProtocol(options =>
     {
         options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
-    }); 
+    });
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
 {
     client.BaseAddress = new Uri($"{BasePaths.baseUrl}");

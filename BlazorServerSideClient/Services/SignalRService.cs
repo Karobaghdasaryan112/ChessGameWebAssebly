@@ -1,7 +1,11 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using ChessGameBlazorClient.ServiceEndpoints;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
+using System.Security.Claims;
 namespace ChessGameBlazorClient.UI.Services
 {
     public class SignalRService
@@ -10,10 +14,14 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
-        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService)
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        private readonly ClaimsPrincipal _user;
+        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, AuthenticationStateProvider authenticationStateProvider)
         {
             _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
+            _authenticationStateProvider = authenticationStateProvider;
+            _user = _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
         }
         public async Task<HubConnection> GetHubConnection()
         {
@@ -33,6 +41,26 @@ namespace ChessGameBlazorClient.UI.Services
                 {
                     await Task.Delay(200);
                 }
+
+                var userName = _user.Claims.First(claim => claim.Type == ClaimTypes.Name)?.Value;
+                var userId = _user.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                var userIdAsGuid = Guid.Parse(userId!);
+
+                await _hubConnection.SendAsync("AddConnectionAsync",
+                    new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
+                    {
+                        Data = new AddUserConnectionRequestDTO()
+                        {
+                            userConnection = new UserConnectionDTO()
+                            {
+                                ConnectionId = _hubConnection.ConnectionId,
+                                UserName = userName!
+                            },
+                            userGuid = userIdAsGuid
+                        }
+                    });
+
                 return _hubConnection;
             }
             finally

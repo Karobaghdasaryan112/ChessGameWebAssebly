@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\jsrunetimeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\jsrunetimeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\shared\\dashboardinvitationrequest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\dashboardinvitationrequest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\connectionrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\connectionrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\invitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\invitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\invitationrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\invitationrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\contracts\\handlers\\iinvitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\contracts\\handlers\\iinvitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -15,12 +43,52 @@
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\shared\\logindisplay.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\logindisplay.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\connectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\connectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\connetionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\connetionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|solutionrelative:chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\gamehandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\gamehandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\basehubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\basehubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\invitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\invitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\sharedresources\\dtos\\chessgamedtos\\requestdtos\\connectionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\requestdtos\\connectionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsdtos\\invitationresponsedtos\\sendinvitationsresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsdtos\\invitationresponsedtos\\sendinvitationsresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\gamerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\gamerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\pages\\_host.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -43,48 +111,8 @@
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\surveyprompt.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\invitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\invitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\jsrunetimeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\jsrunetimeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\invitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\invitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\connetionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\connetionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\invitationrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\invitationrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\contracts\\requests\\iinivitationreqeustservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\contracts\\requests\\iinivitationreqeustservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\contracts\\handlers\\iinvitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\contracts\\handlers\\iinvitationhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\services\\hubservices\\gameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\gameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsdtos\\invitationresponsedtos\\sendinvitationsresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsdtos\\invitationresponsedtos\\sendinvitationsresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\connectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\connectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
@@ -95,10 +123,6 @@
       "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\chessgameshareddtos\\userconnectiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|solutionrelative:chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\contracts\\hub\\iinvitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\contracts\\hub\\iinvitationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -107,32 +131,12 @@
       "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\requestdtos\\connectionrequestdtos\\invitationrequestdtos\\sendinvitationrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\handlers\\gamehandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\handlers\\gamehandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\gamerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\gamerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\contracts\\handlers\\iconnectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\contracts\\handlers\\iconnectionhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\services\\requests\\connectionrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\requests\\connectionrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\responsedtos\\connectionresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\sharedresources\\dtos\\chessgamedtos\\requestdtos\\connectionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|solutionrelative:sharedresources\\dtos\\chessgamedtos\\requestdtos\\connectionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\chessgame.core.services\\contracts\\hub\\igameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -327,10 +331,6 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\c5b2729678e1a03df19e65899b4ad191802bd617a3623b940d97308bcc2b98d9\\ClientProxyExtensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\shared\\logindisplay.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\logindisplay.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\areas\\identity\\pages\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\areas\\identity\\pages\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -353,10 +353,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\webassemblychessgame.services.chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8DACADB7-F962-4861-9178-B3569B6EB47F}|webAssemblyChessGame.Services.ChatAPI\\ChatServices.API..ChatAPI.csproj|solutionrelative:webassemblychessgame.services.chatapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F72DC2F-908C-49A7-AF63-C98519C81F08}|IdentityServer\\IdentityServer.csproj|c:\\users\\karapet.baghdasaryan\\source\\repos\\chessgamewebassembly\\chessgamewebassebly\\identityserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -513,7 +509,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 174,
-          "SelectedChildIndex": 18,
+          "SelectedChildIndex": 21,
           "Children": [
             {
               "$type": "Bookmark",
@@ -572,64 +568,231 @@
               "Name": "ST:132:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{99b8fa2f-ab90-4f57-9c32-949f146f1914}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "_Host.cshtml",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\_Host.cshtml",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\_Host.cshtml",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\_Host.cshtml",
-              "RelativeToolTip": "BlazorServerSideClient\\Pages\\_Host.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-14T14:24:01.45Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Counter.razor",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Counter.razor",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Counter.razor",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Counter.razor",
-              "RelativeToolTip": "BlazorServerSideClient\\Pages\\Counter.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-14T14:23:43.331Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DashboardInvitationRequest.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
               "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
               "RelativeToolTip": "BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAAC0AAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAADsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-14T14:21:02.768Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
+              "Title": "InvitationRequestService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T14:40:45.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Program.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Program.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Program.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Program.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwDcAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:44:52.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\MainLayout.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\MainLayout.razor",
               "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\MainLayout.razor",
               "RelativeToolTip": "BlazorServerSideClient\\Shared\\MainLayout.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-14T14:14:26.067Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 8,
+              "Title": "Dashboard.razor",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Dashboard.razor",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Dashboard.razor",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Dashboard.razor",
+              "RelativeToolTip": "BlazorServerSideClient\\Pages\\Dashboard.razor",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAQwC4AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-17T07:42:20.461Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
+              "RelativeToolTip": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-08T12:37:35.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConnectionRequestService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwBkAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T07:22:45.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JSRunetimeService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\JSRunetimeService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\JSRunetimeService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\JSRunetimeService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\JSRunetimeService.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAkwB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T13:36:19.677Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{99b8fa2f-ab90-4f57-9c32-949f146f1914}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "InvitationHandlerService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T13:43:33.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LoginDisplay.razor",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\LoginDisplay.razor",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\LoginDisplay.razor",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\LoginDisplay.razor",
+              "RelativeToolTip": "BlazorServerSideClient\\Shared\\LoginDisplay.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T11:44:44.898Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\NavMenu.razor",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\NavMenu.razor",
+              "RelativeToolTip": "BlazorServerSideClient\\Shared\\NavMenu.razor",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAIwCQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:30:17.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "GameHandlerService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T13:43:54.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ConnectionHandlerService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T13:44:13.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "GameHub.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
+              "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
+              "RelativeToolTip": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAQwCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-12T13:39:59.12Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "SendInvitationsResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T12:56:55.838Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ConnectionRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
+              "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
+              "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T09:23:35.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "GameRequestService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
+              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAowD4AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T14:40:26.703Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
               "Title": "UserConnectionDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\UserConnectionDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\UserConnectionDTO.cs",
@@ -637,38 +800,35 @@
               "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\UserConnectionDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T08:06:42.567Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T08:06:42.567Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "InvitationRequestService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T14:40:45.483Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NavMenu.razor",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\NavMenu.razor",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\NavMenu.razor",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\NavMenu.razor",
-              "RelativeToolTip": "BlazorServerSideClient\\Shared\\NavMenu.razor",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAiwCoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 23,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Counter.razor",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Counter.razor",
+              "RelativeToolTip": "BlazorServerSideClient\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-08T12:30:17.5Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T14:23:43.331Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 22,
+              "Title": "_Host.cshtml",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\_Host.cshtml",
+              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\_Host.cshtml",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\_Host.cshtml",
+              "RelativeToolTip": "BlazorServerSideClient\\Pages\\_Host.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-14T14:24:01.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
               "Title": "Index.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Index.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Index.razor",
@@ -676,12 +836,11 @@
               "RelativeToolTip": "BlazorServerSideClient\\Pages\\Index.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-10T19:57:36.203Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T19:57:36.203Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 24,
               "Title": "Error.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Error.cshtml",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Error.cshtml",
@@ -689,25 +848,11 @@
               "RelativeToolTip": "BlazorServerSideClient\\Pages\\Error.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-08T18:49:57.127Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T18:49:57.127Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "SendInvitationsResponseDTO.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
-              "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
-              "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T12:56:55.838Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 26,
               "Title": "SurveyPrompt.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\SurveyPrompt.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\SurveyPrompt.razor",
@@ -715,25 +860,11 @@
               "RelativeToolTip": "BlazorServerSideClient\\Shared\\SurveyPrompt.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-08T14:26:06.922Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-08T14:26:06.922Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "JSRunetimeService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\JSRunetimeService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\JSRunetimeService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\JSRunetimeService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\JSRunetimeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAsAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:36:19.677Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 28,
               "Title": "site.css",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\css\\site.css",
@@ -741,77 +872,11 @@
               "RelativeToolTip": "BlazorServerSideClient\\wwwroot\\css\\site.css",
               "ViewState": "AgIAAJ0AAAAAAAAAAADwv9gAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-10T19:52:29.681Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T19:52:29.681Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "InvitationHandlerService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:43:33.927Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ConnectionHandlerService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:44:13.313Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "GameHub.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "RelativeToolTip": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAnwBwAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T13:39:59.12Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "GameRequestService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACAAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T14:40:26.703Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "GameHandlerService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:43:54.467Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 30,
               "Title": "IInvitationService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Contracts\\Hub\\IInvitationService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IInvitationService.cs",
@@ -819,12 +884,11 @@
               "RelativeToolTip": "ChessGame.Core.Services\\Contracts\\Hub\\IInvitationService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T11:09:45.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T11:09:45.689Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 31,
               "Title": "SendInvitationRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\InvitationRequestDTOs\\SendInvitationRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\InvitationRequestDTOs\\SendInvitationRequestDTO.cs",
@@ -832,38 +896,11 @@
               "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\InvitationRequestDTOs\\SendInvitationRequestDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T10:20:45.082Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T10:20:45.082Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Program.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Program.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Program.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Program.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBoAAAB8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T11:44:52.887Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "ConnectionRequestService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T07:22:45.662Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "IGameService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Contracts\\Hub\\IGameService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IGameService.cs",
@@ -871,12 +908,11 @@
               "RelativeToolTip": "ChessGame.Core.Services\\Contracts\\Hub\\IGameService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T10:09:24.033Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T10:09:24.033Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "ConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponseDTO.cs",
@@ -884,25 +920,11 @@
               "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponseDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T09:23:58.215Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T09:23:58.215Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "ConnectionRequestDTO.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
-              "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
-              "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAUAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T09:23:35.271Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "IConnectionService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Contracts\\Hub\\IConnectionService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IConnectionService.cs",
@@ -910,12 +932,11 @@
               "RelativeToolTip": "ChessGame.Core.Services\\Contracts\\Hub\\IConnectionService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T14:21:19.408Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T14:21:19.408Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "AddUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\AddUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\AddUserConnectionRequestDTO.cs",
@@ -923,12 +944,11 @@
               "RelativeToolTip": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\AddUserConnectionRequestDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T09:33:37.453Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T09:33:37.453Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "AddUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\AddUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\AddUserConnectionResponseDTO.cs",
@@ -940,7 +960,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 39,
               "Title": "InvitationResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\InvitationResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\InvitationResponseDTO.cs",
@@ -952,7 +972,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 40,
               "Title": "Game.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Game.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Game.razor",
@@ -964,7 +984,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 41,
               "Title": "GetUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\GetUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\GetUserConnectionRequestDTO.cs",
@@ -976,7 +996,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 42,
               "Title": "AcceptInvitationResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\AcceptInvitationResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\AcceptInvitationResponseDTO.cs",
@@ -988,7 +1008,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "GetUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\GetUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\GetUserConnectionResponseDTO.cs",
@@ -1000,7 +1020,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "GetOnlinePlayersRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\GetOnlinePlayersRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\GetOnlinePlayersRequestDTO.cs",
@@ -1012,7 +1032,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "SendGameStateReqeustDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\SendGameStateReqeustDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\SendGameStateReqeustDTO.cs",
@@ -1024,7 +1044,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "SendGameStateResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\SendGameStateResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\SendGameStateResponseDTO.cs",
@@ -1036,7 +1056,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 48,
               "Title": "GetOnlinePlayersResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\GetOnlinePlayersResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\GetOnlinePlayersResponseDTO.cs",
@@ -1048,7 +1068,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "ChessGameResponse.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Responses\\ChessGameResponse.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ChessGameResponse.cs",
@@ -1056,12 +1076,11 @@
               "RelativeToolTip": "SharedResources\\Responses\\ChessGameResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:50:42.11Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T13:50:42.11Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 49,
               "Title": "RemoveUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\RemoveUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\RemoveUserConnectionRequestDTO.cs",
@@ -1073,7 +1092,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 50,
               "Title": "RemoveUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\RemoveUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\RemoveUserConnectionResponseDTO.cs",
@@ -1085,7 +1104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 51,
               "Title": "CoreServices.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\CoreServices.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\CoreServices.cs",
@@ -1097,7 +1116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 52,
               "Title": "BlazorServerSideClient.csproj",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\BlazorServerSideClient.csproj",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\BlazorServerSideClient.csproj",
@@ -1109,7 +1128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 53,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\webAssemblyChessGame.Services.ChessGameAPI\\Startup.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\Startup.cs",
@@ -1121,7 +1140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 54,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\webAssemblyChessGame.Services.ChessGameAPI\\Program.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\Program.cs",
@@ -1133,7 +1152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 55,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\appsettings.Development.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\appsettings.Development.json",
@@ -1145,7 +1164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 57,
               "Title": "App.razor",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\App.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\App.razor",
@@ -1157,7 +1176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 62,
               "Title": "SubmitMoveResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\SubmitMoveResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\SubmitMoveResponseDTO.cs",
@@ -1169,7 +1188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 60,
               "Title": "MoveDTOValidator.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Validation\\ChessGameValidations\\MoveDTOValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\MoveDTOValidator.cs",
@@ -1181,7 +1200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 59,
               "Title": "SubmitMoveDTOValidator.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Validation\\ChessGameValidations\\SubmitMoveDTOValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\SubmitMoveDTOValidator.cs",
@@ -1193,7 +1212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 58,
               "Title": "BoardInitializeCommandHandler.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\MediatR\\Handlers\\Commands\\BoardInitializeCommandHandler.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\MediatR\\Handlers\\Commands\\BoardInitializeCommandHandler.cs",
@@ -1205,7 +1224,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 63,
               "Title": "MoveResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\MoveResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\MoveResponseDTO.cs",
@@ -1217,7 +1236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 61,
               "Title": "MoveRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\MoveRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\MoveRequestDTO.cs",
@@ -1229,7 +1248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 64,
               "Title": "ChessGameErrorDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ErrorResponseDTOs\\ChessGameErrorDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ErrorResponseDTOs\\ChessGameErrorDTO.cs",
@@ -1241,7 +1260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 65,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\UserService.cs",
@@ -1253,7 +1272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 66,
               "Title": "BoardInitializeResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\BoardInitializeResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\BoardInitializeResponseDTO.cs",
@@ -1265,7 +1284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 67,
               "Title": "IResponseTypes.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
               "RelativeDocumentMoniker": "SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
@@ -1277,7 +1296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 68,
               "Title": "UserRegistrationCommandHandler.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
@@ -1289,7 +1308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 69,
               "Title": "UserRegistrationCommand.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
@@ -1301,7 +1320,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 70,
               "Title": "UserSigninCommand.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
@@ -1313,7 +1332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 71,
               "Title": "ExceptionHandlingMiddleware.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
               "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
@@ -1325,7 +1344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 72,
               "Title": "ChessGameResponseMessage.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
@@ -1337,7 +1356,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 73,
               "Title": "SubmitMoveRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\SubmitMoveRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\SubmitMoveRequestDTO.cs",
@@ -1349,7 +1368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 74,
               "Title": "MoveDTOs.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\MoveDTOs.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\MoveDTOs.cs",
@@ -1361,7 +1380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 75,
               "Title": "BoardInitializeRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\BoardInitializeRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\BoardInitializeRequestDTO.cs",
@@ -1373,7 +1392,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
+              "DocumentIndex": 76,
               "Title": "InfrastructureServices.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\InfrastructureServices.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\InfrastructureServices.cs",
@@ -1385,7 +1404,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 77,
               "Title": "ICheseGameDTO.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
@@ -1397,7 +1416,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 78,
               "Title": "ChessGame.Infrastructure.Infrastructure.csproj",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj",
@@ -1409,7 +1428,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 80,
               "Title": "Task.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d8933d8c84a635e1c37e9eb18c6bd032217008a8799fd62d3548cc8ad96b6005\\Task.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d8933d8c84a635e1c37e9eb18c6bd032217008a8799fd62d3548cc8ad96b6005\\Task.cs",
@@ -1429,18 +1448,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-08T12:12:13.128Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 82,
-              "Title": "LoginDisplay.razor",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\LoginDisplay.razor",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\LoginDisplay.razor",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Shared\\LoginDisplay.razor",
-              "RelativeToolTip": "BlazorServerSideClient\\Shared\\LoginDisplay.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-08T11:44:44.898Z"
             },
             {
               "$type": "Document",
@@ -1480,7 +1487,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 79,
               "Title": "DefaultHubDispatcher.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\a0443db75519e259cb8f50c04fb98298c2e9a07f181672e793a6f41aa3aead9f\\DefaultHubDispatcher.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\a0443db75519e259cb8f50c04fb98298c2e9a07f181672e793a6f41aa3aead9f\\DefaultHubDispatcher.cs",
@@ -1492,7 +1499,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 82,
               "Title": "ClientProxyExtensions.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\c5b2729678e1a03df19e65899b4ad191802bd617a3623b940d97308bcc2b98d9\\ClientProxyExtensions.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\c5b2729678e1a03df19e65899b4ad191802bd617a3623b940d97308bcc2b98d9\\ClientProxyExtensions.cs",
@@ -1504,7 +1511,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 81,
               "Title": "ExecutionContext.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
@@ -1541,19 +1548,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 89,
-              "Title": "site.js",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "RelativeToolTip": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-08T12:37:35.483Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 90,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Program.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Program.cs",
@@ -1565,7 +1559,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
+              "DocumentIndex": 90,
               "Title": "OpenIddictSeeder.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Data\\OpenIddictSeeder.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Data\\OpenIddictSeeder.cs",
@@ -1577,7 +1571,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 96,
               "Title": "ApplicationDbContextModelSnapshot.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Migrations\\ApplicationDbContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\ApplicationDbContextModelSnapshot.cs",
@@ -1589,7 +1583,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 92,
+              "DocumentIndex": 91,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Properties\\launchSettings.json",
@@ -1601,7 +1595,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 94,
+              "DocumentIndex": 93,
               "Title": "IdentityService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\ApiServices\\IdentityService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ApiServices\\IdentityService.cs",
@@ -1613,7 +1607,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
+              "DocumentIndex": 92,
               "Title": "BaseHttpClient.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\ClientService\\BaseHttpClient.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ClientService\\BaseHttpClient.cs",
@@ -1625,7 +1619,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 125,
+              "DocumentIndex": 124,
               "Title": "20251108121751_fixNotNullConstraint.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Migrations\\20251108121751_fixNotNullConstraint.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108121751_fixNotNullConstraint.cs",
@@ -1637,7 +1631,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 126,
+              "DocumentIndex": 125,
               "Title": "20251108121527_newInitial.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Migrations\\20251108121527_newInitial.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108121527_newInitial.cs",
@@ -1649,7 +1643,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 94,
               "Title": "ApplicationUser.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Domain.Domain\\ApplicationUser.cs",
               "RelativeDocumentMoniker": "IdentityService.Domain.Domain\\ApplicationUser.cs",
@@ -1661,7 +1655,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 98,
+              "DocumentIndex": 97,
               "Title": "20251108120505_InitialCreate.Designer.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.Designer.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.Designer.cs",
@@ -1673,7 +1667,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 95,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Data\\ApplicationDbContext.cs",
@@ -1685,7 +1679,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 101,
+              "DocumentIndex": 100,
               "Title": "Context.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\Data\\Context.cs",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\Data\\Context.cs",
@@ -1697,7 +1691,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 102,
+              "DocumentIndex": 101,
               "Title": "ScaffoldingReadMe.txt",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\ScaffoldingReadMe.txt",
               "RelativeDocumentMoniker": "IdentityServer\\ScaffoldingReadMe.txt",
@@ -1709,7 +1703,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 99,
+              "DocumentIndex": 98,
               "Title": "QueryBuilder.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\ServiceEndpoints\\QueryBuilder.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ServiceEndpoints\\QueryBuilder.cs",
@@ -1721,7 +1715,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 124,
+              "DocumentIndex": 123,
               "Title": "20251108120505_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.cs",
@@ -1733,7 +1727,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 100,
+              "DocumentIndex": 99,
               "Title": "20251108120424_NewInitiqalCresate.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Data\\Migrations\\20251108120424_NewInitiqalCresate.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Data\\Migrations\\20251108120424_NewInitiqalCresate.cs",
@@ -1744,7 +1738,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 103,
+              "DocumentIndex": 102,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\appsettings.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\appsettings.json",
@@ -1756,7 +1750,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 104,
+              "DocumentIndex": 103,
               "Title": "BlazorServerSideClient",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\BlazorServerSideClient.csproj",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\BlazorServerSideClient.csproj",
@@ -1767,7 +1761,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 105,
+              "DocumentIndex": 104,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\appsettings.Development.json",
               "RelativeDocumentMoniker": "IdentityServer\\appsettings.Development.json",
@@ -1779,7 +1773,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 106,
+              "DocumentIndex": 105,
               "Title": "20251029122625_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Migrations\\20251029122625_InitialCreate.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Migrations\\20251029122625_InitialCreate.cs",
@@ -1791,7 +1785,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 107,
+              "DocumentIndex": 106,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Data\\ApplicationDbContext.cs",
@@ -1803,7 +1797,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 109,
+              "DocumentIndex": 108,
               "Title": "20251107130445_InitialCreatenewDbConnection.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGameBlazorClient\\Data\\Migrations\\20251107130445_InitialCreatenewDbConnection.cs",
               "RelativeDocumentMoniker": "ChessGameBlazorClient\\Data\\Migrations\\20251107130445_InitialCreatenewDbConnection.cs",
@@ -1814,7 +1808,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 108,
+              "DocumentIndex": 107,
               "Title": "AuthorizationController.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Controllers\\AuthorizationController.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Controllers\\AuthorizationController.cs",
@@ -1826,7 +1820,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 110,
+              "DocumentIndex": 109,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\appsettings.json",
               "RelativeDocumentMoniker": "IdentityServer\\appsettings.json",
@@ -1838,7 +1832,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 111,
+              "DocumentIndex": 110,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\Gateway.API\\Program.cs",
               "RelativeDocumentMoniker": "Gateway.API\\Program.cs",
@@ -1850,7 +1844,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 113,
+              "DocumentIndex": 112,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Controllers\\HomeController.cs",
@@ -1862,7 +1856,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 112,
+              "DocumentIndex": 111,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "IdentityServer\\Properties\\launchSettings.json",
@@ -1874,7 +1868,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 114,
+              "DocumentIndex": 113,
               "Title": "ErrorResponseMessage.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\SharedResources\\Responses\\ResponseMessages\\ErrorResponseMessage.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ErrorResponseMessage.cs",
@@ -1886,7 +1880,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 115,
+              "DocumentIndex": 114,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Application\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Services\\AuthService.cs",
@@ -1898,7 +1892,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 116,
+              "DocumentIndex": 115,
               "Title": "PersistanceServicesRegistration.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityService.Persistance\\PersistanceServicesRegistration.cs",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\PersistanceServicesRegistration.cs",
@@ -1910,7 +1904,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 117,
+              "DocumentIndex": 116,
               "Title": "EnableAuthenticator.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml.cs",
@@ -1922,7 +1916,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 118,
+              "DocumentIndex": 117,
               "Title": "EnableAuthenticator.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
@@ -1934,7 +1928,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 119,
+              "DocumentIndex": 118,
               "Title": "ChangePassword.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
@@ -1946,7 +1940,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 120,
+              "DocumentIndex": 119,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
@@ -1958,7 +1952,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 121,
+              "DocumentIndex": 120,
               "Title": "_StatusMessage.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_StatusMessage.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_StatusMessage.cshtml",
@@ -1970,7 +1964,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 122,
+              "DocumentIndex": 121,
               "Title": "_ManageNav.cshtml",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
@@ -1982,7 +1976,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 123,
+              "DocumentIndex": 122,
               "Title": "serviceDependencies.local.json",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\IdentityServer\\Properties\\serviceDependencies.local.json",
               "RelativeDocumentMoniker": "IdentityServer\\Properties\\serviceDependencies.local.json",
@@ -2011,24 +2005,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "IInivitationReqeustService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
-              "RelativeToolTip": "BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAsAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T13:04:23.092Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "IConnectionReqeustService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Requests\\IConnectionReqeustService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Requests\\IConnectionReqeustService.cs",
@@ -2040,7 +2021,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 7,
               "Title": "IInvitationHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Handlers\\IInvitationHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Handlers\\IInvitationHandlerService.cs",
@@ -2053,7 +2034,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 32,
               "Title": "IConnectionHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Handlers\\IConnectionHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Handlers\\IConnectionHandlerService.cs",
@@ -2061,51 +2042,37 @@
               "RelativeToolTip": "BlazorServerSideClient\\Contracts\\Handlers\\IConnectionHandlerService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T13:45:59.219Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-11T13:45:59.219Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 17,
               "Title": "BaseHubService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\BaseHubService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\BaseHubService.cs",
               "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\BaseHubService.cs",
               "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\BaseHubService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBkAAACEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T10:24:03.928Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 18,
               "Title": "InvitationService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\InvitationService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\InvitationService.cs",
               "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\InvitationService.cs",
               "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\InvitationService.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAMwEwAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAMwEwAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-12T06:37:10.695Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ConnetionService.cs",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
-              "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
-              "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAIwHIAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T06:36:25.798Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 27,
               "Title": "GameService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
@@ -2113,25 +2080,24 @@
               "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T06:36:31.616Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-12T06:36:31.616Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 15,
               "Title": "SignalRService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\SignalRService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\SignalRService.cs",
               "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Services\\SignalRService.cs",
               "RelativeToolTip": "BlazorServerSideClient\\Services\\SignalRService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAqwDMAAABkAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T10:30:01.953Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 56,
               "Title": "IGameHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Contracts\\Handlers\\IGameHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Handlers\\IGameHandlerService.cs",
@@ -2149,12 +2115,12 @@
       "Orientation": 0,
       "VerticalTabListWidth": 256,
       "FloatingWindowState": {
-        "Id": "3073f120-ad27-4d67-8e70-993c9d7573d3",
+        "Id": "421523b5-b805-442e-8494-344a18c572eb",
         "Display": 1,
-        "X": 334,
-        "Y": 65,
-        "Width": 1354,
-        "Height": 965,
+        "X": 635,
+        "Y": 150,
+        "Width": 1932,
+        "Height": 1043,
         "WindowState": 2
       },
       "DocumentGroups": [
@@ -2164,15 +2130,15 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Dashboard.razor",
-              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Dashboard.razor",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Dashboard.razor",
-              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\BlazorServerSideClient\\Pages\\Dashboard.razor",
-              "RelativeToolTip": "BlazorServerSideClient\\Pages\\Dashboard.razor",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAYwB0AAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-08T11:55:57.623Z",
+              "DocumentIndex": 13,
+              "Title": "ConnetionService.cs",
+              "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
+              "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
+              "ToolTip": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
+              "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\ConnetionService.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAYwCAAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-12T06:36:25.798Z",
               "EditorCaption": ""
             }
           ]
