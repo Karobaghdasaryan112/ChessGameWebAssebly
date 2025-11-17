@@ -13,12 +13,13 @@ namespace BlazorServerSideClient.Services.Requests
     public class InvitationRequestService : IInivitationReqeustService
     {
         private readonly SignalRService _signalRService;
+        
         public InvitationRequestService(SignalRService signalRService)
         {
             _signalRService = signalRService;
         }
 
-        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)//Guid inviterPlayerId, Guid receiverPlayerId
+        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
              await hubConnection.InvokeAsync("SendInviteAsync", connectionRequestDTO);
@@ -38,7 +39,7 @@ namespace BlazorServerSideClient.Services.Requests
                     ConnectionResponseDTO<
                         AcceptInvitationResponseDTO,
                         ChessGameResponseMessage>>
-                        ("c", acceptInvitationRequest);
+                        ("AcceptInviteAsync", acceptInvitationRequest);
         }
     }
 }

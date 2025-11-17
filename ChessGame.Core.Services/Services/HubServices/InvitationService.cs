@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
@@ -36,7 +37,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                          inviterConnectionInformation.HttpStatusCode,
                          inviterConnectionInformation.Errors);
 
-            var receiverConnectionInformation = _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.inviterUserGuid } });
+            var receiverConnectionInformation = _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.receiverUserGuid } });
             if (!receiverConnectionInformation.IsSuccess)
                 return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
                      CreateErrorResponse(
@@ -50,7 +51,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             await _baseHubService.AddToGroupAsync(gameGuidAsString, inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
             await _baseHubService.AddToGroupAsync(gameGuidAsString, receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
 
-            await _baseHubService.SendAcceptedInviteAsync(inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!, gameGuid);
+            //TO DO Save additional information into DataBase
+            await _baseHubService.SendAcceptedInviteAsync(
+                inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!,
+                inviterConnectionInformation.Data.UserConnectionDTO,
+                acceptInvitationRequest.Data.inviterUserGuid,
+                receiverConnectionInformation.Data.UserConnectionDTO, 
+                acceptInvitationRequest.Data.receiverUserGuid, 
+                gameGuid);
 
             var InvitationResponseDTO = new AcceptInvitationResponseDTO()
             {
@@ -58,6 +66,24 @@ namespace ChessGame.Core.Services.Services.HubServices
                 PlayerOne_UserConnectionResponseDTO = inviterConnectionInformation.Data.UserConnectionDTO,
                 PlayerTwo_UserConnectionResponseDTO = receiverConnectionInformation.Data.UserConnectionDTO
             };
+
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = gameGuid;
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].Gameinfo =
+                new Gameinfo()
+                { 
+                    Players = new KeyValuePair<Guid, Guid>(
+                        acceptInvitationRequest.Data.receiverUserGuid, 
+                        acceptInvitationRequest.Data.inviterUserGuid) 
+                };
+
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = gameGuid;
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].Gameinfo =
+                new Gameinfo()
+                { 
+                    Players = new KeyValuePair<Guid, Guid>(
+                        acceptInvitationRequest.Data.receiverUserGuid, 
+                        acceptInvitationRequest.Data.inviterUserGuid) 
+                };
 
             return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
                      CreateSuccessResponse(
@@ -74,6 +100,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
         {
+
             await _baseHubService.SendInviteAsync(connectionRequestDTO);
         }
     }

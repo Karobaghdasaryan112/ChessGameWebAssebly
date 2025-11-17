@@ -45,7 +45,7 @@
     {
         if (user.Identity?.IsAuthenticated == false)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/",true);
             return;
         }
         var hubConnection = await HubClient.GetHubConnection();
@@ -66,6 +66,6 @@
 
     private void DashboardClicked(MouseEventArgs e)
     {
-        NavigationManager.NavigateTo("/dashboard");
+        NavigationManager.NavigateTo("/dashboard",true);
     }
 }

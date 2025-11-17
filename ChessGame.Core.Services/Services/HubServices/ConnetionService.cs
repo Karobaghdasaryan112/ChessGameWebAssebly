@@ -13,7 +13,7 @@ namespace ChessGame.Core.Services.Services.HubServices
     public class ConnetionService<THub> : IConnectionService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
     {
         internal BaseHubService<THub> _baseHubService;
-        internal static readonly ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
+        internal static  ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
 
         public ConnetionService(BaseHubService<THub> baseHubService)
         {
@@ -59,6 +59,13 @@ namespace ChessGame.Core.Services.Services.HubServices
                 });
 
             if (existUserResult.IsSuccess)
+            {
+                if (existUserResult.Data.UserConnectionDTO.UserName ==
+                    addUserConnectionRequestDTO.Data.userConnection.UserName &&
+                    existUserResult.Data.UserConnectionDTO.ConnectionId !=
+                    addUserConnectionRequestDTO.Data.userConnection.ConnectionId)
+                    _connections[addUserConnectionRequestDTO.Data.userGuid].ConnectionId = addUserConnectionRequestDTO.Data.userConnection.ConnectionId;
+
                 return
                     ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
                     CreateSuccessResponse(
@@ -68,6 +75,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                         },
                         ChessGameResponseMessage.ConnectionAddedSuccess,
                         HttpStatusCode.Created);
+            }
 
             if (!_connections.TryAdd(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection))
                 return ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.

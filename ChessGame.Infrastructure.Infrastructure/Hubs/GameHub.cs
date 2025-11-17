@@ -52,13 +52,13 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
            => await _invitationService.SendInviteAsync(connectionRequestDTO);
 
-        public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInvite(Guid inviterUserGuid, Guid receiverUserGuid)
+        public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequestDTO)
              => await _invitationService.AcceptInviteAsync(new ConnectionRequestDTO<AcceptInvitationRequestDTO>()
              {
                  Data = new AcceptInvitationRequestDTO()
                  {
-                     inviterUserGuid = inviterUserGuid,
-                     receiverUserGuid = receiverUserGuid
+                     inviterUserGuid = acceptInvitationRequestDTO.Data.inviterUserGuid,
+                     receiverUserGuid = acceptInvitationRequestDTO.Data.receiverUserGuid
                  }
              });
 

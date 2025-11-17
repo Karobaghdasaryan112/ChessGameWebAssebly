@@ -5,5 +5,8 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.
     public class SendInvitationsResponseDTO
     {
         public UserConnectionDTO InviterUserConnection { get; set; }    
+        public UserConnectionDTO ReceiverUserConnection { get; set; }    
+        public Guid InviterUserGuid { get; set; }
+        public Guid ReceiverUserGuid { get; set; }
     }
 }

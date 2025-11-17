@@ -9,6 +9,6 @@
     }
     public class Gameinfo
     {
-        public KeyValuePair<string, string> Players { get; set; }
+        public KeyValuePair<Guid, Guid> Players { get; set; }
     }
 }

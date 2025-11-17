@@ -18,15 +18,36 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task SendAcceptedInviteAsync(
             string conectionId,
+            UserConnectionDTO inviterUserConnection,
+            Guid inviterUserGuid,
+            UserConnectionDTO receiverUserConnection,
+            Guid receiverUserGuid,
             Guid gameId) =>
-            await _hubContext.Clients.Client(conectionId).SendAsync("InviteAccepted", gameId);
+            await _hubContext.
+            Clients.
+            Group(gameId.ToString()).
+            SendAsync(
+                "InviteAcceptedAsync",
+                inviterUserConnection,
+                inviterUserGuid,
+                receiverUserConnection,
+                receiverUserGuid,
+                gameId);
 
         public async Task SendInviteAsync(
             ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO) =>
-            await _hubContext.Clients.Client(connectionRequestDTO.Data.ReceiverUserConnection.ConnectionId).SendAsync("ReceiveInvite", connectionRequestDTO.Data.InviterUserConnection, connectionRequestDTO.Data.ReceiverUserConnection);
+            await _hubContext.
+            Clients.
+            Client(connectionRequestDTO.Data.ReceiverUserConnection.ConnectionId).
+            SendAsync(
+                "ReceiveInvite",
+                connectionRequestDTO.Data.InviterUserConnection,
+                connectionRequestDTO.Data.InviterPlayerId,
+                connectionRequestDTO.Data.ReceiverUserConnection,
+                connectionRequestDTO.Data.ReceiverPlayerId);
 
 
-        public async Task AddToGroupAsync(string gruopName,string connectionId) 
+        public async Task AddToGroupAsync(string gruopName, string connectionId)
             => await _hubContext.Groups.AddToGroupAsync(connectionId, gruopName);
     }
 }

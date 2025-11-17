@@ -12,14 +12,16 @@ namespace BlazorServerSideClient.Services.Requests
     public class ConnectionRequestService : IConnectionReqeustService
     {
         private readonly SignalRService _signalRService;
+
         public ConnectionRequestService(SignalRService signalRService)
         {
             _signalRService = signalRService;
+
         }
         public async Task<
             ConnectionResponseDTO<
                 AddUserConnectionResponseDTO,
-                ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)// GetUserConnectionRequestDTO getUserConnectionRequestDTO
+                ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
 
@@ -33,7 +35,7 @@ namespace BlazorServerSideClient.Services.Requests
         public async Task<
             ConnectionResponseDTO<
                 AddUserConnectionResponseDTO,
-                ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)//AddUserConnectionRequestDTO addUserConnectionRequestDTO
+                ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
 
@@ -47,7 +49,7 @@ namespace BlazorServerSideClient.Services.Requests
         public async Task<
             ConnectionResponseDTO<
                 RemoveUserConnectionResponseDTO,
-                ChessGameResponseMessage>> RemoveConnectionAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO) //RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO
+                ChessGameResponseMessage>> RemoveConnectionAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
 

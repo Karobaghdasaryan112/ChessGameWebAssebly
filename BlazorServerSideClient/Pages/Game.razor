@@ -76,7 +76,7 @@ else
         _hubConnection = await HubClient.GetHubConnection();
 
 
-        await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
+        // await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
 
         _hubConnection.On<List<UserConnectionDTO>>("ReceivePlayers", async (connections) =>
         {
@@ -90,7 +90,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
     }
 
     public async Task SendMoveAsync(string move)

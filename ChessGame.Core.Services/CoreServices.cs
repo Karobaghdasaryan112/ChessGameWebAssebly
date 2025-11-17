@@ -24,7 +24,7 @@ namespace ChessGame.Core.Services
             .AddNewtonsoftJsonProtocol(options =>
             {
                 options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
-            }); ;
+            }); 
             services.AddScoped(typeof(BaseHubService<>));
             services.AddSingleton(typeof(IConnectionService<>), typeof(ConnetionService<>));
             services.AddSingleton(typeof(IInvitationService<>), typeof(InvitationService<>));
