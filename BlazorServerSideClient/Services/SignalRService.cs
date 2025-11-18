@@ -1,10 +1,14 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using BlazorServerSideClient.Services.Handlers;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -14,10 +18,12 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
+        private readonly IGameHandlerService _gameHandlerService;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ClaimsPrincipal _user;
-        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, AuthenticationStateProvider authenticationStateProvider)
+        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService,AuthenticationStateProvider authenticationStateProvider)
         {
+            _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
             _authenticationStateProvider = authenticationStateProvider;
@@ -93,6 +99,11 @@ namespace ChessGameBlazorClient.UI.Services
                     receiverUserConnection,
                     receiverUserGuid,
                     gameGuid));
+
+
+            _hubConnection.On<ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage>>("ReseivePlayersAsync",async (
+                connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO)
+            );
         }
         //public async Task InitializeAsync(string userGuid, string userName)
         //{

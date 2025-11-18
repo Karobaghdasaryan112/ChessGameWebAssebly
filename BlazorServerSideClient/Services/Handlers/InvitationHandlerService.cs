@@ -54,8 +54,7 @@ namespace BlazorServerSideClient.Services.Handlers
             Guid receiverUserGuid,
             Guid gameGuid)
         {
-
-            _navigationManager.NavigateTo($"/game?GameId={gameGuid}",true);
+            _navigationManager.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}",true);
         }
 
     }

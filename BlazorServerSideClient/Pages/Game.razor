@@ -1,17 +1,21 @@
 ﻿@page "/game"
+@using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ServiceEndpoints
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
+@using System.Web
+@using System.Collections.Specialized
 @inject SignalRService HubClient
+@inject JSRunetimeService JS
 @inject NavigationManager Navigation
 @attribute [Authorize]
 <h3>Game Page</h3>
 
-<p>Player 1: @Player1?.UserName</p>
-<p>Player 2: @Player2?.UserName</p>
+<p id="Player1">Player 1: @Player1?.UserName</p>
+<p id="Player2">Player 2: @Player2?.UserName</p>
 <div class="chessboard">
     @for (int row = 8; row >= 1; row--)
     {
@@ -64,9 +68,17 @@ else
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
 
-    private UserConnectionDTO Player1 { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Player1")]
+    public string Player1Name { get; set; }
 
-    private UserConnectionDTO Player2 { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Player2")]
+    public string Player2Name { get; set; }
+
+    private static UserConnectionDTO Player1 => new();
+
+    private static UserConnectionDTO Player2 => new();
 
 
     private HubConnection? _hubConnection;
@@ -75,21 +87,16 @@ else
     {
         _hubConnection = await HubClient.GetHubConnection();
 
-
         // await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
+        await JS.ShowPlayers(Player1Name, Player2Name);
 
-        _hubConnection.On<List<UserConnectionDTO>>("ReceivePlayers", async (connections) =>
-        {
-            Player1 = connections.First();
-            Player2 = connections.Last();
-
-            await InvokeAsync(StateHasChanged);
-        });
 
     }
 
     protected override async Task OnInitializedAsync()
     {
+        await HubClient.RegisterConnectionHandlers();
+
     }
 
     public async Task SendMoveAsync(string move)

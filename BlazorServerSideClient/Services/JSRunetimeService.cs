@@ -25,5 +25,8 @@ namespace BlazorServerSideClient.Services
 
         public ValueTask ShowInviteModal(int time,string userName)
             => _js.InvokeVoidAsync("inviteModal.show",time,userName);
+
+        public ValueTask ShowPlayers(string player1_Name, string player2_Name) 
+            => _js.InvokeVoidAsync("Players.show", player1_Name, player2_Name);
     }
 }

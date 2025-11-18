@@ -5,6 +5,7 @@ using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.Invit
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
@@ -56,9 +57,24 @@ namespace ChessGame.Core.Services.Services.HubServices
                 inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!,
                 inviterConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.Data.inviterUserGuid,
-                receiverConnectionInformation.Data.UserConnectionDTO, 
-                acceptInvitationRequest.Data.receiverUserGuid, 
+                receiverConnectionInformation.Data.UserConnectionDTO,
+                acceptInvitationRequest.Data.receiverUserGuid,
                 gameGuid);
+
+            inviterConnectionInformation.Data.UserConnectionDTO.GameId = gameGuid;
+            receiverConnectionInformation.Data.UserConnectionDTO.GameId = gameGuid;
+
+            //await _baseHubService.SendPalyersInformationAsync(new ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage>()
+            //{
+            //    Data = new ReceivePlayersResponseDTO()
+            //    {
+            //        Player1_UserConnectionDTO = inviterConnectionInformation.Data.UserConnectionDTO,
+            //        Player2_UserConnectionDTO = receiverConnectionInformation.Data.UserConnectionDTO,
+            //        Player1_UserGuId = acceptInvitationRequest.Data.inviterUserGuid,
+            //        Player2_UserGuid = acceptInvitationRequest.Data.receiverUserGuid,
+            //    },
+
+            //});
 
             var InvitationResponseDTO = new AcceptInvitationResponseDTO()
             {
@@ -70,19 +86,19 @@ namespace ChessGame.Core.Services.Services.HubServices
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = gameGuid;
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].Gameinfo =
                 new Gameinfo()
-                { 
+                {
                     Players = new KeyValuePair<Guid, Guid>(
-                        acceptInvitationRequest.Data.receiverUserGuid, 
-                        acceptInvitationRequest.Data.inviterUserGuid) 
+                        acceptInvitationRequest.Data.receiverUserGuid,
+                        acceptInvitationRequest.Data.inviterUserGuid)
                 };
 
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = gameGuid;
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].Gameinfo =
                 new Gameinfo()
-                { 
+                {
                     Players = new KeyValuePair<Guid, Guid>(
-                        acceptInvitationRequest.Data.receiverUserGuid, 
-                        acceptInvitationRequest.Data.inviterUserGuid) 
+                        acceptInvitationRequest.Data.receiverUserGuid,
+                        acceptInvitationRequest.Data.inviterUserGuid)
                 };
 
             return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
@@ -104,4 +120,4 @@ namespace ChessGame.Core.Services.Services.HubServices
             await _baseHubService.SendInviteAsync(connectionRequestDTO);
         }
     }
-}        
+}

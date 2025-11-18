@@ -2,6 +2,9 @@
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -33,6 +36,16 @@ namespace ChessGame.Core.Services.Services.HubServices
                 receiverUserConnection,
                 receiverUserGuid,
                 gameId);
+
+        public async Task SendPalyersInformationAsync(ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> receivePlayersResponseDTO) =>
+            await _hubContext.
+            Clients.
+            Group(
+                receivePlayersResponseDTO.
+                Data.
+                Player1_UserConnectionDTO.
+                GameId.ToString()).
+            SendAsync("ReseivePlayersAsync", receivePlayersResponseDTO);
 
         public async Task SendInviteAsync(
             ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO) =>

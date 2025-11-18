@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChatService.Infrastructure.Persistance")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a69820ca6160578c178dcc47082c02926a6b66f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+407069e9cff50cac09a97e0ca7247886c7eaff40")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChatService.Infrastructure.Persistance")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChatService.Infrastructure.Persistance")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
