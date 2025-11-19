@@ -2,6 +2,7 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
+using System.Text.Json;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
@@ -18,7 +19,7 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         public async Task ReceiveBoardStateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
         {
-            await _jsService.ShowBoardState(gameStateconnectionResponseDTO.Data.Board);
+            await _jsService.ShowBoardState(JsonSerializer.Serialize(gameStateconnectionResponseDTO.Data.Board.GetBlocks));
         }
     }
 }

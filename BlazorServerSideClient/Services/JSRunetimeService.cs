@@ -30,7 +30,7 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowPlayers(string player1_Name, string player2_Name) 
             => _js.InvokeVoidAsync("Players.show", player1_Name, player2_Name);
 
-        public ValueTask ShowBoardState(Board board) 
-            => _js.InvokeVoidAsync("BuildBoard.Build",board);
+        public ValueTask ShowBoardState(string Blocks) 
+            => _js.InvokeVoidAsync("BuildBoard.Build", Blocks);
     }
 }

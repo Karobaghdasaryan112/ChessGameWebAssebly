@@ -3,6 +3,7 @@ using ChessGame.Core.Services.MediatR.Requests.Commands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.Contracts.RequestsAndResponses;
@@ -55,7 +56,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     ChessGameResponseMessage.GameCreationFailed,
                     HttpStatusCode.InternalServerError, new());
             }
-            var BoardInitialize = new Board();
+            var BoardInitialize = new Board(default(FigureColors));
 
             var addingResult = ActiveGames.AddGame(newGameGuid, BoardInitialize);
 

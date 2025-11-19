@@ -8,10 +8,14 @@ namespace SharedResources.ChessGameResource.Figures
 {
     public class Queen : IFigure
     {
+        public Queen()
+        {
+            
+        }
         public FigureType FigureType => FigureType.Queen;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board)
         {
             var result = new MovableAndCutablePositions
             {
@@ -22,13 +26,13 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = Board.GetBlockByPosition(startRow, startCol);
+            var currentBlock = board.GetBlockByPosition(startRow, startCol);
 
             var queenAsBishop = currentBlock.Figure = new Bishop();
-            var resultAsBishop = queenAsBishop.GetMovableAndCutableBlocks(position);
+            var resultAsBishop = queenAsBishop.GetMovableAndCutableBlocks(position, board);
 
             var queenAsRook = currentBlock.Figure = new Rook();
-            var resultAsRook = queenAsRook.GetMovableAndCutableBlocks(position);
+            var resultAsRook = queenAsRook.GetMovableAndCutableBlocks(position, board);
 
             result.MovablePositions.AddRange(resultAsBishop.MovablePositions);
             result.CutablePositions.AddRange(resultAsBishop.CutablePositions);

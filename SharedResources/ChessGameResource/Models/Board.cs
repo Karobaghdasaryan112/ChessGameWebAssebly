@@ -11,26 +11,28 @@ namespace SharedResources.ChessGameResource.Models
     /// </summary>
     public class Board
     {
-        [JsonConstructor]
-        public Board(FigureColors figureColor = default)
+        public Board(FigureColors figureColor)
         {
             if (BoardBlocks != default)
                 return;
 
             CreateBoard(figureColor);
-            MyColor =
+            FigureColor =
                 figureColor == default ?
                 FigureColors.White :
                 figureColor;
         }
+
+        public Block[][] GetBlocks { get; set; }
+
         /// <summary>
         /// 8x8 grid representing the chess board. Each Block may contain a chess piece or be empty.
         /// </summary>
-        public static Block[][]? BoardBlocks { get; set; }
+        public  Block[][]? BoardBlocks { get; set; }
 
-        public static FigureColors MyColor { get; private set; }
+        public  FigureColors FigureColor { get; private set; }
 
-        public static void CreateBoard(FigureColors figureColor = default)
+        public  void CreateBoard(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)
                 return;
@@ -42,9 +44,9 @@ namespace SharedResources.ChessGameResource.Models
         /// Creates and fills the 8x8 board with blocks and places the appropriate chess pieces.
         /// </summary>
         /// <param name="figureColor">The player's chosen figure color</param>
-        public static void CreateBlocks(FigureColors figureColor = default)
+        public  void CreateBlocks(FigureColors figureColor = default)
         {
-            MyColor = figureColor;
+            FigureColor = figureColor;
 
             BoardBlocks = new Block[8][];
 
@@ -82,40 +84,38 @@ namespace SharedResources.ChessGameResource.Models
                         if (j == 4)
                             BoardBlocks[i][j] = Block.InitializeBlock(new King() { FigureColor = realFigureColor }, i, j);
                     }
-                    if (i == 1 || i == 6)
+                    else if (i == 1 || i == 6)
                         BoardBlocks[i][j] = Block.InitializeBlock(new Pawn() { FigureColor = realFigureColor }, i, j);
-
-                    BoardBlocks[i][j] = Block.InitializeBlock(default, i, j);
+                    else
+                        BoardBlocks[i][j] = Block.InitializeBlock(default, i, j);
                 }
             }
+
         }
         /// <summary>
         /// Retrieves a block using vertical and horizontal enum coordinates.
         /// </summary>
-        public static Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
+        public  Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
         {
             CreateBoard();
-
             return BoardBlocks[(int)verticalOrientation][(int)horizontalOrientation];
         }
 
         /// <summary>
         /// Retrieves a block using a Position object.
         /// </summary>
-        public static Block GetBlockByPosition(Position position)
+        public  Block GetBlockByPosition(Position position)
         {
             CreateBoard();
-
             return BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
         }
 
         /// <summary>
         /// Retrieves a block using a Position object.
         /// </summary>
-        public static Block GetBlockByPosition(int verticalOrientation, int horizontalOrientation)
+        public  Block GetBlockByPosition(int verticalOrientation, int horizontalOrientation)
         {
             CreateBoard();
-
             return BoardBlocks[verticalOrientation][horizontalOrientation];
         }
     }

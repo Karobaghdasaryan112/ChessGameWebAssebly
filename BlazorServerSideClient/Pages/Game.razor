@@ -13,6 +13,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @using System.Web
 @using System.Collections.Specialized
+@using System.Text.Json
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
@@ -99,8 +100,9 @@ else
                 }
             });
 
-
-        await JS.ShowBoardState(thisBaord.Data.Board);
+        var blocks = thisBaord.Data.Board.BoardBlocks;
+        var jsonBoard = JsonSerializer.Serialize(blocks);
+        await JS.ShowBoardState(jsonBoard);
     }
 
     public async Task SendMoveAsync(string move)

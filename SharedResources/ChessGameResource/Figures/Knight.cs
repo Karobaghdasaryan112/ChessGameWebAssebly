@@ -8,10 +8,14 @@ namespace SharedResources.ChessGameResource.Figures
 {
     public class Knight : IFigure
     {
+        public Knight()
+        {
+            
+        }
         public FigureType FigureType => FigureType.Knight;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board)
         {
             var result = new MovableAndCutablePositions
             {
@@ -22,32 +26,32 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = Board.GetBlockByPosition(startRow, startCol);
+            var currentBlock = board.GetBlockByPosition(startRow, startCol);
 
 
             var row = startRow;
             var col = startCol;
 
-            AddPositions(row, col, +1, +2, result);
+            AddPositions(row, col, +1, +2, result, board);
 
-            AddPositions(row, col, +1, -2, result);
+            AddPositions(row, col, +1, -2, result, board);
 
-            AddPositions(row, col, -1, +2, result);
+            AddPositions(row, col, -1, +2, result, board);
 
-            AddPositions(row, col, -1, -2, result);
+            AddPositions(row, col, -1, -2, result, board);
 
-            AddPositions(row, col, +2, -1, result);
+            AddPositions(row, col, +2, -1, result, board);
 
-            AddPositions(row, col, +2, +1, result);
+            AddPositions(row, col, +2, +1, result, board);
 
-            AddPositions(row, col, -2, -1, result);
+            AddPositions(row, col, -2, -1, result, board);
 
-            AddPositions(row, col, -2, +1, result);
+            AddPositions(row, col, -2, +1, result, board);
 
             return result;
         }
 
-        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions)
+        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions,Board board)
         {
             row += rowStep;
             col += colStep;
@@ -59,12 +63,12 @@ namespace SharedResources.ChessGameResource.Figures
                 col != (int)CriticalPositions.highCriticalValue)
                 )
             {
-                var block = Board.GetBlockByPosition(row, col);
+                var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
                 if (figure == null)
                     positions.MovablePositions.Add(new Position(row, col));
-                else if (figure.FigureColor != Board.MyColor)
+                else if (figure.FigureColor != board.FigureColor)
                     positions.CutablePositions.Add(new Position(row, col));
             }
         }

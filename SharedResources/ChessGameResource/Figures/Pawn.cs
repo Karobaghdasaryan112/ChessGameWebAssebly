@@ -8,10 +8,14 @@ namespace SharedResources.ChessGameResource.Figures
 {
     public class Pawn : IFigure
     {
+        public Pawn()
+        {
+            
+        }
         public FigureType FigureType => FigureType.Pawn;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position,Board board)
         {
             var result = new MovableAndCutablePositions
             {
@@ -22,20 +26,20 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = Board.GetBlockByPosition(startRow, startCol);
+            var currentBlock = board.GetBlockByPosition(startRow, startCol);
 
             var stepRow = startRow == 6 ? -2 : -1;
 
-            AddMovablePositions(startRow, startCol, stepRow, result);
+            AddMovablePositions(startRow, startCol, stepRow, result, board);
 
-            AddCutablePositions(startRow, startCol, -1, result);
+            AddCutablePositions(startRow, startCol, -1, result, board);
 
-            AddCutablePositions(startRow, startCol, +1, result);
+            AddCutablePositions(startRow, startCol, +1, result, board);
 
             return result;
 
         }
-        private void AddMovablePositions(int row, int col, int rowStep, MovableAndCutablePositions positions)
+        private void AddMovablePositions(int row, int col, int rowStep, MovableAndCutablePositions positions,Board board)
         {
             for (int i = 1; i <= rowStep; i++)
             {
@@ -43,7 +47,7 @@ namespace SharedResources.ChessGameResource.Figures
 
                 if (row >= (int)CriticalPositions.lowCriticalValue && row <= (int)CriticalPositions.highCriticalValue)
                 {
-                    var block = Board.GetBlockByPosition(row, col);
+                    var block = board.GetBlockByPosition(row, col);
                     var figure = block.Figure;
 
                     if (figure == null)
@@ -54,7 +58,7 @@ namespace SharedResources.ChessGameResource.Figures
             }
         }
 
-        private void AddCutablePositions(int row, int col, int columnStep, MovableAndCutablePositions result)
+        private void AddCutablePositions(int row, int col, int columnStep, MovableAndCutablePositions result,Board board)
         {
             col += columnStep;
             row += -1;
@@ -66,10 +70,10 @@ namespace SharedResources.ChessGameResource.Figures
                 col != (int)CriticalPositions.highCriticalValue)
                 )
             {
-                var block = Board.GetBlockByPosition(row, col);
+                var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != Board.MyColor)
+                if (figure?.FigureColor != board.FigureColor)
                     result.CutablePositions.Add(new Position(row, col));
             }
         }

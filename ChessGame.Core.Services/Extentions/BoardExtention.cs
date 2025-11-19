@@ -6,7 +6,7 @@ namespace ChessGame.Core.Services.Extentions
     {
         public static Block GetBlockByPosition(this Board board,Position position)
         {
-            return Board.BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
+            return board.BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
         }
     }
 }

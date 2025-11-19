@@ -7,7 +7,7 @@ public class Position
 {
     public VerticalOrientation VerticalOrientation { get; set; }
     public HorizontalOrientation HorizontalOrientation { get; set; }
-
+    public Position() { }
     public Position(
         VerticalOrientation verticalOrientation,
         HorizontalOrientation horizontalOrientation)

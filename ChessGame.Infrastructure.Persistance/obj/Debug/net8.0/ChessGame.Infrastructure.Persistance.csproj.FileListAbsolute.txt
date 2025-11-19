@@ -60,3 +60,5 @@ C:\Users\karob\source\repos\ChessGameDiploma\ChessGame.Infrastructure.Persistanc
 C:\Users\karob\source\repos\ChessGameDiploma\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ref\ChessGame.Infrastructure.Persistance.dll
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Infrastructure.Persistance.runtimeconfig.json
 C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.genruntimeconfig.cache
+C:\Users\karob\Source\Repos\ChessGameDiploma\ChessGame.Infrastructure.Persistance\bin\Debug\net8.0\ChessGame.Infrastructure.Persistance.runtimeconfig.json
+C:\Users\karob\Source\Repos\ChessGameDiploma\ChessGame.Infrastructure.Persistance\obj\Debug\net8.0\ChessGame.Infrastructure.Persistance.genruntimeconfig.cache
