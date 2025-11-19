@@ -1,14 +1,20 @@
 ﻿@page "/game"
+@using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
+@using BlazorServerSideClient.Services.Requests
 @using ChessGameBlazorClient.ServiceEndpoints
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Models
+@using SharedResources.ChessGameResource.StaticResources
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @using System.Web
 @using System.Collections.Specialized
 @inject SignalRService HubClient
+@inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject NavigationManager Navigation
 @attribute [Authorize]
@@ -16,22 +22,11 @@
 
 <p id="Player1">Player 1: @Player1?.UserName</p>
 <p id="Player2">Player 2: @Player2?.UserName</p>
-<div class="chessboard">
-    @for (int row = 8; row >= 1; row--)
-    {
-        <div class="row">
-            @for (int col = 1; col <= 8; col++)
-            {
-                var isBlack = (row + col) % 2 == 0;
-                <div class="cell @(isBlack ? "black" : "white")">
-                </div>
-            }
-        </div>
-    }
+<div id="chessboard">
 </div>
 
 <style>
-    .chessboard {
+    #chessboard {
         display: inline-block;
         border: 2px solid #333;
     }
@@ -87,7 +82,6 @@ else
     {
         _hubConnection = await HubClient.GetHubConnection();
 
-        // await _hubConnection.InvokeAsync("GetPlayersInformation", GameId.ToString());
         await JS.ShowPlayers(Player1Name, Player2Name);
 
 
@@ -96,7 +90,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         await HubClient.RegisterConnectionHandlers();
+        var thisBaord = await GameRequestService.SendGameStateAsync(
+            new ConnectionRequestDTO<SendGameStateReqeustDTO>()
+            {
+                Data = new SendGameStateReqeustDTO()
+                { 
+                    GameId = GameId
+                }
+            });
 
+
+        await JS.ShowBoardState(thisBaord.Data.Board);
     }
 
     public async Task SendMoveAsync(string move)

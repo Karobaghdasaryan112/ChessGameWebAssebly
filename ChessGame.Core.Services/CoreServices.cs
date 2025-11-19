@@ -1,5 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.MediatR.Handlers.Commands;
 using ChessGame.Core.Services.MediatR.Handlers.Queries;
 using ChessGame.Core.Services.Services.Board;
 using ChessGame.Core.Services.Services.BoardService;
@@ -17,18 +18,24 @@ namespace ChessGame.Core.Services
         public static void AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(GetMoveCommnadHandler)));
-
-            services.AddValidatorsFromAssemblyContaining<BoardInitializeDTOValidator>();
-            services.AddSignalR()
-            .AddNewtonsoftJsonProtocol(options =>
+            services.AddMediatR(cfg =>
             {
-                options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
-            }); 
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(BoardInitializeCommandHandler).Assembly
+                );
+
+                cfg.Lifetime = ServiceLifetime.Scoped;
+            });
+
+            services.AddValidatorsFromAssemblyContaining<BoardInitializeDTOValidator>(ServiceLifetime.Scoped);
+            services.AddSignalR()
+                .AddJsonProtocol(options =>
+                {
+                });
             services.AddScoped(typeof(BaseHubService<>));
-            services.AddSingleton(typeof(IConnectionService<>), typeof(ConnetionService<>));
-            services.AddSingleton(typeof(IInvitationService<>), typeof(InvitationService<>));
-            services.AddSingleton(typeof(IGameService<>), typeof(GameService<>));
+            services.AddScoped(typeof(IConnectionService<>), typeof(ConnetionService<>));
+            services.AddScoped(typeof(IInvitationService<>), typeof(InvitationService<>));
+            services.AddScoped(typeof(IGameService<>), typeof(GameService<>));
 
             services.AddScoped<IBoardService, BoardService>();
             services.AddScoped<IBlockService, BlockService>();

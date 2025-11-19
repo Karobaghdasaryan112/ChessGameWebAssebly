@@ -11,11 +11,13 @@ namespace ChessGame.Infrastructure.Infrastructure.Persistance
     {
         public static void AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ChessGameDbContext>(option =>
-                option.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ChessGameDbContext>(options =>
+            {
+                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+            });
 
-            services.AddScoped<IChessGameHistoryRepository, ChessGameHistoryRepository>();
             services.AddScoped<IChessGameRepository, ChessGameRepository>();
+            services.AddScoped<IChessGameHistoryRepository, ChessGameHistoryRepository>();
         }
     }
 }

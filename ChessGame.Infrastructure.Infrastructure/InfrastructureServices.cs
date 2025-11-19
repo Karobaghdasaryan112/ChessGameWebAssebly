@@ -10,8 +10,8 @@ namespace ChessGame.Infrastructure.Infrastructure
         public static void AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
 
-            services.AddSingleton<GameHub>();
-            services.AddSingleton<BaseHubService<GameHub>>();
+            services.AddScoped<GameHub>();
+            services.AddScoped<BaseHubService<GameHub>>();
 
         }
     }

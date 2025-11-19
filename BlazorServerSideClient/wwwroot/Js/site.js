@@ -49,14 +49,52 @@ window.inviteModal = {
 };
 
 window.Players = {
-    Player1: null,
-    Player2: null,
 
     show: function (gamer1, gamer2) {
         var player1Element = document.getElementById("Player1");
         var player2Element = document.getElementById("Player2");
 
-        player1Element.innerHTML = "Player1 " + gamer1;
-        player2Element.innerHTML = "Player2 " + gamer2;
+        player1Element.innerHTML = "Player1: " + gamer1;
+        player2Element.innerHTML = "Player2: " + gamer2;
     }
 }
+window.BuildBoard = {
+    Build: function (board) {
+
+        const mainBoardDiv = document.getElementById("chessboard");
+        mainBoardDiv.innerHTML = ""; 
+
+        const blocks = board.BoardBlocks;
+
+        for (let i = 0; i < 8; i++) {
+
+            const rowDiv = document.createElement("div");
+            rowDiv.classList.add("row");
+            mainBoardDiv.appendChild(rowDiv);
+
+            for (let j = 0; j < 8; j++) {
+
+                const block = blocks[i][j];
+
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+
+                if (block.BlockColor === 0) {
+                    cell.classList.add("light");
+                } else {
+                    cell.classList.add("dark");
+                }
+
+                if (block.Figure) {
+                    const piece = document.createElement("img");
+                    piece.classList.add("piece");
+
+                    piece.src = `/PNGs/${block.Figure.Color}/${block.Figure.Type}.png`;
+
+                    cell.appendChild(piece);
+                }
+                rowDiv.appendChild(cell);
+            }
+        }
+    }
+};

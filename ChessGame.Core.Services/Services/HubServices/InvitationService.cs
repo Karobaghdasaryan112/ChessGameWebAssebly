@@ -1,12 +1,16 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.MediatR.Requests.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
+using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -16,9 +20,11 @@ namespace ChessGame.Core.Services.Services.HubServices
     {
         private readonly BaseHubService<THub> _baseHubService;
         private readonly IConnectionService<THub> _connectionService;
-        public InvitationService(IConnectionService<THub> connectionService, BaseHubService<THub> baseHubService)
+        private readonly IMediator _mediator;
+        public InvitationService(IConnectionService<THub> connectionService, BaseHubService<THub> baseHubService, IMediator mediator)
         {
             _connectionService = connectionService;
+            _mediator = mediator;
             _baseHubService = baseHubService;
         }
         public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
@@ -49,41 +55,45 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var gameGuidAsString = gameGuid.ToString();
 
-            await _baseHubService.AddToGroupAsync(gameGuidAsString, inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
-            await _baseHubService.AddToGroupAsync(gameGuidAsString, receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
 
-            //TO DO Save additional information into DataBase
+            var command = new BoardInitializeCommand< IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage> >
+
+            (new ChessGameRequest<BoardInitializeRequestDTO>()
+            {
+                requestType = new BoardInitializeRequestDTO()
+                {
+                    Player1Id = acceptInvitationRequest.Data.inviterUserGuid,
+                    Player2Id = acceptInvitationRequest.Data.receiverUserGuid
+                }
+            });
+
+                var result = await _mediator.Send(command);
+
+                await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
+                await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
+
+
+
             await _baseHubService.SendAcceptedInviteAsync(
                 inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!,
                 inviterConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.Data.inviterUserGuid,
                 receiverConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.Data.receiverUserGuid,
-                gameGuid);
+                result.Data.GameId);
 
-            inviterConnectionInformation.Data.UserConnectionDTO.GameId = gameGuid;
-            receiverConnectionInformation.Data.UserConnectionDTO.GameId = gameGuid;
+            inviterConnectionInformation.Data.UserConnectionDTO.GameId = result.Data.GameId;
+            receiverConnectionInformation.Data.UserConnectionDTO.GameId = result.Data.GameId;
 
-            //await _baseHubService.SendPalyersInformationAsync(new ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage>()
-            //{
-            //    Data = new ReceivePlayersResponseDTO()
-            //    {
-            //        Player1_UserConnectionDTO = inviterConnectionInformation.Data.UserConnectionDTO,
-            //        Player2_UserConnectionDTO = receiverConnectionInformation.Data.UserConnectionDTO,
-            //        Player1_UserGuId = acceptInvitationRequest.Data.inviterUserGuid,
-            //        Player2_UserGuid = acceptInvitationRequest.Data.receiverUserGuid,
-            //    },
-
-            //});
 
             var InvitationResponseDTO = new AcceptInvitationResponseDTO()
             {
-                GameId = gameGuid,
+                GameId = result.Data.GameId,
                 PlayerOne_UserConnectionResponseDTO = inviterConnectionInformation.Data.UserConnectionDTO,
                 PlayerTwo_UserConnectionResponseDTO = receiverConnectionInformation.Data.UserConnectionDTO
             };
 
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = gameGuid;
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = result.Data.GameId;
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].Gameinfo =
                 new Gameinfo()
                 {
@@ -92,7 +102,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                         acceptInvitationRequest.Data.inviterUserGuid)
                 };
 
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = gameGuid;
+            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = result.Data.GameId;
             ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].Gameinfo =
                 new Gameinfo()
                 {

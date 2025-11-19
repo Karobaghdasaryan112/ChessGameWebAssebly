@@ -16,5 +16,9 @@ namespace BlazorServerSideClient.Services.Handlers
         {
            await _jsService.ShowPlayers(connectionResponseDTO.Data.Player1_UserConnectionDTO.UserName!, connectionResponseDTO.Data.Player2_UserConnectionDTO?.UserName!);
         }
+        public async Task ReceiveBoardStateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
+        {
+            await _jsService.ShowBoardState(gameStateconnectionResponseDTO.Data.Board);
+        }
     }
 }

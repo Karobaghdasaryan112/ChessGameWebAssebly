@@ -45,31 +45,30 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     HttpStatusCode.BadRequest, errorMessages);
             }
 
-            var BoardInitialize = new Board();
 
-            var result = await _service.InitializeBoardAsync(request.RequestDTO.requestType.Player1Id, request.RequestDTO.requestType.Player2Id);
+            var newGameGuid = await _service.InitializeBoardAsync(request.RequestDTO.requestType.Player1Id, request.RequestDTO.requestType.Player2Id);
 
-            if (result == -1)
+            if (newGameGuid == default)
             {
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
                     HttpStatusCode.InternalServerError, new());
             }
+            var BoardInitialize = new Board();
 
-            var addingResult = ActiveGames.AddGame(result, BoardInitialize);
+            var addingResult = ActiveGames.AddGame(newGameGuid, BoardInitialize);
 
             if (!addingResult)
             {
-                _logger.LogError("Failed to add the new game with ID {GameId} to active games.", result);
+                _logger.LogError("Failed to add the new game with ID {GameId} to active games.", newGameGuid);
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
                     HttpStatusCode.InternalServerError, new());
             }
 
-            //TO:DO change Game id from int to Guid
-            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = Guid.NewGuid() };
+            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = newGameGuid };
 
 
             return ChessGameResponse<BoardInitializeResponseDTO>.

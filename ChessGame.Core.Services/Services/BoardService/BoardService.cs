@@ -21,17 +21,17 @@ namespace ChessGame.Core.Services.Services.BoardService
             _chessGameHistoryRepository = chessGameHistoryRepository;
         }
 
-        public async Task<int> InitializeBoardAsync(string player1Id, string player2Id)
+        public async Task<Guid> InitializeBoardAsync(Guid player1Id, Guid player2Id)
         {
             var isCreated = await _chessGameRepository.CreateGame(player1Id, player2Id);
             if (!isCreated)
             {
                 _logger.LogError("Failed to create a new game between {Player1} and {Player2}", player1Id, player2Id);
-                return -1;
+                return Guid.Empty;
             }
 
             var gameId = await _chessGameRepository.GetGameIdByPlayers(player1Id, player2Id);
-            if (gameId == -1)
+            if (gameId == default)
                 _logger.LogError("Failed to retrieve game ID for players {Player1} and {Player2}", player1Id, player2Id);
             else
                 _logger.LogInformation("Game successfully created between {Player1} and {Player2}", player1Id, player2Id);

@@ -11,5 +11,8 @@ namespace SharedResources.Requests
         {
             this.requestType = requestType;
         }
+        public ChessGameRequest()
+        {
+        }
     }
 }

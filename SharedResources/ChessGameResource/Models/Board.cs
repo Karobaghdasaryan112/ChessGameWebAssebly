@@ -1,6 +1,7 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.ChessGameResource.Figures;
+using System.Text.Json.Serialization;
 
 namespace SharedResources.ChessGameResource.Models
 {
@@ -10,6 +11,7 @@ namespace SharedResources.ChessGameResource.Models
     /// </summary>
     public class Board
     {
+        [JsonConstructor]
         public Board(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)
@@ -28,7 +30,7 @@ namespace SharedResources.ChessGameResource.Models
 
         public static FigureColors MyColor { get; private set; }
 
-        private static void CreateBoard(FigureColors figureColor = default)
+        public static void CreateBoard(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)
                 return;
@@ -40,7 +42,7 @@ namespace SharedResources.ChessGameResource.Models
         /// Creates and fills the 8x8 board with blocks and places the appropriate chess pieces.
         /// </summary>
         /// <param name="figureColor">The player's chosen figure color</param>
-        private static void CreateBlocks(FigureColors figureColor = default)
+        public static void CreateBlocks(FigureColors figureColor = default)
         {
             MyColor = figureColor;
 

@@ -72,8 +72,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             => await _gameService.ClearGameAsync(gameId);
 
         //TO:DO
-        public async Task SendGameStateAsync(Guid gameId)
-            => await _gameService.SendGameStateAsync(gameId);
+        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO,ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
+            =>  await _gameService.SendGameStateAsync(gameStateReqeustDTO);
 
         public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
             => await _gameService.GetOnlinePlayersAsync(connectionRequestDTO);

@@ -11,7 +11,7 @@ namespace ChessGame.Core.Services.Contracts.Hub
     public interface IGameService<T> where T : Microsoft.AspNetCore.SignalR.Hub
     {
         Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO);
-        Task<IResponseTypes<UserConnectionDTO, ChessGameResponseMessage>> SendGameStateAsync(Guid gameId);
+        Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO);
         Task ClearGameAsync(Guid gameId);
     }
 }

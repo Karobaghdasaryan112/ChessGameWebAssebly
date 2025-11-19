@@ -1,12 +1,10 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
-using SharedResources.Contracts.RequestsAndResponses;
-using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
-
 namespace ChessGame.Core.Services.Services.HubServices
 {
     public class GameService<T> : IGameService<T> where T : Microsoft.AspNetCore.SignalR.Hub
@@ -44,10 +42,18 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-        public Task<IResponseTypes<UserConnectionDTO, ChessGameResponseMessage>> SendGameStateAsync(Guid gameId)
+        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
-            throw new NotImplementedException();
+            var games = ActiveGames.ActiveGamesAndBoards;
+            var gameState = ActiveGames.ActiveGamesAndBoards.Where(kvp => kvp.Key == gameStateReqeustDTO.Data.GameId).FirstOrDefault();
+            return await Task.Run(() => new ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>()
+            {
+                Data = new SendGameStateResponseDTO()
+                {
+                    Board = gameState.Value
+                },
+                Message = ChessGameResponseMessage.GameCreated,
+            });
         }
-
     }
 }

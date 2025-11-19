@@ -1,5 +1,4 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using BlazorServerSideClient.Services.Handlers;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -21,7 +20,7 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IGameHandlerService _gameHandlerService;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ClaimsPrincipal _user;
-        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService,AuthenticationStateProvider authenticationStateProvider)
+        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService, AuthenticationStateProvider authenticationStateProvider)
         {
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
@@ -101,9 +100,20 @@ namespace ChessGameBlazorClient.UI.Services
                     gameGuid));
 
 
-            _hubConnection.On<ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage>>("ReseivePlayersAsync",async (
+            _hubConnection.On<
+                ConnectionResponseDTO<
+                    ReceivePlayersResponseDTO,
+                    ChessGameResponseMessage>>
+                    ("ReseivePlayersAsync", async (
                 connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO)
             );
+
+            _hubConnection.On<
+                ConnectionResponseDTO<
+                    BoardStateResponseDTO,
+                    ChessGameResponseMessage>>("ReceiveBoardStateAsync",
+                    async (BoardStateResponseHandler) => await _gameHandlerService.ReceiveBoardStateAsync(BoardStateResponseHandler));
+
         }
         //public async Task InitializeAsync(string userGuid, string userName)
         //{

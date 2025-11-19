@@ -75,11 +75,11 @@
         "properties": {
           "player1Id": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
           },
           "player2Id": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
           },
           "gameId": {
             "type": "string",

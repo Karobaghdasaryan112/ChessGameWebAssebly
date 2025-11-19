@@ -3,15 +3,7 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "Gateway.API\\Gateway.API.csproj",
-        "Action": "Start"
-      },
-      {
         "Path": "webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj",
-        "Action": "Start"
-      },
-      {
-        "Path": "IdentityServer\\IdentityServer.csproj",
         "Action": "Start"
       },
       {
