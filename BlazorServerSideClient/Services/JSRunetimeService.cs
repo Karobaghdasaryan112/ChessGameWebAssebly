@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using BlazorServerSideClient.Pages;
+using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
 
 namespace BlazorServerSideClient.Services
@@ -30,7 +31,10 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowPlayers(string player1_Name, string player2_Name) 
             => _js.InvokeVoidAsync("Players.show", player1_Name, player2_Name);
 
-        public ValueTask ShowBoardState(string Blocks) 
-            => _js.InvokeVoidAsync("BuildBoard.Build", Blocks);
+        public ValueTask ShowBoardState(string Blocks,int figureColor,DotNetObjectReference<Game> dotNetRef) 
+            => _js.InvokeVoidAsync("BuildBoard.Build", Blocks, figureColor, dotNetRef);
+
+        public ValueTask ShowMovableCutableBlocks(List<Position> cutablePositions, List<Position> movablePositions)
+            => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
     }
 }

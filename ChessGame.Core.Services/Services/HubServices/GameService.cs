@@ -55,5 +55,32 @@ namespace ChessGame.Core.Services.Services.HubServices
                 Message = ChessGameResponseMessage.GameCreated,
             });
         }
+        public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
+        {
+            var gameState =
+                ActiveGames.ActiveGamesAndBoards.
+                Where(kvp =>
+                kvp.Key == sendMoveConnectionRequestDTO.Data.GameId).
+                First().Value;
+
+
+            var positions =
+                gameState.
+                GetBlockByPosition(sendMoveConnectionRequestDTO.Data.Block.Position).
+                Figure.
+                GetMovableAndCutableBlocks(sendMoveConnectionRequestDTO.Data.Block.Position, gameState);
+
+            var response = new ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>()
+            {
+                Data = new MoveResponseDTO()
+                {
+                    CutableBlocks = positions.CutablePositions,
+                    MovableBlocks = positions.MovablePositions,
+                    GameId = sendMoveConnectionRequestDTO.Data.GameId,
+                    Player = sendMoveConnectionRequestDTO.Data.Player
+                }
+            };
+            return response;
+        }
     }
 }

@@ -51,15 +51,15 @@ window.inviteModal = {
 window.Players = {
 
     show: function (gamer1, gamer2) {
-        var player1Element = document.getElementById("Player1");
-        var player2Element = document.getElementById("Player2");
+        var player1Element = document.getElementById("player1Name");
+        var player2Element = document.getElementById("player1Meta");
 
         player1Element.innerHTML = "Player1: " + gamer1;
         player2Element.innerHTML = "Player2: " + gamer2;
     }
 }
 window.BuildBoard = {
-    Build: function (JsonBlocks) {
+    Build: function (JsonBlocks, figureColor, dotNetRef) {
         const blocks = JSON.parse(JsonBlocks);
         const mainBoardDiv = document.getElementById("chessboard");
         mainBoardDiv.innerHTML = "";
@@ -81,6 +81,24 @@ window.BuildBoard = {
                 cell.style.border = "1px solid #000";
                 cell.style.transition = "background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
                 cell.style.backgroundColor = block.BlockColor === 0 ? "white" : "gray";
+
+                cell.addEventListener("click", () => {
+                    const loggerDiv = document.getElementById("Logger-Div");
+                    if (loggerDiv.children.length > 10)
+                        loggerDiv.innerHTML = "";
+                    const loggerInfo = document.createElement("div");
+                    loggerInfo.classList.add("log-item");
+
+                    loggerInfo.innerHTML =
+                        `<span class="log-pos">Cell: (${i}, ${j})</span>
+                         <span class="log-figure">${block.Figure?.$type ?? "Empty"}</span>`;
+
+                    loggerDiv.appendChild(loggerInfo);
+                    const id = cell.id;
+                    const indexI = parseInt(id[0]);
+                    const indexJ = parseInt(id[1]);
+                    dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ, block);
+                });
                 if (block.HighlightColor) {
                     cell.style.backgroundColor = block.HighlightColor;
                 }
@@ -94,19 +112,43 @@ window.BuildBoard = {
                     piece.style.width = "80%";
                     piece.style.height = "80%";
                     piece.style.zIndex = "10";
+                    let colorFolder;
 
-                    const figureColor = block.Figure.FigureColor === 1 ? "black" : "white";
+                    if (figureColor === 0 && i <= 2) {
+                        colorFolder = "black";
+                        cell.id = `${i}${j}`;
+                    }
+                    else if (figureColor === 1 && i <= 2) {
+                        colorFolder = "white"
+                        cell.id = `${i}${j}`;
+                    }
+
+                    if (figureColor === 0 && i >= 6) {
+                        colorFolder = "white"
+                        cell.id = `${7 - i}${7 - j}`;
+                    }
+                    else if (figureColor === 1 && i >= 6) {
+                        colorFolder = "black"
+                        cell.id = `${7 - i}${7 - j}`;
+                    }
+
                     const figureType = block.Figure.$type.split('.').pop();
-                    piece.src = `/PNGs/${figureColor}/${figureType}.png`;
+                    piece.src = `/PNGs/${colorFolder}/${figureType}.png`;
 
                     cell.appendChild(piece);
                 }
                 const originalColor = cell.style.backgroundColor;
                 cell.addEventListener("mouseenter", () => {
-                    cell.style.backgroundColor = "#f0d86b";
+                    if (cell.style.backgroundColor != "white" && cell.style.backgroundColor != "gray")
+                        return;
+
+                    cell.style.backgroundColor = "rgb(240, 216, 107)";
                     cell.style.transform = "scale(1.05)";
                 });
                 cell.addEventListener("mouseleave", () => {
+                    if (cell.style.backgroundColor != "rgb(240, 216, 107)")
+                        return;
+
                     cell.style.backgroundColor = originalColor;
                     cell.style.transform = "scale(1)";
                 });
@@ -116,4 +158,45 @@ window.BuildBoard = {
         }
     }
 };
+window.ShowMovableAndCutableBlocks = {
+    Paint: function (cutablePositions, movablePositions) {
 
+        function highlightCell(cell, color) {
+
+            if (!cell) return;
+
+            cell.style.transition = "background-color 0.3s ease, transform 0.3s ease, border-radius 0.3s ease";
+
+            cell.style.backgroundColor = color;
+
+            cell.style.transform = "scale(1.12)";
+            cell.style.borderRadius = "8px";
+
+            setTimeout(() => {
+                cell.style.transform = "scale(1)";
+            }, 300);
+        }
+
+        cutablePositions.forEach(pos => {
+            const vertical = pos.verticalOrientation;
+            const horizontal = pos.horizontalOrientation;
+            const cell = document.getElementById(`${vertical}${horizontal}`);
+            highlightCell(cell, "rgba(255, 0, 0, 0.45)");
+        });
+
+        movablePositions.forEach(pos => {
+            const vertical = pos.verticalOrientation;
+            const horizontal = pos.horizontalOrientation;
+            const cell = document.getElementById(`${vertical}${horizontal}`);
+            highlightCell(cell, "rgba(0, 255, 0, 0.45)");
+        });
+    },
+    Clear: function () {
+        const allCells = document.querySelectorAll("[id^='']");
+        allCells.forEach(cell => {
+            cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
+            cell.style.backgroundColor = "";
+            cell.style.borderRadius = "0px";
+        });
+    }
+};

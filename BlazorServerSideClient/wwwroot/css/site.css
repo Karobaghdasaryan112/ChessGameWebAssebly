@@ -201,7 +201,6 @@ a, .btn-link {
 
 .accept-btn {
     background: #4caf50;
-    color: white;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: none;
@@ -209,8 +208,254 @@ a, .btn-link {
 
 .decline-btn {
     background: #f44336;
-    color: white;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: none;
+}
+
+:root {
+    --bg: #0f1724;
+    --card: #0f1724aa;
+    --glass: rgba(255,255,255,0.06);
+    --accent: linear-gradient(135deg,#7f5af0,#4cc9f0);
+    --muted: #9aa4b2;
+    --white: #f8fafc;
+    --cell-light: #f3efe9;
+    --cell-dark: #2e3440;
+    --board-radius: 18px;
+    --gap: 18px;
+    --board-size: min(72vmin,720px);
+    --cell-radius: 8px;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    background: radial-gradient(1000px 400px at 10% 10%, rgba(124,58,237,0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76,201,240,0.06), transparent 10%), var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--white);
+}
+
+.wrap {
+    max-width: 1200px;
+    margin: 28px auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: var(--gap);
+    align-items: start;
+}
+
+.leftCard {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+}
+
+.playersInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.01);
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: inline-grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--white);
+    background: linear-gradient(135deg,#334155,#1f2937);
+    box-shadow: 0 4px 18px rgba(2,6,23,0.5);
+    border: 1px solid rgba(255,255,255,0.04);
+    flex-shrink: 0;
+}
+
+.playerInfo {
+    overflow: hidden;
+}
+
+    .playerInfo .name {
+        display: block;
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--white);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .playerInfo .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn {
+    --pad: 8px 12px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--white);
+    padding: var(--pad);
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: transform .12s ease, box-shadow .12s ease, background .12s;
+}
+
+    .btn:active {
+        transform: translateY(1px)
+    }
+
+    .btn.primary {
+        background: var(--accent);
+        border: none;
+        box-shadow: 0 8px 30px rgba(79,70,229,0.18);
+        color: white;
+    }
+
+.boardWrap {
+    margin-top: 16px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.chessboard {
+    width: var(--board-size);
+    height: var(--board-size);
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+    grid-template-rows: repeat(8,1fr);
+    gap: 6px;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+    border-radius: var(--board-radius);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.03);
+    position: relative;
+    touch-action: manipulation;
+}
+
+.cell {
+    display: grid;
+    place-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    aspect-ratio: 1/1;
+    border-radius: var(--cell-radius);
+    font-weight: 700;
+    color: var(--cell-dark);
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+    .cell.light {
+        background: linear-gradient(180deg,var(--cell-light), #efe8df);
+        color: #0b1220;
+        box-shadow: 0 6px 16px rgba(15,23,36,0.06);
+    }
+
+    .cell.dark {
+        background: linear-gradient(180deg,var(--cell-dark), #1f2836);
+        color: var(--white);
+        box-shadow: 0 4px 10px rgba(2,6,23,0.35);
+    }
+
+    .cell:hover {
+        transform: translateY(-6px) scale(1.02);
+        z-index: 10;
+    }
+
+    .cell.selected {
+        outline: 3px solid rgba(124,58,237,0.9);
+        box-shadow: 0 12px 36px rgba(79,70,229,0.14);
+        transform: translateY(-8px) scale(1.04);
+    }
+
+    .cell .piece {
+        pointer-events: none;
+        font-size: min(4.6vmin,36px);
+        line-height: 1;
+    }
+
+.rightCard {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    height: fit-content;
+}
+
+.panelTitle {
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+    .panelTitle h4 {
+        margin: 0;
+        font-size: 15px
+    }
+
+.movesLog {
+    max-height: 320px;
+    overflow: auto;
+    padding: 8px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    border: 1px dashed rgba(255,255,255,0.02);
+}
+
+    .movesLog .move {
+        font-size: 14px;
+        color: var(--muted);
+        padding: 6px 4px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+@media (max-width:980px) {
+    .wrap {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .boardWrap {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rightCard {
+        order: -1;
+    }
 }

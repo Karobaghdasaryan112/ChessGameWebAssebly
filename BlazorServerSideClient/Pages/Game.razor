@@ -14,50 +14,82 @@
 @using System.Web
 @using System.Collections.Specialized
 @using System.Text.Json
+@using System.Security.Claims
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationState
+
 @attribute [Authorize]
-<h3>Game Page</h3>
 
-<p id="Player1">Player 1: @Player1?.UserName</p>
-<p id="Player2">Player 2: @Player2?.UserName</p>
-<div id="chessboard">
+<div class="wrap">
+    <div class="leftCard">
+        <div class="playersInfo">
+            <div class="player">
+                <div class="avatar" id="avatar1">P1</div>
+                <div class="playerInfo">
+                    <span class="name" id="player1Name">Player 1: —</span>
+                    <span class="meta" id="player1Meta">Rating: — · Online</span>
+                </div>
+            </div>
+
+            <div style="text-align:center">
+                <div style="font-weight:800">Game Page</div>
+                <div style="color:var(--muted);font-size:13px;margin-top:4px">Friendly match · Blitz 5+0</div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="btnUndo" title="Undo last">↶ Undo</button>
+                <button class="btn" id="btnOffer" title="Offer draw">🤝 Offer</button>
+                <button class="btn primary" id="btnNew" title="New game">✳ New Game</button>
+            </div>
+        </div>
+
+        <div class="boardWrap">
+            <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+        </div>
+    </div>
+
+    <aside class="rightCard">
+        <div class="panelTitle">
+            <h4>Move Log</h4>
+            <div style="color:var(--muted);font-size:13px">Live</div>
+            <div id="Logger-Div">
+            </div>
+        </div>
+
+        <div class="movesLog" id="movesLog">
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="panelTitle">
+            <h4>Players</h4>
+            <div style="color:var(--muted);font-size:13px">Status</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar" style="width:44px;height:44px;border-radius:10px">W</div>
+                <div>
+                    <div style="font-weight:700">White — @Player1Name </div>
+                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">B</div>
+                <div>
+                    <div style="font-weight:700">Black — @Player2Name</div>
+                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                </div>
+            </div>
+        </div>
+
+    </aside>
 </div>
-
-<style>
-    #chessboard {
-        display: inline-block;
-        border: 2px solid #333;
-    }
-
-    .row {
-        display: flex;
-    }
-
-    .cell {
-        width: 100px;
-        height: 100px;
-    }
-
-    .white {
-        background-color: #f0d9b5;
-    }
-
-    .black {
-        background-color: #b58863;
-    }
-</style>
-
-@if (_hubConnection == null)
-{
-    <p>Connecting to game server...</p>
-}
-else
-{
-    <p>Connected to game hub</p>
-}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 @code {
     [Parameter]
@@ -72,41 +104,72 @@ else
     [SupplyParameterFromQuery(Name = "Player2")]
     public string Player2Name { get; set; }
 
-    private static UserConnectionDTO Player1 => new();
-
-    private static UserConnectionDTO Player2 => new();
-
-
     private HubConnection? _hubConnection;
 
+    private static UserConnectionDTO currentUser => new UserConnectionDTO();
+    private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
+        if (!firstRender)
+            return;
+
         _hubConnection = await HubClient.GetHubConnection();
 
         await JS.ShowPlayers(Player1Name, Player2Name);
 
+        var thisBoard = await GameRequestService.SendGameStateAsync(
+            new ConnectionRequestDTO<SendGameStateReqeustDTO>()
+            {
+                Data = new SendGameStateReqeustDTO()
+                {
+                    GameId = GameId
+                }
+            });
+
+        var blocks = thisBoard.Data.Board.BoardBlocks;
+        var jsonBoard = JsonSerializer.Serialize(blocks);
+
+        var authState = await AuthenticationState.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+
+        int figureColor = userName == Player1Name ? 0 : 1;
+
+        var dotNetRef = DotNetObjectReference.Create(this);
+
+        await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
 
     }
 
     protected override async Task OnInitializedAsync()
     {
-        await HubClient.RegisterConnectionHandlers();
-        var thisBaord = await GameRequestService.SendGameStateAsync(
-            new ConnectionRequestDTO<SendGameStateReqeustDTO>()
-            {
-                Data = new SendGameStateReqeustDTO()
-                { 
-                    GameId = GameId
-                }
-            });
 
-        var blocks = thisBaord.Data.Board.BoardBlocks;
-        var jsonBoard = JsonSerializer.Serialize(blocks);
-        await JS.ShowBoardState(jsonBoard);
     }
 
+    [JSInvokable]
+    public async void OnCellClick(int row, int col, Block block)
+    {
+        var request = new ConnectionRequestDTO<MoveRequestDTO>()
+        {
+            Data = new MoveRequestDTO()
+            {
+                Block = block,
+                GameId = GameId,
+                Player = currentUserName
+            }
+        };
+
+        var positionsResult = await GameRequestService.SendMoveAsync(request);
+
+        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
+
+        Console.WriteLine($"Clicked cell: {row}, {col},{block.Figure?.FigureType},{block.Figure?.FigureColor}");
+    }
     public async Task SendMoveAsync(string move)
     {
-        await _hubConnection!.InvokeAsync("SendMove", Player1, move);
+
     }
+
 }

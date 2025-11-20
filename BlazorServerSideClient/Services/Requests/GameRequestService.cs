@@ -43,7 +43,7 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
         public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>>
-            SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO) // Guid gameId
+            SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO) 
         {
             var hubConnection = await _signalRService.GetHubConnection();
             var result = await hubConnection.InvokeAsync<
@@ -68,5 +68,14 @@ namespace BlazorServerSideClient.Services.Requests
         {
             throw new NotImplementedException();
         }
+        public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
+        {
+            var hubConnection = await (_signalRService.GetHubConnection());
+            return await hubConnection.InvokeAsync<
+                 ConnectionResponseDTO<
+                        MoveResponseDTO,
+                        ChessGameResponseMessage>>("SendMoveAsync", sendMoveConnectionRequestDTO);
+        }    
+
     }
 }

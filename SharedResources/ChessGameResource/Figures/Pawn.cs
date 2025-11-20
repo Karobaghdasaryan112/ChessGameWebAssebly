@@ -26,8 +26,6 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = board.GetBlockByPosition(startRow, startCol);
-
             var stepRow = startRow == 6 ? -2 : -1;
 
             AddMovablePositions(startRow, startCol, stepRow, result, board);
@@ -41,9 +39,9 @@ namespace SharedResources.ChessGameResource.Figures
         }
         private void AddMovablePositions(int row, int col, int rowStep, MovableAndCutablePositions positions,Board board)
         {
-            for (int i = 1; i <= rowStep; i++)
+            for (int i = 1; i <= Math.Abs(rowStep); i++)
             {
-                row += i;
+                row -= i;
 
                 if (row >= (int)CriticalPositions.lowCriticalValue && row <= (int)CriticalPositions.highCriticalValue)
                 {
@@ -73,7 +71,7 @@ namespace SharedResources.ChessGameResource.Figures
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != board.FigureColor)
+                if (figure?.FigureColor != board.FigureColor && board.FigureColor != (default))
                     result.CutablePositions.Add(new Position(row, col));
             }
         }

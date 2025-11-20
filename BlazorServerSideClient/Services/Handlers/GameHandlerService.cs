@@ -19,7 +19,7 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         public async Task ReceiveBoardStateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
         {
-            await _jsService.ShowBoardState(JsonSerializer.Serialize(gameStateconnectionResponseDTO.Data.Board.GetBlocks));
+            //await _jsService.ShowBoardState(JsonSerializer.Serialize(gameStateconnectionResponseDTO.Data.Board.GetBlocks));
         }
     }
 }

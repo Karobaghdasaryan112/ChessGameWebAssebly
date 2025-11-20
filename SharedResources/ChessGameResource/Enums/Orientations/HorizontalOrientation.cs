@@ -2,7 +2,6 @@
 {
     public enum HorizontalOrientation
     {
-        None,
         a,
         b, 
         c, 

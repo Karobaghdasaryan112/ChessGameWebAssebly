@@ -103,5 +103,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                      UserGuid = userGuid
                  }
              });
+
+
+        public Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
+            => _gameService.SendMoveAsync(sendMoveConnectionRequestDTO);
     }
 }

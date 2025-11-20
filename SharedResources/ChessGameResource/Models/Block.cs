@@ -48,6 +48,7 @@ namespace SharedResources.ChessGameResource.Models
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
+
                 if (figure == null)
                 {
                     positions.MovablePositions.Add(new Position(row, col));
