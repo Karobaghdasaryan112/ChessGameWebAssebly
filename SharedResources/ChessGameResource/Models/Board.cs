@@ -30,7 +30,7 @@ namespace SharedResources.ChessGameResource.Models
         /// </summary>
         public  Block[][]? BoardBlocks { get; set; }
 
-        public  FigureColors FigureColor { get; private set; }
+        public  FigureColors FigureColor { get; set; }
 
         public  void CreateBoard(FigureColors figureColor = default)
         {
@@ -46,16 +46,11 @@ namespace SharedResources.ChessGameResource.Models
         /// <param name="figureColor">The player's chosen figure color</param>
         public  void CreateBlocks(FigureColors figureColor = default)
         {
-            FigureColor = figureColor;
 
             BoardBlocks = new Block[8][];
 
-            var opponentFigureColor =
-                figureColor == default ?
-                    FigureColors.Black :
-                figureColor == FigureColors.Black ?
-                    FigureColors.White :
-                    FigureColors.Black;
+            var opponentFigureColor = FigureColors.Black;
+            figureColor = FigureColors.White;
 
             var realFigureColor = default(FigureColors);
 

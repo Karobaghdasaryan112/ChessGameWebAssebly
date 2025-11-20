@@ -12,9 +12,6 @@ namespace SharedResources.Validation.ChessGameValidations
                .Must(p => !string.IsNullOrWhiteSpace(p)).WithMessage("Player cannot be whitespace.");
 
 
-            RuleFor(x => x.Block)
-                .NotNull().WithMessage("Block is required.")
-                .SetValidator(new BlockValidator());
         }
     }
 }

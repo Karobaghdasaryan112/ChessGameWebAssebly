@@ -5,6 +5,7 @@
 @using ChessGameBlazorClient.ServiceEndpoints
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
+@using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.ChessGameResource.StaticResources
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
@@ -149,24 +150,35 @@
     }
 
     [JSInvokable]
-    public async void OnCellClick(int row, int col, Block block)
+    public async void OnCellClick(int row, int col)
     {
+        var myColor =
+            currentUserName == Player1Name ?
+            FigureColors.White :
+            FigureColors.Black;
         var request = new ConnectionRequestDTO<MoveRequestDTO>()
         {
             Data = new MoveRequestDTO()
             {
-                Block = block,
+                From = new Position(row, col),
+                To = null,
                 GameId = GameId,
-                Player = currentUserName
+                Player = currentUserName,
+                MyColor = myColor
             }
         };
 
         var positionsResult = await GameRequestService.SendMoveAsync(request);
+        if(myColor == FigureColors.Black)
+        {
+            positionsResult.Data.MovableBlocks = positionsResult.Data.MovableBlocks?.Select(pos => new Position(7 - pos.VerticalOrientation, 7 - pos.HorizontalOrientation)).ToList();
+            positionsResult.Data.CutableBlocks = positionsResult.Data.CutableBlocks?.Select(pos => new Position(7 - pos.VerticalOrientation, 7 - pos.HorizontalOrientation)).ToList();
+        }
 
         await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
 
-        Console.WriteLine($"Clicked cell: {row}, {col},{block.Figure?.FigureType},{block.Figure?.FigureColor}");
-    }
+        Console.WriteLine($"Clicked cell: {row}, {col}");
+    }           
     public async Task SendMoveAsync(string move)
     {
 

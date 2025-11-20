@@ -62,6 +62,7 @@ window.BuildBoard = {
     Build: function (JsonBlocks, figureColor, dotNetRef) {
         const blocks = JSON.parse(JsonBlocks);
         const mainBoardDiv = document.getElementById("chessboard");
+
         mainBoardDiv.innerHTML = "";
         mainBoardDiv.style.display = "grid";
         mainBoardDiv.style.gridTemplateRows = "repeat(8, 1fr)";
@@ -69,11 +70,17 @@ window.BuildBoard = {
         mainBoardDiv.style.width = "800px";
         mainBoardDiv.style.height = "800px";
         mainBoardDiv.style.gap = "2px";
+
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 const block = blocks[i][j];
 
                 const cell = document.createElement("div");
+
+                // === ВАЖНО ===
+                // Реальные координаты клетки
+                cell.id = `c-${i}-${j}`;
+
                 cell.style.position = "relative";
                 cell.style.width = "100px";
                 cell.style.height = "100px";
@@ -82,29 +89,22 @@ window.BuildBoard = {
                 cell.style.transition = "background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
                 cell.style.backgroundColor = block.BlockColor === 0 ? "white" : "gray";
 
+                const originalColor = cell.style.backgroundColor;
+
+                // --- Click handler ---
                 cell.addEventListener("click", () => {
-                    const loggerDiv = document.getElementById("Logger-Div");
-                    if (loggerDiv.children.length > 10)
-                        loggerDiv.innerHTML = "";
-                    const loggerInfo = document.createElement("div");
-                    loggerInfo.classList.add("log-item");
-
-                    loggerInfo.innerHTML =
-                        `<span class="log-pos">Cell: (${i}, ${j})</span>
-                         <span class="log-figure">${block.Figure?.$type ?? "Empty"}</span>`;
-
-                    loggerDiv.appendChild(loggerInfo);
-                    const id = cell.id;
-                    const indexI = parseInt(id[0]);
-                    const indexJ = parseInt(id[1]);
-                    dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ, block);
+                    dotNetRef.invokeMethodAsync("OnCellClick", i, j);
                 });
+
+                // --- Highlight overrides base color ---
                 if (block.HighlightColor) {
                     cell.style.backgroundColor = block.HighlightColor;
                 }
 
+                // === Отрисовка фигуры ===
                 if (block.Figure) {
                     const piece = document.createElement("img");
+
                     piece.style.position = "absolute";
                     piece.style.top = "50%";
                     piece.style.left = "50%";
@@ -112,41 +112,48 @@ window.BuildBoard = {
                     piece.style.width = "80%";
                     piece.style.height = "80%";
                     piece.style.zIndex = "10";
-                    let colorFolder;
 
-                    if (figureColor === 0 && i <= 2) {
-                        colorFolder = "black";
-                        cell.id = `${i}${j}`;
-                    }
-                    else if (figureColor === 1 && i <= 2) {
-                        colorFolder = "white"
-                        cell.id = `${i}${j}`;
-                    }
-
-                    if (figureColor === 0 && i >= 6) {
-                        colorFolder = "white"
-                        cell.id = `${7 - i}${7 - j}`;
-                    }
-                    else if (figureColor === 1 && i >= 6) {
-                        colorFolder = "black"
-                        cell.id = `${7 - i}${7 - j}`;
-                    }
-
+                    // Имя фигуры
                     const figureType = block.Figure.$type.split('.').pop();
+
+                    // Цвет папки определяется ТОЛЬКО по цвету самой фигуры
+
+                    var colorFolder 
+                    if (block.Figure.FigureColor === 2) {
+                        colorFolder = "white";
+                    }
+                    if (block.Figure.FigureColor === 1) {
+                        colorFolder = "black";
+
+                    }
+
+                    // Для отображения из перспективы игрока
+                    let displayI = i;
+                    let displayJ = j;
+
+                    if (figureColor === 1) {
+                        displayI = 7 - i;
+                        displayJ = 7 - j;
+                    }
+
+                    // src фигуры
                     piece.src = `/PNGs/${colorFolder}/${figureType}.png`;
 
                     cell.appendChild(piece);
                 }
-                const originalColor = cell.style.backgroundColor;
+
+                // === Hover animation ===
                 cell.addEventListener("mouseenter", () => {
-                    if (cell.style.backgroundColor != "white" && cell.style.backgroundColor != "gray")
+                    if (cell.style.backgroundColor !== "white" &&
+                        cell.style.backgroundColor !== "gray")
                         return;
 
                     cell.style.backgroundColor = "rgb(240, 216, 107)";
                     cell.style.transform = "scale(1.05)";
                 });
+
                 cell.addEventListener("mouseleave", () => {
-                    if (cell.style.backgroundColor != "rgb(240, 216, 107)")
+                    if (cell.style.backgroundColor !== "rgb(240, 216, 107)")
                         return;
 
                     cell.style.backgroundColor = originalColor;
@@ -158,17 +165,15 @@ window.BuildBoard = {
         }
     }
 };
+
 window.ShowMovableAndCutableBlocks = {
     Paint: function (cutablePositions, movablePositions) {
 
         function highlightCell(cell, color) {
-
             if (!cell) return;
 
             cell.style.transition = "background-color 0.3s ease, transform 0.3s ease, border-radius 0.3s ease";
-
             cell.style.backgroundColor = color;
-
             cell.style.transform = "scale(1.12)";
             cell.style.borderRadius = "8px";
 
@@ -178,25 +183,14 @@ window.ShowMovableAndCutableBlocks = {
         }
 
         cutablePositions.forEach(pos => {
-            const vertical = pos.verticalOrientation;
-            const horizontal = pos.horizontalOrientation;
-            const cell = document.getElementById(`${vertical}${horizontal}`);
+            const cell = document.getElementById(`c-${pos.verticalOrientation}-${pos.horizontalOrientation}`);
             highlightCell(cell, "rgba(255, 0, 0, 0.45)");
         });
 
         movablePositions.forEach(pos => {
-            const vertical = pos.verticalOrientation;
-            const horizontal = pos.horizontalOrientation;
-            const cell = document.getElementById(`${vertical}${horizontal}`);
+            const cell = document.getElementById(`c-${pos.verticalOrientation}-${pos.horizontalOrientation}`);
             highlightCell(cell, "rgba(0, 255, 0, 0.45)");
-        });
-    },
-    Clear: function () {
-        const allCells = document.querySelectorAll("[id^='']");
-        allCells.forEach(cell => {
-            cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
-            cell.style.backgroundColor = "";
-            cell.style.borderRadius = "0px";
         });
     }
 };
+

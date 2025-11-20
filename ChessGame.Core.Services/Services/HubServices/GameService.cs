@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
@@ -63,12 +64,13 @@ namespace ChessGame.Core.Services.Services.HubServices
                 kvp.Key == sendMoveConnectionRequestDTO.Data.GameId).
                 First().Value;
 
+            gameState.FigureColor = sendMoveConnectionRequestDTO.Data.MyColor;
 
             var positions =
                 gameState.
-                GetBlockByPosition(sendMoveConnectionRequestDTO.Data.Block.Position).
+                GetBlockByPosition(sendMoveConnectionRequestDTO.Data.From).
                 Figure.
-                GetMovableAndCutableBlocks(sendMoveConnectionRequestDTO.Data.Block.Position, gameState);
+                GetMovableAndCutableBlocks(sendMoveConnectionRequestDTO.Data.From, gameState);
 
             var response = new ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>()
             {
