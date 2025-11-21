@@ -26,10 +26,8 @@ namespace ChessGame.Core.Services
             });
 
             services.AddValidatorsFromAssemblyContaining<BoardInitializeDTOValidator>(ServiceLifetime.Scoped);
-            services.AddSignalR()
-                .AddJsonProtocol(options =>
-                {
-                });
+
+
             services.AddScoped(typeof(BaseHubService<>));
             services.AddScoped(typeof(IConnectionService<>), typeof(ConnetionService<>));
             services.AddScoped(typeof(IInvitationService<>), typeof(InvitationService<>));

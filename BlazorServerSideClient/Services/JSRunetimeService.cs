@@ -36,5 +36,7 @@ namespace BlazorServerSideClient.Services
 
         public ValueTask ShowMovableCutableBlocks(List<Position> cutablePositions, List<Position> movablePositions)
             => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
+
+        public ValueTask ClearSelectedBlocks(int figureColor) => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Clear", figureColor);
     }
 }

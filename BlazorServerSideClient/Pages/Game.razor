@@ -21,7 +21,6 @@
 @inject JSRunetimeService JS
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationState
-
 @attribute [Authorize]
 
 <div class="wrap">
@@ -107,6 +106,9 @@
 
     private HubConnection? _hubConnection;
 
+    private ClickedBlockInformationDTO ClickedBlockInformationDTO;
+
+
     private static UserConnectionDTO currentUser => new UserConnectionDTO();
     private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -150,17 +152,26 @@
     }
 
     [JSInvokable]
-    public async void OnCellClick(int row, int col)
+    public async void OnCellClick(int row, int col, Block block)
     {
+
         var myColor =
             currentUserName == Player1Name ?
             FigureColors.White :
             FigureColors.Black;
+
+        await JS.ClearSelectedBlocks((int)myColor);
+
+
+        if (block.Figure?.FigureColor != myColor ||
+            (block.Figure == null &&
+                (block.BlockColor == BlockColor.White || block.BlockColor == BlockColor.Black)))
+            return;
         var request = new ConnectionRequestDTO<MoveRequestDTO>()
         {
             Data = new MoveRequestDTO()
             {
-                From = new Position(row, col),
+                From = null,
                 To = null,
                 GameId = GameId,
                 Player = currentUserName,
@@ -168,17 +179,27 @@
             }
         };
 
-        var positionsResult = await GameRequestService.SendMoveAsync(request);
-        if(myColor == FigureColors.Black)
+        if (ClickedBlockInformationDTO != default)
         {
-            positionsResult.Data.MovableBlocks = positionsResult.Data.MovableBlocks?.Select(pos => new Position(7 - pos.VerticalOrientation, 7 - pos.HorizontalOrientation)).ToList();
-            positionsResult.Data.CutableBlocks = positionsResult.Data.CutableBlocks?.Select(pos => new Position(7 - pos.VerticalOrientation, 7 - pos.HorizontalOrientation)).ToList();
+            request.Data.From = ClickedBlockInformationDTO.ClieckedBlock.Position;
+            request.Data.To = new Position(row, col);
         }
+
+
+        var positionsResult = await GameRequestService.SendMoveAsync(request);
+
+        ClickedBlockInformationDTO.ClieckedBlock = block;
+
+        ClickedBlockInformationDTO.MovableAndCutablePositions = new MovableAndCutablePositions()
+        { 
+            MovablePositions = positionsResult.Data.MovableBlocks,
+            CutablePositions = positionsResult.Data.CutableBlocks
+        };
 
         await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
 
         Console.WriteLine($"Clicked cell: {row}, {col}");
-    }           
+    }
     public async Task SendMoveAsync(string move)
     {
 
