@@ -1,5 +1,5 @@
-﻿using ChessGame.Core.Services.Contracts.Hub;
-using SharedResources.ChessGameResource.Models;
+﻿using ChessGame.Core.Services.Contracts.BoardServices;
+using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
@@ -11,8 +11,11 @@ namespace ChessGame.Core.Services.Services.HubServices
     public class GameService<T> : IGameService<T> where T : Microsoft.AspNetCore.SignalR.Hub
     {
         private readonly IConnectionService<T> _connectionService;
-        public GameService(IConnectionService<T> connectionService)
+        private readonly IBoardService _boardService;
+
+        public GameService(IConnectionService<T> connectionService, IBoardService boardService)
         {
+            _boardService = boardService;
             _connectionService = connectionService;
         }
 
@@ -58,6 +61,18 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
         public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
         {
+            var canMoveResult = await _boardService.CanClick(sendMoveConnectionRequestDTO.Data.MyColor, sendMoveConnectionRequestDTO.Data.CurrentBlock, sendMoveConnectionRequestDTO.Data.PreviusBlockInformationDTO);
+            
+            if (!canMoveResult)
+                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                   new MoveResponseDTO()
+                   {
+                       GameId = sendMoveConnectionRequestDTO.Data.GameId,
+                       Player = sendMoveConnectionRequestDTO.Data.Player
+                   },
+                   ChessGameResponseMessage.InvalidMove,
+                   System.Net.HttpStatusCode.BadRequest);
+
             var gameState =
                 ActiveGames.ActiveGamesAndBoards.
                 Where(kvp =>
@@ -66,23 +81,50 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             gameState.FigureColor = sendMoveConnectionRequestDTO.Data.MyColor;
 
-            var positions =
+            if (sendMoveConnectionRequestDTO.Data.To == null)
+            {
+                var positions =
                 gameState.
                 GetBlockByPosition(sendMoveConnectionRequestDTO.Data.From).
                 Figure.
                 GetMovableAndCutableBlocks(sendMoveConnectionRequestDTO.Data.From, gameState);
 
-            var response = new ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>()
-            {
-                Data = new MoveResponseDTO()
+                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new MoveResponseDTO()
+                    {
+                        CutableBlocks = positions.CutablePositions,MovableBlocks = positions.MovablePositions,
+                        GameId = sendMoveConnectionRequestDTO.Data.GameId,Player = sendMoveConnectionRequestDTO.Data.Player
+                    },
+                    ChessGameResponseMessage.SuccessUserConnections,
+                    System.Net.HttpStatusCode.OK);
+            }
+            if(sendMoveConnectionRequestDTO.Data.CurrentBlock.EventColor != SharedResources.ChessGameResource.Enums.Colors.EventColors.Cut)
+                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                                 new MoveResponseDTO()
+                                 {
+                                     GameId = sendMoveConnectionRequestDTO.Data.GameId,
+                                     Player = sendMoveConnectionRequestDTO.Data.Player
+                                 },
+                                 ChessGameResponseMessage.InvalidMove,
+                                 System.Net.HttpStatusCode.BadRequest);
+
+            var moveResult = await _boardService.SubmitMoveAsync(sendMoveConnectionRequestDTO.Data.GameId, sendMoveConnectionRequestDTO.Data.From, sendMoveConnectionRequestDTO.Data.To, gameState);
+            if (moveResult)
+                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new MoveResponseDTO()
+                    {
+                        GameId = sendMoveConnectionRequestDTO.Data.GameId,Player = sendMoveConnectionRequestDTO.Data.Player
+                    },
+                    ChessGameResponseMessage.MoveSuccessful,
+                    System.Net.HttpStatusCode.OK);
+
+            return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                new MoveResponseDTO()
                 {
-                    CutableBlocks = positions.CutablePositions,
-                    MovableBlocks = positions.MovablePositions,
-                    GameId = sendMoveConnectionRequestDTO.Data.GameId,
-                    Player = sendMoveConnectionRequestDTO.Data.Player
-                }
-            };
-            return response;
+                    GameId = sendMoveConnectionRequestDTO.Data.GameId,Player = sendMoveConnectionRequestDTO.Data.Player
+                },
+                ChessGameResponseMessage.InvalidMove,
+                System.Net.HttpStatusCode.BadRequest);
         }
     }
 }

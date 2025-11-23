@@ -9,7 +9,7 @@ namespace SharedResources.ChessGameResource.Figures
     public class Pawn : IFigure
     {
 
-        public Pawn(){}
+        public Pawn() { }
 
         public FigureType FigureType => FigureType.Pawn;
 
@@ -57,7 +57,10 @@ namespace SharedResources.ChessGameResource.Figures
                     var figure = block.Figure;
 
                     if (figure == null)
+                    {
+                        block.EventColor = EventColors.Move;
                         positions.MovablePositions.Add(new Position(row, col));
+                    }
                     else
                         break;
                 }
@@ -81,7 +84,10 @@ namespace SharedResources.ChessGameResource.Figures
                 var figure = block.Figure;
 
                 if (figure?.FigureColor != board.FigureColor && figure?.FigureColor != (default))
+                {
+                    block.EventColor = EventColors.Cut;
                     result.CutablePositions.Add(new Position(row, col));
+                }
             }
         }
     }

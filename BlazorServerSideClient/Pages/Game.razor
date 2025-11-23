@@ -92,6 +92,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 @code {
+    //Parameters
+
     [Parameter]
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
@@ -104,13 +106,30 @@
     [SupplyParameterFromQuery(Name = "Player2")]
     public string Player2Name { get; set; }
 
+    //Parameters
+
+
+
+    //Properties
+
     private HubConnection? _hubConnection;
 
-    private ClickedBlockInformationDTO ClickedBlockInformationDTO;
+    private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
 
+    private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
 
     private static UserConnectionDTO currentUser => new UserConnectionDTO();
+
     private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+
+    //Properties
+
+
+
+
+
+    //Lifecycle Methods
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
@@ -133,12 +152,7 @@
         var blocks = thisBoard.Data.Board.BoardBlocks;
         var jsonBoard = JsonSerializer.Serialize(blocks);
 
-        var authState = await AuthenticationState.GetAuthenticationStateAsync();
-
-        var user = authState.User;
-        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name).Value;
-
-        int figureColor = userName == Player1Name ? 0 : 1;
+        int figureColor = currentUserName == Player1Name ? 0 : 1;
 
         var dotNetRef = DotNetObjectReference.Create(this);
 
@@ -151,55 +165,78 @@
 
     }
 
+    //JS Methods
     [JSInvokable]
     public async void OnCellClick(int row, int col, Block block)
     {
+        if(MyColor == FigureColors.Black)
+        {
+            block.Position.VerticalOrientation = 7 - block.Position.VerticalOrientation;
+        }
+        await JS.ClearSelectedBlocks((int)MyColor);
 
-        var myColor =
-            currentUserName == Player1Name ?
-            FigureColors.White :
-            FigureColors.Black;
-
-        await JS.ClearSelectedBlocks((int)myColor);
-
-
-        if (block.Figure?.FigureColor != myColor ||
-            (block.Figure == null &&
-                (block.BlockColor == BlockColor.White || block.BlockColor == BlockColor.Black)))
-            return;
         var request = new ConnectionRequestDTO<MoveRequestDTO>()
         {
             Data = new MoveRequestDTO()
             {
-                From = null,
-                To = null,
                 GameId = GameId,
                 Player = currentUserName,
-                MyColor = myColor
+                MyColor = MyColor,
+                CurrentBlock = block,
+                From = new Position(row, col),
+                PreviusBlockInformationDTO = ClickedBlockInformationDTO
             }
         };
 
-        if (ClickedBlockInformationDTO != default)
+        if (ClickedBlockInformationDTO.ClieckedBlock == null)
         {
-            request.Data.From = ClickedBlockInformationDTO.ClieckedBlock.Position;
-            request.Data.To = new Position(row, col);
+            var positionsResult = await GameRequestService.SendMoveAsync(request);
+            if (!positionsResult.IsSuccess)
+                return;
+
+            await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
+
+            ClickedBlockInformationDTO.ClieckedBlock = block;
+            ClickedBlockInformationDTO.GameId = GameId;
+            ClickedBlockInformationDTO.MovableAndCutablePositions = new MovableAndCutablePositions()
+            {
+                CutablePositions = positionsResult.Data.CutableBlocks,
+                MovablePositions = positionsResult.Data.MovableBlocks
+            };
+            return;
         }
+        else
+        {
+            if (ClickedBlockInformationDTO.ClieckedBlock.Figure != default && block.Figure != default)
+            {
+                if (ClickedBlockInformationDTO.ClieckedBlock.Figure.FigureColor == block.Figure.FigureColor)
+                {
 
+                    var positionsResult = await GameRequestService.SendMoveAsync(request);
+                    if (!positionsResult.IsSuccess)
+                        return;
+                    await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
+                    ClickedBlockInformationDTO.ClieckedBlock = block;
+                    return;
+                }
+                if (ClickedBlockInformationDTO.ClieckedBlock.Figure.FigureColor != block.Figure.FigureColor && block.EventColor == EventColors.Cut)
+                {
+                    //TO DO: Cut Figure
+                }
+            }
+            else if (ClickedBlockInformationDTO.ClieckedBlock.Figure != default && block.Figure == default)
+            {
 
-        var positionsResult = await GameRequestService.SendMoveAsync(request);
-
+                await JS.UpdateBoardAfterMove(ClickedBlockInformationDTO.ClieckedBlock.Position, block.Position, (int)MyColor);
+                ClickedBlockInformationDTO.ClieckedBlock = default;
+                return;
+            }
+        }
         ClickedBlockInformationDTO.ClieckedBlock = block;
 
-        ClickedBlockInformationDTO.MovableAndCutablePositions = new MovableAndCutablePositions()
-        { 
-            MovablePositions = positionsResult.Data.MovableBlocks,
-            CutablePositions = positionsResult.Data.CutableBlocks
-        };
-
-        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
-
-        Console.WriteLine($"Clicked cell: {row}, {col}");
     }
+    //JS Methods
+
     public async Task SendMoveAsync(string move)
     {
 

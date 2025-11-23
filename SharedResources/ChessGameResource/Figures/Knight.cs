@@ -67,9 +67,15 @@ namespace SharedResources.ChessGameResource.Figures
                 var figure = block.Figure;
 
                 if (figure == null)
-                    positions.MovablePositions.Add(new Position(row, col));
+                {
+                    //positions.MovablePositions.Add(new Position(row, col));
+                    block.EventColor = EventColors.Move;
+                }
                 else if (figure.FigureColor != board.FigureColor)
-                    positions.CutablePositions.Add(new Position(row, col));
+                {
+                    block.EventColor = EventColors.Cut;
+                    //positions.CutablePositions.Add(new Position(row, col));
+                }
             }
         }
     }

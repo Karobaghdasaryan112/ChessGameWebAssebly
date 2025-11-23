@@ -10,6 +10,8 @@ namespace SharedResources.ChessGameResource.Models
         public Position Position { get; set; }
         public IFigure Figure { get; set; }
         public BlockColor BlockColor { get; set; }
+        public EventColors EventColor { get; set; }
+
         public Block()
         {
             
@@ -51,11 +53,13 @@ namespace SharedResources.ChessGameResource.Models
 
                 if (figure == null)
                 {
-                    positions.MovablePositions.Add(new Position(row, col));
+                    //positions.MovablePositions.Add(new Position(row, col));
+                    block.EventColor = EventColors.Move;
                 }
                 else if (figure.FigureColor != board.FigureColor)
                 {
-                    positions.CutablePositions.Add(new Position(row, col));
+                    //positions.CutablePositions.Add(new Position(row, col));
+                    block.EventColor = EventColors.Cut;
                     row = (int)CriticalPositions.lowCriticalValue;
                     col = (int)CriticalPositions.lowCriticalValue;
                     break;

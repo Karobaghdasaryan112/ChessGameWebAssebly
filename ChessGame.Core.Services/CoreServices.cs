@@ -1,7 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.MediatR.Handlers.Commands;
-using ChessGame.Core.Services.Services.Board;
 using ChessGame.Core.Services.Services.BoardService;
 using ChessGame.Core.Services.Services.HubServices;
 using FluentValidation;

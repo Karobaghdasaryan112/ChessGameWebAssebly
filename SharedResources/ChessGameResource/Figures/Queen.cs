@@ -11,7 +11,7 @@ namespace SharedResources.ChessGameResource.Figures
         public Queen()
         {
             
-        }
+        }   
         public FigureType FigureType => FigureType.Queen;
         public FigureColors FigureColor { get; set; }
 

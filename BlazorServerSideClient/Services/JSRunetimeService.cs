@@ -1,6 +1,7 @@
 ﻿using BlazorServerSideClient.Pages;
 using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
+using System.Drawing;
 
 namespace BlazorServerSideClient.Services
 {
@@ -38,5 +39,7 @@ namespace BlazorServerSideClient.Services
             => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
 
         public ValueTask ClearSelectedBlocks(int figureColor) => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Clear", figureColor);
+
+        public ValueTask UpdateBoardAfterMove(Position from,Position to,int myColor) => _js.InvokeVoidAsync("UpdateBoardAfterMove.Move", from, to, myColor);
     }
 }

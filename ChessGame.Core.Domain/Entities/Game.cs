@@ -1,5 +1,4 @@
 ﻿using ChessGame.Domain.Domain.Contracts;
-using System.ComponentModel.DataAnnotations;
 
 namespace ChessGame.Domain.Domain.Entities
 {

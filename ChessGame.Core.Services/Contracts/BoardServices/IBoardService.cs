@@ -1,10 +1,13 @@
-﻿using SharedResources.ChessGameResource.Models;
+﻿using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Models;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 
 namespace ChessGame.Core.Services.Contracts.BoardServices
 {
     public interface IBoardService
     {
         Task<Guid> InitializeBoardAsync(Guid player1Id, Guid player2Id);
-        Task<bool> SubmitMoveAsync(int gameId, Position currentPosition, Position movePosition, string player);
+        Task<bool> SubmitMoveAsync(Guid gameId, Position currentPosition, Position movePosition, Board currentBoardState);
+        Task<bool> CanClick(FigureColors currentColor, Block currentBlock, ClickedBlockInformationDTO previusBlockInformationDTO);
     }
 }

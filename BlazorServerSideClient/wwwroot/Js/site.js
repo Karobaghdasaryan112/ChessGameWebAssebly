@@ -207,7 +207,7 @@ window.ShowMovableAndCutableBlocks = {
     Clear: function (figureColor) {
 
         const allCellsCutable = document.querySelectorAll("[class^='cutable']");
-        const allCellsMovable = document.querySelectorAll("[class^='movable']");
+        const allCellsMovable = document.querySelectorAll("[class^='movable']");    
         allCellsCutable.forEach(cell => {
             const id = cell.id;
             const indexI = parseInt(id[0]);
@@ -245,3 +245,39 @@ window.ShowMovableAndCutableBlocks = {
 
     }
 };
+window.UpdateBoardAfterMove = {
+    Move: function (from, to, myColor) {
+        var verticalFrom;
+        var verticalTo;
+        if (myColor == 1) {
+            console.log("from:", from);
+            console.log("to:", to);
+            console.log("verticalFrom:", verticalFrom, "horizontalFrom:", from.horizontalOrientation);
+            console.log("verticalTo:", verticalTo, "horizontalTo:", to.horizontalOrientation);
+
+            console.log("fromCell:", document.getElementById(`${verticalFrom}${from.horizontalOrientation}`));
+            console.log("toCell:", document.getElementById(`${verticalTo}${to.horizontalOrientation}`));
+            verticalFrom = from.verticalOrientation;
+            verticalTo = to.verticalOrientation;
+
+
+        } else {
+            verticalFrom = from.verticalOrientation;
+            verticalTo = to.verticalOrientation;
+        }
+
+        var fromCell = document.getElementById(`${verticalFrom}${from.horizontalOrientation}`);
+        var toCell = document.getElementById(`${verticalTo}${to.horizontalOrientation}`);
+
+        if (fromCell && toCell)
+        {
+            var piece = fromCell.querySelector("img");
+            if (piece)
+            {
+                fromCell.removeChild(piece);
+                toCell.appendChild(piece);
+                ShowMovableAndCutableBlocks.Clear();
+            }
+        }
+    }
+}
