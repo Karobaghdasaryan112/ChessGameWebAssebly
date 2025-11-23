@@ -7,18 +7,6 @@
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\pages\\game.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\chessgame.core.services\\services\\boardservice\\boardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\boardservice\\boardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\chessgame.core.services\\services\\hubservices\\gameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|solutionrelative:chessgame.core.services\\services\\hubservices\\gameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -26,10 +14,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d8933d8c84a635e1c37e9eb18c6bd032217008a8799fd62d3548cc8ad96b6005\\Task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{90AB9C4B-3E10-4E0C-9DE6-23132EB5755E}|ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj|solutionrelative:chessgame.infrastructure.infrastructure\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F4F1B000-55E6-4F4C-BE0B-99BF750FE974}|ChessGame.Core.Services\\ChessGame.Core.Services.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\chessgame.core.services\\contracts\\boardservices\\iboardservice.cs||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -163,10 +147,6 @@
       "RelativeMoniker": "D:0:0:{9736B46E-566B-4652-8C4B-ED4BE26BB3B3}|webAssemblyChessGame.Services.ChessGameAPI\\ChessService.API.ChessGameAPI.csproj|solutionrelative:webassemblychessgame.services.chessgameapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\blazorserversideclient\\shared\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\shared\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\services\\signalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -297,10 +277,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\blazorserversideclient\\wwwroot\\pngs\\white\\bishop.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
       "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\wwwroot\\pngs\\white\\bishop.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\blazorserversideclient\\wwwroot\\pngs\\bishopblack.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
-      "RelativeMoniker": "D:0:0:{811A4D98-3371-4E05-93AC-095E6B125AFB}|BlazorServerSideClient\\BlazorServerSideClient.csproj|solutionrelative:blazorserversideclient\\wwwroot\\pngs\\bishopblack.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A83C9787-4FCC-453B-9F67-02E90C38C19C}|SharedResources\\SharedResources.csproj|c:\\users\\karob\\source\\repos\\chessgamediploma\\sharedresources\\validation\\chessgamevalidations\\positionvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -747,11 +723,11 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
               "$type": "Document",
@@ -761,14 +737,14 @@
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Game.razor",
               "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Game.razor",
               "RelativeToolTip": "BlazorServerSideClient\\Pages\\Game.razor",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAAAH8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAuwGgAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-20T09:07:25.395Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 15,
               "Title": "ActiveGames.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\StaticResources\\ActiveGames.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\StaticResources\\ActiveGames.cs",
@@ -780,7 +756,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 21,
               "Title": "Knight.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\Knight.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\Knight.cs",
@@ -792,7 +768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "ClientProxyExtensions.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\c5b2729678e1a03df19e65899b4ad191802bd617a3623b940d97308bcc2b98d9\\ClientProxyExtensions.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\c5b2729678e1a03df19e65899b4ad191802bd617a3623b940d97308bcc2b98d9\\ClientProxyExtensions.cs",
@@ -804,7 +780,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "ExecutionContext.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
@@ -816,7 +792,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 12,
               "Title": "IFigure.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Contracts\\ChessGameResourceContracts\\IFigure.cs",
               "RelativeDocumentMoniker": "SharedResources\\Contracts\\ChessGameResourceContracts\\IFigure.cs",
@@ -828,7 +804,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 14,
               "Title": "Queen.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\Queen.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\Queen.cs",
@@ -840,7 +816,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 11,
               "Title": "Pawn.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\Pawn.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\Pawn.cs",
@@ -852,7 +828,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 7,
               "Title": "JSRunetimeService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\JSRunetimeService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\JSRunetimeService.cs",
@@ -864,7 +840,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 5,
               "Title": "GameRequestService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\GameRequestService.cs",
@@ -876,7 +852,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 13,
               "Title": "FigureColors.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Colors\\FigureColors.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Colors\\FigureColors.cs",
@@ -888,7 +864,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 6,
               "Title": "Board.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Models\\Board.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Models\\Board.cs",
@@ -900,7 +876,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 8,
               "Title": "AsyncTaskMethodBuilder.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\943866804c986b3f1c185b0aaf5a6b2eb778d67c9141c5459bf5f86981d49a11\\AsyncTaskMethodBuilder.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\943866804c986b3f1c185b0aaf5a6b2eb778d67c9141c5459bf5f86981d49a11\\AsyncTaskMethodBuilder.cs",
@@ -913,7 +889,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "IBoardService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Contracts\\BoardServices\\IBoardService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\BoardServices\\IBoardService.cs",
@@ -925,7 +901,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "Task.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\d8933d8c84a635e1c37e9eb18c6bd032217008a8799fd62d3548cc8ad96b6005\\Task.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\d8933d8c84a635e1c37e9eb18c6bd032217008a8799fd62d3548cc8ad96b6005\\Task.cs",
@@ -937,7 +913,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 16,
               "Title": "CoreServices.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\CoreServices.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\CoreServices.cs",
@@ -949,7 +925,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 10,
               "Title": "BlockService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Services\\BoardService\\BlockService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\BoardService\\BlockService.cs",
@@ -961,7 +937,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 9,
               "Title": "MoveRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\MoveRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\MoveRequestDTO.cs",
@@ -973,7 +949,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 17,
               "Title": "MoveResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\MoveResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\MoveResponseDTO.cs",
@@ -985,7 +961,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 19,
               "Title": "MovableAndCutablePositions.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Models\\MovableAndCutablePositions.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Models\\MovableAndCutablePositions.cs",
@@ -997,7 +973,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 20,
               "Title": "Rook.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\Rook.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\Rook.cs",
@@ -1009,7 +985,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 18,
               "Title": "ClickedBlockInformationDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\ClickedBlockInformationDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\ClickedBlockInformationDTO.cs",
@@ -1021,7 +997,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 22,
               "Title": "King.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\King.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\King.cs",
@@ -1033,7 +1009,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 23,
               "Title": "Block.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Models\\Block.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Models\\Block.cs",
@@ -1045,7 +1021,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 24,
               "Title": "Bishop.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Figures\\Bishop.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Figures\\Bishop.cs",
@@ -1057,7 +1033,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 25,
               "Title": "EventColors.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Colors\\EventColors.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Colors\\EventColors.cs",
@@ -1069,7 +1045,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 26,
               "Title": "BlockColor.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Colors\\BlockColor.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Colors\\BlockColor.cs",
@@ -1081,7 +1057,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 27,
               "Title": "Turn.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Colors\\Turn.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Colors\\Turn.cs",
@@ -1093,7 +1069,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 28,
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Domain\\Entities\\Game.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Domain\\Entities\\Game.cs",
@@ -1105,7 +1081,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 29,
               "Title": "Actions_Endpoints.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\ServiceEndpoints\\Actions_Endpoints.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ServiceEndpoints\\Actions_Endpoints.cs",
@@ -1117,7 +1093,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 30,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Data\\ApplicationDbContext.cs",
@@ -1129,7 +1105,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 32,
               "Title": "LoginDisplay.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\LoginDisplay.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\LoginDisplay.razor",
@@ -1141,7 +1117,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 35,
               "Title": "ConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponseDTO.cs",
@@ -1153,7 +1129,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 42,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChessGameAPI\\Startup.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\Startup.cs",
@@ -1165,7 +1141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 41,
               "Title": "InfrastructureServices.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\InfrastructureServices.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\InfrastructureServices.cs",
@@ -1177,7 +1153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 36,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.Development.json",
@@ -1189,7 +1165,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 31,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\appsettings.Development.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\appsettings.Development.json",
@@ -1201,7 +1177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 38,
               "Title": "Dashboard.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Dashboard.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Dashboard.razor",
@@ -1213,7 +1189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 40,
               "Title": "InvitationHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\InvitationHandlerService.cs",
@@ -1225,7 +1201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 34,
               "Title": "QueryBuilder.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\ServiceEndpoints\\QueryBuilder.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ServiceEndpoints\\QueryBuilder.cs",
@@ -1237,7 +1213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 33,
               "Title": "BasePaths.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\ServiceEndpoints\\BasePaths.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ServiceEndpoints\\BasePaths.cs",
@@ -1249,7 +1225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 44,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.API.IdentityAPI\\Startup.cs",
               "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Startup.cs",
@@ -1261,7 +1237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 37,
               "Title": "SignalRService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\SignalRService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\SignalRService.cs",
@@ -1273,7 +1249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 46,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Program.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Program.cs",
@@ -1285,7 +1261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 39,
               "Title": "CriticalPositions.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\CriticalValues\\CriticalPositions.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\CriticalValues\\CriticalPositions.cs",
@@ -1297,7 +1273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 45,
               "Title": "PersistanceServicesRegistration.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Persistance\\PersistanceServicesRegistration.cs",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\PersistanceServicesRegistration.cs",
@@ -1309,7 +1285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 43,
               "Title": "PersistanceServices.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\PersistanceServices.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\PersistanceServices.cs",
@@ -1321,7 +1297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 49,
               "Title": "MoveDTOValidator.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Validation\\ChessGameValidations\\MoveDTOValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\MoveDTOValidator.cs",
@@ -1333,7 +1309,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 47,
               "Title": "HorizontalOrientation.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Orientations\\HorizontalOrientation.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Orientations\\HorizontalOrientation.cs",
@@ -1345,7 +1321,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 48,
               "Title": "VerticalOrientation.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\ChessGameResource\\Enums\\Orientations\\VerticalOrientation.cs",
               "RelativeDocumentMoniker": "SharedResources\\ChessGameResource\\Enums\\Orientations\\VerticalOrientation.cs",
@@ -1357,7 +1333,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 50,
               "Title": "DashboardInvitationRequest.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\DashboardInvitationRequest.razor",
@@ -1369,7 +1345,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 55,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\_Imports.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\_Imports.razor",
@@ -1381,7 +1357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 51,
               "Title": "_Host.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\_Host.cshtml",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\_Host.cshtml",
@@ -1393,7 +1369,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 53,
               "Title": "Index.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Index.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Index.razor",
@@ -1405,7 +1381,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 57,
               "Title": "Error.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Error.cshtml",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Error.cshtml",
@@ -1417,7 +1393,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 56,
               "Title": "App.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\App.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\App.razor",
@@ -1429,7 +1405,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 54,
               "Title": "SurveyPrompt.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\SurveyPrompt.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\SurveyPrompt.razor",
@@ -1441,7 +1417,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 52,
               "Title": "Counter.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Counter.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Counter.razor",
@@ -1453,7 +1429,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 63,
               "Title": "IGameHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Contracts\\Handlers\\IGameHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Handlers\\IGameHandlerService.cs",
@@ -1465,7 +1441,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 58,
               "Title": "MainLayout.razor.css",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\MainLayout.razor.css",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\MainLayout.razor.css",
@@ -1477,7 +1453,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 61,
               "Title": "open-iconic-bootstrap.min.css",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
@@ -1489,7 +1465,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 60,
               "Title": "bootstrap.min.css",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
@@ -1501,7 +1477,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 59,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\NavMenu.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\NavMenu.razor",
@@ -1513,7 +1489,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 64,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\appsettings.Development.json",
               "RelativeDocumentMoniker": "IdentityServer\\appsettings.Development.json",
@@ -1525,7 +1501,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 62,
               "Title": "GameHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\GameHandlerService.cs",
@@ -1537,7 +1513,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 65,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\appsettings.json",
               "RelativeDocumentMoniker": "IdentityServer\\appsettings.json",
@@ -1549,7 +1525,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 67,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\appsettings.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\appsettings.json",
@@ -1561,7 +1537,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 66,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\appsettings.json",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\appsettings.json",
@@ -1573,7 +1549,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 79,
               "Title": "AcceptInvitationResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\AcceptInvitationResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\AcceptInvitationResponseDTO.cs",
@@ -1585,7 +1561,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 68,
               "Title": "bishop.png - PNG [150x150, 32 bit, PNG]",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\PNGs\\black\\bishop.png",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\PNGs\\black\\bishop.png",
@@ -1597,7 +1573,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 69,
               "Title": "bishop.png - PNG [150x150, 32 bit, PNG]",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\PNGs\\white\\bishop.png",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\PNGs\\white\\bishop.png",
@@ -1609,19 +1585,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
-              "Title": "BishopBlack.png - PNG [150x150, 32 bit, PNG]",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\PNGs\\BishopBlack.png",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\PNGs\\BishopBlack.png",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\PNGs\\BishopBlack.png - PNG [150x150, 32 bit, PNG]",
-              "RelativeToolTip": "BlazorServerSideClient\\wwwroot\\PNGs\\BishopBlack.png - PNG [150x150, 32 bit, PNG]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2025-11-19T20:25:14.628Z",
-              "EditorCaption": " - PNG [150x150, 32 bit, PNG]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 73,
               "Title": "BoardInitializeCommandHandler.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\MediatR\\Handlers\\Commands\\BoardInitializeCommandHandler.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\MediatR\\Handlers\\Commands\\BoardInitializeCommandHandler.cs",
@@ -1633,7 +1597,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 71,
               "Title": "BoardExtention.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Extentions\\BoardExtention.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Extentions\\BoardExtention.cs",
@@ -1645,7 +1609,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 70,
               "Title": "PositionValidator.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Validation\\ChessGameValidations\\PositionValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\PositionValidator.cs",
@@ -1657,7 +1621,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 72,
               "Title": "SendGameStateResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\SendGameStateResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\SendGameStateResponseDTO.cs",
@@ -1669,7 +1633,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
+              "DocumentIndex": 76,
               "Title": "IGameService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Contracts\\Hub\\IGameService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IGameService.cs",
@@ -1681,7 +1645,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 74,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\appsettings.json",
@@ -1693,7 +1657,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 75,
               "Title": "IdentityService.Persistance.csproj",
               "DocumentMoniker": "C:\\Users\\karob\\Source\\Repos\\ChessGameDiploma\\IdentityService.Persistance\\IdentityService.Persistance.csproj",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\IdentityService.Persistance.csproj",
@@ -1705,7 +1669,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 78,
               "Title": "UserConnectionDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\UserConnectionDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\UserConnectionDTO.cs",
@@ -1717,7 +1681,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 77,
               "Title": "ChessGameResponseMessage.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ChessGameResponseMessage.cs",
@@ -1729,7 +1693,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
+              "DocumentIndex": 81,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChessGameAPI\\Program.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\Program.cs",
@@ -1741,7 +1705,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 80,
               "Title": "ChessGameRepository.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\Repositories\\ChessGameRepository.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\Repositories\\ChessGameRepository.cs",
@@ -1753,7 +1717,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 82,
               "Title": "BoardInitializeDTOValidator.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Validation\\ChessGameValidations\\BoardInitializeDTOValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\BoardInitializeDTOValidator.cs",
@@ -1765,7 +1729,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 171,
+              "DocumentIndex": 165,
               "Title": "20251119133635_InitialCreate_ChessGameHistoryId_Long.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\Migrations\\20251119133635_InitialCreate_ChessGameHistoryId_Long.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\Migrations\\20251119133635_InitialCreate_ChessGameHistoryId_Long.cs",
@@ -1777,7 +1741,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 83,
               "Title": "IdentityController.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
               "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Controllers\\IdentityController.cs",
@@ -1789,7 +1753,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
+              "DocumentIndex": 84,
               "Title": "ChessGameController.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChessGameAPI\\Controllers\\ChessGameController.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChessGameAPI\\Controllers\\ChessGameController.cs",
@@ -1801,7 +1765,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
+              "DocumentIndex": 85,
               "Title": "20251119133921_InitialCreate_ChessGameHistoryId_Long-GameId_nuewGameId.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Persistance\\Migrations\\20251119133921_InitialCreate_ChessGameHistoryId_Long-GameId_nuewGameId.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGame.Infrastructure.Persistance\\Migrations\\20251119133921_InitialCreate_ChessGameHistoryId_Long-GameId_nuewGameId.cs",
@@ -1813,7 +1777,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
+              "DocumentIndex": 87,
               "Title": "20251119133409_InitialCretae.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\Migrations\\20251119133409_InitialCretae.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\Migrations\\20251119133409_InitialCretae.cs",
@@ -1825,7 +1789,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 92,
+              "DocumentIndex": 86,
               "Title": "ChessGameHistory.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Domain\\Entities\\ChessGameHistory.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Domain\\Entities\\ChessGameHistory.cs",
@@ -1837,7 +1801,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 94,
+              "DocumentIndex": 88,
               "Title": "ChessGameDbContextFactory.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Persistance\\Data\\ChessGameDbContextFactory.cs",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Persistance\\Data\\ChessGameDbContextFactory.cs",
@@ -1849,7 +1813,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 89,
               "Title": "ContextFactory.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Persistance\\Data\\ContextFactory.cs",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\Data\\ContextFactory.cs",
@@ -1861,7 +1825,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 90,
               "Title": "BoardInitializeRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\BoardInitializeRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\BoardInitializeRequestDTO.cs",
@@ -1873,7 +1837,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 91,
               "Title": "BoardInitializeResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\BoardInitializeResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\BoardInitializeResponseDTO.cs",
@@ -1885,7 +1849,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 98,
+              "DocumentIndex": 92,
               "Title": "BoardStateResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\BoardStateResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\BoardStateResponseDTO.cs",
@@ -1897,7 +1861,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 101,
+              "DocumentIndex": 95,
               "Title": "ReceivePlayersResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\ReceivePlayersResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\ReceivePlayersResponseDTO.cs",
@@ -1909,7 +1873,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 99,
+              "DocumentIndex": 93,
               "Title": "InvitationRequestService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\InvitationRequestService.cs",
@@ -1921,7 +1885,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 100,
+              "DocumentIndex": 94,
               "Title": "RevalidatingIdentityAuthenticationStateProvider.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Areas\\Identity\\RevalidatingIdentityAuthenticationStateProvider.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Areas\\Identity\\RevalidatingIdentityAuthenticationStateProvider.cs",
@@ -1933,7 +1897,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 102,
+              "DocumentIndex": 96,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\UserService.cs",
@@ -1945,7 +1909,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 103,
+              "DocumentIndex": 97,
               "Title": "ConnectionHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Handlers\\ConnectionHandlerService.cs",
@@ -1957,7 +1921,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 104,
+              "DocumentIndex": 98,
               "Title": "IInvitationService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Contracts\\Hub\\IInvitationService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IInvitationService.cs",
@@ -1969,7 +1933,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 108,
+              "DocumentIndex": 102,
               "Title": "ConnectionRequestService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Services\\Requests\\ConnectionRequestService.cs",
@@ -1981,7 +1945,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 109,
+              "DocumentIndex": 103,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\MainLayout.razor",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\MainLayout.razor",
@@ -1993,7 +1957,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 105,
+              "DocumentIndex": 99,
               "Title": "IInivitationReqeustService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Contracts\\Requests\\IInivitationReqeustService.cs",
@@ -2005,7 +1969,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 106,
+              "DocumentIndex": 100,
               "Title": "SendInvitationsResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\InvitationResponseDTOs\\SendInvitationsResponseDTO.cs",
@@ -2017,7 +1981,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 110,
+              "DocumentIndex": 104,
               "Title": "ConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTO.cs",
@@ -2029,7 +1993,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 107,
+              "DocumentIndex": 101,
               "Title": "SendInvitationRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\InvitationRequestDTOs\\SendInvitationRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\InvitationRequestDTOs\\SendInvitationRequestDTO.cs",
@@ -2041,7 +2005,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 112,
+              "DocumentIndex": 106,
               "Title": "IConnectionService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Contracts\\Hub\\IConnectionService.cs",
               "RelativeDocumentMoniker": "ChessGame.Core.Services\\Contracts\\Hub\\IConnectionService.cs",
@@ -2053,7 +2017,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 111,
+              "DocumentIndex": 105,
               "Title": "AddUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\AddUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\AddUserConnectionRequestDTO.cs",
@@ -2065,7 +2029,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 113,
+              "DocumentIndex": 107,
               "Title": "AddUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\AddUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\AddUserConnectionResponseDTO.cs",
@@ -2077,7 +2041,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 114,
+              "DocumentIndex": 108,
               "Title": "InvitationResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\InvitationResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\InvitationResponseDTO.cs",
@@ -2089,7 +2053,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 115,
+              "DocumentIndex": 109,
               "Title": "GetUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\GetUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\GetUserConnectionRequestDTO.cs",
@@ -2101,7 +2065,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 116,
+              "DocumentIndex": 110,
               "Title": "GetUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\GetUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\GetUserConnectionResponseDTO.cs",
@@ -2113,7 +2077,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 117,
+              "DocumentIndex": 111,
               "Title": "GetOnlinePlayersRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\GetOnlinePlayersRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\GameRequestDTOs\\GetOnlinePlayersRequestDTO.cs",
@@ -2125,7 +2089,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 119,
+              "DocumentIndex": 113,
               "Title": "GetOnlinePlayersResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\GetOnlinePlayersResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\GameResponseDTOs\\GetOnlinePlayersResponseDTO.cs",
@@ -2137,7 +2101,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 118,
+              "DocumentIndex": 112,
               "Title": "ChessGameResponse.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Responses\\ChessGameResponse.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ChessGameResponse.cs",
@@ -2149,7 +2113,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 120,
+              "DocumentIndex": 114,
               "Title": "RemoveUserConnectionRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\RemoveUserConnectionRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\ConnectionRequestDTOs\\UserConnectionRequestDTOs\\RemoveUserConnectionRequestDTO.cs",
@@ -2161,7 +2125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 121,
+              "DocumentIndex": 115,
               "Title": "RemoveUserConnectionResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\RemoveUserConnectionResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\ConnectionResponsDTOs\\UserConnectionResponseDTOs\\RemoveUserConnectionResponseDTO.cs",
@@ -2173,7 +2137,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 122,
+              "DocumentIndex": 116,
               "Title": "BlazorServerSideClient.csproj",
               "DocumentMoniker": "C:\\Users\\karob\\Source\\Repos\\ChessGameDiploma\\BlazorServerSideClient\\BlazorServerSideClient.csproj",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\BlazorServerSideClient.csproj",
@@ -2185,7 +2149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 124,
+              "DocumentIndex": 118,
               "Title": "SubmitMoveResponseDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\SubmitMoveResponseDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ResponseDTOs\\SubmitMoveResponseDTO.cs",
@@ -2197,7 +2161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 123,
+              "DocumentIndex": 117,
               "Title": "SubmitMoveDTOValidator.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Validation\\ChessGameValidations\\SubmitMoveDTOValidator.cs",
               "RelativeDocumentMoniker": "SharedResources\\Validation\\ChessGameValidations\\SubmitMoveDTOValidator.cs",
@@ -2209,7 +2173,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 125,
+              "DocumentIndex": 119,
               "Title": "ChessGameErrorDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ErrorResponseDTOs\\ChessGameErrorDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ErrorResponseDTOs\\ChessGameErrorDTO.cs",
@@ -2221,7 +2185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 126,
+              "DocumentIndex": 120,
               "Title": "IResponseTypes.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
               "RelativeDocumentMoniker": "SharedResources\\Contracts\\RequestsAndResponses\\IResponseTypes.cs",
@@ -2233,7 +2197,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 127,
+              "DocumentIndex": 121,
               "Title": "UserRegistrationCommandHandler.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Handlers\\Commands\\UserRegistrationCommandHandler.cs",
@@ -2245,7 +2209,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 128,
+              "DocumentIndex": 122,
               "Title": "UserRegistrationCommand.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserRegistrationCommand.cs",
@@ -2257,7 +2221,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 129,
+              "DocumentIndex": 123,
               "Title": "UserSigninCommand.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Features\\MediatR\\Requests\\Commands\\UserSigninCommand.cs",
@@ -2269,7 +2233,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 130,
+              "DocumentIndex": 124,
               "Title": "ExceptionHandlingMiddleware.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
               "RelativeDocumentMoniker": "IdentityService.API.IdentityAPI\\Middlewares\\ExceptionHandlingMiddleware.cs",
@@ -2281,7 +2245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 131,
+              "DocumentIndex": 125,
               "Title": "SubmitMoveRequestDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\SubmitMoveRequestDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\RequestDTOs\\SubmitMoveRequestDTO.cs",
@@ -2293,7 +2257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 132,
+              "DocumentIndex": 126,
               "Title": "MoveDTOs.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\MoveDTOs.cs",
               "RelativeDocumentMoniker": "SharedResources\\DTOs\\ChessGameDTOs\\ChessGameSharedDTOs\\MoveDTOs.cs",
@@ -2305,7 +2269,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 133,
+              "DocumentIndex": 127,
               "Title": "ICheseGameDTO.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
               "RelativeDocumentMoniker": "SharedResources\\Contracts\\DTOs\\ICheseGameDTO.cs",
@@ -2317,7 +2281,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 134,
+              "DocumentIndex": 128,
               "Title": "ChessGame.Infrastructure.Infrastructure.csproj",
               "DocumentMoniker": "C:\\Users\\karob\\Source\\Repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj",
               "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\ChessGame.Infrastructure.Infrastructure.csproj",
@@ -2329,7 +2293,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 137,
+              "DocumentIndex": 131,
               "Title": "LogOut.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Areas\\Identity\\Pages\\Account\\LogOut.cshtml",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Areas\\Identity\\Pages\\Account\\LogOut.cshtml",
@@ -2341,7 +2305,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 136,
+              "DocumentIndex": 130,
               "Title": "_LoginPartial.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Areas\\Identity\\Pages\\Shared\\_LoginPartial.cshtml",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Areas\\Identity\\Pages\\Shared\\_LoginPartial.cshtml",
@@ -2353,7 +2317,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 138,
+              "DocumentIndex": 132,
               "Title": "Error.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Pages\\Error.cshtml.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Pages\\Error.cshtml.cs",
@@ -2365,7 +2329,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 135,
+              "DocumentIndex": 129,
               "Title": "DefaultHubDispatcher.cs",
               "DocumentMoniker": "C:\\Users\\karob\\AppData\\Local\\Temp\\.vsdbgsrc\\a0443db75519e259cb8f50c04fb98298c2e9a07f181672e793a6f41aa3aead9f\\DefaultHubDispatcher.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\a0443db75519e259cb8f50c04fb98298c2e9a07f181672e793a6f41aa3aead9f\\DefaultHubDispatcher.cs",
@@ -2377,7 +2341,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 139,
+              "DocumentIndex": 133,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\webAssemblyChessGame.Services.ChatAPI\\Program.cs",
               "RelativeDocumentMoniker": "webAssemblyChessGame.Services.ChatAPI\\Program.cs",
@@ -2389,7 +2353,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 140,
+              "DocumentIndex": 134,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Program.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Program.cs",
@@ -2401,7 +2365,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 141,
+              "DocumentIndex": 135,
               "Title": "OpenIddictSeeder.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Data\\OpenIddictSeeder.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Data\\OpenIddictSeeder.cs",
@@ -2413,7 +2377,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 146,
+              "DocumentIndex": 140,
               "Title": "ApplicationDbContextModelSnapshot.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Migrations\\ApplicationDbContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\ApplicationDbContextModelSnapshot.cs",
@@ -2425,7 +2389,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 142,
+              "DocumentIndex": 136,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Properties\\launchSettings.json",
@@ -2437,7 +2401,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 144,
+              "DocumentIndex": 138,
               "Title": "IdentityService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\ApiServices\\IdentityService.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ApiServices\\IdentityService.cs",
@@ -2449,7 +2413,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 143,
+              "DocumentIndex": 137,
               "Title": "BaseHttpClient.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\ClientService\\BaseHttpClient.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\ClientService\\BaseHttpClient.cs",
@@ -2461,7 +2425,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 169,
+              "DocumentIndex": 163,
               "Title": "20251108121751_fixNotNullConstraint.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Migrations\\20251108121751_fixNotNullConstraint.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108121751_fixNotNullConstraint.cs",
@@ -2473,7 +2437,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 170,
+              "DocumentIndex": 164,
               "Title": "20251108121527_newInitial.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Migrations\\20251108121527_newInitial.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108121527_newInitial.cs",
@@ -2485,7 +2449,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 145,
+              "DocumentIndex": 139,
               "Title": "ApplicationUser.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Domain.Domain\\ApplicationUser.cs",
               "RelativeDocumentMoniker": "IdentityService.Domain.Domain\\ApplicationUser.cs",
@@ -2497,7 +2461,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 147,
+              "DocumentIndex": 141,
               "Title": "20251108120505_InitialCreate.Designer.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.Designer.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.Designer.cs",
@@ -2509,7 +2473,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 149,
+              "DocumentIndex": 143,
               "Title": "Context.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Persistance\\Data\\Context.cs",
               "RelativeDocumentMoniker": "IdentityService.Persistance\\Data\\Context.cs",
@@ -2521,7 +2485,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 150,
+              "DocumentIndex": 144,
               "Title": "ScaffoldingReadMe.txt",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\ScaffoldingReadMe.txt",
               "RelativeDocumentMoniker": "IdentityServer\\ScaffoldingReadMe.txt",
@@ -2533,7 +2497,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 168,
+              "DocumentIndex": 162,
               "Title": "20251108120505_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Migrations\\20251108120505_InitialCreate.cs",
@@ -2545,7 +2509,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 148,
+              "DocumentIndex": 142,
               "Title": "20251108120424_NewInitiqalCresate.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Data\\Migrations\\20251108120424_NewInitiqalCresate.cs",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\Data\\Migrations\\20251108120424_NewInitiqalCresate.cs",
@@ -2556,7 +2520,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 151,
+              "DocumentIndex": 145,
               "Title": "BlazorServerSideClient",
               "DocumentMoniker": "C:\\Users\\karob\\Source\\Repos\\ChessGameDiploma\\BlazorServerSideClient\\BlazorServerSideClient.csproj",
               "RelativeDocumentMoniker": "BlazorServerSideClient\\BlazorServerSideClient.csproj",
@@ -2567,7 +2531,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 152,
+              "DocumentIndex": 146,
               "Title": "20251029122625_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Migrations\\20251029122625_InitialCreate.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Migrations\\20251029122625_InitialCreate.cs",
@@ -2579,7 +2543,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 153,
+              "DocumentIndex": 147,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Data\\ApplicationDbContext.cs",
@@ -2591,7 +2555,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 155,
+              "DocumentIndex": 149,
               "Title": "20251107130445_InitialCreatenewDbConnection.cs",
               "DocumentMoniker": "C:\\Users\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGameBlazorClient\\Data\\Migrations\\20251107130445_InitialCreatenewDbConnection.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\karapet.baghdasaryan\\source\\repos\\ChessGameWebAssembly\\ChessGameWebAssebly\\ChessGameBlazorClient\\Data\\Migrations\\20251107130445_InitialCreatenewDbConnection.cs",
@@ -2602,7 +2566,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 154,
+              "DocumentIndex": 148,
               "Title": "AuthorizationController.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Controllers\\AuthorizationController.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Controllers\\AuthorizationController.cs",
@@ -2614,7 +2578,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 156,
+              "DocumentIndex": 150,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\Gateway.API\\Program.cs",
               "RelativeDocumentMoniker": "Gateway.API\\Program.cs",
@@ -2626,7 +2590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 158,
+              "DocumentIndex": 152,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Controllers\\HomeController.cs",
@@ -2638,7 +2602,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 157,
+              "DocumentIndex": 151,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "IdentityServer\\Properties\\launchSettings.json",
@@ -2650,7 +2614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 159,
+              "DocumentIndex": 153,
               "Title": "ErrorResponseMessage.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\SharedResources\\Responses\\ResponseMessages\\ErrorResponseMessage.cs",
               "RelativeDocumentMoniker": "SharedResources\\Responses\\ResponseMessages\\ErrorResponseMessage.cs",
@@ -2662,7 +2626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 160,
+              "DocumentIndex": 154,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityService.Application\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "IdentityService.Application\\Services\\AuthService.cs",
@@ -2674,7 +2638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 161,
+              "DocumentIndex": 155,
               "Title": "EnableAuthenticator.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml.cs",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml.cs",
@@ -2686,7 +2650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 162,
+              "DocumentIndex": 156,
               "Title": "EnableAuthenticator.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
@@ -2698,7 +2662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 163,
+              "DocumentIndex": 157,
               "Title": "ChangePassword.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
@@ -2710,7 +2674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 164,
+              "DocumentIndex": 158,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
@@ -2722,7 +2686,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 165,
+              "DocumentIndex": 159,
               "Title": "_StatusMessage.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_StatusMessage.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_StatusMessage.cshtml",
@@ -2734,7 +2698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 166,
+              "DocumentIndex": 160,
               "Title": "_ManageNav.cshtml",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
               "RelativeDocumentMoniker": "IdentityServer\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
@@ -2746,7 +2710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 167,
+              "DocumentIndex": 161,
               "Title": "serviceDependencies.local.json",
               "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\IdentityServer\\Properties\\serviceDependencies.local.json",
               "RelativeDocumentMoniker": "IdentityServer\\Properties\\serviceDependencies.local.json",
@@ -2755,176 +2719,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-10-29T15:00:38.328Z"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "8762d271-2553-4985-aa04-ff1cc3067457",
-        "Display": 0,
-        "X": 69,
-        "Y": -4,
-        "Width": 1237,
-        "Height": 731,
-        "WindowState": 0
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "NavMenu.razor.css",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\NavMenu.razor.css",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\Shared\\NavMenu.razor.css",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\Shared\\NavMenu.razor.css",
-              "RelativeToolTip": "BlazorServerSideClient\\Shared\\NavMenu.razor.css",
-              "ViewState": "AgIAACcAAAAAAAAAAAAmwEgAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-20T09:09:20.197Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "740ac8a2-ce19-4b72-91d9-7b00bdb815c8",
-        "Display": 0,
-        "X": 1608,
-        "Y": 97,
-        "Width": 1853,
-        "Height": 1345,
-        "WindowState": 0
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "GameHub.cs",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "RelativeDocumentMoniker": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "RelativeToolTip": "ChessGame.Infrastructure.Infrastructure\\Hubs\\GameHub.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAWwGwAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-12T13:39:59.12Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "248aa30c-33e1-418d-9361-8b72de51651f",
-        "Display": 1,
-        "X": 178,
-        "Y": 67,
-        "Width": 2270,
-        "Height": 825,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GameService.cs",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
-              "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
-              "RelativeToolTip": "ChessGame.Core.Services\\Services\\HubServices\\GameService.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAhwD4AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T08:57:15.018Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "9cf08390-024c-44d8-a0de-4ef3a9d972d4",
-        "Display": 1,
-        "X": 1,
-        "Y": 1,
-        "Width": 1372,
-        "Height": 858,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "site.js",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "RelativeDocumentMoniker": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "RelativeToolTip": "BlazorServerSideClient\\wwwroot\\Js\\site.js",
-              "ViewState": "AgIAAPMAAAAAAAAAAAAUwAIBAABoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-20T12:18:11.788Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "285e65cf-dc9d-461b-8d23-6b40a3b7c2b6",
-        "Display": 1,
-        "X": 102,
-        "Y": 143,
-        "Width": 2270,
-        "Height": 1227,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BoardService.cs",
-              "DocumentMoniker": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Services\\BoardService\\BoardService.cs",
-              "RelativeDocumentMoniker": "ChessGame.Core.Services\\Services\\BoardService\\BoardService.cs",
-              "ToolTip": "C:\\Users\\karob\\source\\repos\\ChessGameDiploma\\ChessGame.Core.Services\\Services\\BoardService\\BoardService.cs",
-              "RelativeToolTip": "ChessGame.Core.Services\\Services\\BoardService\\BoardService.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAIAwwDkAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T07:55:57.091Z",
-              "EditorCaption": ""
             }
           ]
         }
