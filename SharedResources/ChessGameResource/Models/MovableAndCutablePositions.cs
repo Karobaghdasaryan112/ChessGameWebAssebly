@@ -2,8 +2,8 @@
 {
     public class MovableAndCutablePositions
     {
-        public List<Position> MovablePositions { get; set; }
-        public List<Position> CutablePositions { get; set; }
+        public List<Block> MovableBlock { get; set; }
+        public List<Block> CutableBlock { get; set; }
         
     }
 }

@@ -76,6 +76,7 @@ namespace ChessGameBlazorClient.UI.Services
         public async Task RegisterConnectionHandlers()
         {
             await GetHubConnection();
+
             _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>(
                     "ReceiveUpdatedUsers",
                     (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)
@@ -110,68 +111,19 @@ namespace ChessGameBlazorClient.UI.Services
 
             _hubConnection.On<
                 ConnectionResponseDTO<
-                    BoardStateResponseDTO,
-                    ChessGameResponseMessage>>("ReceiveBoardStateAsync",
-                    async (BoardStateResponseHandler) => await _gameHandlerService.ReceiveBoardStateAsync(BoardStateResponseHandler));
+                    BoardStateResponseDTO, 
+                    ChessGameResponseMessage>>(
+                    "ReceiveBoardUpdateAsync",
+                    async (BoardStateResponseHandler) => await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
+
+            _hubConnection.On("testReceiveAsync", () =>
+            {
+                Console.WriteLine("Call received!!!!");
+                int a = 1;
+            });
 
         }
-        //public async Task InitializeAsync(string userGuid, string userName)
-        //{
-        //    await GetHubConnection();
-        //    //await _hubConnection.InvokeAsync("OnInitializedAsync", userGuid, new UserConnection
-        //    //{
-        //    //    ConnectionId = _hubConnection.ConnectionId ?? throw new ArgumentNullException(),
-        //    //    UserName = userName
-        //    //});
-        //}
 
-        //public void RegisterHandlers()
-        //{
-        //    //Invitation Handlers Registration
-        //    _hubConnection!.On<List<KeyValuePair<string, UserConnection>>>("ReceiveOnlinePlayers", (players) =>
-        //    {
-        //        OnlinePlayersUpdated?.Invoke(players);
-        //    });
-
-        //    _hubConnection.On<KeyValuePair<string, UserConnectionResponseDTO>, KeyValuePair<string, UserConnectionResponseDTO>>("ReceiveInvite", async (inviter, target) =>
-        //    {
-        //        var accepted = _jSRunetimeService.InviteReceiverMessage(inviter.Value.UserName);
-
-        //        if (accepted)
-        //        {
-        //            var gameId = await _hubConnection.InvokeAsync<Guid>("AcceptInvite", inviter, target);
-        //            _navigation.NavigateTo($"/game?gameId={gameId}");
-        //        }
-        //    });
-
-        //    //Connection Handlers Registration
-
-        //    _hubConnection.On<Guid>("InviteAccepted", async (gameId) =>
-        //    {
-        //        await _js.InvokeVoidAsync("alert", "Your invite was accepted!");
-        //        _navigation.NavigateTo($"/game?GameId={gameId}");
-        //    });
-
-        //    _hubConnection.On<string>("WinNotifierAsync", async (userId) =>
-        //    {
-        //        await _js.InvokeVoidAsync("alert", "the Opponent left the game.You Win!");
-        //        _navigation.NavigateTo("/Dashboard");
-        //    });
-
-        //    //Game Handlers Regisration
-
-        //}
-
-        //public async Task<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(Guid currentUserGuid)
-        //{
-        //    await GetHubConnection();
-        //    return await _hubConnection!.InvokeAsync<IResponseTypes<UserConnectionResponseDTO, ChessGameResponseMessage>>("GetOnlinePlayersAsync", currentUserGuid);
-        //}
-
-        //public async Task SendInviteAsync(string playerId, string myPlayerId)
-        //{
-        //    await _hubConnection!.InvokeAsync("SendInvite", playerId, myPlayerId);
-        //}
     }
 
 }

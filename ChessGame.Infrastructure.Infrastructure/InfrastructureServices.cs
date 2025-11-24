@@ -21,6 +21,7 @@ namespace ChessGame.Infrastructure.Infrastructure
 
             // Таймаут рукопожатия клиента (handshake).
             options.HandshakeTimeout = TimeSpan.FromSeconds(150000);
+            options.EnableDetailedErrors = true;
 
         });
         }

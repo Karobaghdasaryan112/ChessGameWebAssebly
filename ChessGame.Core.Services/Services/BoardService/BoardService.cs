@@ -54,25 +54,27 @@ namespace ChessGame.Core.Services.Services.BoardService
             return Task.FromResult(true);
         }
 
-        public Task<bool> CanClick(FigureColors currentColor, Block currentBlock, ClickedBlockInformationDTO previusBlockInformationDTO)
+        public Task<Block> CanClick(FigureColors currentColor, Block currentBlock, ClickedBlockInformationDTO previusBlockInformationDTO, Board currentBoard)
         {
+            var currentBlockFromServer = currentBoard.GetBlockByPosition(currentBlock.Position);
 
             //if the current player is the same color as the figure on the clicked block and previusly clicked block is null
             if (currentBlock.Figure != null &&
                 currentBlock.Figure.FigureColor == currentColor)
             {
                 _logger.LogInformation("Player with color {Color} clicked on their own figure at position {Position}", currentColor, currentBlock.Position);
-                return Task.FromResult(true);
+                return Task.FromResult(currentBlockFromServer);
             }
 
             //if the current player is clicked previusly and now clicked on a movable or cutable position
+
             if (previusBlockInformationDTO?.ClieckedBlock != null &&
-                (currentBlock.EventColor == EventColors.Cut || currentBlock.EventColor == EventColors.Move))
+                (currentBlockFromServer.EventColor == EventColors.Cut || currentBlockFromServer.EventColor == EventColors.Move))
             {
                 _logger.LogInformation("Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}", currentColor, previusBlockInformationDTO.ClieckedBlock.Position, currentBlock.Position);
-                return Task.FromResult(true);
+                return Task.FromResult(currentBlockFromServer);
             }
-            return Task.FromResult(false);
+            return Task.FromResult(default(Block))!;
         }
 
     }

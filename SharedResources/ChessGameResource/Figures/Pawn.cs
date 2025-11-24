@@ -19,8 +19,8 @@ namespace SharedResources.ChessGameResource.Figures
         {
             var result = new MovableAndCutablePositions
             {
-                MovablePositions = new List<Position>(),
-                CutablePositions = new List<Position>()
+                MovableBlock = new List<Block>(),
+                CutableBlock = new List<Block>()
             };
 
             int startRow = (int)position.VerticalOrientation;
@@ -59,7 +59,7 @@ namespace SharedResources.ChessGameResource.Figures
                     if (figure == null)
                     {
                         block.EventColor = EventColors.Move;
-                        positions.MovablePositions.Add(new Position(row, col));
+                        positions.MovableBlock.Add(block);
                     }
                     else
                         break;
@@ -86,7 +86,7 @@ namespace SharedResources.ChessGameResource.Figures
                 if (figure?.FigureColor != board.FigureColor && figure?.FigureColor != (default))
                 {
                     block.EventColor = EventColors.Cut;
-                    result.CutablePositions.Add(new Position(row, col));
+                    result.CutableBlock.Add(block);
                 }
             }
         }

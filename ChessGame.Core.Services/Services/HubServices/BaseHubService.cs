@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
@@ -62,5 +63,13 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task AddToGroupAsync(string gruopName, string connectionId)
             => await _hubContext.Groups.AddToGroupAsync(connectionId, gruopName);
+
+        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
+        {
+            await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("testReceiveAsync");
+             await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
+
+        }
+
     }
 }

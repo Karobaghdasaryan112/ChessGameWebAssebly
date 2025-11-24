@@ -8,6 +8,6 @@ namespace ChessGame.Core.Services.Contracts.BoardServices
     {
         Task<Guid> InitializeBoardAsync(Guid player1Id, Guid player2Id);
         Task<bool> SubmitMoveAsync(Guid gameId, Position currentPosition, Position movePosition, Board currentBoardState);
-        Task<bool> CanClick(FigureColors currentColor, Block currentBlock, ClickedBlockInformationDTO previusBlockInformationDTO);
+        Task<Block> CanClick(FigureColors currentColor, Block currentBlock, ClickedBlockInformationDTO previusBlockInformationDTO, Board currentBoard);
     }
 }

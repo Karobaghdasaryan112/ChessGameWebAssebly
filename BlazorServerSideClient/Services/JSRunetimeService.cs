@@ -35,11 +35,12 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowBoardState(string Blocks,int figureColor,DotNetObjectReference<Game> dotNetRef) 
             => _js.InvokeVoidAsync("BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
-        public ValueTask ShowMovableCutableBlocks(List<Position> cutablePositions, List<Position> movablePositions)
+        public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions)
             => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
 
         public ValueTask ClearSelectedBlocks(int figureColor) => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Clear", figureColor);
 
         public ValueTask UpdateBoardAfterMove(Position from,Position to,int myColor) => _js.InvokeVoidAsync("UpdateBoardAfterMove.Move", from, to, myColor);
+
     }
 }

@@ -18,8 +18,8 @@ namespace SharedResources.ChessGameResource.Figures
         {
             var result = new MovableAndCutablePositions
             {
-                MovablePositions = new List<Position>(),
-                CutablePositions = new List<Position>()
+                MovableBlock = new List<Block>(),
+                CutableBlock = new List<Block>()
             };
 
             int startRow = (int)position.VerticalOrientation;

@@ -19,8 +19,8 @@ namespace SharedResources.ChessGameResource.Figures
         {
             var result = new MovableAndCutablePositions
             {
-                MovablePositions = new List<Position>(),
-                CutablePositions = new List<Position>()
+                MovableBlock = new List<Block>(),
+                CutableBlock = new List<Block>()
             };
 
             int startRow = (int)position.VerticalOrientation;
@@ -34,11 +34,11 @@ namespace SharedResources.ChessGameResource.Figures
             var queenAsRook = currentBlock.Figure = new Rook();
             var resultAsRook = queenAsRook.GetMovableAndCutableBlocks(position, board);
 
-            result.MovablePositions.AddRange(resultAsBishop.MovablePositions);
-            result.CutablePositions.AddRange(resultAsBishop.CutablePositions);
+            result.MovableBlock.AddRange(resultAsBishop.MovableBlock);
+            result.CutableBlock.AddRange(resultAsBishop.CutableBlock);
 
-            result.MovablePositions.AddRange(resultAsRook.MovablePositions);
-            result.CutablePositions.AddRange(resultAsRook.CutablePositions);
+            result.MovableBlock.AddRange(resultAsRook.MovableBlock);
+            result.CutableBlock.AddRange(resultAsRook.CutableBlock);
 
             return result;
         }

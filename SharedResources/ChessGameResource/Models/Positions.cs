@@ -21,4 +21,13 @@ public class Position
         VerticalOrientation = (VerticalOrientation)verticalOrientation;
         HorizontalOrientation = (HorizontalOrientation)horizontalOrientation;
     }
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Position) return false;
+        if(obj is null) return false;
+        var position = obj as Position;
+
+        return position!.VerticalOrientation == this.VerticalOrientation &&
+            position.HorizontalOrientation == this.HorizontalOrientation;
+    }
 }

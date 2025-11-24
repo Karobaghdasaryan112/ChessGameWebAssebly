@@ -8,6 +8,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequ
     public class MoveRequestDTO : ICheseGameRequestDTO
     {
         public string Player { get; set; }
+        public Guid CurrentPlayerId { get; set; }
         public Position From { get; set; }
         public Position To { get; set; }
         public Block CurrentBlock { get; set; }

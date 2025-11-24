@@ -2,7 +2,6 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
-using System.Text.Json;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
@@ -17,9 +16,12 @@ namespace BlazorServerSideClient.Services.Handlers
         {
            await _jsService.ShowPlayers(connectionResponseDTO.Data.Player1_UserConnectionDTO.UserName!, connectionResponseDTO.Data.Player2_UserConnectionDTO?.UserName!);
         }
-        public async Task ReceiveBoardStateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
+        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
         {
-            //await _jsService.ShowBoardState(JsonSerializer.Serialize(gameStateconnectionResponseDTO.Data.Board.GetBlocks));
+            await _jsService.UpdateBoardAfterMove(
+                gameStateconnectionResponseDTO.Data.From, 
+                gameStateconnectionResponseDTO.Data.To, 
+                (int)gameStateconnectionResponseDTO.Data.OpponentColor);
         }
     }
 }
