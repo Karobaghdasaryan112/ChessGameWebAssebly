@@ -2,7 +2,8 @@
 {
     public enum Turn
     {
+        None,
+        Black,
         White,
-        Black
     }
 }

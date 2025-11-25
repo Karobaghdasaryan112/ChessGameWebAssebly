@@ -110,7 +110,7 @@ window.BuildBoard = {
                     const indexI = parseInt(id[0]);
                     const indexJ = parseInt(id[1]);
 
-                    dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ, block);
+                    dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ);
                 });
                 if (block.HighlightColor) {
                     cell.style.backgroundColor = block.HighlightColor;
@@ -159,105 +159,6 @@ window.BuildBoard = {
             }
             i += icrement;
         }
-
-
-        //for (let i = 0; i < 8; i++) {
-        //    for (let j = 0; j < 8; j++) {
-        //        const block = blocks[i][j];
-
-        //        const cell = document.createElement("div");
-        //        cell.style.position = "relative";
-        //        cell.style.width = "100px";
-        //        cell.style.height = "100px";
-        //        cell.style.boxSizing = "border-box";
-        //        cell.style.border = "1px solid #000";
-        //        cell.style.transition = "background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
-        //        cell.style.backgroundColor = block.BlockColor === 0 ? "white" : "gray";
-
-        //        cell.addEventListener("click", () => {
-        //            const loggerDiv = document.getElementById("Logger-Div");
-        //            if (loggerDiv.children.length > 10)
-        //                loggerDiv.innerHTML = "";
-        //            const loggerInfo = document.createElement("div");
-        //            loggerInfo.classList.add("log-item");
-
-        //            loggerInfo.innerHTML =
-        //                `<span class="log-pos">Cell: (${i},${j})</span>
-        //                 <span class="log-figure">${block.Figure?.$type ?? "Empty"}</span>`;
-
-        //            loggerDiv.appendChild(loggerInfo);
-        //            const id = cell.id; 
-
-        //            const indexI = parseInt(id[0]);
-        //            const indexJ = parseInt(id[1]);
-
-        //            dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ, block);
-        //        });
-        //        if (block.HighlightColor) {
-        //            cell.style.backgroundColor = block.HighlightColor;
-        //        }
-
-        //        if (block.Figure) {
-        //            const piece = document.createElement("img");
-        //            piece.style.position = "absolute";
-        //            piece.style.top = "50%";
-        //            piece.style.left = "50%";
-        //            piece.style.transform = "translate(-50%, -50%)";
-        //            piece.style.width = "80%";
-        //            piece.style.height = "80%";
-        //            piece.style.zIndex = "10";
-
-        //            let colorFolder;
-
-        //            if (figureColor === 0 && i <= 2) {
-        //                colorFolder = "black";
-        //                cell.id = `${i}${j}`;
-        //            }
-        //            else if (figureColor === 1 && i <= 2) {
-        //                colorFolder = "white"
-        //                block.Figure.figureColor = 0;
-        //                cell.id = `${7 - i}${7 - j}`;
-        //            }
-
-        //            if (figureColor === 0 && i >= 6) {
-        //                colorFolder = "white"
-        //                cell.id = `${i}${j}`;
-        //            }
-        //            else if (figureColor === 1 && i >= 6) {
-        //                colorFolder = "black"
-        //                block.Figure.figureColor = 1;
-        //                cell.id = `${7 - i}${7 - j}`;
-        //            }
-
-        //            const figureType = block.Figure.$type.split('.').pop();
-        //            piece.src = `/PNGs/${colorFolder}/${figureType}.png`;
-        //            cell.appendChild(piece);
-        //        }
-        //        else {
-        //            if (figureColor === 1)
-        //                cell.id = `${7 - i}${7-j}`;
-        //            else
-        //                cell.id = `${i}${j}`;
-        //        }
-        //        const originalColor = cell.style.backgroundColor;
-        //        cell.addEventListener("mouseenter", () => {
-        //            if (cell.style.backgroundColor != "white" && cell.style.backgroundColor != "gray")
-        //                return;
-
-        //            cell.style.backgroundColor = "rgb(240, 216, 107)";
-        //            cell.style.transform = "scale(1.05)";
-        //        });
-        //        cell.addEventListener("mouseleave", () => {
-        //            if (cell.style.backgroundColor != "rgb(240, 216, 107)")
-        //                return;
-
-        //            cell.style.backgroundColor = originalColor;
-        //            cell.style.transform = "scale(1)";
-        //        });
-
-        //        mainBoardDiv.appendChild(cell);
-        //    }
-        //}
     }
 };
 window.ShowMovableAndCutableBlocks = {

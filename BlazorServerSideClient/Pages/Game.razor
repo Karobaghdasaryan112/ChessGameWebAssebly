@@ -11,6 +11,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @using System.Web
 @using System.Collections.Specialized
@@ -125,7 +126,9 @@
     private string currentUserGuid => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
     //Properties
-
+    //Reqeusts
+    private ConnectionRequestDTO<MoveRequestDTO> MoveRequestDTO = new ConnectionRequestDTO<MoveRequestDTO>() { Data = new() };
+    private static ConnectionRequestDTO<ClickRequestDTO> ClickRequestDTO = new ConnectionRequestDTO<ClickRequestDTO>() { Data = new() };
 
 
 
@@ -160,7 +163,10 @@
 
         await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
 
+        InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
     }
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -170,56 +176,51 @@
 
     //JS Methods
     [JSInvokable]
-    public async void OnCellClick(int row, int col, Block block)
+    public async void OnCellClick(int row, int col)
     {
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
-        
+
         await JS.ClearSelectedBlocks((int)MyColor);
 
-        var request = new ConnectionRequestDTO<MoveRequestDTO>()
-        {
-            Data = new MoveRequestDTO()
-            {
-                GameId = GameId,
-                Player = currentUserName,
-                MyColor = MyColor,
-                CurrentBlock = block,
-                From = new Position(row, col),
-                PreviusBlockInformationDTO = ClickedBlockInformationDTO
-            }
-        };
 
-        var selectedFigure = ClickedBlockInformationDTO?.ClieckedBlock?.Figure;
+        SetUpRequestsPositions(new Position(row, col));
 
-        if (selectedFigure != default)
+        var selectedPosition = ClickedBlockInformationDTO?.ClickedPosition;
+
+        if (selectedPosition != default)
         {
-            if (selectedFigure.FigureColor == block.Figure?.FigureColor)
+            if (await IsSameFigureColor(selectedPosition, MoveRequestDTO.Data.CurrentPosition, GameId))
             {
-                await SelectFigure(request);
+                await SelectFigure(ClickRequestDTO);
                 return;
             }
 
-            await Move(request);
+            await Move(MoveRequestDTO);
             return;
         }
 
-        await SelectFigure(request);
-
+        await SelectFigure(ClickRequestDTO);
     }
 
 
-
     //private Methods
-    private async Task<bool> SelectFigure(ConnectionRequestDTO<MoveRequestDTO> requestDTO)
+
+    private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
     {
-        var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
+        return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
+    }
+
+    private async Task<bool> SelectFigure(ConnectionRequestDTO<ClickRequestDTO> requestDTO)
+    {
+
+        var positionsResult = await GameRequestService.SendClickAsync(requestDTO);
 
         if (!positionsResult.IsSuccess)
             return false;
 
         await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
-        ClickedBlockInformationDTO!.ClieckedBlock = requestDTO.Data.CurrentBlock;
+        ClickedBlockInformationDTO!.ClickedPosition = requestDTO.Data.CurrentPosition;
         ClickedBlockInformationDTO.GameId = requestDTO.Data.GameId;
 
         return true;
@@ -228,16 +229,39 @@
     private async Task<bool> Move(ConnectionRequestDTO<MoveRequestDTO> requestDTO)
     {
         requestDTO.Data.To = requestDTO.Data.From;
-        requestDTO.Data.From = ClickedBlockInformationDTO.ClieckedBlock.Position;
+        requestDTO.Data.From = ClickedBlockInformationDTO.ClickedPosition;
 
         var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
         if (!positionsResult.IsSuccess)
             return false;
 
         await JS.UpdateBoardAfterMove(requestDTO.Data.From, requestDTO.Data.To, (int)MyColor);
+
+        ClickedBlockInformationDTO.ClickedPosition = default;
         return true;
     }
 
+    private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
+    {
+        MoveRequestDTO.Data.GameId = gameId;
+        ClickRequestDTO.Data.GameId = gameId;
+
+        MoveRequestDTO.Data.Player = player;
+        ClickRequestDTO.Data.Player = player;
+
+        MoveRequestDTO.Data.MyColor = myColor;
+        ClickRequestDTO.Data.MyColor = myColor;
+
+        MoveRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+        ClickRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+    }
+    private void SetUpRequestsPositions(Position from)
+    {
+        MoveRequestDTO.Data.CurrentPosition = from;
+        MoveRequestDTO.Data.From = from;
+        ClickRequestDTO.Data.CurrentPosition = from;
+        ClickRequestDTO.Data.From = from;
+    }
 
     //JS Methods
 

@@ -2,10 +2,12 @@
 using BlazorServerSideClient.Contracts.Requests;
 using ChessGameBlazorClient.UI.Services;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ErrorResponseDTOs;
@@ -25,8 +27,7 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
 
-        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>>
-            GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDTO)
+        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
             var allGamersResult = await hubConnection.InvokeAsync<
@@ -42,8 +43,7 @@ namespace BlazorServerSideClient.Services.Requests
             return allGamersResult;
         }
 
-        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>>
-            SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
+        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
             var hubConnection = await _signalRService.GetHubConnection();
             var result = await hubConnection.InvokeAsync<
@@ -64,10 +64,6 @@ namespace BlazorServerSideClient.Services.Requests
                 ("ClearGameAsync", gameId);
         }
 
-        public async Task<ConnectionResponseDTO<ChessGameErrorDTO, ChessGameResponseMessage>> FigureClick()
-        {
-            throw new NotImplementedException();
-        }
         public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
         {
             var hubConnection = await (_signalRService.GetHubConnection());
@@ -77,5 +73,27 @@ namespace BlazorServerSideClient.Services.Requests
                         ChessGameResponseMessage>>("SendMoveAsync", sendMoveConnectionRequestDTO);
         }
 
+        public async Task<ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDTO)
+        {
+            var hubConnection = await (_signalRService.GetHubConnection());
+            return await hubConnection.InvokeAsync<
+                ConnectionResponseDTO<
+                    ClickResponseDTO,
+                    ChessGameResponseMessage>>
+                    ("SendClickAsync", sendClickConnectionRequestDTO);
+        }
+
+
+        public async Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition,Guid gameId)
+        {
+            var hubConnection = await (_signalRService.GetHubConnection());
+            return await hubConnection.InvokeAsync<bool>("SendIsSameFigureClickedAsync", selectedPosition, currentPosition, gameId);
+        }
+
+        //NotImplemented
+        public async Task<ConnectionResponseDTO<ChessGameErrorDTO, ChessGameResponseMessage>> FigureClick()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

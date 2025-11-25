@@ -32,6 +32,15 @@ namespace SharedResources.ChessGameResource.Models
 
         public  FigureColors FigureColor { get; set; }
 
+        public Turn Turn = Turn.White;
+        public void SwitchTurn()
+        {
+            Turn = 
+                Turn == Turn.White ? 
+                Turn.Black : 
+                Turn.White;
+        }
+
         public  void CreateBoard(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)

@@ -1,8 +1,10 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Collections.Concurrent;
@@ -13,7 +15,7 @@ namespace ChessGame.Core.Services.Services.HubServices
     public class ConnetionService<THub> : IConnectionService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
     {
         internal BaseHubService<THub> _baseHubService;
-        internal static  ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
+        internal static ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
 
         public ConnetionService(BaseHubService<THub> baseHubService)
         {
@@ -158,6 +160,52 @@ namespace ChessGame.Core.Services.Services.HubServices
                   ChessGameResponseMessage.UserConnectionRemovedSuccess,
                   HttpStatusCode.Found);
 
+        }
+
+        public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToOpponentClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO)
+        {
+            var selectedGameKeyValue = CurrentConnectionState.
+           Where(gameId_UserConnection =>
+               gameId_UserConnection.Value?.GameId ==
+               boardStateConnectionRequestDTO.Data.GameId &&
+               boardStateConnectionRequestDTO.Data.Player != gameId_UserConnection.Value?.UserName).
+           Select(selectedGame_UserConnection => selectedGame_UserConnection.Value).ToList();
+
+            if (selectedGameKeyValue == null)
+                return ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new BoardStateResponseDTO()
+                    {
+                        GameId = boardStateConnectionRequestDTO.Data.GameId,
+                        Player = boardStateConnectionRequestDTO.Data.Player
+                    },
+                    ChessGameResponseMessage.InvalidMove,
+                    System.Net.HttpStatusCode.BadRequest);
+
+            var selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;
+
+
+            var boardStateResposneDTO = new BoardStateResponseDTO()
+            {
+                GameId = boardStateConnectionRequestDTO.Data.GameId,
+                CutableFigure = default,
+                From = boardStateConnectionRequestDTO.Data.From,
+                To = boardStateConnectionRequestDTO.Data.To,
+                OpponentConnectionId = selectedGameOpponentConnectionId,
+                OpponentColor = boardStateConnectionRequestDTO.Data.OpponentColor,
+            };
+
+            var sendBoardResposneDTO = ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(boardStateResposneDTO, ChessGameResponseMessage.Draw);
+
+            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO);
+
+            return ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                   new BoardStateResponseDTO()
+                   {
+                       GameId = boardStateConnectionRequestDTO.Data.GameId,
+                       Player = boardStateConnectionRequestDTO.Data.Player
+                   },
+                   ChessGameResponseMessage.MoveSuccessful,
+                   System.Net.HttpStatusCode.OK);
         }
     }
 }

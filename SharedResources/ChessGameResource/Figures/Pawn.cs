@@ -70,7 +70,7 @@ namespace SharedResources.ChessGameResource.Figures
         private void AddCutablePositions(int row, int col, int columnStep, MovableAndCutablePositions result, Board board)
         {
             col += columnStep;
-            var icrement = board.FigureColor == FigureColors.Black ? 1 : -1;
+            var icrement = board.FigureColor == FigureColors.Black ? -1 : +1;
             row += icrement;
 
             if ((

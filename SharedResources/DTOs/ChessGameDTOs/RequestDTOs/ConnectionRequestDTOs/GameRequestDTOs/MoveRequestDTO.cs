@@ -11,7 +11,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequ
         public Guid CurrentPlayerId { get; set; }
         public Position From { get; set; }
         public Position To { get; set; }
-        public Block CurrentBlock { get; set; }
+        public Position CurrentPosition { get; set; }
         public ClickedBlockInformationDTO PreviusBlockInformationDTO { get; set; }
         public FigureColors MyColor { get; set; }
         public Guid GameId { get; set; }
