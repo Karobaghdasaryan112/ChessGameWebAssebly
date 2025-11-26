@@ -1,7 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
@@ -30,33 +29,28 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
             AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest)
         {
-
             var playersInformation = new KeyValuePair<Guid, Guid>(acceptInvitationRequest.Data.inviterUserGuid, acceptInvitationRequest.Data.receiverUserGuid);
             var gameGuid = Guid.NewGuid();
 
 
             var inviterConnectionInformation = _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.inviterUserGuid } });
-            if (!inviterConnectionInformation.IsSuccess)
+            var receiverConnectionInformation = _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.receiverUserGuid } });
+
+            if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess) {
+                inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
                 return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
                      CreateErrorResponse(
                          default!,
                          inviterConnectionInformation.Message,
                          inviterConnectionInformation.HttpStatusCode,
-                         inviterConnectionInformation.Errors);
-
-            var receiverConnectionInformation = _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.receiverUserGuid } });
-            if (!receiverConnectionInformation.IsSuccess)
-                return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
-                     CreateErrorResponse(
-                         default!,
-                         receiverConnectionInformation.Message,
-                         receiverConnectionInformation.HttpStatusCode,
-                         receiverConnectionInformation.Errors);
+                         inviterConnectionInformation.Errors
+                         );
+            }
 
             var gameGuidAsString = gameGuid.ToString();
 
 
-            var command = new BoardInitializeCommand< IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage> >
+            var command = new BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
 
             (new ChessGameRequest<BoardInitializeRequestDTO>()
             {
@@ -67,11 +61,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                 }
             });
 
-                var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-                await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
-                await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
-
+            await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
+            await _baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(), receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
 
 
             await _baseHubService.SendAcceptedInviteAsync(
@@ -129,5 +122,6 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             await _baseHubService.SendInviteAsync(connectionRequestDTO);
         }
+
     }
 }

@@ -65,11 +65,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             => await _hubContext.Groups.AddToGroupAsync(connectionId, gruopName);
 
         public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
-        {
-            await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("testReceiveAsync");
-             await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
-
-        }
+           =>  await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
 
     }
 }

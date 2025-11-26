@@ -50,6 +50,16 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
         {
+            var successResponse = 
+                ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
+                    CreateSuccessResponse(
+                        new AddUserConnectionResponseDTO()
+                        {
+                            IsAdded = true
+                        },
+                        ChessGameResponseMessage.ConnectionAddedSuccess,
+                        HttpStatusCode.Created);
+
 
             var existUserResult = GetUserConnection(
                 new ConnectionRequestDTO<GetUserConnectionRequestDTO>()
@@ -68,15 +78,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     addUserConnectionRequestDTO.Data.userConnection.ConnectionId)
                     _connections[addUserConnectionRequestDTO.Data.userGuid].ConnectionId = addUserConnectionRequestDTO.Data.userConnection.ConnectionId;
 
-                return
-                    ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
-                    CreateSuccessResponse(
-                        new AddUserConnectionResponseDTO()
-                        {
-                            IsAdded = true
-                        },
-                        ChessGameResponseMessage.ConnectionAddedSuccess,
-                        HttpStatusCode.Created);
+                return successResponse;
             }
 
             if (!_connections.TryAdd(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection))
@@ -92,12 +94,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection));
 
-            return
-                ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
-                  CreateSuccessResponse(
-                  new AddUserConnectionResponseDTO() { IsAdded = true },
-                  ChessGameResponseMessage.ConnectionAddedSuccess,
-                  HttpStatusCode.Created);
+            return successResponse;
 
         }
 
@@ -125,10 +122,8 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
         public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
-            var removeConnection = _connections.Where(connectionKvp => connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId).FirstOrDefault();
-
-            if (removeConnection.Equals(default))
-                return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
+            var errorResponse = 
+                ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                 CreateErrorResponse(
                 new RemoveUserConnectionResponseDTO()
                 {
@@ -138,18 +133,14 @@ namespace ChessGame.Core.Services.Services.HubServices
                 HttpStatusCode.NotFound,
                 new List<string> { $"cannot Delete the UserConnection ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}" });
 
-            if (!_connections.TryRemove(removeConnection))
-                return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
-                 CreateErrorResponse(
-                 new RemoveUserConnectionResponseDTO()
-                 {
-                     IsRemoved = false
-                 },
-                 ChessGameResponseMessage.PlayerNotFound,
-                 HttpStatusCode.NotFound,
-                 new List<string> { $"cannot Delete the UserConnection  ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}" });
+            var removeConnection = _connections.Where(connectionKvp => connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId).FirstOrDefault();
 
-            //TO DO _baseHubService.SwndRemoveUser
+            if (removeConnection.Equals(default))
+                return errorResponse;
+
+            if (!_connections.TryRemove(removeConnection))
+                return errorResponse;
+
 
             return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
@@ -167,7 +158,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             var selectedGameKeyValue = CurrentConnectionState.
            Where(gameId_UserConnection =>
                gameId_UserConnection.Value?.GameId ==
-               boardStateConnectionRequestDTO.Data.GameId &&
+               boardStateConnectionRequestDTO.Data.GameId && 
                boardStateConnectionRequestDTO.Data.Player != gameId_UserConnection.Value?.UserName).
            Select(selectedGame_UserConnection => selectedGame_UserConnection.Value).ToList();
 
@@ -181,7 +172,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
 
-            var selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;
+            var selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;   
 
 
             var boardStateResposneDTO = new BoardStateResponseDTO()

@@ -96,8 +96,8 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.Data.CurrentPosition);
 
-            if (currentPositionBlock.EventColor != SharedResources.ChessGameResource.Enums.Colors.EventColors.Cut &&
-                currentPositionBlock.EventColor != SharedResources.ChessGameResource.Enums.Colors.EventColors.Move)
+            if (currentPositionBlock.EventColor != EventColors.Cut &&
+                currentPositionBlock.EventColor != EventColors.Move)
                 return invalidResponse;
 
 
@@ -106,6 +106,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 {
                     GameId = sendMoveConnectionRequestDTO.Data.GameId,
                     CutableFigure = default,
+                    Player = sendMoveConnectionRequestDTO.Data.Player,
                     From = sendMoveConnectionRequestDTO.Data.From,
                     To = sendMoveConnectionRequestDTO.Data.To,
                     OpponentColor =
@@ -113,17 +114,13 @@ namespace ChessGame.Core.Services.Services.HubServices
                 };
 
 
-            //Movable condition 
             if (currentPositionBlock.EventColor == SharedResources.ChessGameResource.Enums.Colors.EventColors.Move)
                 return await MoveLogic(gameState, boardStateRequestDTO, sendMoveConnectionRequestDTO);
 
-            //Cutable Condition
-            //TO DO: send to second client from the group GameId for Updating after Cut
+
             if (currentPositionBlock.EventColor == SharedResources.ChessGameResource.Enums.Colors.EventColors.Cut)
                 return await CutLogic(gameState, boardStateRequestDTO, sendMoveConnectionRequestDTO);
 
-
-            //For other cases
             return invalidResponse;
         }
 
@@ -166,6 +163,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                 System.Net.HttpStatusCode.OK);
         }
 
+
+
+
+
         //Privet Methods
         private void ResetEventableBlocks(Board gameState)
         {
@@ -180,10 +181,8 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         private async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> MoveLogic(Board gameState, BoardStateRequestDTO boardStateRequestDTO, ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
         {
-            //submit the move for my Client
             var moveResult = await _boardService.SubmitMoveAsync(sendMoveConnectionRequestDTO.Data.GameId, sendMoveConnectionRequestDTO.Data.From, sendMoveConnectionRequestDTO.Data.To, gameState);
 
-            //put the eventable Blocks EventColor.None(Reset)
             ResetEventableBlocks(gameState);
 
             if (!moveResult)
@@ -210,6 +209,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 System.Net.HttpStatusCode.OK);
         }
 
+        //TO DO Create CutLogic
         private async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> CutLogic(Board gameState, BoardStateRequestDTO boardStateRequestDTO, ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
         {
             throw new NotImplementedException();
