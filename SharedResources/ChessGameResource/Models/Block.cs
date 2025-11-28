@@ -12,10 +12,7 @@ namespace SharedResources.ChessGameResource.Models
         public BlockColor BlockColor { get; set; }
         public EventColors EventColor { get; set; }
 
-        public Block()
-        {
-            
-        }
+        public Block() { }
 
         public static Block InitializeBlock(IFigure figure, int i, int j)
         {
@@ -32,44 +29,35 @@ namespace SharedResources.ChessGameResource.Models
         public void ExploreDirection(
             MovableAndCutablePositions positions,
             int row, int col,
-            int rowStep, int colStep,Board board)
+            int rowStep, int colStep, Board board)
         {
             while (true)
             {
                 row += rowStep;
                 col += colStep;
 
-                if ((
-                    row == (int)CriticalPositions.lowCriticalValue ||
-                    row == (int)CriticalPositions.highCriticalValue ||
-                    col == (int)CriticalPositions.lowCriticalValue ||
-                    col == (int)CriticalPositions.highCriticalValue)
-                    )
+                if ((row <= (int)CriticalPositions.lowCriticalValue || row >= (int)CriticalPositions.highCriticalValue || col <= (int)CriticalPositions.lowCriticalValue || col >= (int)CriticalPositions.highCriticalValue))
                     break;
-
+                if (row < 0 || row > 7 || col < 0 || col > 7)
+                {
+                    var x = 10;
+                }
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-
                 if (figure == null)
                 {
-                    //positions.MovablePositions.Add(new Position(row, col));
+                    positions.MovableBlock.Add(block);
                     block.EventColor = EventColors.Move;
                 }
-                else if (figure.FigureColor != board.FigureColor)
+                else if ((int)figure.FigureColor != (int)board.Turn)
                 {
-                    //positions.CutablePositions.Add(new Position(row, col));
+                    positions.CutableBlock.Add(block);
                     block.EventColor = EventColors.Cut;
-                    row = (int)CriticalPositions.lowCriticalValue;
-                    col = (int)CriticalPositions.lowCriticalValue;
                     break;
                 }
                 else
-                {
-                    row = (int)CriticalPositions.lowCriticalValue;
-                    col = (int)CriticalPositions.lowCriticalValue;
                     break;
-                }
             }
         }
     }

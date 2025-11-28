@@ -7,7 +7,7 @@ namespace ChessGame.Infrastructure.Infrastructure
 {
     public static class InfrastructureServices
     {
-        public static void AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
+        public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
 
             services.AddScoped<GameHub>();

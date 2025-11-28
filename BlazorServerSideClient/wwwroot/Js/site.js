@@ -77,11 +77,9 @@ window.BuildBoard = {
         var j = startIndex;
         var i = startIndex;
 
-        while (i >= 0 && i < 8)
-        {
+        while (i >= 0 && i < 8) {
             j = startIndex;
-            while (j >= 0 && j < 8)
-            {
+            while (j >= 0 && j < 8) {
                 const block = blocks[i][j];
 
                 const cell = document.createElement("div");
@@ -132,7 +130,6 @@ window.BuildBoard = {
                     } else {
                         colorFolder = "white";
                     }
-                    //let colorFolder = block.Figure.figureColor === 0 ? "black" : "white";
 
                     const figureType = block.Figure.$type.split('.').pop();
                     piece.src = `/PNGs/${colorFolder}/${figureType}.png`;
@@ -199,77 +196,95 @@ window.ShowMovableAndCutableBlocks = {
     Clear: function (figureColor) {
 
         const allCellsCutable = document.querySelectorAll("[class^='cutable']");
-        const allCellsMovable = document.querySelectorAll("[class^='movable']");    
-        allCellsCutable.forEach(cell => {
-            const id = cell.id;
-            const indexI = parseInt(id[0]);
-            const indexJ = parseInt(id[1]);
-            cell.className = "";
-            cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
+        const allCellsMovable = document.querySelectorAll("[class^='movable']");
+        if (allCellsCutable)
+            allCellsCutable.forEach(cell => {
+                const id = cell.id;
+                const indexI = parseInt(id[0]);
+                const indexJ = parseInt(id[1]);
+                cell.className = "";
+                cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
 
-            var backgroundColor
-            if (figureColor == 1)
-                backgroundColor = (indexI + indexJ) % 2 == 1 ? "white" : "gray";
-            else {
-                backgroundColor = (14 - (indexI) +  indexJ) % 2 == 1 ? "white" : "gray";
-            }
+                var backgroundColor
+                if (figureColor == 1)
+                    backgroundColor = (indexI + indexJ) % 2 == 1 ? "white" : "gray";
+                else {
+                    backgroundColor = (14 - (indexI) + indexJ) % 2 == 1 ? "white" : "gray";
+                }
 
-            cell.style.backgroundColor = backgroundColor;
-            cell.style.borderRadius = "0px";
-        });
-        allCellsMovable.forEach(cell => {
-            const id = cell.id;
-            const indexI = parseInt(id[0]);
-            const indexJ = parseInt(id[1]);
+                cell.style.backgroundColor = backgroundColor;
+                cell.style.borderRadius = "0px";
+            });
+        if (allCellsMovable)
+            allCellsMovable.forEach(cell => {
+                const id = cell.id;
+                const indexI = parseInt(id[0]);
+                const indexJ = parseInt(id[1]);
 
-            var backgroundColor
-            if (figureColor == 1)
-                backgroundColor = (indexI + indexJ) % 2 == 1 ? "white" : "gray";
-            else {
-                backgroundColor = (14 - (indexI) + indexJ) % 2 == 1 ? "white" : "gray";
-            }
+                var backgroundColor
+                if (figureColor == 1)
+                    backgroundColor = (indexI + indexJ) % 2 == 1 ? "white" : "gray";
+                else {
+                    backgroundColor = (14 - (indexI) + indexJ) % 2 == 1 ? "white" : "gray";
+                }
 
-            cell.className = "";
-            cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
-            cell.style.backgroundColor = backgroundColor;
-            cell.style.borderRadius = "0px";
-        });
+                cell.className = "";
+                cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
+                cell.style.backgroundColor = backgroundColor;
+                cell.style.borderRadius = "0px";
+            });
 
     }
 };
+
 window.UpdateBoardAfterMove = {
     Move: function (from, to, myColor) {
-        var verticalFrom;
-        var verticalTo;
-        if (myColor == 1) {
-            console.log("from:", from);
-            console.log("to:", to);
-            console.log("verticalFrom:", verticalFrom, "horizontalFrom:", from.horizontalOrientation);
-            console.log("verticalTo:", verticalTo, "horizontalTo:", to.horizontalOrientation);
 
-            console.log("fromCell:", document.getElementById(`${verticalFrom}${from.horizontalOrientation}`));
-            console.log("toCell:", document.getElementById(`${verticalTo}${to.horizontalOrientation}`));
-            verticalFrom = from.verticalOrientation;
-            verticalTo = to.verticalOrientation;
+        if (!from || !to)
+            return;
+        var fromCell = document.getElementById(`${from.verticalOrientation}${from.horizontalOrientation}`);
+        var toCell = document.getElementById(`${to.verticalOrientation}${to.horizontalOrientation}`);
 
-
-        } else {
-            verticalFrom = from.verticalOrientation;
-            verticalTo = to.verticalOrientation;
-        }
-
-        var fromCell = document.getElementById(`${verticalFrom}${from.horizontalOrientation}`);
-        var toCell = document.getElementById(`${verticalTo}${to.horizontalOrientation}`);
-
-        if (fromCell && toCell)
-        {
+        if (fromCell && toCell) {
             var piece = fromCell.querySelector("img");
-            if (piece)
-            {
+            var pieceTo = toCell.querySelector("img");
+            if (piece && !pieceTo) {
                 fromCell.removeChild(piece);
                 toCell.appendChild(piece);
                 ShowMovableAndCutableBlocks.Clear();
             }
         }
+    },
+}
+
+window.UpdateBoardAfterCut = {
+    Cut: function (from, to, myColor) {
+        if (!from || !to)
+            return;
+        var fromCell = document.getElementById(`${from.verticalOrientation}${from.horizontalOrientation}`);
+        var toCell = document.getElementById(`${to.verticalOrientation}${to.horizontalOrientation}`);
+
+        if (fromCell && toCell) {
+            var pieceFrom = fromCell.querySelector("img");
+            var pieceTo = toCell.querySelector("img");
+            if (pieceFrom && pieceTo) {
+                fromCell.removeChild(pieceFrom);
+                toCell.removeChild(pieceTo);
+                toCell.appendChild(pieceFrom);
+                ShowMovableAndCutableBlocks.Clear();
+            }
+        }
     }
 }
+window.KingCheckedNotification = {
+    Notify: function (kingPosition) {
+        const cell = document.getElementById(`${kingPosition.verticalOrientation}${kingPosition.horizontalOrientation}`);
+        if (!cell) return;
+
+        cell.classList.add("king-blink-flash");
+
+        cell.addEventListener("animationend", () => {
+            cell.classList.remove("king-blink-flash");
+        }, { once: true });
+    }
+};

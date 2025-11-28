@@ -14,7 +14,7 @@ namespace SharedResources.ChessGameResource.Figures
         }
         public FigureType FigureType => FigureType.King;
         public FigureColors FigureColor { get; set; }
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position,Board board)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position,Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {
@@ -25,8 +25,7 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = board.GetBlockByPosition(startRow, startCol);
-
+            Block? currentBlockForCheckCondition = kingBlockForCheckCondition != default(Block) ? kingBlockForCheckCondition : null;
 
             var row = startRow;
             var col = startCol;
@@ -52,30 +51,39 @@ namespace SharedResources.ChessGameResource.Figures
 
         private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions,Board board)
         {
-            row += rowStep;
-            col += colStep;
-
-            if ((
-                row != (int)CriticalPositions.lowCriticalValue ||
-                row != (int)CriticalPositions.highCriticalValue ||
-                col != (int)CriticalPositions.lowCriticalValue ||
-                col != (int)CriticalPositions.highCriticalValue)
-                )
+            try
             {
-                var block = board.GetBlockByPosition(row, col);
-                var figure = block.Figure;
+                row += rowStep;
+                col += colStep;
 
-                if (figure == null)
+                if ((
+                        row > (int)CriticalPositions.lowCriticalValue &&
+                        row < (int)CriticalPositions.highCriticalValue &&
+                        col > (int)CriticalPositions.lowCriticalValue &&
+                        col < (int)CriticalPositions.highCriticalValue)
+                   )
                 {
-                    block.EventColor = EventColors.Move;
-                    //positions.MovablePositions.Add(new Position(row, col));
-                }
-                else if (figure.FigureColor != board.FigureColor)
-                {
-                    block.EventColor = EventColors.Cut;
-                    //positions.CutablePositions.Add(new Position(row, col));
+                    var block = board.GetBlockByPosition(row, col);
+                    var figure = block.Figure;
+
+                    if (figure == null)
+                    {
+                        block.EventColor = EventColors.Move;
+                        positions.MovableBlock.Add(block);
+                    }
+                    else if ((int)figure.FigureColor != (int)board.Turn)
+                    {
+                        block.EventColor = EventColors.Cut;
+                        positions.CutableBlock.Add(block);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
         }
     }
 }

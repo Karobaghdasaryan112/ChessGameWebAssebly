@@ -1,20 +1,15 @@
 ﻿@page "/game"
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
-@using BlazorServerSideClient.Services.Requests
-@using ChessGameBlazorClient.ServiceEndpoints
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
+@using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.ChessGameResource.Models
-@using SharedResources.ChessGameResource.StaticResources
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
-@using System.Web
-@using System.Collections.Specialized
 @using System.Text.Json
 @using System.Security.Claims
 @inject SignalRService HubClient
@@ -23,7 +18,13 @@
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
-
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="~/Js/site.js"></script>
+</head>
 <div class="wrap">
     <div class="leftCard">
         <div class="playersInfo">
@@ -90,7 +91,6 @@
 
     </aside>
 </div>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 @code {
     //Parameters
@@ -232,10 +232,14 @@
         requestDTO.Data.From = ClickedBlockInformationDTO.ClickedPosition;
 
         var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
+
         if (!positionsResult.IsSuccess)
             return false;
 
-        await JS.UpdateBoardAfterMove(requestDTO.Data.From, requestDTO.Data.To, (int)MyColor);
+        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+            await JS.UpdateBoardAfterMove(requestDTO.Data.From, requestDTO.Data.To, (int)MyColor);
+        else
+            await JS.UpdateBoardAfterCut(requestDTO.Data.From, requestDTO.Data.To, (int)MyColor);
 
         ClickedBlockInformationDTO.ClickedPosition = default;
         return true;

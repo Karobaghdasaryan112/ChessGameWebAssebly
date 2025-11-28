@@ -8,14 +8,13 @@ namespace SharedResources.ChessGameResource.Figures
 {
     public class Pawn : IFigure
     {
-
         public Pawn() { }
 
         public FigureType FigureType => FigureType.Pawn;
 
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {
@@ -34,11 +33,20 @@ namespace SharedResources.ChessGameResource.Figures
             else
                 stepRow = startRow == 6 ? -2 : -1;
 
-            AddMovablePositions(startRow, startCol, stepRow, result, board);
+            try
+            {
+                AddMovablePositions(startRow, startCol, stepRow, result, board);
 
-            AddCutablePositions(startRow, startCol, -1, result, board);
+                AddCutablePositions(startRow, startCol, -1, result, board);
 
-            AddCutablePositions(startRow, startCol, +1, result, board);
+                AddCutablePositions(startRow, startCol, +1, result, board);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
 
             return result;
 
@@ -52,6 +60,7 @@ namespace SharedResources.ChessGameResource.Figures
 
                 if (row >= (int)CriticalPositions.lowCriticalValue && row <= (int)CriticalPositions.highCriticalValue)
                 {
+
                     var block = board.GetBlockByPosition(row, col);
 
                     var figure = block.Figure;
@@ -70,7 +79,7 @@ namespace SharedResources.ChessGameResource.Figures
         private void AddCutablePositions(int row, int col, int columnStep, MovableAndCutablePositions result, Board board)
         {
             col += columnStep;
-            var icrement = board.FigureColor == FigureColors.Black ? -1 : +1;
+            var icrement = FigureColor == FigureColors.Black ? +1 : -1;
             row += icrement;
 
             if ((
@@ -83,10 +92,13 @@ namespace SharedResources.ChessGameResource.Figures
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != board.FigureColor && figure?.FigureColor != (default))
+                if (figure?.FigureColor != (default))
                 {
-                    block.EventColor = EventColors.Cut;
-                    result.CutableBlock.Add(block);
+                    if ((int)figure?.FigureColor != (int)board.Turn)
+                    {
+                        block.EventColor = EventColors.Cut;
+                        result.CutableBlock.Add(block);
+                    }
                 }
             }
         }

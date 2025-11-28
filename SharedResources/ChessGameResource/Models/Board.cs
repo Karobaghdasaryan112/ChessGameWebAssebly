@@ -2,6 +2,7 @@
 using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.ChessGameResource.Figures;
 using System.Text.Json.Serialization;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
 
 namespace SharedResources.ChessGameResource.Models
 {
@@ -111,7 +112,8 @@ namespace SharedResources.ChessGameResource.Models
         public  Block GetBlockByPosition(Position position)
         {
             CreateBoard();
-            return BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
+            var block = BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
+            return block;
         }
 
         /// <summary>
@@ -121,6 +123,22 @@ namespace SharedResources.ChessGameResource.Models
         {
             CreateBoard();
             return BoardBlocks[verticalOrientation][horizontalOrientation];
+        }
+
+        public Block GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
+        {
+            if(BoardBlocks is null)
+                throw new InvalidOperationException("BoardBlocks is not initialized.");
+
+            var selectedBlocks = BoardBlocks.SelectMany(blocks => blocks.Where(block =>
+                block.Figure?.FigureType == figureType && block.Figure?.FigureColor == figureColor));
+
+            var selectedKing = selectedBlocks.FirstOrDefault();
+
+            if (selectedKing == null)
+                throw new InvalidOperationException($"No block found with figure type {figureType} and color {figureColor}.");
+
+            return selectedKing;
         }
     }
 }

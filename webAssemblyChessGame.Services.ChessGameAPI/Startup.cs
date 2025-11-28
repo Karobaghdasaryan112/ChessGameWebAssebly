@@ -2,10 +2,7 @@
 using ChessGame.Infrastructure.Infrastructure;
 using ChessGame.Infrastructure.Infrastructure.Hubs;
 using ChessGame.Infrastructure.Infrastructure.Persistance;
-using ChessService.API.ChessGameAPI.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace ChessService.API.ChessGameAPI
 {
@@ -68,7 +65,6 @@ namespace ChessService.API.ChessGameAPI
             app.UseAuthorization();
 
             app.UseCors();
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseEndpoints(endpoint =>
             {
                 endpoint.MapControllers();

@@ -1,4 +1,5 @@
-﻿using SharedResources.ChessGameResource.Models;
+﻿using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.DTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
@@ -8,6 +9,8 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.
         public string Player { get; set; }
         public List<Block>? MovableBlocks { get; set; }
         public List<Block>? CutableBlocks { get; set; }
-        public Guid GameId { get ; set ; }
+        public Guid GameId { get; set; }
+        public IsReady IsReadyToEvent {  get; set; }
     }
+
 }

@@ -7,14 +7,11 @@ namespace SharedResources.ChessGameResource.Figures
 {
     public class Rook : IFigure
     {
-        public Rook()
-        {
-            
-        }
+        public Rook() { }
         public FigureType FigureType => FigureType.Rook;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position,Board board)
+        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {
@@ -25,8 +22,7 @@ namespace SharedResources.ChessGameResource.Figures
             int startRow = (int)position.VerticalOrientation;
             int startCol = (int)position.HorizontalOrientation;
 
-            var currentBlock = board.GetBlockByPosition(startRow, startCol);
-
+            Block? currentBlock = kingBlockForCheckCondition != default(Block) ? kingBlockForCheckCondition : board.GetBlockByPosition(startRow, startCol); ;
 
             currentBlock.ExploreDirection(result, startRow, startCol, 0, +1, board);
 

@@ -1,4 +1,5 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
@@ -18,10 +19,21 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
         {
-            await _jsService.UpdateBoardAfterMove(
-                gameStateconnectionResponseDTO.Data.From, 
-                gameStateconnectionResponseDTO.Data.To, 
-                (int)gameStateconnectionResponseDTO.Data.OpponentColor);
+            if (gameStateconnectionResponseDTO.Data.IsKingChecked)
+            {
+                _jsService.KingCheckedNotifier(gameStateconnectionResponseDTO.Data.KingPosition);
+            }
+
+            if(gameStateconnectionResponseDTO.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+                await _jsService.UpdateBoardAfterMove(
+                    gameStateconnectionResponseDTO.Data.From, 
+                    gameStateconnectionResponseDTO.Data.To, 
+                    (int)gameStateconnectionResponseDTO.Data.OpponentColor);
+            else
+                await _jsService.UpdateBoardAfterCut(
+                    gameStateconnectionResponseDTO.Data.From,
+                    gameStateconnectionResponseDTO.Data.To,
+                    (int)gameStateconnectionResponseDTO.Data.OpponentColor);
         }
     }
 }

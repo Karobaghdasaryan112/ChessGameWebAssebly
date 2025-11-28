@@ -1,6 +1,8 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
@@ -35,11 +37,11 @@ namespace ChessGame.Core.Services.Services.HubServices
                 CurrentConnectionState
                 .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.Data.UserGuid)
                 .ToDictionary();
-            if (onlinePlayers.Count() == 0)
+            if (!onlinePlayers.Any())
                 return
                     ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                 .CreateErrorResponse(
-                    default,
+                    default!,
                     ChessGameResponseMessage.UserConnectionNotFound,
                     System.Net.HttpStatusCode.BadRequest);
             return
@@ -54,12 +56,13 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
             var games = ActiveGames.ActiveGamesAndBoards;
-            var gameState = ActiveGames.ActiveGamesAndBoards.Where(kvp => kvp.Key == gameStateReqeustDTO.Data.GameId).FirstOrDefault();
-            return await Task.Run(() => new ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>()
+            var gameState = ActiveGames.ActiveGamesAndBoards[gameStateReqeustDTO.Data.GameId];
+
+            return await Task.FromResult(new ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>()
             {
                 Data = new SendGameStateResponseDTO()
                 {
-                    Board = gameState.Value
+                    Board = gameState
                 },
                 Message = ChessGameResponseMessage.GameCreated,
             });
@@ -68,14 +71,11 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId)
         {
             var gameState =
-                ActiveGames.ActiveGamesAndBoards.
-                Where(kvp =>
-                kvp.Key == gameId).
-                First().Value;
+                ActiveGames.ActiveGamesAndBoards[gameId];
 
-            var currentPositionBlock = gameState.GetBlockByPosition(currentPosition);
-            var selectedPositionBlock = gameState.GetBlockByPosition(selectedPosition);
-            return currentPositionBlock?.Figure?.FigureColor == selectedPositionBlock?.Figure?.FigureColor;
+            var currentPositionBlock = gameState?.GetBlockByPosition(currentPosition);
+            var selectedPositionBlock = gameState?.GetBlockByPosition(selectedPosition);
+            return await Task.FromResult(currentPositionBlock?.Figure?.FigureColor == selectedPositionBlock?.Figure?.FigureColor);
         }
 
 
@@ -102,7 +102,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
             var boardStateRequestDTO =
-                new BoardStateRequestDTO()
+                new BoardStateRequestDTO
                 {
                     GameId = sendMoveConnectionRequestDTO.Data.GameId,
                     CutableFigure = default,
@@ -111,17 +111,17 @@ namespace ChessGame.Core.Services.Services.HubServices
                     To = sendMoveConnectionRequestDTO.Data.To,
                     OpponentColor =
                     sendMoveConnectionRequestDTO.Data.MyColor == FigureColors.Black ? FigureColors.White : FigureColors.Black,
+                    IsReadyToEvent = currentPositionBlock.EventColor == EventColors.Move ?
+                        IsReady.IsReadyToMove :
+                        currentPositionBlock.EventColor == EventColors.Cut ?
+                            IsReady.IsReadyToCut :
+                            IsReady.None
                 };
 
 
-            if (currentPositionBlock.EventColor == SharedResources.ChessGameResource.Enums.Colors.EventColors.Move)
-                return await MoveLogic(gameState, boardStateRequestDTO, sendMoveConnectionRequestDTO);
-
-
-            if (currentPositionBlock.EventColor == SharedResources.ChessGameResource.Enums.Colors.EventColors.Cut)
-                return await CutLogic(gameState, boardStateRequestDTO, sendMoveConnectionRequestDTO);
-
-            return invalidResponse;
+            return boardStateRequestDTO.IsReadyToEvent == IsReady.None
+                ? invalidResponse
+                : await MoveLogic(gameState, boardStateRequestDTO, sendMoveConnectionRequestDTO);
         }
 
         public async Task<ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDTO)
@@ -130,7 +130,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.CurrentPosition);
 
-            //if the request is movable or cutable then return the block from the Active Games (current Board State from Server)
+            //if the request is movable or cuttable then return the block from the Active Games (current Board State from Server)
             var canMoveResultBlock = await _boardService.CanClick(sendClickConnectionRequestDTO.Data.MyColor, currentPositionBlock, sendClickConnectionRequestDTO.Data.PreviusBlockInformationDTO, gameState);
 
             if (canMoveResultBlock == default)
@@ -164,13 +164,10 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-
-
-
         //Privet Methods
         private void ResetEventableBlocks(Board gameState)
         {
-            //reset the previus selected Blocks(Movable and cutable)
+            //reset the previous selected Blocks(Movable and cuttable)
             var eventableBoardBlocks = gameState.BoardBlocks!.SelectMany(blockI => blockI.Where(blockJ => blockJ.EventColor == EventColors.Cut || blockJ.EventColor == EventColors.Move).ToArray());
 
             foreach (var eventableBoardBlock in eventableBoardBlocks)
@@ -186,33 +183,45 @@ namespace ChessGame.Core.Services.Services.HubServices
             ResetEventableBlocks(gameState);
 
             if (!moveResult)
-                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                new MoveResponseDTO()
-                {
-                    GameId = sendMoveConnectionRequestDTO.Data.GameId,
-                    Player = sendMoveConnectionRequestDTO.Data.Player
-                },
-                ChessGameResponseMessage.InvalidMove,
-                System.Net.HttpStatusCode.BadRequest);
+            {
+                var checkedKingForMe = gameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)gameState.Turn);
+                boardStateRequestDTO.IsKingChecked = true;
+                boardStateRequestDTO.CheckedKingPosition = checkedKingForMe.Position;
+                boardStateRequestDTO.From = default(Position);
+                boardStateRequestDTO.To = default(Position);
+                await _connectionService.SendBoardStateToClient(new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO }, boardStateRequestDTO.Player, true);
 
-            await _connectionService.SendBoardStateToOpponentClient(new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO });
+                return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new MoveResponseDTO()
+                    {
+                        GameId = sendMoveConnectionRequestDTO.Data.GameId,
+                        Player = sendMoveConnectionRequestDTO.Data.Player
+                    },
+                    ChessGameResponseMessage.InvalidMove,
+                    System.Net.HttpStatusCode.BadRequest);
+            }
 
             gameState.SwitchTurn();
+
+            await _connectionService.SendBoardStateToClient(new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO }, boardStateRequestDTO.Player, true);
+
+            var isKingChecked = await _boardService.IsKingCheckedAsync(gameState, gameState.Turn);
+            var checkedKingForOpponent = gameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)gameState.Turn);
+            boardStateRequestDTO.IsKingChecked = isKingChecked;
+            boardStateRequestDTO.CheckedKingPosition = checkedKingForOpponent.Position;
+
+            await _connectionService.SendBoardStateToClient(new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO }, boardStateRequestDTO.Player, false);
+
 
             return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new MoveResponseDTO()
                 {
                     GameId = sendMoveConnectionRequestDTO.Data.GameId,
-                    Player = sendMoveConnectionRequestDTO.Data.Player
+                    Player = sendMoveConnectionRequestDTO.Data.Player,
+                    IsReadyToEvent = IsReady.IsReadyToCut
                 },
                 ChessGameResponseMessage.MoveSuccessful,
                 System.Net.HttpStatusCode.OK);
-        }
-
-        //TO DO Create CutLogic
-        private async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> CutLogic(Board gameState, BoardStateRequestDTO boardStateRequestDTO, ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
-        {
-            throw new NotImplementedException();
         }
     }
 }

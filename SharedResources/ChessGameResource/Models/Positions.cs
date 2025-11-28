@@ -30,4 +30,8 @@ public class Position
         return position!.VerticalOrientation == this.VerticalOrientation &&
             position.HorizontalOrientation == this.HorizontalOrientation;
     }
+    public override string ToString()
+    {
+        return $"{(int)VerticalOrientation}{(int)HorizontalOrientation}";
+    }
 }
