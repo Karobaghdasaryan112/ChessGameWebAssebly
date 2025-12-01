@@ -33,7 +33,6 @@ namespace ChessGame.Core.Services
             services.AddScoped(typeof(IGameService<>), typeof(GameService<>));
 
             services.AddScoped<IBoardService, BoardService>();
-            services.AddScoped<IBlockService, BlockService>();
 
             services.AddLogging();
         }

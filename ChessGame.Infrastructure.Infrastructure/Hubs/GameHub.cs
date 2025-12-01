@@ -50,7 +50,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         }
 
 
-        //InivtationService 
+        //InvitationService 
 
         public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
            => await _invitationService.SendInviteAsync(connectionRequestDTO);
