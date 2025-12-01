@@ -1,4 +1,6 @@
 ﻿@page "/game"
+@using System.Security.Claims
+@using System.Text.Json
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.UI.Services
@@ -7,11 +9,9 @@
 @using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
-@using System.Text.Json
-@using System.Security.Claims
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
@@ -228,8 +228,10 @@
 
     private async Task<bool> Move(ConnectionRequestDTO<MoveRequestDTO> requestDTO)
     {
+        //request Data Setup
         requestDTO.Data.To = requestDTO.Data.From;
         requestDTO.Data.From = ClickedBlockInformationDTO.ClickedPosition;
+        requestDTO.Data.CurrentPlayerId = Guid.Parse(currentUserGuid);
 
         var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
 
@@ -245,6 +247,7 @@
         return true;
     }
 
+    //Request Methods
     private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
     {
         MoveRequestDTO.Data.GameId = gameId;

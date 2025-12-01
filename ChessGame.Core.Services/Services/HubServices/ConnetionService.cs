@@ -1,11 +1,11 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Collections.Concurrent;
 using System.Net;
@@ -36,7 +36,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     },
                     ChessGameResponseMessage.PlayerNotFound,
                     HttpStatusCode.NotFound,
-                    new List<string> { $"user connection Not Found for UserId {getUserConnectionRequestDTO.Data.UserGuid}" });
+                    [$"user connection Not Found for UserId {getUserConnectionRequestDTO.Data.UserGuid}"]);
 
             return ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
@@ -90,7 +90,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                   },
                   ChessGameResponseMessage.InternalServerError,
                   HttpStatusCode.InternalServerError,
-                  new List<string> { $"cannot Added the UserConnection for User {addUserConnectionRequestDTO.Data.userGuid}" });
+                  [$"cannot Added the UserConnection for User {addUserConnectionRequestDTO.Data.userGuid}"]);
 
             await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(addUserConnectionRequestDTO.Data.userGuid, addUserConnectionRequestDTO.Data.userConnection));
 
@@ -109,9 +109,9 @@ namespace ChessGame.Core.Services.Services.HubServices
                  },
                  ChessGameResponseMessage.PlayerNotFound,
                  HttpStatusCode.NotFound,
-                 new List<string> { $"cannot Delete the UserConnection for User {removeUserConnectionRequestDTO.Data.UserGuid}" });
+                 [$"cannot Delete the UserConnection for User {removeUserConnectionRequestDTO.Data.UserGuid}"]);
 
-            //TO DO _baseHubService.SwndRemoveUser
+            //TO DO _baseHubService.SendRemoveUser
 
             return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
@@ -131,11 +131,13 @@ namespace ChessGame.Core.Services.Services.HubServices
                 },
                 ChessGameResponseMessage.UserConnectionNotFound,
                 HttpStatusCode.NotFound,
-                new List<string> { $"cannot Delete the UserConnection ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}" });
+                [
+                    $"cannot Delete the UserConnection ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}"
+                ]);
 
-            var removeConnection = _connections.Where(connectionKvp => connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId).FirstOrDefault();
+            var removeConnection = _connections.FirstOrDefault(connectionKvp => connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId);
 
-            if (removeConnection.Equals(default))
+            if (removeConnection.Equals(null))
                 return errorResponse;
 
             if (!_connections.TryRemove(removeConnection))
@@ -182,7 +184,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             var boardStateResposneDTO = new BoardStateResponseDTO()
             {
                 GameId = boardStateConnectionRequestDTO.Data.GameId,
-                CutableFigure = default!,
+                CutableFigure = null!,
                 IsReadyToEvent = boardStateConnectionRequestDTO.Data.IsReadyToEvent,
                 From = boardStateConnectionRequestDTO.Data.From,
                 To = boardStateConnectionRequestDTO.Data.To,

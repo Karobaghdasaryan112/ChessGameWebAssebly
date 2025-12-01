@@ -4,6 +4,6 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.
 {
     public class GetUserConnectionResponseDTO
     {
-        public UserConnectionDTO UserConnectionDTO;
+        public UserConnectionDTO UserConnectionDTO { get; set; }
     }
 }

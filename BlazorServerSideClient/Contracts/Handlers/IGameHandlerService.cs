@@ -1,5 +1,5 @@
-﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Contracts.Handlers

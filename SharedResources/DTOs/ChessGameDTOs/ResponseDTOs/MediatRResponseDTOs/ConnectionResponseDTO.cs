@@ -1,7 +1,7 @@
 ﻿using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
-namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
+namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 {
     public class ConnectionResponseDTO<TDto, TMessage> where TMessage : ChessGameResponseMessage
     {

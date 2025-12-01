@@ -8,7 +8,8 @@ using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
@@ -46,10 +47,17 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     HttpStatusCode.BadRequest, errorMessages);
             }
 
+            var connectionRequestDto = new ConnectionRequestDTO<BoardInitializeRequestDTO>()
+            {
+                Data = new BoardInitializeRequestDTO()
+                {
+                    Player1Id = request.RequestDTO.requestType.Player1Id,
+                    Player2Id = request.RequestDTO.requestType.Player2Id,
+                }
+            };
+            var initializeGameResponseDTO = await _service.InitializeBoardAsync(connectionRequestDto);
 
-            var newGameGuid = await _service.InitializeBoardAsync(request.RequestDTO.requestType.Player1Id, request.RequestDTO.requestType.Player2Id);
-
-            if (newGameGuid == default)
+            if (initializeGameResponseDTO.Data.GameId == default)
             {
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
@@ -58,18 +66,18 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             }
             var BoardInitialize = new Board(default(FigureColors));
 
-            var addingResult = ActiveGames.AddGame(newGameGuid, BoardInitialize);
+            var addingResult = ActiveGames.AddGame(initializeGameResponseDTO.Data.GameId, BoardInitialize);
 
             if (!addingResult)
             {
-                _logger.LogError("Failed to add the new game with ID {GameId} to active games.", newGameGuid);
+                _logger.LogError("Failed to add the new game with ID {GameId} to active games.", initializeGameResponseDTO.Data.GameId);
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
                     HttpStatusCode.InternalServerError, new());
             }
 
-            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = newGameGuid };
+            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = initializeGameResponseDTO.Data.GameId };
 
 
             return ChessGameResponse<BoardInitializeResponseDTO>.

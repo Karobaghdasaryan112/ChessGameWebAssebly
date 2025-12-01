@@ -1,7 +1,7 @@
 ﻿using SharedResources.Contracts.DTOs;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 
-namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
+namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 {
     public class InvitationResponseDTO : ICheseGameResponseDTO
     {

@@ -5,7 +5,15 @@ using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Figures;
 using SharedResources.ChessGameResource.Models;
-using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
+using System.Net;
+using BoardInitializeRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs.BoardInitializeRequestDTO;
+using SubmitMoveRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs.SubmitMoveRequestDTO;
+using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO;
 
 namespace ChessGame.Core.Services.Services.BoardService
 {
@@ -25,37 +33,87 @@ namespace ChessGame.Core.Services.Services.BoardService
             _chessGameHistoryRepository = chessGameHistoryRepository;
         }
 
-        public async Task<Guid> InitializeBoardAsync(Guid player1Id, Guid player2Id)
+
+        public async Task<ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>> InitializeBoardAsync(ConnectionRequestDTO<BoardInitializeRequestDTO> connectionRequestDto)
         {
-            var isCreated = await _chessGameRepository.CreateGame(player1Id, player2Id);
+
+            var isCreated = await _chessGameRepository.CreateGame(connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
+
             if (!isCreated)
             {
-                _logger.LogError("Failed to create a new game between {Player1} and {Player2}", player1Id, player2Id);
-                return Guid.Empty;
+                _logger.LogError("Failed to create a new game between {Player1} and {Player2}", connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
+                return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new BoardInitializeResponseDTO()
+                    {
+                        GameId = Guid.Empty
+                    }, ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest,
+                    [
+                        "Failed to create a new game between {Player1} and {Player2}",
+                        connectionRequestDto.Data.Player1Id.ToString(), connectionRequestDto.Data.Player2Id.ToString()
+                    ]);
             }
 
-            var gameId = await _chessGameRepository.GetGameIdByPlayers(player1Id, player2Id);
+            var gameId = await _chessGameRepository.GetGameIdByPlayers(connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
             if (gameId == default)
-                _logger.LogError("Failed to retrieve game ID for players {Player1} and {Player2}", player1Id,
-                    player2Id);
+            {
+                _logger.LogError("Failed to retrieve game ID for players {Player1} and {Player2}",
+                    connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
+                return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(new BoardInitializeResponseDTO()
+                {
+                    GameId = Guid.Empty
+                }, ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest,
+                    [
+                        "Failed to retrieve game ID for players {Player1} and {Player2}",
+                        connectionRequestDto.Data.Player1Id.ToString(), connectionRequestDto.Data.Player2Id.ToString()
+                    ]);
+            }
             else
-                _logger.LogInformation("Game successfully created between {Player1} and {Player2}", player1Id,
-                    player2Id);
+                _logger.LogInformation("Game successfully created between {Player1} and {Player2}", connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
 
-            return gameId;
+            return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                new BoardInitializeResponseDTO()
+                {
+                    GameId = gameId
+                },
+                ChessGameResponseMessage.GameCreated,
+                HttpStatusCode.Created);
         }
 
-        public async Task<bool> SubmitMoveAsync(Guid gameId, Position currentPosition, Position movePosition,
-            Board currentBoardState)
+
+        public async Task<ConnectionResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>> SubmitMoveAsync(SubmitMoveRequestDTO submitMoveRequestDto)
         {
-            var fromBlock = currentBoardState.GetBlockByPosition(currentPosition);
-            var toBlock = currentBoardState.GetBlockByPosition(movePosition);
+            //Data From RequestDto
+            var fromPosition = submitMoveRequestDto.From;
+            var toPosition = submitMoveRequestDto.To;
+            var gameId = submitMoveRequestDto.GameId;
+            var currentBoardState = submitMoveRequestDto.CurrentBoardState;
+
+            //Initialize Response DTO
+            var connectionResponse = new ConnectionResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>()
+            {
+                Data = new SubmitMoveResponseDTO()
+                {
+                    IsKingChecked = false,
+                    IsKingMate = false,
+                    IsMoveSuccess = true
+                },
+                IsSuccess = true
+            };
+
+            var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
+            var toBlock = currentBoardState.GetBlockByPosition(toPosition!);
+
             if (fromBlock.Figure == null)
             {
-                _logger.LogWarning("No figure found at position {Position} in game {GameId}", currentPosition, gameId);
-                //If there is no figure at the from position, throw exception
-                //This should never happen, as the frontend should prevent this
-                throw new ArgumentException($"If there is no figure at the from-{fromBlock.Position.VerticalOrientation}{fromBlock.Position.HorizontalOrientation} position");
+                _logger.LogWarning("No figure found at position {Position} in game {GameId}", fromPosition, gameId);
+
+                connectionResponse.Data.IsMoveSuccess = false;
+                connectionResponse.Errors = new()
+                {
+                    $"If there is no figure at the from-{fromBlock.Position.VerticalOrientation}{fromBlock.Position.HorizontalOrientation} position"
+                };
+                connectionResponse.IsSuccess = false;
+                return connectionResponse;
             }
 
             var toBlockTemp = toBlock.Figure;
@@ -63,42 +121,75 @@ namespace ChessGame.Core.Services.Services.BoardService
             fromBlock.Figure = default;
 
             _logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId,
-                currentPosition, movePosition);
+                fromPosition, toPosition);
 
             //Check if king is in check after the move
-            //If king is in check, return false
+            //If king is in check, return false 
             if (await IsKingCheckedAsync(currentBoardState, currentBoardState.Turn))
             {
-                _logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
-                    currentPosition, movePosition, gameId);
+                //Implement IsKing Mate state
+                //TO DO: If there is Mate state then put the IsMateState to True --- connectionResponse.Data.IsKingMate = true;
+                _logger.LogWarning(
+                    "Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
+                    fromPosition, toPosition, gameId);
 
                 fromBlock.Figure = toBlock.Figure;
                 toBlock.Figure = toBlockTemp;
 
-                _logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,
-                    movePosition, currentPosition);
+                connectionResponse.Data.IsKingChecked = true;
 
-                return await Task.FromResult(false);
+                _logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,
+                    fromPosition, toPosition);
             }
 
-            return await Task.FromResult(true);
+            return connectionResponse;
         }
 
-        public async Task<Block> CanClick(FigureColors currentColor, Block currentBlock,
-            ClickedBlockInformationDTO previusBlockInformationDTO, Board currentBoard)
+
+
+        //Response Block
+        //Request FigureColors , Block CurrentBlock
+        public async Task<ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>> CanClick(ConnectionRequestDTO<CanClickRequestDTO> connectionRequestDto)
         {
-            if ((int)currentColor != (int)currentBoard.Turn)
-                return await Task.FromResult(default(Block))!;
+            //Request Data
+            var figureColor = connectionRequestDto.Data.FigureColor;
+            var currentBlock = connectionRequestDto.Data.CurrentBlock;
+            var previusBlockInformationDTO = connectionRequestDto.Data.ClickedBlockInformationDto;
+            var currentBoard = connectionRequestDto.Data.CurrentBoardBoardState!;
+
+
+            if ((int)figureColor !=
+                (int)currentBoard.Turn)
+            {
+                _logger.LogWarning("It's not the turn of player with color {Color}",
+                    figureColor);
+
+                return await Task.FromResult(ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new CanClickResponseDTO()
+                    {
+                        ClickedBlock = null
+                    },
+                    ChessGameResponseMessage.InvalidMove,
+                    HttpStatusCode.BadRequest,
+                    ["It's not the turn of the player"]));
+            }
 
             var currentBlockFromServer = currentBoard.GetBlockByPosition(currentBlock.Position);
 
             //if the current player is the same color as the figure on the clicked block and previusly clicked block is null
             if (currentBlock.Figure != null &&
-                currentBlock.Figure.FigureColor == currentColor)
+                currentBlock.Figure.FigureColor == figureColor)
             {
                 _logger.LogInformation("Player with color {Color} clicked on their own figure at position {Position}",
-                    currentColor, currentBlock.Position);
-                return await Task.FromResult(currentBlockFromServer);
+                    figureColor,
+                    currentBlock.Position);
+
+                return await Task.FromResult(ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new CanClickResponseDTO()
+                    {
+                        ClickedBlock = currentBlockFromServer
+                    },
+                    ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted));
             }
 
             //if the current player is clicked previusly and now clicked on a movable or cutable position
@@ -107,13 +198,27 @@ namespace ChessGame.Core.Services.Services.BoardService
                 (currentBlockFromServer.EventColor == EventColors.Cut ||
                  currentBlockFromServer.EventColor == EventColors.Move))
             {
-                _logger.LogInformation(
-                    "Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}", currentColor,
-                    previusBlockInformationDTO.ClickedPosition, currentBlock.Position);
-                return await Task.FromResult(currentBlockFromServer);
+                _logger.LogInformation("Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}",
+                    figureColor,
+                    previusBlockInformationDTO.ClickedPosition,
+                    currentBlock.Position);
+
+                return await Task.FromResult(ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new CanClickResponseDTO()
+                    {
+                        ClickedBlock = currentBlockFromServer
+                    },
+                    ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted));
             }
 
-            return await Task.FromResult(default(Block))!;
+            return await Task.FromResult(ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                new CanClickResponseDTO()
+                {
+                    ClickedBlock = null
+                },
+                ChessGameResponseMessage.InvalidMove,
+                HttpStatusCode.BadRequest,
+                ["It's not the turn of the player"]));
         }
 
 

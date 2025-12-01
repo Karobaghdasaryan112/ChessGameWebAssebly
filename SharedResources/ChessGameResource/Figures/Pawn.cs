@@ -46,7 +46,7 @@ namespace SharedResources.ChessGameResource.Figures
                 Console.WriteLine(e);
                 throw;
             }
-           
+
 
             return result;
 
@@ -83,16 +83,14 @@ namespace SharedResources.ChessGameResource.Figures
             row += icrement;
 
             if ((
-                row > (int)CriticalPositions.lowCriticalValue &&
-                row < (int)CriticalPositions.highCriticalValue &&
-                col > (int)CriticalPositions.lowCriticalValue &&
-                col < (int)CriticalPositions.highCriticalValue)
+                row is > (int)CriticalPositions.lowCriticalValue and < (int)CriticalPositions.highCriticalValue &&
+                col is > (int)CriticalPositions.lowCriticalValue and < (int)CriticalPositions.highCriticalValue)
                 )
             {
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != (default))
+                if (figure?.FigureColor != (null))
                 {
                     if ((int)figure?.FigureColor != (int)board.Turn)
                     {

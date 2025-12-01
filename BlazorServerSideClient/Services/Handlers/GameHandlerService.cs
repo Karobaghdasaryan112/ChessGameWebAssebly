@@ -1,7 +1,7 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using SharedResources.ChessGameResource.Enums.Events;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Handlers

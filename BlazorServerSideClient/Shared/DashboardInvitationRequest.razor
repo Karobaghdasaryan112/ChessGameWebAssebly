@@ -1,14 +1,11 @@
 ﻿@using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
-@using BlazorServerSideClient.Services.Handlers
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 @inject IInvitationHandlerService InvitationHandlerService
 @inject IInivitationReqeustService InvitationRequestService
 @inject JSRunetimeService JSRuneTimeService
-@inject AuthenticationStateProvider AuthenticationProvider
 <h3>DashboardInvitationRequest</h3>
 
 <div class="invite-backdrop" id="invite-backdrop-Id" hidden>
@@ -84,7 +81,7 @@
     private async Task DeclineInvite()
     {
         await JSRuneTimeService.HideInviteModal();
-        await InvokeAsync(() => StateHasChanged());
+        await InvokeAsync(StateHasChanged);
     }
 
 

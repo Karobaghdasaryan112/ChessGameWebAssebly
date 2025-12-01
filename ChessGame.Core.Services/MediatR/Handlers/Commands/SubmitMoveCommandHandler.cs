@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses.ResponseMessages;
 

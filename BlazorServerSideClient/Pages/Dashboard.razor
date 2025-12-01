@@ -2,20 +2,12 @@
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
-@using SharedResources.ChessGameResource.Models
-@using BlazorServerSideClient.Services.Handlers
-@using BlazorServerSideClient.Services.Requests
 @using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
-@using System.Threading
-@using System.Collections.Concurrent
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 
 @inject IInvitationHandlerService InvitationHandlerService
 @inject AuthenticationStateProvider AuthStateProvider
@@ -90,14 +82,6 @@
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
 
-    // private bool showInviteModal = false;
-    // private string inviterName = "";
-    // private SendInvitationsResponseDTO? lastInvite;
-
-
-    // private int timerValue = 15;
-    // private CancellationTokenSource? timerCts;
-
     protected override async Task OnInitializedAsync()
     {
 
@@ -115,18 +99,6 @@
            InvokeAsync(StateHasChanged);
         };
 
-
-        // InvitationHandlerService.InvitationAction += async (invitationResponse) =>
-        // {
-        //     lastInvite = invitationResponse;
-        //     inviterName = invitationResponse.InviterUserConnection.UserName;
-
-        //     showInviteModal = true;
-        //     timerValue = 10;
-        //     StartTimer();
-
-        //     await InvokeAsync(StateHasChanged);
-        // };
 
         var hubConnection = await HubClient.GetHubConnection();
 

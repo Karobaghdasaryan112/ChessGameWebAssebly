@@ -1,7 +1,7 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.Contracts.DTOs;
 
-namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs
+namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 {
     public class BoardInitializeRequestDTO : ICheseGameRequestDTO
     {
