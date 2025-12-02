@@ -100,8 +100,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
             => await _connectionService.AddConnectionAsync(addUserConnectionRequestDTO);
 
-        public ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnectionAsync(Guid userGuid)
-             => _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = userGuid } });
+        public async Task<ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>> GetUserConnectionAsync(Guid userGuid)
+             => await _connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = userGuid } });
         public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO, string player, bool isMyConnection)
             => await _connectionService.SendBoardStateToClient(boardStateConnectionRequestDTO, player, isMyConnection);
 

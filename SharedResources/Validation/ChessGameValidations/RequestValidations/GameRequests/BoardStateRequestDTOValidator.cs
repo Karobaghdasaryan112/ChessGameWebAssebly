@@ -15,8 +15,6 @@ namespace SharedResources.Validation.ChessGameValidations.RequestValidations.Gam
                 .NotNull().WithMessage("To position is required.");
             RuleFor(x => x.Player)
                 .NotEmpty().WithMessage("Player is required.");
-            RuleFor(x => x.OpponentConnectionId)
-                .NotEmpty().WithMessage("OpponentConnectionId is required.");
             RuleFor(x => x.CheckedKingPosition)
                 .NotNull().When(x => x.IsKingChecked)
                 .WithMessage("CheckedKingPosition is required when IsKingChecked is true.");

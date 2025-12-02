@@ -2,7 +2,12 @@
 using FluentValidation.Results;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
@@ -38,24 +43,24 @@ namespace ChessGame.Core.Services.Services.Validations
 
         //Connection
         //Requests
-        IValidator<AddUserConnectionRequestDTOValidation> addUserConnectionValidator,
-        IValidator<GetUserConnectionRequestDTOValidation> getUserConnectionValidator,
-        IValidator<RemoveUserConnectionRequestDTOValidation> removeUserConnectionValidator,
+        IValidator<AddUserConnectionRequestDTO> addUserConnectionValidator,
+        IValidator<GetUserConnectionRequestDTO> getUserConnectionValidator,
+        IValidator<RemoveUserConnectionRequestDTO> removeUserConnectionValidator,
 
         //Connection Responses
-        IValidator<GetUserConnectionResponseDTOValidation> getUserConnectionResponseValidator,
-        IValidator<AddUserConnectionResponseDTOValidation> addUserConnectionResponseValidator,
-        IValidator<RemoveUserConnectionResponseDTOValidation> removeUserConnectionResponseValidator,
+        IValidator<AddUserConnectionResponseDTO> addUserConnectionResponseValidator,
+        IValidator<GetUserConnectionResponseDTO> getUserConnectionResponseValidator,
+        IValidator<RemoveUserConnectionResponseDTO> removeUserConnectionResponseValidator,
 
 
         //Invitation
         //Requests
-        IValidator<AcceptInvitationRequestDTOValidation> acceptInvitationRequestValidator,
-        IValidator<SendInvitationRequestDTOValidation> sendInvitationRequestValidator,
+        IValidator<AcceptInvitationRequestDTO> acceptInvitationRequestValidator,
+        IValidator<SendInvitationRequestDTO> sendInvitationRequestValidator,
 
         //Responses
-        IValidator<AcceptInvitationResponseDTOValidation> acceptInvitationResponseValidator,
-        IValidator<SendInvitationResponseDTOValidation> sendInvitationResponseValidator
+        IValidator<AcceptInvitationResponseDTO> acceptInvitationResponseValidator,
+        IValidator<SendInvitationsResponseDTO> sendInvitationResponseValidator
         )
 
     {
@@ -66,6 +71,7 @@ namespace ChessGame.Core.Services.Services.Validations
 
             IValidator<T> validator = dto switch
             {
+                //////////////////////////////////////////////////////////////////////////////////////
                 //Game
                 // Requests
                 BoardInitializeRequestDTO => (IValidator<T>)boardInitializeRequestValidator,
@@ -87,27 +93,29 @@ namespace ChessGame.Core.Services.Services.Validations
                 ReceivePlayersResponseDTO => (IValidator<T>)receivePlayersResponseValidator,
                 SendGameStateResponseDTO => (IValidator<T>)sendGameStateResponseValidator,
 
+                //////////////////////////////////////////////////////////////////////////////////////
 
                 //Connection
                 // Requests
-                AddUserConnectionRequestDTOValidation => (IValidator<T>)addUserConnectionValidator,
-                GetUserConnectionRequestDTOValidation => (IValidator<T>)getUserConnectionValidator,
-                RemoveUserConnectionRequestDTOValidation => (IValidator<T>)removeUserConnectionValidator,
+                AddUserConnectionRequestDTO => (IValidator<T>)addUserConnectionValidator,
+                GetUserConnectionRequestDTO => (IValidator<T>)getUserConnectionValidator,
+                RemoveUserConnectionRequestDTO => (IValidator<T>)removeUserConnectionValidator,
 
                 // Responses
-                GetUserConnectionResponseDTOValidation => (IValidator<T>)getUserConnectionResponseValidator,
-                AddUserConnectionResponseDTOValidation => (IValidator<T>)addUserConnectionResponseValidator,
-                RemoveUserConnectionResponseDTOValidation => (IValidator<T>)removeUserConnectionResponseValidator,
+                GetUserConnectionResponseDTO => (IValidator<T>)getUserConnectionResponseValidator,
+                AddUserConnectionResponseDTO => (IValidator<T>)addUserConnectionResponseValidator,
+                RemoveUserConnectionResponseDTO => (IValidator<T>)removeUserConnectionResponseValidator,
 
+                //////////////////////////////////////////////////////////////////////////////////////
 
                 //Invitation
                 // Requests
-                AcceptInvitationRequestDTOValidation => (IValidator<T>)acceptInvitationRequestValidator,
-                SendInvitationRequestDTOValidation => (IValidator<T>)sendInvitationRequestValidator,
+                AcceptInvitationRequestDTO => (IValidator<T>)acceptInvitationRequestValidator,
+                SendInvitationRequestDTO => (IValidator<T>)sendInvitationRequestValidator,
 
                 // Responses
-                AcceptInvitationResponseDTOValidation => (IValidator<T>)acceptInvitationResponseValidator,
-                SendInvitationResponseDTOValidation => (IValidator<T>)sendInvitationResponseValidator,
+                AcceptInvitationResponseDTO => (IValidator<T>)acceptInvitationResponseValidator,
+                SendInvitationsResponseDTO => (IValidator<T>)sendInvitationResponseValidator,
 
 
                 _ => throw new InvalidOperationException($"No validator registered for type {typeof(T).Name}")

@@ -1,7 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Services.Validations;
-using FluentValidation;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
@@ -21,7 +20,7 @@ namespace ChessGame.Core.Services.Services.HubServices
         IConnectionService<THub> connectionService,
         IBoardService boardService,
         BaseHubService<THub> baseHubService,
-        GameValidationService gameValidationService)
+        GenericValidationService validationService)
         : IGameService<THub>
         where THub : Microsoft.AspNetCore.SignalR.Hub
     {
@@ -35,10 +34,9 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await gameValidationService.ValidateAsync(connectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(connectionRequestDTO.Data));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(GetOnlinePlayersResponseDTO)))!;
-
 
 
             var onlinePlayers = connectionService.
@@ -64,10 +62,9 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
             //Validate the Request Data
-            var validationResult = (await gameValidationService.ValidateAsync(gameStateReqeustDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(gameStateReqeustDTO.Data));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(SendGameStateResponseDTO)))!;
-
 
 
             var games = ActiveGames.ActiveGamesAndBoards;
@@ -98,11 +95,9 @@ namespace ChessGame.Core.Services.Services.HubServices
             ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await gameValidationService.ValidateAsync(sendMoveConnectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDTO.Data));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(MoveResponseDTO)))!;
-
-
 
 
             var invalidResponse = ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
@@ -151,11 +146,9 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await gameValidationService.ValidateAsync(sendClickConnectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(sendClickConnectionRequestDTO.Data));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(ClickResponseDTO)))!;
-
-
 
 
             var gameState = ActiveGames.ActiveGamesAndBoards[sendClickConnectionRequestDTO.Data.GameId];
@@ -211,7 +204,7 @@ namespace ChessGame.Core.Services.Services.HubServices
         private void ResetEventableBlocks(Board gameState)
         {
             //reset the previous selected Blocks(Movable and cuttable)
-            var eventableBoardBlocks = gameState.BoardBlocks!.SelectMany(blockI => blockI.Where(blockJ => blockJ.EventColor == EventColors.Cut || blockJ.EventColor == EventColors.Move).ToArray());
+            var eventableBoardBlocks = gameState.BoardBlocks!.SelectMany(blockI => blockI.Where(blockJ => blockJ.EventColor is EventColors.Cut or EventColors.Move).ToArray());
 
             foreach (var eventableBoardBlock in eventableBoardBlocks)
                 eventableBoardBlock.EventColor = EventColors.None;

@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.Services.Validations;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
@@ -12,23 +13,23 @@ using System.Net;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
-    public class ConnetionService<THub> : IConnectionService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
+    public class ConnetionService<THub>(BaseHubService<THub> baseHubService, GenericValidationService validationService) : IConnectionService<THub>
+        where THub : Microsoft.AspNetCore.SignalR.Hub
     {
-        internal BaseHubService<THub> _baseHubService;
+        internal BaseHubService<THub> _baseHubService = baseHubService;
         internal static ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
-
-        public ConnetionService(BaseHubService<THub> baseHubService)
-        {
-            _baseHubService = baseHubService;
-        }
 
         public ConcurrentDictionary<Guid, UserConnectionDTO> CurrentConnectionState => _connections;
 
-        public ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
+        public async Task<ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
         {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(getUserConnectionRequestDTO.Data);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(GetUserConnectionResponseDTO)))!;
 
             if (!_connections.TryGetValue(getUserConnectionRequestDTO.Data.UserGuid, out var currentUserConnection))
-                return ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
+                return await Task.FromResult(ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
                     CreateErrorResponse(
                     new GetUserConnectionResponseDTO()
                     {
@@ -36,20 +37,25 @@ namespace ChessGame.Core.Services.Services.HubServices
                     },
                     ChessGameResponseMessage.PlayerNotFound,
                     HttpStatusCode.NotFound,
-                    [$"user connection Not Found for UserId {getUserConnectionRequestDTO.Data.UserGuid}"]);
+                    [$"user connection Not Found for UserId {getUserConnectionRequestDTO.Data.UserGuid}"]));
 
-            return ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
+            return await Task.FromResult(ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>.
                   CreateSuccessResponse(
                   new GetUserConnectionResponseDTO()
                   {
                       UserConnectionDTO = currentUserConnection
                   },
                   ChessGameResponseMessage.UserConnectionFoundSuccess,
-                  HttpStatusCode.Found);
+                  HttpStatusCode.Found));
         }
 
         public async Task<ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
         {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(addUserConnectionRequestDTO.Data);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(AddUserConnectionResponseDTO)))!;
+
             var successResponse =
                 ConnectionResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.
                     CreateSuccessResponse(
@@ -61,7 +67,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                         HttpStatusCode.Created);
 
 
-            var existUserResult = GetUserConnection(
+            var existUserResult = await GetUserConnection(
                 new ConnectionRequestDTO<GetUserConnectionRequestDTO>()
                 {
                     Data = new GetUserConnectionRequestDTO()
@@ -100,6 +106,11 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsUserGuidAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO)
         {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(removeUserConnectionRequestDTO.Data);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(RemoveUserConnectionResponseDTO)))!;
+
             if (!_connections.TryRemove(removeUserConnectionRequestDTO.Data.UserGuid, out var removedConnection))
                 return ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                  CreateErrorResponse(
@@ -122,6 +133,11 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
         public async Task<ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(removeUserConnectionRequestDTO);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(RemoveUserConnectionResponseDTO)))!;
+
             var errorResponse =
                 ConnectionResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.
                 CreateErrorResponse(
@@ -155,8 +171,13 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         }
 
-        public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO,string player,bool isMyConnection)
+        public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO, string player, bool isMyConnection)
         {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(boardStateConnectionRequestDTO.Data);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(BoardStateResponseDTO)))!;
+
             var selectedGameKeyValue = CurrentConnectionState.
            Where(gameId_UserConnection =>
                gameId_UserConnection.Value?.GameId ==
@@ -164,7 +185,7 @@ namespace ChessGame.Core.Services.Services.HubServices
            Select(selectedGame_UserConnection => selectedGame_UserConnection.Value).ToList();
 
 
-            selectedGameKeyValue = isMyConnection ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == player).ToList() 
+            selectedGameKeyValue = isMyConnection ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == player).ToList()
                 : selectedGameKeyValue.Where(keyValue => keyValue.UserName != player).ToList();
 
 

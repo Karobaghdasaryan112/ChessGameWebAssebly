@@ -10,7 +10,6 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
         public Position From {  get; set; }
         public Position To { get; set; }
         public string Player {  get; set; }
-        public string OpponentConnectionId { get; set; }
         public bool IsKingChecked { get; set; }
         public Position CheckedKingPosition { get; set; }
         public FigureColors OpponentColor { get; set; }
