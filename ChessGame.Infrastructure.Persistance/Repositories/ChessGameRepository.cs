@@ -45,9 +45,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         public async Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2)
         {
             var game = await _chessGameDbContext.ChessGames.FirstOrDefaultAsync(game => game.Player1 == player1 && game.Player2 == player2);
-            return game == null ?
-                Guid.Empty :
-                game.GameId;
+            return game?.GameId ?? Guid.Empty;
 
         }
 

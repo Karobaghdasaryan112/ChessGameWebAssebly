@@ -3,13 +3,12 @@ using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -79,53 +78,52 @@ namespace ChessGameBlazorClient.UI.Services
         {
             await GetHubConnection();
 
-            _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>(
+            if (_hubConnection != null)
+            {
+                _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>(
                     "ReceiveUpdatedUsers",
                     (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)
                 );
 
-            _hubConnection.On<UserConnectionDTO, Guid, UserConnectionDTO, Guid>(
-                "ReceiveInvite",
-                (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) => _invitationHandlerService.ReceiveInvite(inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid));
+                _hubConnection.On<UserConnectionDTO, Guid, UserConnectionDTO, Guid>(
+                    "ReceiveInvite",
+                    (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) =>
+                        _invitationHandlerService.ReceiveInvite(inviterUserConnection, inviterUserGuid,
+                            receiverUserConnection, receiverUserGuid));
 
-            _hubConnection.On<UserConnectionDTO, Guid, UserConnectionDTO, Guid, Guid>("InviteAcceptedAsync",
-                (
-                    inviterUserConnection,
-                    inviterUserGuid,
-                    receiverUserConnection,
-                    receiverUserGuid,
-                    gameGuid) =>
-                _invitationHandlerService.InviteAcceptedAsync(
-                    inviterUserConnection,
-                    inviterUserGuid,
-                    receiverUserConnection,
-                    receiverUserGuid,
-                    gameGuid));
+                _hubConnection.On<UserConnectionDTO, Guid, UserConnectionDTO, Guid, Guid>("InviteAcceptedAsync",
+                    (
+                            inviterUserConnection,
+                            inviterUserGuid,
+                            receiverUserConnection,
+                            receiverUserGuid,
+                            gameGuid) =>
+                        _invitationHandlerService.InviteAcceptedAsync(
+                            inviterUserConnection,
+                            inviterUserGuid,
+                            receiverUserConnection,
+                            receiverUserGuid,
+                            gameGuid));
 
 
-            _hubConnection.On<
-                ConnectionResponseDTO<
-                    ReceivePlayersResponseDTO,
-                    ChessGameResponseMessage>>
-                    ("ReseivePlayersAsync", async (
-                connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO)
-            );
+                _hubConnection.On<
+                    ConnectionResponseDTO<
+                        ReceivePlayersResponseDTO,
+                        ChessGameResponseMessage>>
+                ("ReseivePlayersAsync", async (
+                        connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO)
+                );
 
-            _hubConnection.On<
-                ConnectionResponseDTO<
-                    BoardStateResponseDTO, 
-                    ChessGameResponseMessage>>(
+                _hubConnection.On<
+                    ConnectionResponseDTO<
+                        BoardStateResponseDTO,
+                        ChessGameResponseMessage>>(
                     "ReceiveBoardUpdateAsync",
-                    async (BoardStateResponseHandler) => await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
+                    async (BoardStateResponseHandler) =>
+                        await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
 
-            _hubConnection.On("testReceiveAsync", () =>
-            {
-                Console.WriteLine("Call received!!!!");
-                int a = 1;
-            });
-
+            }
         }
 
     }
-
 }

@@ -7,7 +7,6 @@ using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.Contracts.RequestsAndResponses;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
@@ -17,30 +16,28 @@ using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 {
-    public class BoardInitializeCommandHandler :
-        MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>,
-        IRequestHandler<
-            BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>,
-            IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
+    public class BoardInitializeCommandHandler(
+        IValidator<BoardInitializeRequestDTO> validator,
+        ILogger<BoardInitializeCommandHandler> logger,
+        IBoardService service)
+        :
+            MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>(validator, logger,
+                service),
+            IRequestHandler<
+                BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
+                    IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>,
+                IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
     {
-
-        public BoardInitializeCommandHandler(
-            IValidator<BoardInitializeRequestDTO> validator,
-            ILogger<BoardInitializeCommandHandler> logger,
-            IBoardService service) : base(validator, logger, service)
-        {
-        }
-
         public async Task<IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>> Handle(
             BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
                 IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
-            var valisationResult = await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
 
-            if (!valisationResult.IsValid)
+            if (!validationResult.IsValid)
             {
-                var errorMessages = valisationResult.Errors.Select(error => error.ErrorMessage).ToList();
+                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
@@ -57,12 +54,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             };
             var initializeGameResponseDTO = await _service.InitializeBoardAsync(connectionRequestDto);
 
-            if (initializeGameResponseDTO.Data.GameId == default)
+            if (!initializeGameResponseDTO.IsSuccess)
             {
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
-                    ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.InternalServerError, new());
+                        initializeGameResponseDTO.Message,
+                        initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
             }
             var BoardInitialize = new Board(default(FigureColors));
 
@@ -74,7 +71,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.InternalServerError, new());
+                    HttpStatusCode.InternalServerError, ["Field To Add Game Into Active Games"]);
             }
 
             var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = initializeGameResponseDTO.Data.GameId };

@@ -10,9 +10,9 @@ namespace SharedResources.Validation.ChessGameValidations.RequestValidations.Gam
             RuleFor(x => x.GameId)
                 .NotEmpty().WithMessage("GameId is required.");
             RuleFor(x => x.From)
-                .NotNull().WithMessage("From position is required.");
+                .NotNull().When(x => !x.IsKingChecked).WithMessage("From position is required.");
             RuleFor(x => x.To)
-                .NotNull().WithMessage("To position is required.");
+                .NotNull().When(x => !x.IsKingChecked).WithMessage("To position is required.");
             RuleFor(x => x.Player)
                 .NotEmpty().WithMessage("Player is required.");
             RuleFor(x => x.CheckedKingPosition)

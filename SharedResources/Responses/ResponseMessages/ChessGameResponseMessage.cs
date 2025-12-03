@@ -19,6 +19,9 @@ namespace SharedResources.Responses.ResponseMessages
         public static readonly ChessGameResponseMessage SuccessUserConnections =
             new ChessGameResponseMessage("Get User Connections Success.");
 
+        public static readonly ChessGameResponseMessage UsersRemovedFromGameSuccess =
+            new ChessGameResponseMessage("Users Removed Success.");
+
         public static readonly ChessGameResponseMessage InvalidData =
             new ChessGameResponseMessage("Invalid game data received.");  
         

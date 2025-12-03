@@ -60,8 +60,15 @@ namespace ChessGame.Core.Services.Services.HubServices
                 connectionRequestDTO.Data.ReceiverPlayerId);
 
 
-        public async Task AddToGroupAsync(string gruopName, string connectionId)
-            => await _hubContext.Groups.AddToGroupAsync(connectionId, gruopName);
+        public async Task AddToGroupAsync(string groupName, string connectionId)
+            => await _hubContext.Groups.AddToGroupAsync(connectionId, groupName);
+
+        public async Task RemoveFromGroupAsync(string groupName, List<string> connectionIds)
+        {
+            foreach (var connectionId in connectionIds)
+                await _hubContext.Groups.RemoveFromGroupAsync(connectionId, groupName);
+        }
+
 
         public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
            => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);

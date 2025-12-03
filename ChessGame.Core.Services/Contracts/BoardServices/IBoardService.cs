@@ -16,5 +16,7 @@ namespace ChessGame.Core.Services.Contracts.BoardServices
         Task<ConnectionResponseDTO<SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO, ChessGameResponseMessage>> SubmitMoveAsync(SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs.SubmitMoveRequestDTO  submitMoveRequestDto);
         Task<ConnectionResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>> CanClick(ConnectionRequestDTO<CanClickRequestDTO> connectionRequestDto);
         Task<bool> IsKingCheckedAsync(Board currentBoard,Turn chosenColor);
+        Task<bool> IsKingMateAsync(Board? currentBoard, Guid gameId, Turn chosenColor);
+        void ResetEventableBlocks(Board gameState);
     }
 }

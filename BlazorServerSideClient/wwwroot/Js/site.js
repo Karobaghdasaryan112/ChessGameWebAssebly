@@ -288,3 +288,29 @@ window.KingCheckedNotification = {
         }, { once: true });
     }
 };
+
+window.KingMateNotification = {
+    Notify: function (kingPosition, player, win) {
+
+        const overlay = document.getElementById("mate-modal");
+        const title = document.getElementById("mate-title");
+        const info = document.getElementById("mate-info");
+        const btn = document.getElementById("mate-btn");
+
+        title.innerText = win ? "🎉 YOU WIN!" : "❌ YOU LOST!";
+        title.style.color = win ? "green" : "red";
+        info.innerText = `King position: ${kingPosition.verticalOrientation}${kingPosition.horizontalOrientation}`;
+
+        overlay.classList.remove("hidden");
+
+        const cellId = `${kingPosition.verticalOrientation}${kingPosition.horizontalOrientation}`;
+        const cell = document.getElementById(cellId);
+
+        if (cell) {
+            cell.classList.add("king-blink-flash");
+            cell.addEventListener("animationend", () => {
+                cell.classList.remove("king-blink-flash");
+            }, { once: true });
+        }
+    }
+};

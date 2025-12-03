@@ -125,7 +125,7 @@ namespace SharedResources.ChessGameResource.Models
             return BoardBlocks[verticalOrientation][horizontalOrientation];
         }
 
-        public Block GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
+        public List<Block> GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
         {
             if(BoardBlocks is null)
                 throw new InvalidOperationException("BoardBlocks is not initialized.");
@@ -133,7 +133,7 @@ namespace SharedResources.ChessGameResource.Models
             var selectedBlocks = BoardBlocks.SelectMany(blocks => blocks.Where(block =>
                 block.Figure?.FigureType == figureType && block.Figure?.FigureColor == figureColor));
 
-            var selectedKing = selectedBlocks.FirstOrDefault();
+            var selectedKing = selectedBlocks.ToList();
 
             if (selectedKing == null)
                 throw new InvalidOperationException($"No block found with figure type {figureType} and color {figureColor}.");

@@ -10,6 +10,5 @@ namespace ChessGame.Domain.Domain.Entities
         public string To { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
-
     }
 }

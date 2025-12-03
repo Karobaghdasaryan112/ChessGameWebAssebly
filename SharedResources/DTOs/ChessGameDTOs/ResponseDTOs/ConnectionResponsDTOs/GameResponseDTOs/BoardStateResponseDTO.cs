@@ -13,6 +13,9 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.
         public string? OpponentConnectionId { get; set; }
         public string Player {  get; set; }
         public bool IsKingChecked { get; set; }
+        public bool IsKingMate { get; set; }
+        public bool IsMyConnection { get; set; }
+        public bool Win { get; set; }
 
         // Position of the king of the player receiving the event
         // Used to determine if the king is in check after a move

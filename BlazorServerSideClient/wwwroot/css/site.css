@@ -483,3 +483,74 @@ html, body {
 .king-blink-flash {
     animation: kingBlinkAnim 0.35s ease-in-out 0s 3;
 }
+
+
+
+.mate-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.hidden {
+    display: none;
+}
+
+.mate-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    animation: popIn 0.3s ease;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+#mate-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    #mate-btn:hover {
+        transform: scale(1.05);
+    }
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.king-blink-flash {
+    animation: flash 1s ease-out;
+}
+
+@keyframes flash {
+    0% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: inherit;
+    }
+}

@@ -1,0 +1,22 @@
+﻿@page "/MateNotifier"
+@inject NavigationManager Navigation
+@attribute [Authorize]
+
+<div id="mate-modal" class="mate-overlay hidden">
+    <div class="mate-box">
+        <h2 id="mate-title"></h2>
+        <p id="mate-info"></p>
+
+        <button id="mate-btn" @onclick="NavigateAfterFinish">
+            OK
+        </button>
+    </div>
+</div>
+
+@code {
+    [JSInvokable]
+    public void NavigateAfterFinish()
+    {
+        Navigation.NavigateTo("/Dashboard");
+    }
+}

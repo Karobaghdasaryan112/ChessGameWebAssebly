@@ -24,19 +24,25 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+
 builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
+
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
+
 builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
 builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
 builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
+
 builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
+
 builder.Services.AddSignalR()
     .AddNewtonsoftJsonProtocol(options =>
     {
@@ -61,7 +67,15 @@ else
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+        ctx.Context.Response.Headers["Pragma"] = "no-cache";
+        ctx.Context.Response.Headers["Expires"] = "0";
+    }
+});
 
 app.UseRouting();
 app.UseAuthentication();

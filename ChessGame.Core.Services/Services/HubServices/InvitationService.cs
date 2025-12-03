@@ -35,7 +35,6 @@ namespace ChessGame.Core.Services.Services.HubServices
             }
 
             var playersInformation = new KeyValuePair<Guid, Guid>(acceptInvitationRequest.Data.inviterUserGuid, acceptInvitationRequest.Data.receiverUserGuid);
-            var gameGuid = Guid.NewGuid();
 
 
             var inviterConnectionInformation = await connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.inviterUserGuid } });
@@ -45,14 +44,12 @@ namespace ChessGame.Core.Services.Services.HubServices
                 inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
                 return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
                      CreateErrorResponse(
-                         default!,
+                         null!,
                          inviterConnectionInformation.Message,
                          inviterConnectionInformation.HttpStatusCode,
                          inviterConnectionInformation.Errors
                          );
             }
-
-            var gameGuidAsString = gameGuid.ToString();
 
 
             var command = new BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>

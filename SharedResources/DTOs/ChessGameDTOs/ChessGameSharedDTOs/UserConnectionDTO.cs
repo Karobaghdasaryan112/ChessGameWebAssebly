@@ -4,7 +4,7 @@
     {
         public string ConnectionId { get; set; }
         public string UserName { get; set; }
-        public Gameinfo Gameinfo { get; set; }
+        public Gameinfo? Gameinfo { get; set; }
         public Guid GameId { get; set; }
     }
     public class Gameinfo

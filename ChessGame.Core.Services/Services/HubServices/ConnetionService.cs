@@ -8,6 +8,8 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
+using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
 using System.Collections.Concurrent;
 using System.Net;
 
@@ -171,7 +173,42 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         }
 
-        public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO, string player, bool isMyConnection)
+        public async Task<ConnectionResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>> RemoveUsersFromGameAsync(ConnectionRequestDTO<RemoveUserFromGameRequestDTO> removeUserFromGameRequestDTO)
+        {
+            //Validation
+            var validationResult = await validationService.ValidateAsync(removeUserFromGameRequestDTO.Data);
+            if (!validationResult.IsValid)
+                return (await validationResult.ReturnValidationResult(default(RemoveUserFromGameResponseDTO)))!;
+
+            //Get Active Connections in Game
+            var activeConnections = _connections.Where(connection =>
+                connection.Value.GameId == removeUserFromGameRequestDTO.Data.GameId).ToList();
+
+            var connectionIds = activeConnections.Select(connection => connection.Value.ConnectionId!).ToList();
+
+            //Reset Game Info
+            activeConnections.ForEach(activeConnection =>
+            {
+                activeConnection.Value.Gameinfo = null!;
+                activeConnection.Value.GameId = Guid.Empty;
+            });
+
+            //Remove from Group
+            await _baseHubService.RemoveFromGroupAsync(removeUserFromGameRequestDTO.Data.GameId.ToString(), connectionIds);
+
+
+            //Return Response
+            return ConnectionResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>.
+                  CreateSuccessResponse(
+                  new RemoveUserFromGameResponseDTO()
+                  {
+                      IsRemoved = true
+                  },
+                  ChessGameResponseMessage.UsersRemovedFromGameSuccess,
+                  HttpStatusCode.OK);
+        }
+
+        public async Task<ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO, string player, bool isMyConnection, bool win = false)
         {
             //Validation
             var validationResult = await validationService.ValidateAsync(boardStateConnectionRequestDTO.Data);
@@ -179,10 +216,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return (await validationResult.ReturnValidationResult(default(BoardStateResponseDTO)))!;
 
             var selectedGameKeyValue = CurrentConnectionState.
-           Where(gameId_UserConnection =>
-               gameId_UserConnection.Value?.GameId ==
+           Where(gameIdUserConnection =>
+               gameIdUserConnection.Value?.GameId ==
                boardStateConnectionRequestDTO.Data.GameId).
-           Select(selectedGame_UserConnection => selectedGame_UserConnection.Value).ToList();
+           Select(selectedGameUserConnection => selectedGameUserConnection.Value).ToList();
 
 
             selectedGameKeyValue = isMyConnection ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == player).ToList()
@@ -212,7 +249,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                 OpponentConnectionId = selectedGameOpponentConnectionId,
                 KingPosition = boardStateConnectionRequestDTO.Data.CheckedKingPosition,
                 IsKingChecked = boardStateConnectionRequestDTO.Data.IsKingChecked,
+                IsKingMate = boardStateConnectionRequestDTO.Data.IsKingMate,
                 OpponentColor = boardStateConnectionRequestDTO.Data.OpponentColor,
+                IsMyConnection = isMyConnection,
+                Win = win
             };
 
             var sendBoardResposneDTO = ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(boardStateResposneDTO, ChessGameResponseMessage.Draw);

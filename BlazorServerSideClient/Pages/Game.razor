@@ -15,7 +15,6 @@
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
-@inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 <head>
@@ -25,6 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="~/Js/site.js"></script>
 </head>
+<MateNotifier />
 <div class="wrap">
     <div class="leftCard">
         <div class="playersInfo">
@@ -130,18 +130,12 @@
     private ConnectionRequestDTO<MoveRequestDTO> MoveRequestDTO = new ConnectionRequestDTO<MoveRequestDTO>() { Data = new() };
     private ConnectionRequestDTO<ClickRequestDTO> ClickRequestDTO = new ConnectionRequestDTO<ClickRequestDTO>() { Data = new() };
 
-
-
-
     //Lifecycle Methods
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-
-        if (!firstRender)
-            return;
-
-        _hubConnection = await HubClient.GetHubConnection();
+        await HubClient.GetHubConnection();
+        await HubClient.RegisterConnectionHandlers();
 
         await JS.ShowPlayers(Player1Name, Player2Name);
 
@@ -154,24 +148,20 @@
                 }
             });
 
-        var blocks = thisBoard.Data.Board.BoardBlocks;
-        var jsonBoard = JsonSerializer.Serialize(blocks);
+        if (thisBoard.Data?.Board != null)
+        {
 
-        int figureColor = currentUserName == Player1Name ? 0 : 1;
+            var blocks = thisBoard.Data.Board.BoardBlocks;
+            var jsonBoard = JsonSerializer.Serialize(blocks);
 
-        var dotNetRef = DotNetObjectReference.Create(this);
+            var figureColor = currentUserName == Player1Name ? 0 : 1;
 
-        await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
+            var dotNetRef = DotNetObjectReference.Create(this);
 
-        InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
-    }
+            await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
 
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        await HubClient.GetHubConnection();
-        await HubClient.RegisterConnectionHandlers();
+            InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
+        }
     }
 
     //JS Methods
@@ -188,7 +178,7 @@
 
         var selectedPosition = ClickedBlockInformationDTO?.ClickedPosition;
 
-        if (selectedPosition != default)
+        if (selectedPosition != null)
         {
             if (await IsSameFigureColor(selectedPosition, MoveRequestDTO.Data.CurrentPosition, GameId))
             {

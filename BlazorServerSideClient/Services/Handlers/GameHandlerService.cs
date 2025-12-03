@@ -1,4 +1,6 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using BlazorServerSideClient.Pages;
+using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -6,34 +8,41 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
-    public class GameHandlerService : IGameHandlerService
+    public class GameHandlerService(JSRunetimeService jSRuneTimeService) : IGameHandlerService
     {
-        private readonly JSRunetimeService _jsService;
-        public GameHandlerService(JSRunetimeService jSRunetimeService)
+        public async Task ReseivePlayersAsync(ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
         {
-            _jsService = jSRunetimeService;
+            await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!, connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
         }
-        public async Task ReseivePlayersAsync(ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
+        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
         {
-           await _jsService.ShowPlayers(connectionResponseDTO.Data.Player1_UserConnectionDTO.UserName!, connectionResponseDTO.Data.Player2_UserConnectionDTO?.UserName!);
-        }
-        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDTO)
-        {
-            if (gameStateconnectionResponseDTO.Data.IsKingChecked)
-            {
-                _jsService.KingCheckedNotifier(gameStateconnectionResponseDTO.Data.KingPosition);
-            }
 
-            if(gameStateconnectionResponseDTO.Data.IsReadyToEvent == IsReady.IsReadyToMove)
-                await _jsService.UpdateBoardAfterMove(
-                    gameStateconnectionResponseDTO.Data.From, 
-                    gameStateconnectionResponseDTO.Data.To, 
-                    (int)gameStateconnectionResponseDTO.Data.OpponentColor);
-            else
-                await _jsService.UpdateBoardAfterCut(
-                    gameStateconnectionResponseDTO.Data.From,
-                    gameStateconnectionResponseDTO.Data.To,
-                    (int)gameStateconnectionResponseDTO.Data.OpponentColor);
+            if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+            {
+                if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
+                    await jSRuneTimeService.UpdateBoardAfterMove(
+                        gameStateconnectionResponseDto.Data.From,
+                        gameStateconnectionResponseDto.Data.To,
+                        (int)gameStateconnectionResponseDto.Data.OpponentColor);
+            }
+            else if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
+                await jSRuneTimeService.UpdateBoardAfterCut(
+                    gameStateconnectionResponseDto.Data.From,
+                    gameStateconnectionResponseDto.Data.To,
+                    (int)gameStateconnectionResponseDto.Data.OpponentColor);
+
+            switch (gameStateconnectionResponseDto.Data)
+            {
+                case { IsKingMate: true, KingPosition: not null }:
+                    await jSRuneTimeService.KingMateNotifier(
+                        gameStateconnectionResponseDto.Data.KingPosition,
+                        gameStateconnectionResponseDto.Data.Player,
+                        gameStateconnectionResponseDto.Data.Win);
+                    return;
+                case { IsKingChecked: true, KingPosition: not null }:
+                    await jSRuneTimeService.KingCheckedNotifier(gameStateconnectionResponseDto.Data.KingPosition);
+                    break;
+            }
         }
     }
 }

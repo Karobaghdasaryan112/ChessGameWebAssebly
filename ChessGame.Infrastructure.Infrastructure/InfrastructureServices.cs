@@ -15,14 +15,10 @@ namespace ChessGame.Infrastructure.Infrastructure
             services.AddSignalR()
         .AddHubOptions<ChessGame.Infrastructure.Infrastructure.Hubs.GameHub>(options =>
         {
-
-            // Как часто сервер отправляет keep-alive ping.
             options.KeepAliveInterval = TimeSpan.FromSeconds(1);
 
-            // Таймаут рукопожатия клиента (handshake).
             options.HandshakeTimeout = TimeSpan.FromSeconds(150000);
             options.EnableDetailedErrors = true;
-
         });
         }
     }

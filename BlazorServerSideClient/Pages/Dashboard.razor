@@ -9,7 +9,6 @@
 @using System.Security.Claims
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 
-@inject IInvitationHandlerService InvitationHandlerService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IInivitationReqeustService InvitationRequest
 @inject IConnectionHandlerService ConnectionHandler
@@ -81,7 +80,6 @@
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
-
     protected override async Task OnInitializedAsync()
     {
 
@@ -90,13 +88,12 @@
         var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var userName = user.FindFirst(ClaimTypes.Name)?.Value!;
 
-        await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
         ConnectionHandler.OnlinePlayersUpdated += (player) =>
         {
-           activeGamers[player.Key] = player.Value;
-           InvokeAsync(StateHasChanged);
+            activeGamers[player.Key] = player.Value;
+            InvokeAsync(StateHasChanged);
         };
 
 
@@ -113,7 +110,7 @@
                         {
                             ConnectionId = hubConnection.ConnectionId!,
                             Gameinfo = null,
-                            GameId = default,
+                            GameId = Guid.Empty,
                             UserName = userName
                         },
                         userGuid = userIdAsGuid

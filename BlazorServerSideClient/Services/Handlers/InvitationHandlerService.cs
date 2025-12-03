@@ -23,7 +23,7 @@ namespace BlazorServerSideClient.Services.Handlers
 
         public async void ReceiveInvite(
             UserConnectionDTO inviterUserConnection,
-            Guid inviterUserGuid, 
+            Guid inviterUserGuid,
             UserConnectionDTO receiverUserConnection,
             Guid receiverUserGuid)
         {
@@ -54,7 +54,7 @@ namespace BlazorServerSideClient.Services.Handlers
             Guid receiverUserGuid,
             Guid gameGuid)
         {
-            _navigationManager.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}",true);
+            _navigationManager.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
         }
 
     }

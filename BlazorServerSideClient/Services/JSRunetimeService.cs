@@ -1,5 +1,6 @@
 ﻿using BlazorServerSideClient.Pages;
 using Microsoft.JSInterop;
+using NuGet.Protocol;
 using SharedResources.ChessGameResource.Models;
 
 namespace BlazorServerSideClient.Services
@@ -7,47 +8,133 @@ namespace BlazorServerSideClient.Services
     public class JSRunetimeService
     {
         private readonly IJSRuntime _js;
+        private readonly ILogger<JSRunetimeService> _logger;
 
-        public JSRunetimeService(IJSRuntime js)
+        public JSRunetimeService(IJSRuntime js, ILogger<JSRunetimeService> logger)
         {
+            _logger = logger;
             _js = js;
         }
 
         public ValueTask<bool> InviteReceiverMessage(string inviterUserName)
-            => _js.InvokeAsync<bool>("confirm", $"{inviterUserName} invited you to a game!");
+                   => _js.SafeInvokeAsync<bool>(_logger, "confirm", $"{inviterUserName} invited you to a game!");
 
         public ValueTask InviteAcceptedMessage()
-            => _js.InvokeVoidAsync("alert", "Your Invite was accepted!");
+            => _js.SafeInvokeVoidAsync(_logger, "alert", "Your Invite was accepted!");
 
         public ValueTask WinNotifier_opponentLeft()
-            => _js.InvokeVoidAsync("alert", "The opponent left. You win!");
+            => _js.SafeInvokeVoidAsync(_logger, "alert", "The opponent left. You win!");
 
         public ValueTask HideInviteModal()
-            => _js.InvokeVoidAsync("inviteModal.hide");
+            => _js.SafeInvokeVoidAsync(_logger, "inviteModal.hide");
 
-        public ValueTask ShowInviteModal(int time,string userName)
-            => _js.InvokeVoidAsync("inviteModal.show",time,userName);
+        public ValueTask ShowInviteModal(int time, string userName)
+            => _js.SafeInvokeVoidAsync(_logger, "inviteModal.show", time, userName);
 
-        public ValueTask ShowPlayers(string player1_Name, string player2_Name) 
-            => _js.InvokeVoidAsync("Players.show", player1_Name, player2_Name);
+        public ValueTask ShowPlayers(string player1_Name, string player2_Name)
+            => _js.SafeInvokeVoidAsync(_logger, "Players.show", player1_Name, player2_Name);
 
-        public ValueTask ShowBoardState(string Blocks,int figureColor,DotNetObjectReference<Game> dotNetRef) 
-            => _js.InvokeVoidAsync("BuildBoard.Build", Blocks, figureColor, dotNetRef);
+        public ValueTask ShowBoardState(string Blocks, int figureColor, DotNetObjectReference<Game> dotNetRef)
+            => _js.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
         public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions)
-            => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
+            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
 
-        public ValueTask ClearSelectedBlocks(int figureColor) 
-            => _js.InvokeVoidAsync("ShowMovableAndCutableBlocks.Clear", figureColor);
+        public ValueTask ClearSelectedBlocks(int figureColor)
+            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Clear", figureColor);
 
-        public ValueTask UpdateBoardAfterMove(Position from,Position to,int myColor) 
-            => _js.InvokeVoidAsync("UpdateBoardAfterMove.Move", from, to, myColor);
+        public ValueTask UpdateBoardAfterMove(Position from, Position to, int myColor)
+            => _js.SafeInvokeVoidAsync(_logger, "UpdateBoardAfterMove.Move", from, to, myColor);
 
-        public ValueTask UpdateBoardAfterCut(Position from,Position to,int myColor) 
-            => _js.InvokeVoidAsync("UpdateBoardAfterCut.Cut", from, to, myColor);
+        public ValueTask UpdateBoardAfterCut(Position from, Position to, int myColor)
+            => _js.SafeInvokeVoidAsync(_logger, "UpdateBoardAfterCut.Cut", from, to, myColor);
 
         public ValueTask KingCheckedNotifier(Position kingPosition)
-            => _js.InvokeVoidAsync("KingCheckedNotification.Notify", kingPosition);
+            => _js.SafeInvokeVoidAsync(_logger, "KingCheckedNotification.Notify", kingPosition);
 
+        public ValueTask KingMateNotifier(Position kingPosition, string currentPlayer, bool isWin)
+            => _js.SafeInvokeVoidAsync(_logger, "KingMateNotification.Notify", kingPosition, currentPlayer, isWin);
+    }
+    public static class JSRuntimeSafeExtensions
+    {
+        private const int RetryCount = 1;
+
+        public static async ValueTask SafeInvokeVoidAsync(
+            this IJSRuntime js,
+            ILogger logger,
+            string identifier,
+            params object[] args)
+        {
+            for (int i = 0; i <= RetryCount; i++)
+            {
+                try
+                {
+                    await js.InvokeVoidAsync(identifier, args);
+                    return;
+                }
+                catch (JSDisconnectedException ex)
+                {
+                    logger.LogWarning($"JS call '{identifier}' skipped (JSDisconnectedException).");
+                    return;
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    logger.LogWarning($"JS call '{identifier}' skipped (JSRuntime disposed).");
+                    return;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    logger.LogWarning($"JS call '{identifier}' invalid (component disposed).");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    if (i == RetryCount)
+                        logger.LogError(ex, $"Unexpected JS error while calling '{identifier}'.");
+                }
+                await Task.Delay(200);
+            }
+        }
+
+        public static async ValueTask<T?> SafeInvokeAsync<T>(
+            this IJSRuntime js,
+            ILogger logger,
+            string identifier,
+            params object[] args)
+        {
+            for (int i = 0; i <= RetryCount; i++)
+            {
+                try
+                {
+
+                    return await js.InvokeAsync<T>(identifier, args);
+                }
+                catch (JSDisconnectedException)
+                {
+                    logger.LogWarning($"JS call '{identifier}' skipped (JSDisconnectedException).");
+                    return default;
+                }
+                catch (ObjectDisposedException)
+                {
+                    logger.LogWarning($"JS call '{identifier}' skipped (JSRuntime disposed).");
+
+                    return default;
+                }
+                catch (InvalidOperationException)
+                {
+                    logger.LogWarning($"JS call '{identifier}' invalid (component disposed).");
+                    return default;
+                }
+                catch (Exception ex)
+                {
+                    if (i == RetryCount)
+                        logger.LogError(ex, $"Unexpected JS error while calling '{identifier}'.");
+                }
+
+                await Task.Delay(200);
+            }
+
+            return default;
+        }
     }
 }
