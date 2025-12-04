@@ -50,6 +50,11 @@ namespace SharedResources.ChessGameResource.Figures
             return result;
         }
 
+        public string GetFenChar()
+        {
+            return FigureColor == FigureColors.White ? "N" : "n";
+        }
+
         private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions,Board board)
         {
             try

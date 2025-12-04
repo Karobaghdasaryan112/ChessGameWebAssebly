@@ -18,5 +18,6 @@ namespace SharedResources.Contracts.ChessGameResourceContracts
         FigureType FigureType { get; }
         FigureColors FigureColor {  get; set; }
         MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block kingBlockForCheckCondition = default);
+        string GetFenChar();
     }
 }

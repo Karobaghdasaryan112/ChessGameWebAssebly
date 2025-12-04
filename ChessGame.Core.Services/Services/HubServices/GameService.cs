@@ -1,5 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.Services.Validations;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
@@ -234,6 +235,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                     },
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
+
+            var fenString = gameState.FromBoardToFen();
+            Console.WriteLine(fenString);
+            var board = fenString.FromFenToBoard();
 
 
             //Check if the King is checked after the move

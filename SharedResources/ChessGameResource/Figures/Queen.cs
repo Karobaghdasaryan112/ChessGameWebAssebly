@@ -39,5 +39,10 @@ namespace SharedResources.ChessGameResource.Figures
 
             return result;
         }
+
+        public string GetFenChar()
+        {
+            return FigureColor == FigureColors.White ? "Q" : "q";
+        }
     }
 }
