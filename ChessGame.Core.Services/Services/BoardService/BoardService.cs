@@ -338,6 +338,9 @@ namespace ChessGame.Core.Services.Services.BoardService
 
             var figureBlocks =
                 currentBoard.GetBlockByFigureTypeAndColor((FigureType)(object)figureType, (FigureColors)myColor);
+            
+            if(!figureBlocks.Any())
+                return await Task.FromResult(true);
 
             foreach (var figureBlock in figureBlocks)
             {

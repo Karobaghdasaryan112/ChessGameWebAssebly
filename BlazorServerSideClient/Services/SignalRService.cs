@@ -48,8 +48,8 @@ namespace ChessGameBlazorClient.UI.Services
                     await Task.Delay(200);
                 }
 
-                var userName = _user.Claims.First(claim => claim.Type == ClaimTypes.Name)?.Value;
-                var userId = _user.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+                var userName = _user.Claims?.First(claim => claim.Type == ClaimTypes.Name)?.Value;
+                var userId = _user.Claims?.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
 
                 var userIdAsGuid = Guid.Parse(userId!);
 
