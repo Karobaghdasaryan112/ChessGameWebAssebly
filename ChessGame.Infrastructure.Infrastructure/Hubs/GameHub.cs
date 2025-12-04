@@ -61,8 +61,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
             => await _invitationService.CancelInviteAsync(inviterUserGuid, receiverUserGuid);
 
-        //InivtationService 
-
+        //InvitationService 
 
 
         //GameService
@@ -88,8 +87,6 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             => await _gameService.SendClickAsync(sendClickConnectionRequestDTO);
 
         //GameService
-
-
 
 
         //connectionService

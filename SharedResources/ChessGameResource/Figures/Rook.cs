@@ -15,14 +15,14 @@ namespace SharedResources.ChessGameResource.Figures
         {
             var result = new MovableAndCutablePositions
             {
-                MovableBlock = new List<Block>(),
-                CutableBlock = new List<Block>()
+                MovableBlock = [],
+                CutableBlock = []
             };
 
-            int startRow = (int)position.VerticalOrientation;
-            int startCol = (int)position.HorizontalOrientation;
+            var startRow = (int)position.VerticalOrientation;
+            var startCol = (int)position.HorizontalOrientation;
 
-            Block? currentBlock = kingBlockForCheckCondition != default(Block) ? kingBlockForCheckCondition : board.GetBlockByPosition(startRow, startCol); ;
+            var currentBlock = kingBlockForCheckCondition ?? board.GetBlockByPosition(startRow, startCol);
 
             currentBlock.ExploreDirection(result, startRow, startCol, 0, +1, board);
 

@@ -16,12 +16,12 @@ namespace SharedResources.ChessGameResource.Figures
         {
             var result = new MovableAndCutablePositions
             {
-                MovableBlock = new List<Block>(),
-                CutableBlock = new List<Block>()
+                MovableBlock = [],
+                CutableBlock = []
             };
 
-            int startRow = (int)position.VerticalOrientation;
-            int startCol = (int)position.HorizontalOrientation;
+            var startRow = (int)position.VerticalOrientation;
+            var startCol = (int)position.HorizontalOrientation;
 
             var currentBlock = board.GetBlockByPosition(startRow, startCol);
 

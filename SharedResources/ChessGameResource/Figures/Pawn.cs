@@ -64,29 +64,28 @@ namespace SharedResources.ChessGameResource.Figures
                 var increment = rowStep < 0 ? -1 : 1;
                 row += increment;
 
-                if (row >= (int)CriticalPositions.lowCriticalValue && row <= (int)CriticalPositions.highCriticalValue)
+                if (row < (int)CriticalPositions.lowCriticalValue ||
+                    row > (int)CriticalPositions.highCriticalValue) continue;
+
+                var block = board.GetBlockByPosition(row, col);
+
+                var figure = block.Figure;
+
+                if (figure == null)
                 {
-
-                    var block = board.GetBlockByPosition(row, col);
-
-                    var figure = block.Figure;
-
-                    if (figure == null)
-                    {
-                        block.EventColor = EventColors.Move;
-                        positions.MovableBlock.Add(block);
-                    }
-                    else
-                        break;
+                    block.EventColor = EventColors.Move;
+                    positions.MovableBlock?.Add(block);
                 }
+                else
+                    break;
             }
         }
 
         private void AddCutablePositions(int row, int col, int columnStep, MovableAndCutablePositions result, Board board)
         {
             col += columnStep;
-            var icrement = FigureColor == FigureColors.Black ? +1 : -1;
-            row += icrement;
+            var increment = FigureColor == FigureColors.Black ? +1 : -1;
+            row += increment;
 
             if ((
                 row is > (int)CriticalPositions.lowCriticalValue and < (int)CriticalPositions.highCriticalValue &&
@@ -96,14 +95,12 @@ namespace SharedResources.ChessGameResource.Figures
                 var block = board.GetBlockByPosition(row, col);
                 var figure = block.Figure;
 
-                if (figure?.FigureColor != (null))
-                {
-                    if ((int)figure?.FigureColor != (int)board.Turn)
-                    {
-                        block.EventColor = EventColors.Cut;
-                        result.CutableBlock.Add(block);
-                    }
-                }
+                if (figure?.FigureColor == (null)) return;
+
+                if ((int)figure?.FigureColor! == (int)board.Turn) return;
+
+                block.EventColor = EventColors.Cut;
+                result.CutableBlock?.Add(block);
             }
         }
     }

@@ -243,6 +243,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             //Check if the King is checked after the move
             //If yes, send the board state with the checked king position to the player who made the move and return invalid move response
+
             if (submitMoveConnectionResult.Data.IsKingChecked)
             {
 

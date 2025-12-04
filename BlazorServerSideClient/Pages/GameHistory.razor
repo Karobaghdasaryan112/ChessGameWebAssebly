@@ -1,0 +1,130 @@
+﻿@page "/GameHistory"
+@using System.Security.Claims
+@using System.Text.Json
+@using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Services
+@using ChessGameBlazorClient.UI.Services
+@using Microsoft.AspNetCore.SignalR.Client
+@using SharedResources.ChessGameResource.Enums.Colors
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
+@inject SignalRService HubClient
+@inject IGameRequestService GameRequestService
+@inject JSRunetimeService JS
+@inject DotNetObjectReference<Game> DotNetRef
+@inject AuthenticationStateProvider AuthenticationState
+<div class="wrap">
+    <div class="leftCard">
+        <div class="boardWrap">
+            <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+        </div>
+    </div>
+
+    <aside class="rightCard">
+        <div class="movesLog" id="movesLog">
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="panelTitle">
+            <h4>Players</h4>
+            <div style="color:var(--muted);font-size:13px">Status</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar" style="width:44px;height:44px;border-radius:10px">W</div>
+                <div>
+                    <div style="font-weight:700">White — @Player1Name </div>
+                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">B</div>
+                <div>
+                    <div style="font-weight:700">Black — @Player2Name</div>
+                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+</div>
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Player1Name")]
+    public string Player1Name { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Player2Name")]
+    public string Player2Name { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "GameId")]
+    public Guid GameId { get; set; }
+
+
+    private HubConnection? _hubConnection;
+
+    private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
+
+    private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
+
+    private static UserConnectionDTO currentUser => new UserConnectionDTO();
+
+    private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+
+    private string currentUserGuid => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
+    //Properties
+    //Reqeusts
+    private ConnectionRequestDTO<MoveRequestDTO> MoveRequestDTO = new ConnectionRequestDTO<MoveRequestDTO>() { Data = new() };
+    private ConnectionRequestDTO<ClickRequestDTO> ClickRequestDTO = new ConnectionRequestDTO<ClickRequestDTO>() { Data = new() };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HubClient.GetHubConnection();
+        await HubClient.RegisterConnectionHandlers();
+
+        await JS.ShowPlayers(Player1Name, Player2Name);
+
+        var thisBoard = await GameRequestService.SendGameStateAsync(
+            new ConnectionRequestDTO<SendGameStateReqeustDTO>()
+            {
+                Data = new SendGameStateReqeustDTO()
+                {
+                    GameId = GameId
+                }
+            });
+
+        if (thisBoard.Data?.Board != null)
+        {
+
+            var blocks = thisBoard.Data.Board.BoardBlocks;
+            var jsonBoard = JsonSerializer.Serialize(blocks);
+
+            var figureColor = currentUserName == Player1Name ? 0 : 1;
+
+
+            await JS.ShowBoardState(jsonBoard, figureColor, DotNetRef);
+
+            InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
+        }
+    }
+    private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
+    {
+        MoveRequestDTO.Data.GameId = gameId;
+        ClickRequestDTO.Data.GameId = gameId;
+
+        MoveRequestDTO.Data.Player = player;
+        ClickRequestDTO.Data.Player = player;
+
+        MoveRequestDTO.Data.MyColor = myColor;
+        ClickRequestDTO.Data.MyColor = myColor;
+
+        MoveRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+        ClickRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+    }
+}

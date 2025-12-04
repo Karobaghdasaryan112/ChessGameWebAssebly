@@ -22,10 +22,10 @@ namespace SharedResources.ChessGameResource.Figures
                 MovableBlock = new List<Block>()
             };
 
-            int startRow = (int)position.VerticalOrientation;
-            int startCol = (int)position.HorizontalOrientation;
+            var startRow = (int)position.VerticalOrientation;
+            var startCol = (int)position.HorizontalOrientation;
 
-            Block? currentBlockForCheckCondition = kingBlockForCheckCondition != default(Block) ? kingBlockForCheckCondition : null;
+            var currentBlockForCheckCondition = kingBlockForCheckCondition;
 
             var row = startRow;
             var col = startCol;
@@ -74,12 +74,12 @@ namespace SharedResources.ChessGameResource.Figures
                     if (figure == null)
                     {
                         block.EventColor = EventColors.Move;
-                        positions.MovableBlock.Add(block);
+                        positions.MovableBlock?.Add(block);
                     }
                     else if ((int)figure.FigureColor != (int)board.Turn)
                     {
                         block.EventColor = EventColors.Cut;
-                        positions.CutableBlock.Add(block);
+                        positions.CutableBlock?.Add(block);
                     }
                 }
             }

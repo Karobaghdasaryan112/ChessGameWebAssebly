@@ -20,9 +20,10 @@ namespace ChessService.API.ChessGameAPI
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.AllowAnyHeader()
-                          .AllowAnyMethod()
-                    .AllowAnyOrigin();
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
                 });
             });
 
@@ -31,7 +32,7 @@ namespace ChessService.API.ChessGameAPI
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             });
- 
+
 
             services.AddCoreServices(_configuration);
 
