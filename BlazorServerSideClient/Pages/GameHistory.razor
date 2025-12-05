@@ -10,48 +10,32 @@
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
+
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject DotNetObjectReference<Game> DotNetRef
 @inject AuthenticationStateProvider AuthenticationState
-<div class="wrap">
-    <div class="leftCard">
-        <div class="boardWrap">
-            <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+
+<div class="game-history-wrap">
+
+    <div class="history-nav">
+        <button id="prevBtn" class="nav-btn" @onclick="ReceivePreviousStateAsync">⟵ Prev</button>
+
+        <div class="nav-middle">
+            <span class="move-label">Move</span>
+            <span id="moveIndex" class="move-number">@_moveNumber</span>
         </div>
+
+        <button id="nextBtn" class="nav-btn" @onclick="ReceiveNextStateAsync">Next ⟶</button>
     </div>
 
-    <aside class="rightCard">
-        <div class="movesLog" id="movesLog">
-        </div>
+    <div class="boardWrap">
+        <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+    </div>
 
-        <div style="height:12px"></div>
-
-        <div class="panelTitle">
-            <h4>Players</h4>
-            <div style="color:var(--muted);font-size:13px">Status</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar" style="width:44px;height:44px;border-radius:10px">W</div>
-                <div>
-                    <div style="font-weight:700">White — @Player1Name </div>
-                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
-                </div>
-            </div>
-
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">B</div>
-                <div>
-                    <div style="font-weight:700">Black — @Player2Name</div>
-                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
-                </div>
-            </div>
-        </div>
-
-    </aside>
 </div>
+
 @code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "Player1Name")]
@@ -71,6 +55,8 @@
     private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
 
     private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
+
+    private static int _moveNumber { get; set; }
 
     private static UserConnectionDTO currentUser => new UserConnectionDTO();
 
@@ -127,4 +113,15 @@
         MoveRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
         ClickRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
     }
+
+    private void ReceivePreviousStateAsync()
+    {
+
+    }
+
+    private void ReceiveNextStateAsync()
+    {
+
+    }
+
 }

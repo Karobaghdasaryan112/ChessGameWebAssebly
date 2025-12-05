@@ -14,6 +14,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         {
             _chessGameDbContext = chessGameDbContext;
         }
+
+
         public Task<bool> AcceptDraw(Guid gameId, string player)
         {
             throw new NotImplementedException();

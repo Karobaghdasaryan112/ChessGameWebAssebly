@@ -554,3 +554,330 @@ html, body {
         background-color: inherit;
     }
 }
+.history-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    background: #0e1525;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.35);
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #1f2937, #111827);
+    border: 1px solid #374151;
+    border-radius: 10px;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: 0.2s ease;
+    outline: none;
+}
+
+    .nav-btn:hover {
+        background: linear-gradient(135deg, #334155, #1f2937);
+        transform: translateY(-2px);
+    }
+
+    .nav-btn:active {
+        transform: scale(0.96);
+    }
+
+.nav-middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.move-label {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.move-number {
+    font-size: 17px;
+    font-weight: 700;
+    color: #e5e7eb;
+}
+.pulse {
+    box-shadow: 0 0 10px rgba(255,255,255,0.25);
+}
+
+
+.game-history-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+
+
+.hw-wrap {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,249,250,0.98));
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(16,24,40,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #0f172a;
+}
+
+.hw-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.hw-title h2 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+.hw-sub {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.hw-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.opp-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(180deg,#111827,#0b1220);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.3);
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+    .opp-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(2,6,23,0.38);
+    }
+
+.opp-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg,#ffffff,#fbfdff);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    border: 1px solid rgba(15,23,42,0.04);
+}
+
+.opp-name {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.opp-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.opp-count {
+    background: #eef2ff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #3730a3;
+}
+
+.small-next {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(180deg,#1f2937,#111827);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hw-grid-area {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.game-card {
+    position: relative;
+    padding: 14px;
+    border-radius: 14px;
+    min-height: 120px;
+    overflow: visible;
+    transition: transform .25s cubic-bezier(.2,.9,.3,1), box-shadow .25s;
+    cursor: default;
+    background: linear-gradient(180deg,#ffffff,#fbfcff);
+    border: 1px solid rgba(2,6,23,0.04);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.05);
+}
+
+    .game-card:hover {
+        transform: translateY(-10px) rotate(-0.5deg);
+        box-shadow: 0 18px 40px rgba(2,6,23,0.14);
+    }
+
+    .game-card.res-win {
+        border-left: 6px solid #10b981; 
+        background: linear-gradient(180deg, rgba(16,185,129,0.06), #ffffff);
+    }
+
+    .game-card.res-lose {
+        border-left: 6px solid #f59e0b; 
+        background: linear-gradient(180deg, rgba(245,158,11,0.05), #ffffff);
+    }
+
+    .game-card.res-draw {
+        border-left: 6px solid #3b82f6; 
+        background: linear-gradient(180deg, rgba(59,130,246,0.04), #ffffff);
+    }
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-opponent {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.card-result {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.06);
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.card-body {
+    margin-top: 10px;
+}
+
+.meta-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: #374151;
+    font-size: 13px;
+}
+
+    .meta-item .icon {
+        color: #374151;
+        opacity: 0.9;
+    }
+
+.card-footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(180deg,#111827,#0b1220);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 12px;
+    color: #374151;
+    opacity: 0.8;
+}
+
+.empty {
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.hw-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.pager {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pg-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+}
+
+.pg-info {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.primary {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: linear-gradient(90deg,#06b6d4,#3b82f6);
+    border: none;
+    color: white;
+    font-weight: 700;
+}
+
+@media (max-width:720px) {
+    .hw-wrap {
+        padding: 16px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}

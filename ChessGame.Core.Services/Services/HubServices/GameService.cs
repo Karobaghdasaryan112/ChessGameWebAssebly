@@ -239,10 +239,9 @@ namespace ChessGame.Core.Services.Services.HubServices
             var fenString = gameState.FromBoardToFen();
             Console.WriteLine(fenString);
             var board = fenString.FromFenToBoard();
-
+            //If yes, send the board state with the checked king position to the player who made the move and return invalid move response
 
             //Check if the King is checked after the move
-            //If yes, send the board state with the checked king position to the player who made the move and return invalid move response
 
             if (submitMoveConnectionResult.Data.IsKingChecked)
             {
@@ -318,6 +317,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 }
             }
             //Send the board state to the player who made the move
+            //MyConnection true its mean that is my Connection otherwise this is opponentUserConnection  
             await connectionService.SendBoardStateToClient(
                 new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
                 boardStateRequestDTO.Player, true);

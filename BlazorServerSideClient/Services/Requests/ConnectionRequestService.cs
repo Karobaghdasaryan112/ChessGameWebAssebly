@@ -9,21 +9,14 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class ConnectionRequestService : IConnectionReqeustService
+    public class ConnectionRequestService(SignalRService signalRService) : IConnectionReqeustService
     {
-        private readonly SignalRService _signalRService;
-
-        public ConnectionRequestService(SignalRService signalRService)
-        {
-            _signalRService = signalRService;
-
-        }
         public async Task<
             ConnectionResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
         {
-            var hubConnection = await _signalRService.GetHubConnection();
+            var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
@@ -37,7 +30,7 @@ namespace BlazorServerSideClient.Services.Requests
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
         {
-            var hubConnection = await _signalRService.GetHubConnection();
+            var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
@@ -51,7 +44,7 @@ namespace BlazorServerSideClient.Services.Requests
                 RemoveUserConnectionResponseDTO,
                 ChessGameResponseMessage>> RemoveConnectionAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO)
         {
-            var hubConnection = await _signalRService.GetHubConnection();
+            var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
