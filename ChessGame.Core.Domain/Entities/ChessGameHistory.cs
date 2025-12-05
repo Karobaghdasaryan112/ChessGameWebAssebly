@@ -2,9 +2,9 @@
 
 namespace ChessGame.Domain.Domain.Entities
 {
-    public class ChessGameHistory : IEntity
+    public class ChessGameHistory : IEntity<int>
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public Guid GameId { get; set; }
         public string FEN { get; set; }
 

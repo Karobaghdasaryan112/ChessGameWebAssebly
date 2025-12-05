@@ -15,8 +15,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
     public class GetMoveCommnadHandler :
         MediatR_Base<MoveRequestDTO, GetMoveCommnadHandler, IBoardService>,
         IRequestHandler<
-            GetMoveCommand<
-                IRequestTypes<MoveRequestDTO>, IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>,
+            GetMoveCommand<IRequestTypes<MoveRequestDTO>, IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>,
                 IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>
     {
         public GetMoveCommnadHandler(IValidator<MoveRequestDTO> validator, ILogger<GetMoveCommnadHandler> logger, IBoardService service)

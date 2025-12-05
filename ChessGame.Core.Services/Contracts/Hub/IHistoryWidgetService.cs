@@ -4,11 +4,10 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
-namespace BlazorServerSideClient.Contracts.Requests
+namespace ChessGame.Core.Services.Contracts.Hub
 {
-    public interface IHistoryWidgetRequestService
+    public interface IHistoryWidgetService
     {
-        Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> GetAllOpponents(
-            ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestDTO);
+       
     }
 }

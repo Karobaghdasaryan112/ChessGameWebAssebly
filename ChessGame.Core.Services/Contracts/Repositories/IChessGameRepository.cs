@@ -1,4 +1,5 @@
-﻿using SharedResources.ChessGameResource.Models;
+﻿using ChessGame.Domain.Domain.Entities;
+using SharedResources.ChessGameResource.Models;
 
 namespace ChessGame.Core.Services.Contracts.Repositories
 {
@@ -17,5 +18,9 @@ namespace ChessGame.Core.Services.Contracts.Repositories
         Task<string> GetWinner(Guid gameId);
         Task<bool> IsPlayerInGame(Guid gameId, string player);
         Task<bool> IsGameOver(Guid gameId);
+
+        Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(Guid currentPlayerGuid, Guid opponentPlayerGuid,
+            int currentPage, int pageSize);
+        Task<List<Game>> GetAllGames(Guid currentPlayerId);
     }
 }

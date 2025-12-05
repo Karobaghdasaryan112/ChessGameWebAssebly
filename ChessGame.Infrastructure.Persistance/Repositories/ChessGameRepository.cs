@@ -6,15 +6,47 @@ using SharedResources.ChessGameResource.Models;
 
 namespace ChessGame.Infrastructure.Persistance.Repositories
 {
-    public class ChessGameRepository : IChessGameRepository
+    public class ChessGameRepository(ChessGameDbContext chessGameDbContext) : IChessGameRepository
     {
-
-        private readonly ChessGameDbContext _chessGameDbContext;
-        public ChessGameRepository(ChessGameDbContext chessGameDbContext)
+        //Widgets
+        public async Task<List<Game>> GetAllGames(Guid currentPlayerId)
         {
-            _chessGameDbContext = chessGameDbContext;
+            return await chessGameDbContext.ChessGames.AsNoTracking()
+                .Where(game =>
+                    game.Player1 == currentPlayerId ||
+                    game.Player2 == currentPlayerId)
+                .ToListAsync();
         }
 
+        public async Task<List<string>> GetAllOpponentsPerCurrentPlayerAsync(Guid currentPlayerIdGuid)
+        {
+
+            return await chessGameDbContext.
+                ChessGames.
+                AsNoTracking().
+                Where(game =>
+                    game.Player1 == currentPlayerIdGuid ||
+                    game.Player2 == currentPlayerIdGuid).
+                Select(myGame =>
+                    myGame.Player1 == currentPlayerIdGuid ? myGame.Player2Name : myGame.Player1Name).
+                ToListAsync();
+        }
+
+        public async Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(
+            Guid currentPlayerGuid, Guid opponentPlayerGuid, int currentPage, int pageSize)
+        {
+            return await chessGameDbContext.ChessGames.
+                Where(game =>
+                    (game.Player1 == currentPlayerGuid &&
+                     game.Player2 == opponentPlayerGuid) ||
+                    (game.Player1 == opponentPlayerGuid &&
+                     game.Player2 == currentPlayerGuid)).
+                Skip(currentPage * pageSize).
+                Take(pageSize).
+                ToListAsync();
+        }
+
+        //Widgets
 
         public Task<bool> AcceptDraw(Guid gameId, string player)
         {
@@ -23,7 +55,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
         public async Task<bool> CreateGame(Guid player1, Guid player2)
         {
-            _chessGameDbContext.ChessGames.Add(
+            chessGameDbContext.ChessGames.Add(
                 new Game()
                 {
                     Player1 = player1,
@@ -31,7 +63,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 });
-            return (await _chessGameDbContext.SaveChangesAsync()) > 0;
+            return (await chessGameDbContext.SaveChangesAsync()) > 0;
         }
 
         public Task<bool> DeclineDraw(Guid gameId, string player)
@@ -46,8 +78,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
         public async Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2)
         {
-            var game = await _chessGameDbContext.ChessGames.FirstOrDefaultAsync(game => game.Player1 == player1 && game.Player2 == player2);
-            return game?.GameId ?? Guid.Empty;
+            var game = await chessGameDbContext.ChessGames.FirstOrDefaultAsync(game => game.Player1 == player1 && game.Player2 == player2);
+            return game?.Id ?? Guid.Empty;
 
         }
 

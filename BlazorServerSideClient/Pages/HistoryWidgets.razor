@@ -1,13 +1,14 @@
 ﻿@page "/HistoryWidgets"
 @using System.Globalization
+@using BlazorServerSideClient.Services.Requests
 @inject AuthenticationStateProvider AuthState
-
+@inject HistoryWidgetRequestService HistoryWidgetsRequestService
 
 @code {
     public class HistoryGameDTO
     {
         public string Opponent { get; set; }
-        public string Result { get; set; } 
+        public string Result { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTime Date { get; set; }
     }
@@ -114,6 +115,12 @@
                 });
             }
         }
+    }
+
+    private Task GetAllOpponents()
+    {
+        HistoryWidgetsRequestService
+        throw new NotImplementedException();
     }
 
     private string ResultClass(string result) => result?.ToLower() switch

@@ -207,9 +207,7 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-        //Privet Methods
-
-
+        //Private Methods
         private async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> MoveLogic(Board gameState,
             BoardStateRequestDTO boardStateRequestDTO,
             ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)

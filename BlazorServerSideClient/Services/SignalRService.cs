@@ -9,6 +9,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -19,6 +20,7 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
         private readonly IGameHandlerService _gameHandlerService;
+        private readonly IHistoryWidgetHandlerService _historyWidgetHandlerService;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ClaimsPrincipal _user;
         public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService, AuthenticationStateProvider authenticationStateProvider)
@@ -121,6 +123,7 @@ namespace ChessGameBlazorClient.UI.Services
                     "ReceiveBoardUpdateAsync",
                     async (BoardStateResponseHandler) =>
                         await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
+
 
             }
         }
