@@ -43,9 +43,20 @@ namespace SharedResources.Responses
                 StatusCode = statusCode
             };
         }
+        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateErrorResponse(TDto data,
+            ChessGameResponseMessage responseMessage, HttpStatusCode statusCode, List<string> errors = null)
+        {
+            return new ChessGameResponse<TDto>()
+            {
+                Data = default,
+                IsSuccess = false,
+                Errors = errors,
+                StatusCode = statusCode
+            };
+        }
 
-        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(
-            TDto data, ChessGameResponseMessage message, HttpStatusCode statusCode)
+        public static IResponseTypes<TDto, ChessGameResponseMessage> CreateSuccessResponse(TDto data,
+            ChessGameResponseMessage message, HttpStatusCode statusCode, object unknown)
         {
             return new ChessGameResponse<TDto>()
             {

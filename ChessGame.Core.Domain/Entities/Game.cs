@@ -16,12 +16,10 @@ namespace ChessGame.Domain.Domain.Entities
 
         public Guid WinnerPlayer { get; set; } = Guid.Empty;
 
-        // FEN Notation of the current game state
         public int Player1Time { get; set; }
         public int Player2Time { get; set; }
 
         public GameEvent GameEvent { get; set; }
-
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

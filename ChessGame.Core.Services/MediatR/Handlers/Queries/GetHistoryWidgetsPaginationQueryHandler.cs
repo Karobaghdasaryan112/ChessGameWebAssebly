@@ -16,12 +16,12 @@ using System.Net;
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 {
     public class GetHistoryWidgetsPaginationQueryHandler(
-        IValidator<GetAllHistoryWidgetsRequestDTOValidator> validator,
+        IValidator<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> validator,
         ILogger<GetHistoryWidgetsPaginationQueryHandler> logger,
         IHistoryWidgetService service,
         GenericValidationService genericValidation) :
         MediatR_Base<
-            GetAllHistoryWidgetsRequestDTOValidator,
+            GetGamesByCurrentAndOpponentIdsPaginationRequestDTO,
             GetHistoryWidgetsPaginationQueryHandler,
             IHistoryWidgetService>(validator, logger, service)
         , IRequestHandler<

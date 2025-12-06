@@ -19,10 +19,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
     public class BoardInitializeCommandHandler(
         IValidator<BoardInitializeRequestDTO> validator,
         ILogger<BoardInitializeCommandHandler> logger,
-        IBoardService service)
-        :
-            MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>(validator, logger,
-                service),
+        IBoardService service) :
+            MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>(validator, logger, service),
             IRequestHandler<
                 BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
                     IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>,
@@ -46,12 +44,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             var connectionRequestDto = new ConnectionRequestDTO<BoardInitializeRequestDTO>()
             {
-                Data = new BoardInitializeRequestDTO()
-                {
-                    Player1Id = request.RequestDTO.requestType.Player1Id,
-                    Player2Id = request.RequestDTO.requestType.Player2Id,
-                }
+                Data = request.RequestDTO.requestType
             };
+
             var initializeGameResponseDTO = await _service.InitializeBoardAsync(connectionRequestDto);
 
             if (!initializeGameResponseDTO.IsSuccess)
@@ -71,7 +66,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 return ChessGameResponse<BoardInitializeResponseDTO>.
                     CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.InternalServerError, ["Field To Add Game Into Active Games"]);
+                    HttpStatusCode.InternalServerError, 
+                    ["Field To Add Game Into Active Games"]);
             }
 
             var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = initializeGameResponseDTO.Data.GameId };
@@ -81,7 +77,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 CreateSuccessResponse(
                 responseData,
                 ChessGameResponseMessage.GameCreated,
-                HttpStatusCode.Created);
+                HttpStatusCode.Created,null);
         }
     }
 }

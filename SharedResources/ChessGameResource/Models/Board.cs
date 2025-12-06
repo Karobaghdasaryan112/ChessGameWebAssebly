@@ -140,5 +140,7 @@ namespace SharedResources.ChessGameResource.Models
 
             return selectedKing;
         }
+
     }
+
 }

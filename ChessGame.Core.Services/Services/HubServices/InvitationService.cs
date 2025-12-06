@@ -40,7 +40,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             var inviterConnectionInformation = await connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.inviterUserGuid } });
             var receiverConnectionInformation = await connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.Data.receiverUserGuid } });
 
-            if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess) {
+            if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess)
+            {
                 inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
                 return ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.
                      CreateErrorResponse(
@@ -53,15 +54,15 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
             var command = new BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
-
-            (new ChessGameRequest<BoardInitializeRequestDTO>()
-            {
-                requestType = new BoardInitializeRequestDTO()
+            (
+                new ChessGameRequest<BoardInitializeRequestDTO>()
                 {
-                    Player1Id = acceptInvitationRequest.Data.inviterUserGuid,
-                    Player2Id = acceptInvitationRequest.Data.receiverUserGuid
-                }
-            });
+                    requestType = new BoardInitializeRequestDTO()
+                    {
+                        Player1Id = acceptInvitationRequest.Data.inviterUserGuid,
+                        Player2Id = acceptInvitationRequest.Data.receiverUserGuid
+                    }
+                });
 
             var result = await mediator.Send(command);
 

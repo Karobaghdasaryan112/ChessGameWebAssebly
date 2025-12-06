@@ -20,8 +20,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         BaseHubService<GameHub> baseHubService,
         IInvitationService<GameHub> invitationService,
         IGameService<GameHub> gameService,
-        IConnectionService<GameHub> connectionService,
-        IHistoryWidgetService<GameHub> historyWidgetService)
+        IConnectionService<GameHub> connectionService)
         : Hub
     {
         private readonly BaseHubService<GameHub> _baseHubService = baseHubService;
@@ -100,7 +99,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //HistoryWidgets
 
-        public async Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO,ChessGameResponseMessage>> GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> connectionRequestDto)
-        => await 
+        //public async Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO,ChessGameResponseMessage>> GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> connectionRequestDto)
+        //=> await 
     }
 }

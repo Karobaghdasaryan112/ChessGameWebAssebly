@@ -45,8 +45,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 {
                     AllGamesHistories = allOpponentsResult
                 }, ChessGameResponseMessage.SuccessData, HttpStatusCode.OK);
-
-
         }
 
         public async
@@ -82,7 +80,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 .CreateSuccessResponse(
                     new GetGamesByCurrentAndOpponentIdsPaginationResponseDTO() { AllGamesHistories = allGamesDto },
                     ChessGameResponseMessage.SuccessData,
-                    HttpStatusCode.OK);
+                    HttpStatusCode.OK,null);
         }
     }
 }

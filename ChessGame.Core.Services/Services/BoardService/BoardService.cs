@@ -5,12 +5,15 @@ using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Figures;
 using SharedResources.ChessGameResource.Models;
+using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using ChessGame.Core.Services.Extentions;
 using BoardInitializeRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs.BoardInitializeRequestDTO;
 using SubmitMoveRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs.SubmitMoveRequestDTO;
 using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO;
@@ -147,6 +150,73 @@ namespace ChessGame.Core.Services.Services.BoardService
                 fromPosition, toPosition);
 
             return connectionResponse;
+        }
+        public async Task<IResponseTypes<SubmitMoveResponseDTO, ChessGameResponseMessage>> SubmitMoveAsync(IRequestTypes<SubmitMoveRequestDTO> submitMoveRequestDto)
+        {
+            //Data From RequestDto
+            var fromPosition = submitMoveRequestDto.requestType.From;
+            var toPosition = submitMoveRequestDto.requestType.To;
+            var gameId = submitMoveRequestDto.requestType.GameId;
+            var currentBoardState = submitMoveRequestDto.requestType.CurrentBoardState;
+
+            //Initialize Response DTO
+            var response = ChessGameResponse<SubmitMoveResponseDTO>.CreateSuccessResponse(
+                new SubmitMoveResponseDTO()
+                {
+                    IsKingChecked = false,
+                    IsKingMate = false,
+                    IsMoveSuccess = true
+                }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK, null);
+
+
+            var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
+            var toBlock = currentBoardState.GetBlockByPosition(toPosition!);
+
+            if (fromBlock?.Figure == null)
+            {
+                logger.LogWarning("No figure found at position {Position} in game {GameId}", fromPosition, gameId);
+
+                response.Data.IsMoveSuccess = false;
+                response.Errors =
+                [
+                    $"If there is no figure at the from-{fromBlock.Position.VerticalOrientation}{fromBlock.Position.HorizontalOrientation} position"
+                ];
+                response.IsSuccess = false;
+                return response;
+            }
+
+            //Make the Move
+            //Store the figure at the toBlock temporarily
+            var toBlockTemp = toBlock.Figure;
+
+            //Move the figure from fromBlock to toBlock
+            toBlock.Figure = fromBlock.Figure;
+            fromBlock.Figure = default;
+
+            logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId,
+                fromPosition, toPosition);
+
+            //Check if king is in check after the move
+            //If king is in check, return false 
+            if (!await IsKingCheckedAsync(currentBoardState, currentBoardState.Turn))
+                return response;
+
+            //Implement IsKing Mate state
+            //TO DO: If there is Mate state then put the IsMateState to True --- connectionResponse.Data.IsKingMate = true;
+            logger.LogWarning(
+                "Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
+                fromPosition, toPosition, gameId);
+
+            //Revert the Move
+            fromBlock.Figure = toBlock.Figure;
+            toBlock.Figure = toBlockTemp;
+
+            response.Data.IsKingChecked = true;
+
+            logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,
+                fromPosition, toPosition);
+
+            return response;
         }
 
 
@@ -304,15 +374,6 @@ namespace ChessGame.Core.Services.Services.BoardService
 
         }
 
-        public void ResetEventableBlocks(Board gameState)
-        {
-            //reset the previous selected Blocks(Movable and cuttable)
-            var preventableBoardBlocks = gameState.BoardBlocks!.SelectMany(blockI => blockI.Where(blockJ => blockJ.EventColor is EventColors.Cut or EventColors.Move).ToArray());
-
-            foreach (var preventableBoardBlock in preventableBoardBlocks)
-                preventableBoardBlock.EventColor = EventColors.None;
-        }
-
 
         //TO DO: Implement King Mate Logic
         //Placeholder method for King Mate logic
@@ -330,6 +391,11 @@ namespace ChessGame.Core.Services.Services.BoardService
             return await Task.FromResult(false);
         }
 
+        public void ResetEventableBlocks(Board gameState)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<bool> IsKingMateByAsync<TFigureType>(TFigureType figureType, Turn myColor,
             Board? currentBoard, Guid gameId) where TFigureType : Enum
         {
@@ -338,8 +404,8 @@ namespace ChessGame.Core.Services.Services.BoardService
 
             var figureBlocks =
                 currentBoard.GetBlockByFigureTypeAndColor((FigureType)(object)figureType, (FigureColors)myColor);
-            
-            if(!figureBlocks.Any())
+
+            if (!figureBlocks.Any())
                 return await Task.FromResult(true);
 
             foreach (var figureBlock in figureBlocks)
@@ -379,16 +445,16 @@ namespace ChessGame.Core.Services.Services.BoardService
                 foreach (var executable in enumerableOfExecutable)
                 {
                     submitMoveRequestDTO.To = executable.Position;
-                        
+
                     var toBlockFigureTemp = currentBoard.GetBlockByPosition(executable.Position).Figure;
 
                     var submitMoveConnectionResponseDto = await SubmitMoveAsync(submitMoveRequestDTO);
 
                     if (submitMoveConnectionResponseDto is { Data.IsKingChecked: true })
-                         continue;
+                        continue;
 
                     //If the move does not result in a check, we need to reset the board state
-                    ResetEventableBlocks(currentBoard);
+                    currentBoard.ResetEventableBlocks();
 
                     //King Block is temporarily moved to executable position
                     //revert Move

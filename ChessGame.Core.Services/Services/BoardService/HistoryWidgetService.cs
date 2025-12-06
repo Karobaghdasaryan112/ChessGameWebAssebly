@@ -6,13 +6,13 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.BoardService
 {
-    public class HistoryWidgetService(IBoardService boardService, IChessGameHistoryRepository historyWidgetHistoryRepository) : IHistoryWidgetService
-    {
-        public Task<IResponseTypes<GetAllHistoryWidgetRequestDTO, ChessGameResponseMessage>> GetAllWidgetsAsync(
-            IRequestTypes<GetAllHistoryWidgetRequestDTO> widgetsRequest)
-        {
-            historyWidgetHistoryRepository.
-            throw new NotImplementedException();
-        }
-    }
+    //public class HistoryWidgetService(IBoardService boardService, IChessGameHistoryRepository historyWidgetHistoryRepository) : IHistoryWidgetService
+    //{
+    //    public Task<IResponseTypes<GetAllHistoryWidgetRequestDTO, ChessGameResponseMessage>> GetAllWidgetsAsync(
+    //        IRequestTypes<GetAllHistoryWidgetRequestDTO> widgetsRequest)
+    //    {
+    //        historyWidgetHistoryRepository.
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

@@ -11,6 +11,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.User
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.HistoryWidgetsRequests;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.InvitationRequests;
 using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
 using SharedResources.Validation.ChessGameValidations.ResponseValidations.InvitationResponses;
@@ -61,7 +62,11 @@ namespace ChessGame.Core.Services.Services.Validations
 
         //Responses
         IValidator<AcceptInvitationResponseDTO> acceptInvitationResponseValidator,
-        IValidator<SendInvitationsResponseDTO> sendInvitationResponseValidator
+        IValidator<SendInvitationsResponseDTO> sendInvitationResponseValidator,
+
+        //Widgets
+        //Requests
+        IValidator<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestValidator
         )
 
     {
@@ -119,6 +124,11 @@ namespace ChessGame.Core.Services.Services.Validations
                 AcceptInvitationResponseDTO => (IValidator<T>)acceptInvitationResponseValidator,
                 SendInvitationsResponseDTO => (IValidator<T>)sendInvitationResponseValidator,
 
+                //////////////////////////////////////////////////////////////////////////////////////
+                
+                //Widgets
+                //Requests
+                GetAllHistoryWidgetRequestDTO => (IValidator<T>)getAllHistoryWidgetsRequestValidator,
 
                 _ => throw new InvalidOperationException($"No validator registered for type {typeof(T).Name}")
             };

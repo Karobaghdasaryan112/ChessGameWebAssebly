@@ -1,10 +1,11 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
+using SharedResources.Contracts;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 {
-    public class BoardStateRequestDTO
+    public class BoardStateRequestDTO : IRequestDTO
     {
         public Guid GameId { get; set; }
         public Position? From {  get; set; }
@@ -16,5 +17,6 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
         public FigureColors OpponentColor { get; set; }
         public IsReady IsReadyToEvent { get; set; }
         public Block CutableFigure { get; set; }
+        public Board GameState { get; set; }
     }
 }
