@@ -7,7 +7,7 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Contracts.Hub
 {
-    public interface IInvitationService<T> where T : Microsoft.AspNetCore.SignalR.Hub
+    public interface IInvitationService
     {
 
         Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest);

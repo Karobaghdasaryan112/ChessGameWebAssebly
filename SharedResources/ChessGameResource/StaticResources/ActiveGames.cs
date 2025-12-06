@@ -1,4 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Models;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using System.Collections.Concurrent;
 
 namespace SharedResources.ChessGameResource.StaticResources
@@ -11,5 +12,6 @@ namespace SharedResources.ChessGameResource.StaticResources
         public static bool RemoveGame(Guid gameId) => _activeGamesAndBoards.TryRemove(gameId, out _);
         public static void ClearAllGames() => _activeGamesAndBoards.Clear();
         public static bool AddGame(Guid gameId, Board board) => _activeGamesAndBoards.TryAdd(gameId, board);
+        public static ConcurrentDictionary<Guid, UserConnectionDTO> _connections = new();
     }
 }

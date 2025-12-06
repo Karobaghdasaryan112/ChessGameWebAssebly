@@ -4,11 +4,11 @@ namespace ChessGame.Domain.Domain.Entities
 {
     public class ChessGameHistory : IEntity<int>
     {
-        public int Id { get; set; }
-        public Guid GameId { get; set; }
-        public string FEN { get; set; }
+        public int Id { get; set; } 
+        public Guid GameId { get; set; } 
+        public string FEN { get; set; } = string.Empty;
 
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdateDate { get; set; } = DateTime.UtcNow;
     }
 }

@@ -6,8 +6,5 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Contracts.Hub
 {
-    public interface IHistoryWidgetService
-    {
-       
-    }
+
 }

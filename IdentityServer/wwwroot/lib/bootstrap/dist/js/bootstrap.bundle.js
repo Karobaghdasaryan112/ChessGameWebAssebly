@@ -3662,7 +3662,8 @@
     detectOverflow: detectOverflow,
     createPopperBase: createPopper$2,
     createPopper: createPopper,
-    createPopperLite: createPopper$1,
+    createPopper
+: createPopper$1,
     top: top,
     bottom: bottom,
     right: right,

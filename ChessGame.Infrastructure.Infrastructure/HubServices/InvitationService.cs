@@ -13,16 +13,17 @@ using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 using ChessGame.Core.Services.Services.Validations;
+using ChessGame.Infrastructure.Infrastructure.Hubs;
+using SharedResources.ChessGameResource.StaticResources;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
-    public class InvitationService<THub>(
-        IConnectionService<THub> connectionService,
-        BaseHubService<THub> baseHubService,
+    public class InvitationService(
+        IConnectionService connectionService,
+        BaseHubService baseHubService,
         IMediator mediator,
         GenericValidationService validationService)
-        : IInvitationService<THub>
-        where THub : Microsoft.AspNetCore.SignalR.Hub
+        : IInvitationService
     {
         public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest)
         {
@@ -89,8 +90,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                 PlayerTwo_UserConnectionResponseDTO = receiverConnectionInformation.Data.UserConnectionDTO
             };
 
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = result.Data.GameId;
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.receiverUserGuid].Gameinfo =
+            ActiveGames._connections[acceptInvitationRequest.Data.receiverUserGuid].GameId = result.Data.GameId;
+            ActiveGames._connections[acceptInvitationRequest.Data.receiverUserGuid].Gameinfo =
                 new Gameinfo()
                 {
                     Players = new KeyValuePair<Guid, Guid>(
@@ -98,8 +99,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                         acceptInvitationRequest.Data.inviterUserGuid)
                 };
 
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = result.Data.GameId;
-            ConnetionService<THub>._connections[acceptInvitationRequest.Data.inviterUserGuid].Gameinfo =
+            ActiveGames._connections[acceptInvitationRequest.Data.inviterUserGuid].GameId = result.Data.GameId;
+            ActiveGames._connections[acceptInvitationRequest.Data.inviterUserGuid].Gameinfo =
                 new Gameinfo()
                 {
                     Players = new KeyValuePair<Guid, Guid>(

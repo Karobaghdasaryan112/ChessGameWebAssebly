@@ -24,18 +24,18 @@ using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.Co
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 {
-    public class MoveLogicCommandHandler<THub>(
+    public class MoveLogicCommandHandler(
         IMediator mediator,
-        IConnectionService<THub> connectionService,
+        IConnectionService connectionService,
         IValidator<BoardStateRequestDTO> validator,
-        ILogger<MoveLogicCommandHandler<THub>> logger,
+        ILogger<MoveLogicCommandHandler> logger,
         IBoardService service) 
-        : MediatR_Base<BoardStateRequestDTO, MoveLogicCommandHandler<THub>, IBoardService>(validator, logger, service) 
+        : MediatR_Base<BoardStateRequestDTO, MoveLogicCommandHandler, IBoardService>(validator, logger, service) 
             , IRequestHandler<
                 MoveLogicCommand<
                     IRequestTypes<BoardStateRequestDTO>,
                     IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>,
-                IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> where THub : Hub
+                IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> 
     {
         public async Task<IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> Handle(
             MoveLogicCommand<IRequestTypes<BoardStateRequestDTO>,

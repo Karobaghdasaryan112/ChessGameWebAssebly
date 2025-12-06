@@ -5,20 +5,23 @@ using BlazorServerSideClient.Data;
 using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
 using BlazorServerSideClient.Services.Requests;
+using ChessGame.Core.Services.MediatR.Handlers.Commands;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.Services;
+using FluentValidation;
 using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -48,6 +51,7 @@ builder.Services.AddSignalR()
     {
         options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
     });
+
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
 {
     client.BaseAddress = new Uri($"{BasePaths.baseUrl}");

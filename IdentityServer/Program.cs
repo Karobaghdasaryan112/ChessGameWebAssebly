@@ -12,7 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlite(connectionString);
+    options.UseSqlServer(connectionString);
     options.UseOpenIddict();
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

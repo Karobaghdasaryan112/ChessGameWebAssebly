@@ -17,13 +17,13 @@ using SharedResources.Responses.ResponseMessages;
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
     public class GameHub(
-        BaseHubService<GameHub> baseHubService,
-        IInvitationService<GameHub> invitationService,
-        IGameService<GameHub> gameService,
-        IConnectionService<GameHub> connectionService)
+        BaseHubService baseHubService,
+        IInvitationService invitationService,
+        IGameService gameService,
+        IConnectionService connectionService)
         : Hub
     {
-        private readonly BaseHubService<GameHub> _baseHubService = baseHubService;
+        private readonly BaseHubService _baseHubService = baseHubService;
 
         public override async Task OnConnectedAsync()
         {

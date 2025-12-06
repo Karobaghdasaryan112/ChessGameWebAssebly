@@ -10,7 +10,7 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Contracts.Hub
 {
-    public interface IGameService<T> where T : Microsoft.AspNetCore.SignalR.Hub
+    public interface IGameService
     {
         Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO);
         Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO);

@@ -7,22 +7,21 @@ namespace ChessGame.Domain.Domain.Entities
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        //By Default,it is white Player
         public Guid Player1 { get; set; }
         public Guid Player2 { get; set; }
 
-        public string Player1Name { get; set; }
-        public string Player2Name { get; set; }
+        public string Player1Name { get; set; } = string.Empty;
+        public string Player2Name { get; set; } = string.Empty;
 
         public Guid WinnerPlayer { get; set; } = Guid.Empty;
 
-        public int Player1Time { get; set; }
-        public int Player2Time { get; set; }
+        public int Player1Time { get; set; } = 0;
+        public int Player2Time { get; set; } = 0;
 
-        public GameEvent GameEvent { get; set; }
+        public GameEvent GameEvent { get; set; } = GameEvent.None;
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     }
 }

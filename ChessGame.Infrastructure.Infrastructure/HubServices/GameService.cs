@@ -1,7 +1,9 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.Services.Validations;
+using ChessGame.Infrastructure.Infrastructure.Hubs;
 using MediatR;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
@@ -18,16 +20,15 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
-    public class GameService<THub>(
+    public class GameService(
         IMediator mediator,
-        IConnectionService<THub> connectionService,
+        IConnectionService connectionService,
         IBoardService boardService,
-        BaseHubService<THub> baseHubService,
+        BaseHubService baseHubService,
         GenericValidationService validationService)
-        : IGameService<THub>
-        where THub : Microsoft.AspNetCore.SignalR.Hub
+        : IGameService
     {
-        private BaseHubService<THub> _baseHubService = baseHubService;
+        private BaseHubService _baseHubService = baseHubService;
 
         public Task ClearGameAsync(Guid gameId)
         {
@@ -134,6 +135,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     Player = sendMoveConnectionRequestDTO.Data.Player,
                     From = sendMoveConnectionRequestDTO.Data.From,
                     To = sendMoveConnectionRequestDTO.Data.To,
+                    GameState = gameState,
                     OpponentColor =
                         sendMoveConnectionRequestDTO.Data.MyColor == FigureColors.Black
                             ? FigureColors.White
@@ -209,7 +211,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
 
-            boardService.ResetEventableBlocks(gameState);
+            gameState.ResetEventableBlocks();
 
             var positions =
                 gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.From).Figure

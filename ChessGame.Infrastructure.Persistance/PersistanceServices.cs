@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Repositories;
+using ChessGame.Core.Services.MediatR.Handlers.Commands;
 using ChessGame.Infrastructure.Persistance.Data;
 using ChessGame.Infrastructure.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,16 @@ namespace ChessGame.Infrastructure.Infrastructure.Persistance
         {
             services.AddDbContext<ChessGameDbContext>(options =>
             {
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(BoardInitializeCommandHandler).Assembly
+                );
 
+                cfg.Lifetime = ServiceLifetime.Scoped;
+            });
             services.AddScoped<IChessGameRepository, ChessGameRepository>();
             services.AddScoped<IChessGameHistoryRepository, ChessGameHistoryRepository>();
         }

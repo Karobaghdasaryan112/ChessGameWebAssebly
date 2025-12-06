@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ChessGame.Infrastructure.Infrastructure.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
@@ -8,13 +9,10 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
-    public class BaseHubService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
+    public class BaseHubService(IHubContext<GameHub> hubContext)
     {
-        public readonly IHubContext<THub> _hubContext;
-        public BaseHubService(IHubContext<THub> hubContext)
-        {
-            _hubContext = hubContext;
-        }
+        public readonly IHubContext<GameHub> _hubContext = hubContext;
+
         public async Task SendUsersChange(
             KeyValuePair<Guid, UserConnectionDTO> connections) =>
             await _hubContext.Clients.All.SendAsync("ReceiveUpdatedUsers", connections);

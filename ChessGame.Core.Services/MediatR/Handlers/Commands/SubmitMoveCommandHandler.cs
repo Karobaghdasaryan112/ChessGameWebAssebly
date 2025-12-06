@@ -97,7 +97,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             var isKingCheckedResult = await mediator.Send(query, cancellationToken);
             //if (!await IsKingCheckedAsync(currentBoardState, currentBoardState.Turn))
-            if (isKingCheckedResult.IsSuccess && isKingCheckedResult.Data.IsKingChecked)
+            if (isKingCheckedResult.IsSuccess && !isKingCheckedResult.Data.IsKingChecked)
                 return response;
 
             //Implement IsKing Mate state

@@ -12,7 +12,7 @@ using System.Collections.Concurrent;
 
 namespace ChessGame.Core.Services.Contracts.Hub
 {
-    public interface IConnectionService<THub> where THub : Microsoft.AspNetCore.SignalR.Hub
+    public interface IConnectionService
     {
         ConcurrentDictionary<Guid, UserConnectionDTO> CurrentConnectionState { get; }
         Task<ConnectionResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO);

@@ -16,7 +16,7 @@ namespace IdentityService.Persistance
             services.AddDbContext<IdentityContext>(options =>
             {
                 options.UseOpenIddict();
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
             var jwtSettings = configuration.Get<JwtSettings>();

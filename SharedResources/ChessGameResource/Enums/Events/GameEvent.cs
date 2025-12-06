@@ -2,6 +2,7 @@
 {
     public enum GameEvent
     {
+        None,
         Win,
         Lose,
         Draw,

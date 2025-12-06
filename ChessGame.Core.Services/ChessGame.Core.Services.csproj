@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\HubServices\" />
+  </ItemGroup>
+
 </Project>

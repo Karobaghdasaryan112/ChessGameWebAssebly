@@ -22,7 +22,7 @@ namespace IdentityService.Persistance.Data
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder.UseSqlServer(connectionString);
 
             return new IdentityContext(optionsBuilder.Options);
         }
