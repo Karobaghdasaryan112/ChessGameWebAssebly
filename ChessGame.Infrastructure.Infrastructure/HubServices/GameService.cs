@@ -2,8 +2,8 @@
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
+using ChessGame.Core.Services.MediatR.Requests.Queries;
 using ChessGame.Core.Services.Services.Validations;
-using ChessGame.Infrastructure.Infrastructure.Hubs;
 using MediatR;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
@@ -187,11 +187,10 @@ namespace ChessGame.Core.Services.Services.HubServices
             var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.CurrentPosition);
 
 
-            //if the request is movable or cuttable then return the block from the Active Games (current Board State from Server)
-            //CanClick RequestData
-            var canClickRequest = new ConnectionRequestDTO<CanClickRequestDTO>()
+
+            var requestDTO = new ChessGameRequest<CanClickRequestDTO>()
             {
-                Data = new CanClickRequestDTO()
+                requestType = new()
                 {
                     ClickedBlockInformationDto = sendClickConnectionRequestDTO.Data.PreviusBlockInformationDTO,
                     CurrentBlock = currentPositionBlock,
@@ -199,9 +198,15 @@ namespace ChessGame.Core.Services.Services.HubServices
                     FigureColor = sendClickConnectionRequestDTO.Data.MyColor
                 }
             };
-            var canMoveResultBlock = await boardService.CanClick(canClickRequest);
+            var sendClickQuery = new SendClickQuery<
+                IRequestTypes<CanClickRequestDTO>,
+                IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
 
-            if (!canMoveResultBlock.IsSuccess)
+
+
+            var canClickResponse = await mediator.Send<IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>(sendClickQuery);
+
+            if (!canClickResponse.IsSuccess)
                 return ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new ClickResponseDTO()
                     {
@@ -215,7 +220,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var positions =
                 gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.From).Figure
-                    .GetMovableAndCutableBlocks(sendClickConnectionRequestDTO.Data.From, gameState);
+                    .GetMovableAndCuttableBlocks(sendClickConnectionRequestDTO.Data.From, gameState);
 
             return ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new ClickResponseDTO()
@@ -228,137 +233,5 @@ namespace ChessGame.Core.Services.Services.HubServices
                 ChessGameResponseMessage.SuccessUserConnections,
                 System.Net.HttpStatusCode.OK);
         }
-
-
-        //Private Methods
-        //private async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> MoveLogic(Board gameState,
-        //    BoardStateRequestDTO boardStateRequestDTO)
-        //{
-        //    var submitMoveRequest = new SubmitMoveRequestDTO()
-        //    {
-        //        From = boardStateRequestDTO.From,
-        //        To = boardStateRequestDTO.To,
-        //        CurrentBoardState = gameState,
-        //        GameId = boardStateRequestDTO.GameId
-        //    };
-
-        //    var submitMoveConnectionResult = await boardService.SubmitMoveAsync(submitMoveRequest);
-
-        //    boardService.ResetEventableBlocks(gameState);
-
-        //    if (!submitMoveConnectionResult.IsSuccess)
-        //        return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-        //            new MoveResponseDTO()
-        //            {
-        //                GameId = boardStateRequestDTO.GameId,
-        //                Player = boardStateRequestDTO.Player
-        //            },
-        //            ChessGameResponseMessage.InvalidMove,
-        //            System.Net.HttpStatusCode.BadRequest);
-
-        //    //This is for the simulation
-        //    var fenString = gameState.FromBoardToFen();
-
-        //    Console.WriteLine(fenString);
-
-        //    var board = fenString.FromFenToBoard();
-
-        //    //If yes, send the board state with the checked king position to the player who made the move and return invalid move response
-
-        //    //Check if the King is checked after the move
-        //    if (submitMoveConnectionResult.Data.IsKingChecked)
-        //    {
-
-        //        var checkedKingForMe =
-        //            gameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)gameState.Turn);
-        //        boardStateRequestDTO.IsKingChecked = true;
-        //        boardStateRequestDTO.CheckedKingPosition = checkedKingForMe.First().Position;
-        //        boardStateRequestDTO.From = null;
-        //        boardStateRequestDTO.To = null;
-        //        await connectionService.SendBoardStateToClient(
-        //            new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
-        //            boardStateRequestDTO.Player, true);
-
-        //        return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-        //            new MoveResponseDTO()
-        //            {
-        //                GameId = boardStateRequestDTO.GameId,
-        //                Player = boardStateRequestDTO.Player
-        //            },
-        //            ChessGameResponseMessage.InvalidMove,
-        //            System.Net.HttpStatusCode.BadRequest);
-        //    }
-
-        //    //Switch Turn
-        //    gameState.SwitchTurn();
-
-
-        //    //Check if the opponent's King is checked after the move
-        //    if (await boardService.IsKingCheckedAsync(gameState, gameState.Turn))
-        //    {
-        //        boardStateRequestDTO.IsKingChecked = true;
-        //        //Send the board state to the opponent with the checked king position if the king is checked
-        //        var checkedKingForOpponent =
-        //            gameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)gameState.Turn);
-        //        boardStateRequestDTO.CheckedKingPosition = checkedKingForOpponent.First().Position;
-
-        //        if (await boardService.IsKingMateAsync(gameState, boardStateRequestDTO.GameId, gameState.Turn))
-        //        {
-        //            boardStateRequestDTO.IsKingMate = true;
-
-        //            await connectionService.SendBoardStateToClient(
-        //                new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
-        //                boardStateRequestDTO.Player, false, false);
-
-        //            await connectionService.SendBoardStateToClient(
-        //                new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
-        //                boardStateRequestDTO.Player, true, true);
-
-
-        //            var removeUsersFromGameRequest = new ConnectionRequestDTO<RemoveUserFromGameRequestDTO>()
-        //            {
-        //                Data = new RemoveUserFromGameRequestDTO()
-        //                {
-        //                    GameId = boardStateRequestDTO.GameId,
-        //                }
-        //            };
-
-        //            await connectionService.RemoveUsersFromGameAsync(removeUsersFromGameRequest);
-
-        //            ActiveGames.RemoveGame(boardStateRequestDTO.GameId);
-
-        //            return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-        //                new MoveResponseDTO()
-        //                {
-        //                    GameId = boardStateRequestDTO.GameId,
-        //                    Player = boardStateRequestDTO.Player,
-        //                    IsReadyToEvent = IsReady.IsReadyToCut
-        //                },
-        //                ChessGameResponseMessage.MoveSuccessful,
-        //                System.Net.HttpStatusCode.OK);
-        //        }
-        //    }
-        //    //Send the board state to the player who made the move
-        //    //MyConnection true its mean that is my Connection otherwise this is opponentUserConnection  
-        //    await connectionService.SendBoardStateToClient(
-        //        new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
-        //        boardStateRequestDTO.Player, true);
-
-        //    //Send the board state to the opponent
-        //    await connectionService.SendBoardStateToClient(
-        //        new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = boardStateRequestDTO },
-        //        boardStateRequestDTO.Player, false);
-
-
-        //    return ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-        //        new MoveResponseDTO()
-        //        {
-        //            GameId = boardStateRequestDTO.GameId,
-        //            Player = boardStateRequestDTO.Player,
-        //            IsReadyToEvent = IsReady.IsReadyToCut
-        //        },
-        //        ChessGameResponseMessage.MoveSuccessful,
-        //        System.Net.HttpStatusCode.OK);
-        //}
     }
 }

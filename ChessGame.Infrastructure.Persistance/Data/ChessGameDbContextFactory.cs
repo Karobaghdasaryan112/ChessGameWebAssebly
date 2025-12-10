@@ -9,7 +9,7 @@ namespace ChessGame.Infrastructure.Persistance.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<ChessGameDbContext>();
 
-            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS03;Database=Chess;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS01;Database=ChessGameDb;Trusted_Connection=True;TrustServerCertificate=True;");
             return new ChessGameDbContext(optionsBuilder.Options);
         }
     }

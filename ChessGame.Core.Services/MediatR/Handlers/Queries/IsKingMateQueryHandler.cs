@@ -16,7 +16,6 @@ using SharedResources.MediatR;
 using SharedResources.Requests;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
-using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries;
@@ -60,7 +59,7 @@ public class IsKingMateQueryHandler(
         var result = ChessGameResponse<IsKingMateResponseDTO>.CreateSuccessResponse(new IsKingMateResponseDTO()
         {
             IsKingMate = true,
-        }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK,null);
+        }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK, null);
         if (await IsKingMateByAsync<FigureType>(FigureType.King, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Queen, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Rook, chosenColor, currentBoard, gameId, mediator) &&
@@ -92,7 +91,7 @@ public class IsKingMateQueryHandler(
                 return await Task.FromResult(false);
 
             var figureMovableAndCuttable = figureBlock.Figure
-                .GetMovableAndCutableBlocks(figureBlock.Position, currentBoard);
+                .GetMovableAndCuttableBlocks(figureBlock.Position, currentBoard);
             if (figureMovableAndCuttable is
                     not { MovableBlock: not null, CutableBlock: not null } ||
                 (!figureMovableAndCuttable.MovableBlock.Any() &&

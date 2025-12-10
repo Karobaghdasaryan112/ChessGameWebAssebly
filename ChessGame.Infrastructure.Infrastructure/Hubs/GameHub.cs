@@ -97,9 +97,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         //connectionService
 
 
-        //HistoryWidgets
 
-        //public async Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO,ChessGameResponseMessage>> GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> connectionRequestDto)
-        //=> await 
+
+
     }
 }

@@ -11,10 +11,6 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.User
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
-using SharedResources.Validation.ChessGameValidations.RequestValidations.HistoryWidgetsRequests;
-using SharedResources.Validation.ChessGameValidations.RequestValidations.InvitationRequests;
-using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
-using SharedResources.Validation.ChessGameValidations.ResponseValidations.InvitationResponses;
 using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO;
 
 namespace ChessGame.Core.Services.Services.Validations
@@ -30,6 +26,7 @@ namespace ChessGame.Core.Services.Services.Validations
         IValidator<MoveRequestDTO> moveRequestValidator,
         IValidator<SendGameStateReqeustDTO> sendGameStateRequestValidator,
         IValidator<SubmitMoveRequestDTO> submitMoveRequestValidator,
+        IValidator<IsKingMateRequestDTO> iskingMateStateRequestValidator,
 
         //Game Responses
         IValidator<BoardStateResponseDTO> boardStateResponseValidator,
@@ -88,6 +85,7 @@ namespace ChessGame.Core.Services.Services.Validations
                 MoveRequestDTO => (IValidator<T>)moveRequestValidator,
                 SendGameStateReqeustDTO => (IValidator<T>)sendGameStateRequestValidator,
                 SubmitMoveRequestDTO => (IValidator<T>)submitMoveRequestValidator,
+                IsKingMateRequestDTO => (IValidator<T>)iskingMateStateRequestValidator,
 
                 // Responses
                 BoardStateResponseDTO => (IValidator<T>)boardStateResponseValidator,
@@ -125,7 +123,7 @@ namespace ChessGame.Core.Services.Services.Validations
                 SendInvitationsResponseDTO => (IValidator<T>)sendInvitationResponseValidator,
 
                 //////////////////////////////////////////////////////////////////////////////////////
-                
+
                 //Widgets
                 //Requests
                 GetAllHistoryWidgetRequestDTO => (IValidator<T>)getAllHistoryWidgetsRequestValidator,
@@ -146,8 +144,8 @@ namespace ChessGame.Core.Services.Services.Validations
             }
         }
 
-
     }
+
     public static class ValidationExtension
     {
         public static async Task<ConnectionResponseDTO<TDto, ChessGameResponseMessage>> ReturnValidationResult<TDto>(this ValidationResult validationResult, TDto dto)

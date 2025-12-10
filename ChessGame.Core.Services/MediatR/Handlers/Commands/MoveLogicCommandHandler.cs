@@ -5,7 +5,6 @@ using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
@@ -29,13 +28,13 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         IConnectionService connectionService,
         IValidator<BoardStateRequestDTO> validator,
         ILogger<MoveLogicCommandHandler> logger,
-        IBoardService service) 
-        : MediatR_Base<BoardStateRequestDTO, MoveLogicCommandHandler, IBoardService>(validator, logger, service) 
+        IBoardService service)
+        : MediatR_Base<BoardStateRequestDTO, MoveLogicCommandHandler, IBoardService>(validator, logger, service)
             , IRequestHandler<
                 MoveLogicCommand<
                     IRequestTypes<BoardStateRequestDTO>,
                     IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>,
-                IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> 
+                IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>
     {
         public async Task<IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> Handle(
             MoveLogicCommand<IRequestTypes<BoardStateRequestDTO>,
@@ -149,7 +148,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     request.Request.requestType.IsKingMate = true;
 
 
-                    //TO DO:
+
                     await connectionService.SendBoardStateToClient(
                         new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                         request.Request.requestType.Player, false, false);
@@ -157,7 +156,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     await connectionService.SendBoardStateToClient(
                         new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                         request.Request.requestType.Player, true, true);
-                    //TO DO:
+
 
                     var removeUsersFromGameRequest = new ConnectionRequestDTO<RemoveUserFromGameRequestDTO>()
                     {
@@ -167,9 +166,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                         }
                     };
 
-                    //TO DO:
+
                     await connectionService.RemoveUsersFromGameAsync(removeUsersFromGameRequest);
-                    //TO DO:
+
                     ActiveGames.RemoveGame(request.Request.requestType.GameId);
 
                     return ChessGameResponse<MoveResponseDTO>.CreateSuccessResponse(
@@ -184,14 +183,13 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                         , null);
                 }
             }
-            // TO DO:
-            //Send the board state to the player who made the move
-            //MyConnection true its mean that is my Connection otherwise this is opponentUserConnection  
+
+            //Opponent Client MyConnection -True
             await connectionService.SendBoardStateToClient(
                 new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                 request.Request.requestType.Player, true);
 
-            //Send the board state to the opponent
+            //Opponent Client MyConnection -False
             await connectionService.SendBoardStateToClient(
                 new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                 request.Request.requestType.Player, false);

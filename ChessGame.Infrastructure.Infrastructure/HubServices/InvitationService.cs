@@ -1,6 +1,9 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
+using ChessGame.Core.Services.Services.Validations;
 using MediatR;
+using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
@@ -12,9 +15,6 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
-using ChessGame.Core.Services.Services.Validations;
-using ChessGame.Infrastructure.Infrastructure.Hubs;
-using SharedResources.ChessGameResource.StaticResources;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -53,13 +53,14 @@ namespace ChessGame.Core.Services.Services.HubServices
                          );
             }
 
-
+            //TO DO request using players names and times
             var command = new BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>, IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
             (
                 new ChessGameRequest<BoardInitializeRequestDTO>()
                 {
                     requestType = new BoardInitializeRequestDTO()
                     {
+                        GameEvent = GameEvent.Start,
                         Player1Id = acceptInvitationRequest.Data.inviterUserGuid,
                         Player2Id = acceptInvitationRequest.Data.receiverUserGuid
                     }

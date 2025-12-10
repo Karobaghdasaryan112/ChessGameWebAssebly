@@ -1,5 +1,6 @@
 ﻿using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.UI.ClientService;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 
 namespace ChessGameBlazorClient.ApiServices
 {
@@ -9,5 +10,6 @@ namespace ChessGameBlazorClient.ApiServices
         {
 
         }
+        //public async Task<GetAllHistoryWidgetsResponseDTO>
     }
 }

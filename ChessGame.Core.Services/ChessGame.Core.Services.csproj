@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\HubServices\**" />
+    <EmbeddedResource Remove="Services\HubServices\**" />
+    <None Remove="Services\HubServices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
@@ -17,10 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ChessGame.Core.Domain\ChessGame.Domain.Domain.csproj" />
     <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\HubServices\" />
   </ItemGroup>
 
 </Project>

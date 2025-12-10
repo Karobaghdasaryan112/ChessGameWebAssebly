@@ -12,7 +12,7 @@ namespace SharedResources.ChessGameResource.Figures
         public FigureType FigureType => FigureType.Queen;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
+        public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {
@@ -26,10 +26,10 @@ namespace SharedResources.ChessGameResource.Figures
             var currentBlock = board.GetBlockByPosition(startRow, startCol);
 
             var queenAsBishop = new Bishop();
-            var resultAsBishop = queenAsBishop.GetMovableAndCutableBlocks(position, board, kingBlockForCheckCondition);
+            var resultAsBishop = queenAsBishop.GetMovableAndCuttableBlocks(position, board, kingBlockForCheckCondition);
 
             var queenAsRook = new Rook();
-            var resultAsRook = queenAsRook.GetMovableAndCutableBlocks(position, board, kingBlockForCheckCondition);
+            var resultAsRook = queenAsRook.GetMovableAndCuttableBlocks(position, board, kingBlockForCheckCondition);
 
             result.MovableBlock.AddRange(resultAsBishop.MovableBlock);
             result.CutableBlock.AddRange(resultAsBishop.CutableBlock);

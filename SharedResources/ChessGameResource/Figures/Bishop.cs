@@ -11,7 +11,7 @@ namespace SharedResources.ChessGameResource.Figures
         public FigureType FigureType => FigureType.Bishop;
         public FigureColors FigureColor { get; set; }
 
-        public MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
+        public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {

@@ -53,15 +53,23 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> CreateGame(Guid player1, Guid player2)
+        public async Task<bool> CreateGame(Guid player1, Guid player2, string player1Name, string player2Name, int player1Time, int player2Time)
         {
             chessGameDbContext.ChessGames.Add(
                 new Game()
                 {
+                    Player1Name = player1Name,
+                    Player2Name = player2Name,
+
+                    Player1Time = player1Time,
+                    Player2Time = player2Time,
+
                     Player1 = player1,
                     Player2 = player2,
+
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
+
                 });
             return (await chessGameDbContext.SaveChangesAsync()) > 0;
         }

@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.HistoryWidgetsRequests;
 using SharedResources.Validation.ChessGameValidations.ResponseValidations.GameResponses;
-using IHistoryWidgetService = ChessGame.Core.Services.Contracts.BoardServices.IHistoryWidgetService;
 
 namespace ChessGame.Core.Services
 {
@@ -22,7 +21,7 @@ namespace ChessGame.Core.Services
 
                 cfg.Lifetime = ServiceLifetime.Scoped;
             });
-            //services.AddScoped<BaseHubService<GameHub>>();
+
             services.AddValidatorsFromAssembly(typeof(SubmitMoveRequestDTOValidator).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(SubmitMoveResponseDTOValidator).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(GetAllHistoryWidgetsRequestDTOValidator).Assembly, ServiceLifetime.Scoped);

@@ -96,12 +96,11 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     });
 
             var isKingCheckedResult = await mediator.Send(query, cancellationToken);
-            //if (!await IsKingCheckedAsync(currentBoardState, currentBoardState.Turn))
+
             if (isKingCheckedResult.IsSuccess && !isKingCheckedResult.Data.IsKingChecked)
                 return response;
 
-            //Implement IsKing Mate state
-            //TO DO: If there is Mate state then put the IsMateState to True --- connectionResponse.Data.IsKingMate = true;
+
             logger.LogWarning(
                 "Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
                 fromPosition, toPosition, gameId);
@@ -111,6 +110,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             toBlock.Figure = toBlockTemp;
 
             response.Data.IsKingChecked = true;
+
+
 
             logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,
                 fromPosition, toPosition);

@@ -17,7 +17,7 @@ namespace SharedResources.Contracts.ChessGameResourceContracts
         string FigurePath => $"{FigureType}{FigureColor}.png";
         FigureType FigureType { get; }
         FigureColors FigureColor {  get; set; }
-        MovableAndCutablePositions GetMovableAndCutableBlocks(Position position, Board board, Block kingBlockForCheckCondition = default);
+        MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition = null);
         string GetFenChar();
     }
 }

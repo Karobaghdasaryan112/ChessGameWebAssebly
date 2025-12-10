@@ -84,7 +84,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Pawn, myColor, currentBoard,
                     [FigureType.Pawn, FigureType.Bishop, FigureType.King, FigureType.Queen]))
                 response.Data.IsKingChecked = true;
-            response.Data.IsKingChecked = false;
+            else
+                response.Data.IsKingChecked = false;
             return response;
         }
 
@@ -117,13 +118,13 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 }
             };
             var possibleMovableAndCuttable =
-                kingBlockClone.Figure.GetMovableAndCutableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
+                kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
 
-            if (possibleMovableAndCuttable.CutableBlock != null && !possibleMovableAndCuttable.CutableBlock.Any())
-                return await Task.FromResult(false);
+            //if (possibleMovableAndCuttable.CutableBlock != null && !possibleMovableAndCuttable.CutableBlock.Any())
+            //    return await Task.FromResult(true);
 
-            if (possibleMovableAndCuttable.CutableBlock == null)
-                return await Task.FromResult(true);
+            //if (possibleMovableAndCuttable.CutableBlock == null)
+            //    return await Task.FromResult(true);
 
             var figuresForCheck = possibleMovableAndCuttable.CutableBlock.Where(block =>
                 figureTypes.Contains<FigureType>(block.Figure.FigureType));
