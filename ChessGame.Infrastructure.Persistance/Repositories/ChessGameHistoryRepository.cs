@@ -1,5 +1,4 @@
 ﻿using ChessGame.Core.Services.Contracts.Repositories;
-using ChessGame.Domain.Domain.Entities;
 using ChessGame.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,17 +10,21 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
         public Task DeleteGameHistoryAsync(int gameId)
         {
+
             throw new NotImplementedException();
         }
 
         public async Task<List<string>> GetGameHistoryByGameIdAsync(Guid gameId)
         {
-            return await _chessGameDbContext.ChessGamesHistory.Where(chessGameHistory => chessGameHistory.GameId == gameId)
-                .Select(selectedGameHistory => selectedGameHistory.FEN).ToListAsync();
+            return await _chessGameDbContext.ChessGamesHistory
+                .Where(chessGameHistory =>
+                    chessGameHistory.GameId == gameId)
+                .Select(selectedGameHistory =>
+                    selectedGameHistory.FEN).ToListAsync();
         }
 
 
-        public async Task<List<string>> GetGameHistoryByPlayerAsync(string player)
+        public Task<List<string>> GetGameHistoryByPlayerAsync(string player)
         {
             throw new NotImplementedException();
         }
@@ -32,7 +35,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
             throw new NotImplementedException();
         }
 
-        
+
 
     }
 }

@@ -61,6 +61,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     requestType = new BoardInitializeRequestDTO()
                     {
                         GameEvent = GameEvent.Start,
+                        
                         Player1Id = acceptInvitationRequest.Data.inviterUserGuid,
                         Player2Id = acceptInvitationRequest.Data.receiverUserGuid
                     }

@@ -47,7 +47,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     IsKingChecked = false,
                     IsKingMate = false,
                     IsMoveSuccess = true
-                }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK, null);
+                }, ChessGameResponseMessage.MoveSuccessful, 
+                HttpStatusCode.OK,
+                null!);
 
 
             var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
@@ -72,7 +74,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             //Move the figure from fromBlock to toBlock
             toBlock.Figure = fromBlock.Figure;
-            fromBlock.Figure = default;
+            fromBlock.Figure = null!;
 
             logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId,
                 fromPosition, toPosition);

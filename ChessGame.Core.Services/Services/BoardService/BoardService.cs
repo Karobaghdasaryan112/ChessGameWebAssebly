@@ -29,6 +29,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                 connectionRequestDto.Data.Player1Time.Minutes,
                 connectionRequestDto.Data.Player2Time.Minutes);
 
+
             if (!isCreated)
             {
                 logger.LogError("Failed to create a new game between {Player1} and {Player2}",

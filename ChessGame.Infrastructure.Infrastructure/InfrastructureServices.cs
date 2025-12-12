@@ -27,7 +27,7 @@ namespace ChessGame.Infrastructure.Infrastructure
             options.EnableDetailedErrors = true;
         });
             services.AddScoped(typeof(BaseHubService));
-            services.AddScoped(typeof(IConnectionService), typeof(ConnetionService));
+            services.AddScoped(typeof(IConnectionService), typeof(ConnectionService));
             services.AddScoped(typeof(IInvitationService), typeof(InvitationService));
             services.AddScoped(typeof(IGameService), typeof(GameService));
             services.AddScoped<GenericValidationService>();

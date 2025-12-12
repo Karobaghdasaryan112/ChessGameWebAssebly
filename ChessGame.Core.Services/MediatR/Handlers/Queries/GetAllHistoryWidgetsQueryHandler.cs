@@ -38,8 +38,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             var validationResult = await genericValidation.ValidateAsync(request.Request.requestType);
             if (!validationResult.IsValid)
                 ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
-                    default(GetAllHistoryWidgetsResponseDTO), ChessGameResponseMessage.InvalidData,
-                    HttpStatusCode.BadRequest, null);
+                    null!, ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest, null!);
 
             throw new NotImplementedException();
         }
