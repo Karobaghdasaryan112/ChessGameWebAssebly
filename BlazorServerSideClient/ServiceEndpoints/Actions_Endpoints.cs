@@ -21,7 +21,8 @@
         {
             Start,
             Move,
-            Resign
+            Resign,
+            History
         }
 
         public enum ChatAction

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SharedResources.Contracts;
 using SharedResources.Contracts.RequestsAndResponses;
 using System.Net.Http.Headers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static ChessGameBlazorClient.ServiceEndpoints.Actions;
 using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
 
@@ -40,9 +41,9 @@ namespace ChessGameBlazorClient.UI.ClientService
         /// <param name="data">The request body to send.</param>
         /// <returns>A deserialized response of type <typeparamref name="TResponse"/>.</returns>
         protected async Task<TResponse?> PostAsync<TRequest, TResponse, TData, TMessage>(Uri uri, TRequest data)
-        where TData : IResponseDTO
-        where TMessage : IMessage
-        where TResponse : IResponseTypes<TData, TMessage>
+            where TResponse : IResponseTypes<TData, TMessage>
+            where TData : IResponseDTO
+            where TMessage : IMessage
         {
             var response = await _httpClient.PostAsJsonAsync(uri, data);
 
@@ -60,10 +61,14 @@ namespace ChessGameBlazorClient.UI.ClientService
         /// Sends a GET request and deserializes the typed response.
         /// </summary>
         /// <typeparam name="TResponse">The full response type implementing <see cref="IResponseTypes{TData, TMessage}"/>.</typeparam>
+        /// <typeparam name="TData"></typeparam>
+        /// <typeparam name="TMessage"></typeparam>
         /// <param name="url">The full URL to send the GET request to.</param>
         /// <returns>A deserialized response of type <typeparamref name="TResponse"/>.</returns>
-        protected async Task<TResponse?> GetAsync<TResponse>(string url)
-        where TResponse : IResponseTypes<IResponseDTO, IMessage>
+        protected async Task<TResponse?> GetAsync<TResponse, TData, TMessage>(string url)
+            where TResponse : IResponseTypes<TData, TMessage>
+            where TData : IResponseDTO
+            where TMessage : IMessage
         {
 
             var response = await _httpClient.GetAsync(url);
@@ -81,17 +86,19 @@ namespace ChessGameBlazorClient.UI.ClientService
         /// <param name="action">The action enum representing the specific API method.</param>
         /// <param name="queryParamAndValues">Optional list of query parameters to be appended to the URI.</param>
         /// <returns>A URI constructed from the base path and provided query parameters.</returns>
-        protected Uri BuildRequestUri(IdentityEndpoints endpoint, IdentityAction action, List<KeyValuePair<string, string>> queryParamAndValues)
+        protected Uri BuildRequestUri(IdentityEndpoints endpoint, IdentityAction action,
+            List<KeyValuePair<string, string>> queryParamAndValues)
         {
 
             var identityBasePath = BasePaths.GetPath(endpoint, action);
             var requestQuery =
-                 queryParamAndValues.Count > 0 ?
-                 identityBasePath :
-                 _queryBuilder.BuildPath(identityBasePath, queryParamAndValues);
+                queryParamAndValues.Count > 0
+                    ? identityBasePath
+                    : _queryBuilder.BuildPath(identityBasePath, queryParamAndValues);
 
             return requestQuery;
         }
+
         /// <summary>
         /// Builds a complete request URI for the specified Chat endpoint and action, 
         /// optionally appending query parameters.

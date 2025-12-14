@@ -9,7 +9,6 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -23,7 +22,10 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IHistoryWidgetHandlerService _historyWidgetHandlerService;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ClaimsPrincipal _user;
-        public SignalRService(IConnectionHandlerService connectionHandlerService, IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService, AuthenticationStateProvider authenticationStateProvider)
+
+        public SignalRService(IConnectionHandlerService connectionHandlerService,
+            IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService,
+            AuthenticationStateProvider authenticationStateProvider)
         {
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
@@ -31,6 +33,7 @@ namespace ChessGameBlazorClient.UI.Services
             _authenticationStateProvider = authenticationStateProvider;
             _user = _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
         }
+
         public async Task<HubConnection> GetHubConnection()
         {
             await _semaphore.WaitAsync();
@@ -45,6 +48,7 @@ namespace ChessGameBlazorClient.UI.Services
 
                     await _hubConnection.StartAsync();
                 }
+
                 while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
                 {
                     await Task.Delay(200);
@@ -76,6 +80,7 @@ namespace ChessGameBlazorClient.UI.Services
                 _semaphore.Release();
             }
         }
+
         public async Task RegisterConnectionHandlers()
         {
             await GetHubConnection();
@@ -127,6 +132,5 @@ namespace ChessGameBlazorClient.UI.Services
 
             }
         }
-
     }
 }

@@ -1,11 +1,18 @@
 ﻿using ChessGame.Domain.Domain.Entities;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
 
 namespace ChessGame.Core.Services.Contracts.Repositories
 {
     public interface IChessGameRepository
     {
-        Task<bool> CreateGame(Guid player1, Guid player2,string player1Name,string player2Name,int player1Time,int player2Time);
+        Task<bool> CreateGame(
+            Guid player1,
+            Guid player2,
+            GameEvent gameEvent,
+            string player1Name, 
+            string player2Name,
+            int player1Time, int player2Time);
         Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2);
         Task<bool> MovePiece(Guid gameId, string player, Block block);
         Task<bool> SubmitMove(Guid gameId, Position currentPosition, Position movePosition, string player);

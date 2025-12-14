@@ -141,18 +141,20 @@ public class IsKingMateQueryHandler(
 
                 var fromBlock =
                     currentBoard.GetBlockByPosition(figureBlock.Position);
+
                 var toBlock =
                     currentBoard.GetBlockByPosition(executable.Position);
                 var fromTempFigure = fromBlock.Figure;
 
                 fromBlock.Figure = toBlock.Figure;
                 toBlock.Figure = toBlockFigureTemp;
-                return await Task.FromResult(false);
+
+                return false;
             }
 
-            return await Task.FromResult(true);
+            return true;
         }
 
-        return await Task.FromResult(false);
+        return false;
     }
 }

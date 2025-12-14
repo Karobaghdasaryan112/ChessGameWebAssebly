@@ -3,6 +3,7 @@ using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 
 namespace SharedResources.Responses
 {

@@ -1,6 +1,4 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using BlazorServerSideClient.Pages;
-using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -10,11 +8,15 @@ namespace BlazorServerSideClient.Services.Handlers
 {
     public class GameHandlerService(JSRunetimeService jSRuneTimeService) : IGameHandlerService
     {
-        public async Task ReseivePlayersAsync(ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
+        public async Task ReseivePlayersAsync(
+            ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
         {
-            await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!, connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
+            await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!,
+                connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
         }
-        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
+
+        public async Task ReceiveBoardUpdateAsync(
+            ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
         {
 
             if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove)

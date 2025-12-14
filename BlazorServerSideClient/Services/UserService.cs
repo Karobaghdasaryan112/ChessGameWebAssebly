@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlazorServerSideClient.Services
 {
     public class UserService
     {
         internal static AuthenticationStateProvider _authStateProvider;
+        private UserManager<IdentityUser> _userManager { get; set; }
 
         public async Task<ClaimsPrincipal> GetCurrentUserAsync()
         {

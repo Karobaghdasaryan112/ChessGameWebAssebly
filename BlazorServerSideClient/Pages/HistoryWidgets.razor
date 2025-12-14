@@ -26,7 +26,7 @@
     {
         if (!AllGames.Any())
         {
-            SeedDemo();
+            InitializeAllGames();
         }
 
         GroupGames();
@@ -94,8 +94,9 @@
         return ts.ToString(@"m\:ss", CultureInfo.InvariantCulture);
     }
 
-    private void SeedDemo()
+    private void InitializeAllGames()
     {
+
         AllGames = new List<HistoryGameDTO>();
         var rnd = new Random();
         var opponents = new[] { "Mike Taylor", "Carson Lewis", "Evelyn Reed", "Rapey Jenkins", "Michael Robertson" };
@@ -116,6 +117,7 @@
             }
         }
     }
+
 
     private Task GetAllOpponents()
     {

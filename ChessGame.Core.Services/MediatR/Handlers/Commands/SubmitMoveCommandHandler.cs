@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
+using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
 using FluentValidation;
@@ -6,11 +7,13 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Requests;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
@@ -47,7 +50,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     IsKingChecked = false,
                     IsKingMate = false,
                     IsMoveSuccess = true
-                }, ChessGameResponseMessage.MoveSuccessful, 
+                }, ChessGameResponseMessage.MoveSuccessful,
                 HttpStatusCode.OK,
                 null!);
 
@@ -100,12 +103,30 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var isKingCheckedResult = await mediator.Send(query, cancellationToken);
 
             if (isKingCheckedResult.IsSuccess && !isKingCheckedResult.Data.IsKingChecked)
+            {
+                var saveGameStateRequest = new ConnectionRequestDTO<SavePositionsRequestDTO>()
+                {
+                    Data = new SavePositionsRequestDTO()
+                    {
+                        FEN = request.RequestDTO.requestType.CurrentBoardState.FromBoardToFen(),
+                        GameId = request.RequestDTO.requestType.GameId,
+                    }
+                };
+
+                var savePositionsResponse = await service.SavePositionsAsync(saveGameStateRequest);
+                if (!savePositionsResponse.IsSuccess)
+                    response.Data.IsMoveSuccess = false;
+
                 return response;
+
+            }
+            //Save the From and To move positions in DB
+
 
 
             logger.LogWarning(
-                "Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
-                fromPosition, toPosition, gameId);
+            "Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
+            fromPosition, toPosition, gameId);
 
             //Revert the Move
             fromBlock.Figure = toBlock.Figure;

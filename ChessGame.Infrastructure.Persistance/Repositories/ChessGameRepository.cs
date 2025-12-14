@@ -2,6 +2,7 @@
 using ChessGame.Domain.Domain.Entities;
 using ChessGame.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
 
 namespace ChessGame.Infrastructure.Persistance.Repositories
@@ -20,7 +21,6 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
         public async Task<List<string>> GetAllOpponentsPerCurrentPlayerAsync(Guid currentPlayerIdGuid)
         {
-
             return await chessGameDbContext.
                 ChessGames.
                 AsNoTracking().
@@ -53,7 +53,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> CreateGame(Guid player1, Guid player2, string player1Name, string player2Name, int player1Time, int player2Time)
+        public async Task<bool> CreateGame(Guid player1, Guid player2, GameEvent gameEvent, string player1Name, string player2Name, int player1Time, int player2Time)
         {
             chessGameDbContext.ChessGames.Add(
                 new Game()
@@ -63,6 +63,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
                     Player1Time = player1Time,
                     Player2Time = player2Time,
+
+                    GameEvent = gameEvent,
 
                     Player1 = player1,
                     Player2 = player2,

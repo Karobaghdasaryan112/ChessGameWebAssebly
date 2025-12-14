@@ -1,8 +1,8 @@
 ﻿namespace SharedResources.ChessGameResource.Enums.Events
 {
+    //default Uses classical
     public enum PlayEvent
     {
-        //default classical
         None = 0,
         Blitz = 240,
         Bullet = 90,

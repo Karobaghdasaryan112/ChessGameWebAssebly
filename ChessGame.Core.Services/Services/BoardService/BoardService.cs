@@ -1,9 +1,13 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Repositories;
+using ChessGame.Domain.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using System.Net;
 using BoardInitializeRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs.BoardInitializeRequestDTO;
 
@@ -23,11 +27,13 @@ namespace ChessGame.Core.Services.Services.BoardService
                 connectionRequestDto.Data.Player1Id,
                 connectionRequestDto.Data.Player2Id,
 
+                GameEvent.Start,
+
                 connectionRequestDto.Data.Player1Name,
                 connectionRequestDto.Data.Player2Name,
 
-                connectionRequestDto.Data.Player1Time.Minutes,
-                connectionRequestDto.Data.Player2Time.Minutes);
+                (int)connectionRequestDto.Data.Player1Time.TotalSeconds,
+                (int)connectionRequestDto.Data.Player2Time.TotalSeconds);
 
 
             if (!isCreated)
@@ -74,5 +80,36 @@ namespace ChessGame.Core.Services.Services.BoardService
                 HttpStatusCode.Created);
         }
 
+        public async Task<ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
+            ConnectionRequestDTO<SavePositionsRequestDTO> savePositionsRequest)
+        {
+            var chessGameHistoryModel = new ChessGameHistory()
+            {
+                FEN = savePositionsRequest.Data.FEN,
+                GameId = savePositionsRequest.Data.GameId,
+                CreateDate = DateTime.UtcNow,
+                UpdateDate = DateTime.UtcNow
+            };
+            var isGameStateSaved = await chessGameHistoryRepository.SaveGameStateAsync(chessGameHistoryModel);
+
+            return isGameStateSaved
+                ? ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new SavePositionsResponseDTO()
+                    {
+                        IsSave = true
+                    },
+                    ChessGameResponseMessage.GameCreated,
+                    HttpStatusCode.OK)
+
+                : ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new SavePositionsResponseDTO()
+                    {
+                        IsSave = false
+                    },
+                    ChessGameResponseMessage.InternalServerError, HttpStatusCode.InternalServerError,
+                    ["Fail to Save Board State into DB"]);
+        }
+
     }
+
 }

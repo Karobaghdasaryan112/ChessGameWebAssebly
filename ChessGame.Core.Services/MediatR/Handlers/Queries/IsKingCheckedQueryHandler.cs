@@ -120,12 +120,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             var possibleMovableAndCuttable =
                 kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
 
-            //if (possibleMovableAndCuttable.CutableBlock != null && !possibleMovableAndCuttable.CutableBlock.Any())
-            //    return await Task.FromResult(true);
-
-            //if (possibleMovableAndCuttable.CutableBlock == null)
-            //    return await Task.FromResult(true);
-
             var figuresForCheck = possibleMovableAndCuttable.CutableBlock.Where(block =>
                 figureTypes.Contains<FigureType>(block.Figure.FigureType));
 

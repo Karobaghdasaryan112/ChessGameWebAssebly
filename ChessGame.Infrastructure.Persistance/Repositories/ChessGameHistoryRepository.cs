@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Repositories;
+using ChessGame.Domain.Domain.Entities;
 using ChessGame.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,19 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         }
 
         public async Task<List<string>> GetGameHistoryByGameIdAsync(Guid gameId)
-        {
-            return await _chessGameDbContext.ChessGamesHistory
+        =>
+             await _chessGameDbContext.ChessGamesHistory
                 .Where(chessGameHistory =>
                     chessGameHistory.GameId == gameId)
                 .Select(selectedGameHistory =>
                     selectedGameHistory.FEN).ToListAsync();
-        }
 
+
+        public async Task<bool> SaveGameStateAsync(ChessGameHistory chessGameHistory)
+        {
+            await _chessGameDbContext.ChessGamesHistory.AddAsync(chessGameHistory);
+            return await _chessGameDbContext.SaveChangesAsync() > 0;
+        }
 
         public Task<List<string>> GetGameHistoryByPlayerAsync(string player)
         {

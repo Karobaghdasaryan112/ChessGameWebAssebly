@@ -20,11 +20,14 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         IValidator<BoardInitializeRequestDTO> validator,
         ILogger<BoardInitializeCommandHandler> logger,
         IBoardService service) :
-            MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>(validator, logger, service),
-            IRequestHandler<
-                BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
-                    IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>,
-                IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
+        MediatR_Base<BoardInitializeRequestDTO, BoardInitializeCommandHandler, IBoardService>(
+            validator,
+            logger,
+            service),
+        IRequestHandler<
+            BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
+                IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>,
+            IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>>
     {
         public async Task<IResponseTypes<BoardInitializeResponseDTO, ChessGameResponseMessage>> Handle(
             BoardInitializeCommand<IRequestTypes<BoardInitializeRequestDTO>,
@@ -35,11 +38,16 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             if (!validationResult.IsValid)
             {
-                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-                return ChessGameResponse<BoardInitializeResponseDTO>.
-                    CreateErrorResponse(
+                var errorMessages = 
+                    validationResult.
+                    Errors.
+                    Select(error => error.ErrorMessage).
+                    ToList();
+
+                return ChessGameResponse<BoardInitializeResponseDTO>.CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.BadRequest, errorMessages);
+                    HttpStatusCode.BadRequest, 
+                    errorMessages);
             }
 
             var connectionRequestDto = new ConnectionRequestDTO<BoardInitializeRequestDTO>()
@@ -51,33 +59,33 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             if (!initializeGameResponseDTO.IsSuccess)
             {
-                return ChessGameResponse<BoardInitializeResponseDTO>.
-                    CreateErrorResponse(
-                        initializeGameResponseDTO.Message,
-                        initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
+                return ChessGameResponse<BoardInitializeResponseDTO>.CreateErrorResponse(
+                    initializeGameResponseDTO.Message,
+                    initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
             }
+
             var BoardInitialize = new Board(default(FigureColors));
 
             var addingResult = ActiveGames.AddGame(initializeGameResponseDTO.Data.GameId, BoardInitialize);
 
             if (!addingResult)
             {
-                _logger.LogError("Failed to add the new game with ID {GameId} to active games.", initializeGameResponseDTO.Data.GameId);
-                return ChessGameResponse<BoardInitializeResponseDTO>.
-                    CreateErrorResponse(
+                _logger.LogError("Failed to add the new game with ID {GameId} to active games.",
+                    initializeGameResponseDTO.Data.GameId);
+                return ChessGameResponse<BoardInitializeResponseDTO>.CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.InternalServerError, 
+                    HttpStatusCode.InternalServerError,
                     ["Field To Add Game Into Active Games"]);
             }
 
-            var responseData = new BoardInitializeResponseDTO() { board = BoardInitialize, GameId = initializeGameResponseDTO.Data.GameId };
+            var responseData = new BoardInitializeResponseDTO()
+            { board = BoardInitialize, GameId = initializeGameResponseDTO.Data.GameId };
 
 
-            return ChessGameResponse<BoardInitializeResponseDTO>.
-                CreateSuccessResponse(
+            return ChessGameResponse<BoardInitializeResponseDTO>.CreateSuccessResponse(
                 responseData,
                 ChessGameResponseMessage.GameCreated,
-                HttpStatusCode.Created,null);
+                HttpStatusCode.Created, null);
         }
     }
 }

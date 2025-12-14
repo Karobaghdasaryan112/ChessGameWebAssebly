@@ -9,13 +9,9 @@ using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
 
 namespace ChessGameBlazorClient.ApiServices
 {
-    public class IdentityService : BaseHttpClient
+    public class IdentityService(HttpClient httpClient, IQueryBuilder queryBuilder)
+        : BaseHttpClient(httpClient, queryBuilder)
     {
-        public IdentityService(HttpClient httpClient, IQueryBuilder queryBuilder) : base(httpClient, queryBuilder)
-        {
-        }
-
-
         /// <summary>
         /// Sends a login request to the identity API and returns a token response.
         /// </summary>
@@ -25,13 +21,13 @@ namespace ChessGameBlazorClient.ApiServices
 
         public async Task<IdentityResponse<UserDTO>?> GetTokenAsync(LoginDTO loginRequest, List<KeyValuePair<string, string>> queryParamAndValues)
         {
-            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, new List<KeyValuePair<string, string>>());
+            var requestUri = this.BuildRequestUri(IdentityEndpoints.Identity, IdentityAction.Login, []);
 
             return await PostAsync<LoginDTO,
                                    IdentityResponse<UserDTO>,
                                    UserDTO,
                                    IdentityResponseMesage>
-                                   (requestUri, loginRequest);
+                                   (requestUri, loginRequest);  
         }
 
 

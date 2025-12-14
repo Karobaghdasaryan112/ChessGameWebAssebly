@@ -10,11 +10,11 @@ namespace SharedResources.ChessGameResource.Figures
     {
         public King()
         {
-            
+
         }
         public FigureType FigureType => FigureType.King;
         public FigureColors FigureColor { get; set; }
-        public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position,Board board, Block? kingBlockForCheckCondition)
+        public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
             var result = new MovableAndCutablePositions
             {
@@ -51,44 +51,31 @@ namespace SharedResources.ChessGameResource.Figures
 
         public string GetFenChar()
         {
-            return FigureColor == FigureColors.White ? "B" : "b";
+            return FigureColor == FigureColors.White ? "K" : "k";
         }
 
-        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions,Board board)
+        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions, Board board)
         {
-            try
-            {
-                row += rowStep;
-                col += colStep;
+            row += rowStep;
+            col += colStep;
 
-                if ((
-                        row > (int)CriticalPositions.lowCriticalValue &&
-                        row < (int)CriticalPositions.highCriticalValue &&
-                        col > (int)CriticalPositions.lowCriticalValue &&
-                        col < (int)CriticalPositions.highCriticalValue)
-                   )
-                {
-                    var block = board.GetBlockByPosition(row, col);
-                    var figure = block.Figure;
+            if ((row <= (int)CriticalPositions.lowCriticalValue ||
+                 row >= (int)CriticalPositions.highCriticalValue ||
+                 col <= (int)CriticalPositions.lowCriticalValue ||
+                 col >= (int)CriticalPositions.highCriticalValue)) return;
+            var block = board.GetBlockByPosition(row, col);
+            var figure = block.Figure;
 
-                    if (figure == null)
-                    {
-                        block.EventColor = EventColors.Move;
-                        positions.MovableBlock?.Add(block);
-                    }
-                    else if ((int)figure.FigureColor != (int)board.Turn)
-                    {
-                        block.EventColor = EventColors.Cut;
-                        positions.CutableBlock?.Add(block);
-                    }
-                }
-            }
-            catch (Exception e)
+            if (figure == null)
             {
-                Console.WriteLine(e);
-                throw;
+                block.EventColor = EventColors.Move;
+                positions.MovableBlock?.Add(block);
             }
-           
+            else if ((int)figure.FigureColor != (int)board.Turn)
+            {
+                block.EventColor = EventColors.Cut;
+                positions.CutableBlock?.Add(block);
+            }
         }
     }
 }
