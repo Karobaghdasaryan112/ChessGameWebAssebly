@@ -1,4 +1,5 @@
 ﻿using ChessGame.Core.Services.MediatR.Handlers.Commands;
+using ChessGame.Core.Services.MediatR.Handlers.Queries;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,8 @@ namespace ChessGame.Core.Services
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssemblies(
-                    typeof(BoardInitializeCommandHandler).Assembly
+                    typeof(BoardInitializeCommandHandler).Assembly,
+                    typeof(GetAllHistoryWidgetsQueryHandler).Assembly
                 );
 
                 cfg.Lifetime = ServiceLifetime.Scoped;

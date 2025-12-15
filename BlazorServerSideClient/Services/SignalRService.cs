@@ -23,8 +23,10 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ClaimsPrincipal _user;
 
-        public SignalRService(IConnectionHandlerService connectionHandlerService,
-            IInvitationHandlerService invitationHandlerService, IGameHandlerService gameHandlerService,
+        public SignalRService(
+            IConnectionHandlerService connectionHandlerService,
+            IInvitationHandlerService invitationHandlerService,
+            IGameHandlerService gameHandlerService,
             AuthenticationStateProvider authenticationStateProvider)
         {
             _gameHandlerService = gameHandlerService;

@@ -1,18 +1,14 @@
 ﻿@page "/HistoryWidgets"
 @using System.Globalization
+@using System.Security.Claims
 @using BlazorServerSideClient.Services.Requests
+@using ChessGameBlazorClient.ApiServices
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @inject AuthenticationStateProvider AuthState
-@inject HistoryWidgetRequestService HistoryWidgetsRequestService
+@inject ChessGameService ChessGameService
 
 @code {
-    public class HistoryGameDTO
-    {
-        public string Opponent { get; set; }
-        public string Result { get; set; }
-        public TimeSpan Duration { get; set; }
-        public DateTime Date { get; set; }
-    }
-
     private int CardsPerPage = 6;
     private int CurrentOpponentIndex = 0;
     private int CurrentPage = 0;
@@ -94,28 +90,20 @@
         return ts.ToString(@"m\:ss", CultureInfo.InvariantCulture);
     }
 
-    private void InitializeAllGames()
+    private async Task InitializeAllGames()
     {
+        var authState = await AuthState.GetAuthenticationStateAsync();
+        var userGuid = Guid.Parse(authState.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value!);
 
-        AllGames = new List<HistoryGameDTO>();
-        var rnd = new Random();
-        var opponents = new[] { "Mike Taylor", "Carson Lewis", "Evelyn Reed", "Rapey Jenkins", "Michael Robertson" };
-
-        foreach (var opp in opponents)
+        var allGameHistories = await ChessGameService.GetAllHistoryWidgetsAsync(new GetAllHistoryWidgetRequestDTO()
         {
-            var count = rnd.Next(3, 12);
-            for (int i = 0; i < count; i++)
-            {
-                var result = (i % 3 == 0) ? "Win" : (i % 3 == 1) ? "Lose" : "Draw";
-                AllGames.Add(new HistoryGameDTO
-                {
-                    Opponent = opp,
-                    Result = result,
-                    Duration = TimeSpan.FromSeconds(rnd.Next(60 * 2, 60 * 20)),
-                    Date = DateTime.UtcNow.AddDays(-rnd.Next(0, 120)).AddMinutes(-rnd.Next(0, 600))
-                });
-            }
-        }
+
+            CurrentPlayerId = userGuid,
+        });
+
+        AllGames.AddRange(allGameHistories?.Data.AllGamesHistories!);
+        GroupGames();
+
     }
 
 
@@ -153,7 +141,8 @@
             <div class="opp-chip" title="Click small button to jump next opponent">
                 <div class="opp-name">@Opponents[CurrentOpponentIndex]</div>
                 <div class="opp-meta">
-                    <span class="opp-count">@GamesByOpponent[Opponents[CurrentOpponentIndex]].Count</span>
+                    <span class="opp-count">@{ GamesByOpponent.TryGetValue(Opponents[CurrentOpponentIndex], out var result);
+                                                 result?.Count(); }</span>
                     <button class="small-next" @onclick="GoToNextOpponent" title="Next opponent">›</button>
                 </div>
             </div>
@@ -166,10 +155,10 @@
         <div class="cards-grid">
             @foreach (var g in PagedGamesForCurrentOpponent())
             {
-                <article class="game-card @ResultClass(g.Result)">
+                <article class="game-card @ResultClass(g.GameEvent.ToString())">
                     <div class="card-top">
                         <div class="card-opponent">@g.Opponent</div>
-                        <div class="card-result">@ResultLabel(g.Result)</div>
+                        <div class="card-result">@ResultLabel(g.GameEvent.ToString())</div>
                     </div>
 
                     <div class="card-body">

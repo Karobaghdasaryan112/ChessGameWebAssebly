@@ -46,7 +46,8 @@
 
         public enum ChessGameEndpoints
         {
-            ChessGame
+            ChessGame,
+            HistoryWidget
         }
 
         public enum ChatEndpoints

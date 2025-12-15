@@ -5,7 +5,7 @@ namespace ChessGameBlazorClient.ServiceEndpoints
 {
     public static class BasePaths
     {
-        internal static readonly string baseUrl = "https://localhost:7135/";
+        internal static readonly string baseUrl = "http://localhost:5247/";
         /// <summary>
         /// GameHub mapping Url for ChessGame Service
         /// </summary>

@@ -12,5 +12,8 @@ namespace ChessGame.Core.Services.Contracts.BoardServices
         Task<IResponseTypes<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>
             GetGamesByCurrentAndOpponentIdsPagination(
                 IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> RequestDto);
+
+        Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
+            GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> getAllHistoryReqeustDTO);
     }
 }

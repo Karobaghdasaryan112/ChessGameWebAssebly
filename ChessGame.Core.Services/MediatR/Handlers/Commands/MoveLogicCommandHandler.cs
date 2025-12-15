@@ -1,4 +1,5 @@
-﻿using ChessGame.Core.Services.Contracts.BoardServices;
+﻿using System.Net;
+using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
@@ -19,6 +20,7 @@ using SharedResources.Requests;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
@@ -64,21 +66,31 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
 
-            //This is for the simulation
-            var fenString = request.Request.requestType.GameState.FromBoardToFen();
-
-            Console.WriteLine(fenString);
-
-            var board = fenString.FromFenToBoard();
-
-            //If yes, send the board state with the checked king position to the player who made the move and return invalid move response
-
-            //Check if the King is checked after the move
-            if (mediatRSubmitMoveResponse.Data.IsKingChecked)
+            var saveGameStateRequest = new ConnectionRequestDTO<SavePositionsRequestDTO>()
             {
+                Data = new SavePositionsRequestDTO()
+                {
+                    FEN = request.Request.requestType.GameState.FromBoardToFen(),
+                    GameId = request.Request.requestType.GameId,
+                }
+            };
 
+            var savePositionsResponse = await service.SavePositionsAsync(saveGameStateRequest);
+            if (!savePositionsResponse.IsSuccess)
+                return ChessGameResponse<MoveResponseDTO>.CreateErrorResponse(new MoveResponseDTO()
+                {
+                    GameId = request.Request.requestType.GameId,
+                    Player = request.Request.requestType.Player
+                },
+                    ChessGameResponseMessage.InternalServerError,
+                    HttpStatusCode.InternalServerError);
+
+            if (mediatRSubmitMoveResponse.Data is { IsKingChecked: true })
+            {
+                    
                 var checkedKingForMe =
-                    request.Request.requestType.GameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)request.Request.requestType.GameState.Turn);
+                    request.Request.requestType.GameState.GetBlockByFigureTypeAndColor(FigureType.King,
+                        (FigureColors)request.Request.requestType.GameState.Turn);
                 request.Request.requestType.IsKingChecked = true;
                 request.Request.requestType.CheckedKingPosition = checkedKingForMe.First().Position;
                 request.Request.requestType.From = null;
@@ -99,11 +111,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             }
 
-            //Switch Turn
             request.Request.requestType.GameState.SwitchTurn();
 
-
-            //Check if the opponent's King is checked after the move
 
             var isKingCheckedAfterMove = new ChessGameRequest<IsKingCheckedRequestDTO>()
             {
@@ -116,16 +125,19 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     }
             };
             var isKingCheckedCommandAfterMove =
-                new IsKingCheckedQuery<IRequestTypes<IsKingCheckedRequestDTO>, IResponseTypes<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(isKingCheckedAfterMove);
+                new IsKingCheckedQuery<IRequestTypes<IsKingCheckedRequestDTO>,
+                    IResponseTypes<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(isKingCheckedAfterMove);
 
             var mediatRIsKingCheckAfterMove = await mediator.Send(isKingCheckedCommandAfterMove, cancellationToken);
 
             if (mediatRIsKingCheckAfterMove is { IsSuccess: true, Data.IsKingChecked: true })
             {
                 request.Request.requestType.IsKingChecked = true;
-                //Send the board state to the opponent with the checked king position if the king is checked
+
+
                 var checkedKingForOpponent =
-                    request.Request.requestType.GameState.GetBlockByFigureTypeAndColor(FigureType.King, (FigureColors)request.Request.requestType.GameState.Turn);
+                    request.Request.requestType.GameState.GetBlockByFigureTypeAndColor(FigureType.King,
+                        (FigureColors)request.Request.requestType.GameState.Turn);
                 request.Request.requestType.CheckedKingPosition = checkedKingForOpponent.First().Position;
 
                 var isKingMateStateQueryRequest =
@@ -141,9 +153,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                             }
                         });
 
-                var IsKingMateStateRequest = await mediator.Send(isKingMateStateQueryRequest, cancellationToken);
+                var isKingMateStateRequest = await mediator.Send(isKingMateStateQueryRequest, cancellationToken);
 
-                if (IsKingMateStateRequest is { IsSuccess: true, Data.IsKingMate: true })
+                if (isKingMateStateRequest is { IsSuccess: true, Data.IsKingMate: true })
                 {
                     request.Request.requestType.IsKingMate = true;
 
@@ -180,7 +192,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                         },
                         ChessGameResponseMessage.MoveSuccessful,
                         System.Net.HttpStatusCode.OK
-                        , null);
+                        , null!);
                 }
             }
 

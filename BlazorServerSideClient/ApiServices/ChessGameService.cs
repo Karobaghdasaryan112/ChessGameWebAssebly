@@ -11,13 +11,13 @@ namespace ChessGameBlazorClient.ApiServices
     public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder)
         : BaseHttpClient(httpClient, queryBuilder)
     {
-        public async Task<ChessGameResponse<GetAllHistoryWidgetsResponseDTO>?> GetAllHistoryWidgetsAsync(GetAllHistoryWidgetRequestDTO allHistoryWidgetRequestDto)
+        public async Task<ChessGameResponse<GetAllHistoryWidgetsResponseDTO>?> GetAllHistoryWidgetsAsync(
+            GetAllHistoryWidgetRequestDTO allHistoryWidgetRequestDto)
         {
             var requestUri = this.BuildRequestUri(
                 Endpoints.ChessGameEndpoints.ChessGame,
                 Actions.ChessGameAction.History,
                 [
-
                     new KeyValuePair<string, string>("playerId", $"{allHistoryWidgetRequestDto.CurrentPlayerId}")
                 ]);
 
@@ -27,5 +27,4 @@ namespace ChessGameBlazorClient.ApiServices
                 ChessGameResponseMessage>(requestUri.ToString());
         }
     }
-}
 }

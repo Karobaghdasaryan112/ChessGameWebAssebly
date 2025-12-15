@@ -133,7 +133,7 @@ namespace ChessGameBlazorClient.UI.ClientService
 
             var identityBasePath = BasePaths.GetPath(endpoint, action);
             var requestQuery =
-                 queryParamAndValues.Count > 0 ?
+                 queryParamAndValues.Count == 0 ?
                  identityBasePath :
                  _queryBuilder.BuildPath(identityBasePath, queryParamAndValues);
 

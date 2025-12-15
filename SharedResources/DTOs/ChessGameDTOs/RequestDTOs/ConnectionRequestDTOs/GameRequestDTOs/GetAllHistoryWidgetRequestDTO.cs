@@ -2,7 +2,7 @@
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 {
-    public class GetAllHistoryWidgetRequestDTO : IResponseDTO
+    public class GetAllHistoryWidgetRequestDTO : IRequestDTO 
     {
         public Guid CurrentPlayerId { get; set; }
     }

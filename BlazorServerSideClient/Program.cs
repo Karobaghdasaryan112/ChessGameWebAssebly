@@ -6,6 +6,7 @@ using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
 using BlazorServerSideClient.Services.Requests;
 using ChessGame.Core.Services.MediatR.Handlers.Commands;
+using ChessGameBlazorClient.ApiServices;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.Services;
@@ -34,6 +35,8 @@ builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
 builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 
+builder.Services.AddScoped<ChessGameService>();
+
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
@@ -45,6 +48,7 @@ builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>(
 builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
+builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestService>();
 
 builder.Services.AddSignalR()
     .AddNewtonsoftJsonProtocol(options =>

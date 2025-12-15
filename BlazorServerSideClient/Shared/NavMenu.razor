@@ -28,6 +28,11 @@
                 <span class="oi oi-people" aria-hidden="true"></span> Dashboard
             </NavLink>
         </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="dashboard" @onclick="HistoryClicked">
+                <span class="oi oi-people" aria-hidden="true"></span> Dashboard
+            </NavLink>
+        </div>
     </nav>
 </div>
 
@@ -45,27 +50,21 @@
     {
         if (user.Identity?.IsAuthenticated == false)
         {
-            NavigationManager.NavigateTo("/",true);
+            NavigationManager.NavigateTo("/", true);
             return;
         }
+
         var hubConnection = await HubClient.GetHubConnection();
         var UserGuid = user.Claims.First(Claim => Claim.Type == ClaimTypes.NameIdentifier)?.Value;
-        // var userConnection = await hubConnection.InvokeCoreAsync("IsUserInGame", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
-        // if (userConnection is UserConnectionResponseDTO connectionState)
-        // {
-        //     if (connectionState.Gameinfo != default)
-        //     {
-        //         var confirmResult = await JS.InvokeAsync<bool>("confirm", "are you sure to want to Leave?");
-        //         if (confirmResult)
-        //         {
-        //             await hubConnection.InvokeCoreAsync("RemovePlayerFromGameAsync", typeof(UserConnectionResponseDTO), new object[] { UserGuid! });
-        //         }
-        //     }
-        // }
     }
 
     private void DashboardClicked(MouseEventArgs e)
     {
-        NavigationManager.NavigateTo("/dashboard",true);
+        NavigationManager.NavigateTo("/dashboard", true);
+    }
+
+    private void HistoryClicked(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/HistoryWidgets", true);
     }
 }

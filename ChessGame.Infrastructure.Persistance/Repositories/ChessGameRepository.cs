@@ -12,11 +12,12 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         //Widgets
         public async Task<List<Game>> GetAllGames(Guid currentPlayerId)
         {
-            return await chessGameDbContext.ChessGames.AsNoTracking()
+            var games = await chessGameDbContext.ChessGames.AsNoTracking()
                 .Where(game =>
                     game.Player1 == currentPlayerId ||
                     game.Player2 == currentPlayerId)
                 .ToListAsync();
+            return games;
         }
 
         public async Task<List<string>> GetAllOpponentsPerCurrentPlayerAsync(Guid currentPlayerIdGuid)

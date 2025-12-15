@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses;
@@ -41,7 +42,16 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                     null!, ChessGameResponseMessage.InvalidData,
                     HttpStatusCode.BadRequest, null!);
 
-            throw new NotImplementedException();
+            var connectionRequest = new ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO>()
+            {
+                Data = request.Request.requestType
+            };
+            var result = await service.GetAllOpponents(connectionRequest);
+            return ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
+                new GetAllHistoryWidgetsResponseDTO()
+                {
+                    AllGamesHistories = result.Data.AllGamesHistories
+                }, ChessGameResponseMessage.GameCreated, HttpStatusCode.Accepted, null);
         }
     }
 }

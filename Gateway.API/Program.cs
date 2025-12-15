@@ -1,28 +1,19 @@
 using Gateway.API.Middlewares;
-using OpenIddict.Server.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowUI_CORS", policy =>
     {
-        policy.WithOrigins("https://localhost:7225")
+        policy.WithOrigins("http://localhost:5191")
               .AllowAnyMethod()
               .AllowCredentials()
               .AllowAnyHeader();
     });
 });
-
-builder.Services.AddAuthentication(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Authority = "https://localhost:7101";
-        options.RequireHttpsMetadata = true;
-        options.Audience = "gateway";
-    });
-
 
 var proxySection = builder.Configuration.GetSection("ReverseProxy");
 
@@ -44,7 +35,6 @@ app.UseMiddleware<LoggingMiddleware>();
 
 app.UseRouting();
 app.UseCors("AllowUI_CORS");
-app.UseAuthorization();
 app.MapControllers();
 app.UseEndpoints(endpoints => { endpoints.MapReverseProxy(); });
 app.MapReverseProxy();

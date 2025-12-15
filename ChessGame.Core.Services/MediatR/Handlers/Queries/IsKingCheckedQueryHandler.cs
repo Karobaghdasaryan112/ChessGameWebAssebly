@@ -69,7 +69,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 ChessGameResponseMessage.MoveSuccessful,
                 HttpStatusCode.OK,
                 null);
+
             var myColor = (FigureColors)chosenColor;
+            
             var kingBlock = currentBoard.GetBlockByFigureTypeAndColor(FigureType.King, myColor).First();
             if (await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Queen, myColor, currentBoard,
                     [FigureType.Queen]) ||

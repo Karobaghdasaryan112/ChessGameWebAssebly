@@ -1,4 +1,7 @@
 ﻿using ChessGame.Core.Services;
+using ChessGame.Core.Services.MediatR.Handlers.Commands;
+using ChessGame.Core.Services.MediatR.Handlers.Queries;
+using ChessGame.Core.Services.MediatR.Requests.Queries;
 using ChessGame.Infrastructure.Infrastructure;
 using ChessGame.Infrastructure.Infrastructure.Hubs;
 using ChessGame.Infrastructure.Infrastructure.Persistance;
@@ -6,13 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ChessService.API.ChessGameAPI
 {
-    public class Startup
+    public class Startup(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -34,11 +32,12 @@ namespace ChessService.API.ChessGameAPI
             });
 
 
-            services.AddCoreServices(_configuration);
 
-            services.AddPersistanceServices(_configuration);
+            services.AddCoreServices(configuration);
 
-            services.AddInfrastructureServices(_configuration);
+            services.AddPersistanceServices(configuration);
+
+            services.AddInfrastructureServices(configuration);
 
             services.AddControllers();
 

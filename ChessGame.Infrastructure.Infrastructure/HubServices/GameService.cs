@@ -190,7 +190,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var requestDTO = new ChessGameRequest<CanClickRequestDTO>()
             {
-                requestType = new()
+                requestType = new CanClickRequestDTO
                 {
                     ClickedBlockInformationDto = sendClickConnectionRequestDTO.Data.PreviusBlockInformationDTO,
                     CurrentBlock = currentPositionBlock,
