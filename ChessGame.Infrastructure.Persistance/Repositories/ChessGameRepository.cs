@@ -11,32 +11,16 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
     {
         //Widgets
         public async Task<List<Game>> GetAllGames(Guid currentPlayerId)
-        {
-            var games = await chessGameDbContext.ChessGames.AsNoTracking()
+            => await chessGameDbContext.ChessGames.AsNoTracking()
                 .Where(game =>
                     game.Player1 == currentPlayerId ||
                     game.Player2 == currentPlayerId)
+                .OrderByDescending(selectedGame => selectedGame.CreatedAt)
                 .ToListAsync();
-            return games;
-        }
-
-        public async Task<List<string>> GetAllOpponentsPerCurrentPlayerAsync(Guid currentPlayerIdGuid)
-        {
-            return await chessGameDbContext.
-                ChessGames.
-                AsNoTracking().
-                Where(game =>
-                    game.Player1 == currentPlayerIdGuid ||
-                    game.Player2 == currentPlayerIdGuid).
-                Select(myGame =>
-                    myGame.Player1 == currentPlayerIdGuid ? myGame.Player2Name : myGame.Player1Name).
-                ToListAsync();
-        }
 
         public async Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(
             Guid currentPlayerGuid, Guid opponentPlayerGuid, int currentPage, int pageSize)
-        {
-            return await chessGameDbContext.ChessGames.
+            => await chessGameDbContext.ChessGames.
                 Where(game =>
                     (game.Player1 == currentPlayerGuid &&
                      game.Player2 == opponentPlayerGuid) ||
@@ -45,7 +29,6 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
                 Skip(currentPage * pageSize).
                 Take(pageSize).
                 ToListAsync();
-        }
 
         //Widgets
 

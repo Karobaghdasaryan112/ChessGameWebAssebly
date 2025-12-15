@@ -36,8 +36,11 @@ namespace ChessGame.Core.Services.Services.HubServices
             {
                 Opponent =
                     game.Player1 == getAllHistoryReqeustDTO.Data.CurrentPlayerId ?
-                        game.Player1Name :
-                        game.Player2Name
+                        game.Player2Name :
+                        game.Player1Name,
+                OpponentGuid = game.Player1 == getAllHistoryReqeustDTO.Data.CurrentPlayerId ?
+                    game.Player2 :
+                    game.Player1,
             }));
 
             return ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>
@@ -50,12 +53,19 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async
             Task<IResponseTypes<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>
             GetGamesByCurrentAndOpponentIdsPagination(
-                IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> RequestDto)
+                IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> requestDto)
         {
-            var currentPage = RequestDto.requestType.CurrentPage;
-            var pageSize = RequestDto.requestType.PageSize;
-            var opponentPlayerGuid = RequestDto.requestType.OpponentPlayerGuid;
-            var currentPlayerGuid = RequestDto.requestType.CurrentPlayerGuid;
+            var validationResult = await genericValidationService.ValidateAsync(requestDto.requestType);
+            if (!validationResult.IsValid)
+                return ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>.CreateErrorResponse(
+                    ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest,
+                    validationResult.Errors.Select(error => error.ErrorMessage).ToList());
+
+            var currentPage = requestDto.requestType.CurrentPage;
+            var pageSize = requestDto.requestType.PageSize;
+            var opponentPlayerGuid = requestDto.requestType.OpponentPlayerGuid;
+            var currentPlayerGuid = requestDto.requestType.CurrentPlayerGuid;
 
             var gamesPaginationResult =
                 await chessGameRepository.
@@ -74,13 +84,14 @@ namespace ChessGame.Core.Services.Services.HubServices
                 GameEvent = paginateGame.GameEvent,
                 Opponent =
                     paginateGame.Player1 == opponentPlayerGuid ? paginateGame.Player1Name : paginateGame.Player2Name
+
             }));
 
             return ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>
                 .CreateSuccessResponse(
                     new GetGamesByCurrentAndOpponentIdsPaginationResponseDTO() { AllGamesHistories = allGamesDto },
                     ChessGameResponseMessage.SuccessData,
-                    HttpStatusCode.OK,null);
+                    HttpStatusCode.OK, null);
         }
     }
 }

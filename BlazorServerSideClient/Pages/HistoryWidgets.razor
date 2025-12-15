@@ -13,37 +13,33 @@
     private int CurrentOpponentIndex = 0;
     private int CurrentPage = 0;
 
+    private ClaimsPrincipal _user;
+
+    private bool _isLoading = true;
+    private string? _error;
+
+
     private List<HistoryGameDTO> AllGames = new();
 
-    private List<string> Opponents = new();
+    private List<KeyValuePair<string, Guid>> Opponents = new();
     private Dictionary<string, List<HistoryGameDTO>> GamesByOpponent = new();
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        _user = (await AuthState.GetAuthenticationStateAsync()).User;
+
         if (!AllGames.Any())
-        {
-            InitializeAllGames();
-        }
 
-        GroupGames();
+            await InitializeAllGames();
+
+        _isLoading = false;
     }
 
-    private void GroupGames()
-    {
-        GamesByOpponent = AllGames
-            .GroupBy(g => g.Opponent)
-            .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.Date).ToList());
 
-        Opponents = GamesByOpponent.Keys.ToList();
-        if (Opponents.Count == 0) Opponents.Add("No opponents");
-        CurrentOpponentIndex = Math.Min(CurrentOpponentIndex, Opponents.Count - 1);
-        CurrentPage = 0;
-    }
 
     private IEnumerable<HistoryGameDTO> PagedGamesForCurrentOpponent()
     {
-        var key = Opponents[CurrentOpponentIndex];
-        if (!GamesByOpponent.TryGetValue(key, out var value)) return Enumerable.Empty<HistoryGameDTO>();
+        var keyValuePair = Opponents[CurrentOpponentIndex];
+        if (!GamesByOpponent.TryGetValue(keyValuePair.Key, out var value)) return Enumerable.Empty<HistoryGameDTO>();
 
         return value
             .Skip(CurrentPage * CardsPerPage)
@@ -52,37 +48,51 @@
 
     private int TotalPagesForCurrentOpponent()
     {
-        var key = Opponents[CurrentOpponentIndex];
-        if (!GamesByOpponent.TryGetValue(key, out var value)) return 1;
+        var keyValuePair = Opponents[CurrentOpponentIndex];
+        if (!GamesByOpponent.TryGetValue(keyValuePair.Key, out var value)) return 1;
         var count = value.Count;
         return Math.Max(1, (int)Math.Ceiling(count / (double)CardsPerPage));
     }
-
-    private void PrevPage()
+    //per current Opponent Pages
+    private async Task PrevPage()
     {
         if (CurrentPage > 0) CurrentPage--;
+        await GroupGames();
     }
-    private void NextPage()
+    private async Task NextPage()
     {
         if (CurrentPage < TotalPagesForCurrentOpponent() - 1) CurrentPage++;
-    }
 
-    private void PrevOpponent()
+        await GroupGames();
+    }
+    //per current Opponent Pages
+
+
+    //Next Opponent
+
+    private async Task PrevOpponent()
     {
         if (CurrentOpponentIndex > 0) CurrentOpponentIndex--;
         CurrentPage = 0;
+
+        await GroupGames();
     }
-    private void NextOpponent()
+    private async Task NextOpponent()
     {
         if (CurrentOpponentIndex < Opponents.Count - 1) CurrentOpponentIndex++;
         CurrentPage = 0;
+
+        await GroupGames();
     }
 
-    private void GoToNextOpponent()
+    private async Task GoToNextOpponent()
     {
-        CurrentOpponentIndex = (CurrentOpponentIndex + 1) % Opponents.Count;
+        CurrentOpponentIndex += 1;
         CurrentPage = 0;
+        await GroupGames();
     }
+    //Next Opponent
+
 
     private string FormatDuration(TimeSpan ts)
     {
@@ -90,26 +100,44 @@
         return ts.ToString(@"m\:ss", CultureInfo.InvariantCulture);
     }
 
+
     private async Task InitializeAllGames()
     {
-        var authState = await AuthState.GetAuthenticationStateAsync();
-        var userGuid = Guid.Parse(authState.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value!);
+        var userGuid = Guid.Parse(_user.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value!);
 
         var allGameHistories = await ChessGameService.GetAllHistoryWidgetsAsync(new GetAllHistoryWidgetRequestDTO()
         {
-
             CurrentPlayerId = userGuid,
         });
 
-        AllGames.AddRange(allGameHistories?.Data.AllGamesHistories!);
-        GroupGames();
+        Opponents.AddRange(
+            allGameHistories?.Data.AllGamesHistories.GroupBy(game => game.Opponent).ToDictionary(groupGame =>
+                groupGame.Key, groupGame =>
+                groupGame.Select(grp => grp.OpponentGuid).First()) ?? []);
 
+        Opponents.ForEach(opponent => GamesByOpponent[opponent.Key] = []);
+
+        await GroupGames();
     }
 
-
-    private Task GetAllOpponents()
+    private async Task GroupGames()
     {
-        throw new NotImplementedException();
+        var userGuid = Guid.Parse(_user.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value!);
+        var gamesPaginationPerOpponentResponse = await ChessGameService.GetGamesPaginationPerOpponentAsync(new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
+        {
+            CurrentPlayerGuid = userGuid,
+            CurrentPage = this.CurrentPage,
+            PageSize = CardsPerPage,
+            OpponentPlayerGuid = Opponents[CurrentOpponentIndex].Value
+        });
+
+        var gamesPaginationPerOpponentResult = gamesPaginationPerOpponentResponse?.Data;
+
+        GamesByOpponent[Opponents[CurrentOpponentIndex].Key] = gamesPaginationPerOpponentResult.AllGamesHistories;
+
+
+        CurrentOpponentIndex = Math.Min(CurrentOpponentIndex, Opponents.Count - 1);
+        CurrentPage = 0;
     }
 
     private string ResultClass(string result) => result?.ToLower() switch
@@ -120,91 +148,102 @@
         _ => "res-draw"
     };
 
-    private string ResultLabel(string result) => result?.ToLower() switch
-    {
-        "win" => "Win",
-        "lose" => "Lose",
-        "draw" => "Draw",
-        _ => "Unknown"
-    };
+    private string ResultLabel(string result) => result;
 }
-<div class="hw-wrap">
-    <header class="hw-header">
-        <div class="hw-title">
-            <h2>History</h2>
-            <div class="hw-sub">Recent matches with opponents</div>
-        </div>
-
-        <div class="hw-controls">
-            <button class="opp-btn" @onclick="PrevOpponent" title="Previous opponent">◀</button>
-
-            <div class="opp-chip" title="Click small button to jump next opponent">
-                <div class="opp-name">@Opponents[CurrentOpponentIndex]</div>
-                <div class="opp-meta">
-                    <span class="opp-count">@{ GamesByOpponent.TryGetValue(Opponents[CurrentOpponentIndex], out var result);
-                                                 result?.Count(); }</span>
-                    <button class="small-next" @onclick="GoToNextOpponent" title="Next opponent">›</button>
-                </div>
+@if (_isLoading)
+{
+    <div class="hw-loading">
+        <div class="spinner"></div>
+        <span>Loading history...</span>
+    </div>
+}
+else if (_error != null)
+{
+    <div class="hw-error">
+        @_error
+    </div>
+}
+else
+{
+    <div class="hw-wrap">
+        <header class="hw-header">
+            <div class="hw-title">
+                <h2>History</h2>
+                <div class="hw-sub">Recent matches with opponents</div>
             </div>
 
-            <button class="opp-btn" @onclick="NextOpponent" title="Next opponent">▶</button>
-        </div>
-    </header>
+            <div class="hw-controls">
+                <button class="opp-btn" @onclick="PrevOpponent" title="Previous opponent">◀</button>
 
-    <section class="hw-grid-area">
-        <div class="cards-grid">
-            @foreach (var g in PagedGamesForCurrentOpponent())
-            {
-                <article class="game-card @ResultClass(g.GameEvent.ToString())">
-                    <div class="card-top">
-                        <div class="card-opponent">@g.Opponent</div>
-                        <div class="card-result">@ResultLabel(g.GameEvent.ToString())</div>
+                <div class="opp-chip" title="Click small button to jump next opponent">
+                    <div class="opp-name">@Opponents[CurrentOpponentIndex].Key</div>
+                    <div class="opp-meta">
+                        <span class="opp-count">
+                            @GamesByOpponent[Opponents[CurrentOpponentIndex].Key].Count();
+                        </span>
+                        <button class="small-next" @onclick="GoToNextOpponent" title="Next opponent">›</button>
                     </div>
+                </div>
 
-                    <div class="card-body">
-                        <div class="meta-row">
-                            <div class="meta-item">
-                                <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M12 8v4l3 3"></path>
-                                    <circle cx="12" cy="12" r="9"></circle>
-                                </svg>
-                                <span class="meta-text">@FormatDuration(g.Duration)</span>
-                            </div>
+                <button class="opp-btn" @onclick="NextOpponent" title="Next opponent">▶</button>
+            </div>
+        </header>
 
-                            <div class="meta-item">
-                                <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                                    <path d="M16 2v4"></path>
-                                    <path d="M8 2v4"></path>
-                                </svg>
-                                <span class="meta-text">@g.Date.ToLocalTime().ToString("dd MMM yyyy")</span>
+        <section class="hw-grid-area">
+            <div class="cards-grid">
+                @foreach (var g in PagedGamesForCurrentOpponent())
+                {
+                    <article class="game-card @ResultClass(g.GameEvent.ToString())">
+                        <div class="card-top">
+                            <div class="card-opponent">@g.Opponent</div>
+                            <div class="card-result">@ResultLabel(g.GameEvent.ToString())</div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="meta-row">
+                                <div class="meta-item">
+                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M12 8v4l3 3"></path>
+                                        <circle cx="12" cy="12" r="9"></circle>
+                                    </svg>
+                                    <span class="meta-text">@FormatDuration(g.Duration)</span>
+                                </div>
+
+                                <div class="meta-item">
+                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                                        <path d="M16 2v4"></path>
+                                        <path d="M8 2v4"></path>
+                                    </svg>
+                                    <span class="meta-text">@g.Date.ToLocalTime().ToString("dd MMM yyyy")</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="card-footer">
-                        <button class="view-btn">View</button>
-                        <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
-                    </div>
-                </article>
+                        <div class="card-footer">
+                            <button class="view-btn">View</button>
+                            <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (!GamesByOpponent.ContainsKey(Opponents[CurrentOpponentIndex].Key) || !Opponents[CurrentOpponentIndex].Key.Any())
+            {
+                <div class="empty">No games yet with this opponent.</div>
             }
-        </div>
+        </section>
 
-        @if (!GamesByOpponent.ContainsKey(Opponents[CurrentOpponentIndex]) || !GamesByOpponent[Opponents[CurrentOpponentIndex]].Any())
-        {
-            <div class="empty">No games yet with this opponent.</div>
-        }
-    </section>
+        <footer class="hw-footer">
+            <div class="pager">
+                <button class="pg-btn" @onclick="PrevPage" disabled="@(CurrentPage == 0)">← Prev</button>
+                <div class="pg-info">Page <strong>@(CurrentPage + 1)</strong> of <strong>@TotalPagesForCurrentOpponent()</strong></div>
+                <button class="pg-btn" @onclick="NextPage" disabled="@(CurrentPage >= TotalPagesForCurrentOpponent() - 1)">Next →</button>
+            </div>
 
-    <footer class="hw-footer">
-        <div class="pager">
-            <button class="pg-btn" @onclick="PrevPage" disabled="@(CurrentPage == 0)">← Prev</button>
-            <div class="pg-info">Page <strong>@(CurrentPage + 1)</strong> of <strong>@TotalPagesForCurrentOpponent()</strong></div>
-            <button class="pg-btn" @onclick="NextPage" disabled="@(CurrentPage >= TotalPagesForCurrentOpponent() - 1)">Next →</button>
-        </div>
-
-        <div class="bottom-actions">
-            <button class="primary">Open full history</button>
-        </div>
-    </footer>
-</div>
+            <div class="bottom-actions">
+                <button class="primary">Open full history</button>
+            </div>
+        </footer>
+    </div>
+}

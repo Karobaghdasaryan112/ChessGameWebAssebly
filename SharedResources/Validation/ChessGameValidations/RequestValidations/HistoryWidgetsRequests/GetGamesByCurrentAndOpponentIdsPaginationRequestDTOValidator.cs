@@ -14,8 +14,8 @@ namespace SharedResources.Validation.ChessGameValidations.RequestValidations.His
         {
             RuleFor(x => x.OpponentPlayerGuid).NotEmpty();
             RuleFor(x => x.CurrentPlayerGuid).NotEmpty();
-            RuleFor(x => x.CurrentPage).GreaterThan(0);
-            RuleFor(x => x.PageSize).GreaterThan(0);
+            RuleFor(x => x.CurrentPage).GreaterThan(-1);
+            RuleFor(x => x.PageSize).GreaterThan(-1);
         }
     }
 }

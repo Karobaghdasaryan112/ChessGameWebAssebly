@@ -11,6 +11,8 @@ namespace ChessGameBlazorClient.ApiServices
     public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder)
         : BaseHttpClient(httpClient, queryBuilder)
     {
+
+
         public async Task<ChessGameResponse<GetAllHistoryWidgetsResponseDTO>?> GetAllHistoryWidgetsAsync(
             GetAllHistoryWidgetRequestDTO allHistoryWidgetRequestDto)
         {
@@ -25,6 +27,26 @@ namespace ChessGameBlazorClient.ApiServices
                 ChessGameResponse<GetAllHistoryWidgetsResponseDTO>,
                 GetAllHistoryWidgetsResponseDTO,
                 ChessGameResponseMessage>(requestUri.ToString());
+        }
+
+
+
+        public async Task<ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>?> GetGamesPaginationPerOpponentAsync(
+                GetGamesByCurrentAndOpponentIdsPaginationRequestDTO andOpponentIdsPaginationRequestDto)
+        {
+            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame,
+                Actions.ChessGameAction.HistoryPagination, [
+                    new KeyValuePair<string, string>("currentPlayerId",$"{andOpponentIdsPaginationRequestDto.CurrentPlayerGuid}"),
+                    new KeyValuePair<string, string>("opponentPlayerId",$"{andOpponentIdsPaginationRequestDto.OpponentPlayerGuid}"),
+                    new KeyValuePair<string, string>("currentPage",$"{andOpponentIdsPaginationRequestDto.CurrentPage}"),
+                    new KeyValuePair<string, string>("pageSize",$"{andOpponentIdsPaginationRequestDto.PageSize}"),
+                ]);
+
+            return await
+                GetAsync<ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>,
+                    GetGamesByCurrentAndOpponentIdsPaginationResponseDTO,
+                    ChessGameResponseMessage>(
+                    requestUri.ToString());
         }
     }
 }

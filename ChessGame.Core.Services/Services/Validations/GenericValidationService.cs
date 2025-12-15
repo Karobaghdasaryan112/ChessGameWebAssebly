@@ -63,7 +63,8 @@ namespace ChessGame.Core.Services.Services.Validations
 
         //Widgets
         //Requests
-        IValidator<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestValidator
+        IValidator<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestValidator,
+        IValidator<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> getGamesByCurrentAndOpponentIdsPaginationRequestDTOValidator
         )
 
     {
@@ -127,6 +128,7 @@ namespace ChessGame.Core.Services.Services.Validations
                 //Widgets
                 //Requests
                 GetAllHistoryWidgetRequestDTO => (IValidator<T>)getAllHistoryWidgetsRequestValidator,
+                GetGamesByCurrentAndOpponentIdsPaginationRequestDTO => (IValidator<T>)getGamesByCurrentAndOpponentIdsPaginationRequestDTOValidator,
 
                 _ => throw new InvalidOperationException($"No validator registered for type {typeof(T).Name}")
             };

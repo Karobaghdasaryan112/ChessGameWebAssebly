@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using ChessGame.Core.Services.MediatR.Requests.Queries;
+﻿using ChessGame.Core.Services.MediatR.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SharedResources.Contracts.RequestsAndResponses;
@@ -33,6 +32,33 @@ namespace ChessService.API.ChessGameAPI.Controllers
 
             return
                 !getHistoryResult.IsSuccess ? BadRequest(getHistoryResult) : Ok(getHistoryResult);
+        }
+
+        [HttpGet("historyPagination")]
+        public async Task<IActionResult> GetHistoryWidgetsPaginationByOpponentAsync([FromQuery] Guid currentPlayerId,
+            [FromQuery] Guid opponentPlayerId, [FromQuery] int currentPage, [FromQuery] int pageSize)
+        {
+            var historyWidgetsPaginationByOpponentRequest =
+                new ChessGameRequest<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO>()
+                {
+                    requestType = new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
+                    {
+                        CurrentPage = currentPage,
+                        PageSize = pageSize,
+                        CurrentPlayerGuid = currentPlayerId,
+                        OpponentPlayerGuid = opponentPlayerId
+                    }
+                };
+
+            var requestQuery = new GetHistoryWidgetsPaginationQuery<
+                IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO>,
+                IResponseTypes<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>(
+                historyWidgetsPaginationByOpponentRequest);
+
+            var gamesPaginationResult = await mediator.Send(requestQuery);
+
+            return
+                !gamesPaginationResult.IsSuccess ? BadRequest(gamesPaginationResult) : Ok(gamesPaginationResult);
         }
     }
 }

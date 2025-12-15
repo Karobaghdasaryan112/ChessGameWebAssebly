@@ -22,7 +22,8 @@
             Start,
             Move,
             Resign,
-            History
+            History,
+            HistoryPagination
         }
 
         public enum ChatAction
