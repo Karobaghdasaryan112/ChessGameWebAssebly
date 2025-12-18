@@ -30,24 +30,14 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var allGamesResult = await chessGameRepository.GetAllGames(getAllHistoryReqeustDTO.Data.CurrentPlayerId);
 
-            var allOpponentsResult = new List<HistoryGameDTO>();
-
-            allGamesResult.ForEach(game => allOpponentsResult.Add(new HistoryGameDTO()
-            {
-                Opponent =
-                    game.Player1 == getAllHistoryReqeustDTO.Data.CurrentPlayerId ?
-                        game.Player2Name :
-                        game.Player1Name,
-                OpponentGuid = game.Player1 == getAllHistoryReqeustDTO.Data.CurrentPlayerId ?
-                    game.Player2 :
-                    game.Player1,
-            }));
-
             return ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>
-                .CreateSuccessResponse(new GetAllHistoryWidgetsResponseDTO()
+                .CreateSuccessResponse(
+                new GetAllHistoryWidgetsResponseDTO()
                 {
-                    AllGamesHistories = allOpponentsResult
-                }, ChessGameResponseMessage.SuccessData, HttpStatusCode.OK);
+                    OpponentHistories = allGamesResult
+                },
+                ChessGameResponseMessage.SuccessData,
+                HttpStatusCode.OK);
         }
 
         public async
@@ -79,11 +69,13 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             gamesPaginationResult.ForEach(paginateGame => allGamesDto.Add(new HistoryGameDTO()
             {
-                Date = paginateGame.UpdatedAt,
+                GameId = paginateGame.Id,
+                Date = paginateGame.UpdateDate,
                 Duration = TimeSpan.FromMinutes((paginateGame.Player1Time + paginateGame.Player2Time)),
                 GameEvent = paginateGame.GameEvent,
                 Opponent =
-                    paginateGame.Player1 == opponentPlayerGuid ? paginateGame.Player1Name : paginateGame.Player2Name
+                    paginateGame.Player1 == opponentPlayerGuid ? paginateGame.Player1Name : paginateGame.Player2Name,
+                WinnerPlayerGuid = paginateGame.WinnerPlayer,
 
             }));
 

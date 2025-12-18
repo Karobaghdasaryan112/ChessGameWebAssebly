@@ -34,13 +34,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
-            //Data From RequestDto
             var fromPosition = request.RequestDTO.requestType.From;
             var toPosition = request.RequestDTO.requestType.To;
             var gameId = request.RequestDTO.requestType.GameId;
             var currentBoardState = request.RequestDTO.requestType.CurrentBoardState;
 
-            //Initialize Response DTO
+
             var response = ChessGameResponse<SubmitMoveResponseDTO>.CreateSuccessResponse(
                 new SubmitMoveResponseDTO()
                 {
@@ -80,7 +79,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             {
                 ChosenColor = currentBoardState.Turn,
                 CurrentBoard = currentBoardState
-
             };
 
             var query =

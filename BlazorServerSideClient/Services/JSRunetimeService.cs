@@ -34,7 +34,7 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowPlayers(string player1_Name, string player2_Name)
             => _js.SafeInvokeVoidAsync(_logger, "Players.show", player1_Name, player2_Name);
 
-        public ValueTask ShowBoardState(string Blocks, int figureColor, DotNetObjectReference<Game> dotNetRef)
+        public ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef) where T : class
             => _js.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
         public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions)

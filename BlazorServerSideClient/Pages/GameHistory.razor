@@ -3,22 +3,40 @@
 @using System.Text.Json
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
+@using ChessGame.Core.Services.Extentions
+@using ChessGameBlazorClient.ApiServices
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
+@using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
-
+@inject ChessGameService ChessGameService
 @inject SignalRService HubClient
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
-@inject DotNetObjectReference<Game> DotNetRef
 @inject AuthenticationStateProvider AuthenticationState
 
 <div class="game-history-wrap">
+    <div class="leftCard">
+        <div class="playersInfo">
+            <div class="player">
+                <div class="avatar" id="avatar1">P1</div>
+                <div class="playerInfo">
+                    <span class="name" id="player1Name">Player 1: —</span>
+                    <span class="meta" id="player1Meta">Rating: — · Online</span>
+                </div>
+            </div>
 
+            <div style="text-align:center">
+                <div style="font-weight:800">Game Page</div>
+                <div style="color:var(--muted);font-size:13px;margin-top:4px">Friendly match · Blitz 5+0</div>
+            </div>
+
+        </div>
+    </div>
     <div class="history-nav">
         <button id="prevBtn" class="nav-btn" @onclick="ReceivePreviousStateAsync">⟵ Prev</button>
 
@@ -38,90 +56,117 @@
 
 @code {
     [Parameter]
-    [SupplyParameterFromQuery(Name = "Player1Name")]
-    public string Player1Name { get; set; }
+    [SupplyParameterFromQuery(Name = "Player1Id")]
+    public string? Player1Name { get; set; }
 
     [Parameter]
-    [SupplyParameterFromQuery(Name = "Player2Name")]
-    public string Player2Name { get; set; }
+    [SupplyParameterFromQuery(Name = "Player2Id")]
+    public string? Player2Name { get; set; }
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
 
-
-    private HubConnection? _hubConnection;
-
-    private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
+    private DotNetObjectReference<GameHistory>? DotNetRef;
 
     private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
 
     private static int _moveNumber { get; set; }
 
-    private static UserConnectionDTO currentUser => new UserConnectionDTO();
-
     private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
 
     private string currentUserGuid => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
-    //Properties
-    //Reqeusts
-    private ConnectionRequestDTO<MoveRequestDTO> MoveRequestDTO = new ConnectionRequestDTO<MoveRequestDTO>() { Data = new() };
-    private ConnectionRequestDTO<ClickRequestDTO> ClickRequestDTO = new ConnectionRequestDTO<ClickRequestDTO>() { Data = new() };
+    private List<string> BoardStatesAsJson = new();
+    private List<Board> BoardStates = new();
+
+    private string? PreviusBoardStateAsJson { get; set; }
+    private string? NextBoardStateAsJson { get; set; }
+
+    private Board? PreviusBoardState { get; set; }
+    private Board? NextBoardState { get; set; }
+
+    private int CurrentState { get; set; } = 0;
+
+    private int FigureColor { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
-        await JS.ShowPlayers(Player1Name, Player2Name);
+        await JS.ShowPlayers(Player1Name!, Player2Name!);
 
-        var thisBoard = await GameRequestService.SendGameStateAsync(
-            new ConnectionRequestDTO<SendGameStateReqeustDTO>()
+        DotNetRef = DotNetObjectReference.Create(this);
+
+        var gameStatesResponse = await ChessGameService.GetGameHistoryAsync(new GetGameHistoryRequestDTO()
+        {
+            GameId = GameId
+        });
+
+        var boardStates = gameStatesResponse?.Data.FEN!;
+        boardStates.ForEach(boardState =>
             {
-                Data = new SendGameStateReqeustDTO()
-                {
-                    GameId = GameId
-                }
+
+                var board = boardState.FromFenToBoard();
+                BoardStates.Add(board);
+
+                var stateAsJson = JsonSerializer.Serialize(boardState.FromFenToBoard().BoardBlocks);
+                BoardStatesAsJson.Add(stateAsJson);
+
             });
 
-        if (thisBoard.Data?.Board != null)
+        FigureColor = currentUserName == Player1Name ? 0 : 1;
+
+        await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef);
+    }
+
+    private async Task ReceivePreviousStateAsync()
+    {
+        if (CurrentState > 0 && CurrentState <= BoardStatesAsJson.Count() - 1)
         {
+            _moveNumber--;
+            CurrentState--;
 
-            var blocks = thisBoard.Data.Board.BoardBlocks;
-            var jsonBoard = JsonSerializer.Serialize(blocks);
+            SetUpPreviousAndNextBoardState();
 
-            var figureColor = currentUserName == Player1Name ? 0 : 1;
-
-
-            await JS.ShowBoardState(jsonBoard, figureColor, DotNetRef);
-
-            InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
+            await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef!);
+            await InvokeAsync(StateHasChanged);
         }
     }
-    private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
+
+    private async Task ReceiveNextStateAsync()
     {
-        MoveRequestDTO.Data.GameId = gameId;
-        ClickRequestDTO.Data.GameId = gameId;
+        if (CurrentState >= 0 && CurrentState < BoardStatesAsJson.Count() - 1)
+        {
+            _moveNumber++;
+            CurrentState++;
 
-        MoveRequestDTO.Data.Player = player;
-        ClickRequestDTO.Data.Player = player;
+            SetUpPreviousAndNextBoardState();
 
-        MoveRequestDTO.Data.MyColor = myColor;
-        ClickRequestDTO.Data.MyColor = myColor;
-
-        MoveRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
-        ClickRequestDTO.Data.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+            await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef!);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
-    private void ReceivePreviousStateAsync()
+    private void SetUpPreviousAndNextBoardState()
     {
+        int previousIndex = 0;
+        int nextIndex = 0;
+
+        previousIndex = Math.Clamp(CurrentState - 1, 0, BoardStatesAsJson.Count - 1);
+        nextIndex = Math.Clamp(CurrentState + 1, 0, BoardStatesAsJson.Count - 1);
+
+        PreviusBoardStateAsJson = BoardStatesAsJson[previousIndex]!;
+        NextBoardStateAsJson = BoardStatesAsJson[nextIndex]!;
+
+        PreviusBoardState = BoardStates[previousIndex];
+        NextBoardState = BoardStates[nextIndex];
 
     }
-
-    private void ReceiveNextStateAsync()
+    private void SendBoardAction()
     {
-
+        
     }
 
 }

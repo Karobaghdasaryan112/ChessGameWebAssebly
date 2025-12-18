@@ -183,7 +183,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
             var gameState = ActiveGames.ActiveGamesAndBoards[sendClickConnectionRequestDTO.Data.GameId];
-
+            
             var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.CurrentPosition);
 
 

@@ -3,6 +3,7 @@ using ChessGame.Core.Services.Contracts.Repositories;
 using ChessGame.Domain.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -80,6 +81,98 @@ namespace ChessGame.Core.Services.Services.BoardService
                 HttpStatusCode.Created);
         }
 
+        public async Task<ConnectionResponseDTO<SaveGameEventAndWinnerResponseDTO,
+        ChessGameResponseMessage>>
+        SaveGameEventAndWinnerAsync(
+            ConnectionRequestDTO<SaveGameEventAndWinnerRequestDTO> connectionRequestDTO)
+        {
+            logger.LogInformation(
+                "SaveGameEventAndWinnerAsync started. Request: {@Request}",
+                connectionRequestDTO);
+
+            if (connectionRequestDTO == null || connectionRequestDTO.Data == null)
+            {
+                logger.LogWarning("Request or Request.Data is null");
+
+                return ConnectionResponseDTO<
+                    SaveGameEventAndWinnerResponseDTO,
+                    ChessGameResponseMessage>
+                .CreateErrorResponse(
+                    new SaveGameEventAndWinnerResponseDTO { IsSaved = false },
+                    ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (connectionRequestDTO.Data.GameId == Guid.Empty ||
+                connectionRequestDTO.Data.WinnerPlayerGuid == Guid.Empty)
+            {
+                logger.LogWarning(
+                    "Invalid GameId or WinnerPlayerGuid. GameId: {GameId}, Winner: {Winner}",
+                    connectionRequestDTO.Data.GameId,
+                    connectionRequestDTO.Data.WinnerPlayerGuid);
+
+                return ConnectionResponseDTO<
+                    SaveGameEventAndWinnerResponseDTO,
+                    ChessGameResponseMessage>
+                .CreateErrorResponse(
+                    new SaveGameEventAndWinnerResponseDTO { IsSaved = false },
+                    ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+                var isSaved = await chessGameRepository.SaveGameResult(
+                    connectionRequestDTO.Data.WinnerPlayerGuid,
+                    connectionRequestDTO.Data.GameId);
+
+                if (!isSaved)
+                {
+                    logger.LogWarning(
+                        "SaveGameResult returned false. GameId: {GameId}, Winner: {Winner}",
+                        connectionRequestDTO.Data.GameId,
+                        connectionRequestDTO.Data.WinnerPlayerGuid);
+
+                    return ConnectionResponseDTO<
+                        SaveGameEventAndWinnerResponseDTO,
+                        ChessGameResponseMessage>
+                    .CreateErrorResponse(
+                        new SaveGameEventAndWinnerResponseDTO { IsSaved = false },
+                        ChessGameResponseMessage.InternalServerError,
+                        HttpStatusCode.InternalServerError);
+                }
+
+                logger.LogInformation(
+                    "Game result successfully saved. GameId: {GameId}, Winner: {Winner}",
+                    connectionRequestDTO.Data.GameId,
+                    connectionRequestDTO.Data.WinnerPlayerGuid);
+
+                return ConnectionResponseDTO<
+                    SaveGameEventAndWinnerResponseDTO,
+                    ChessGameResponseMessage>
+                .CreateSuccessResponse(
+                    new SaveGameEventAndWinnerResponseDTO { IsSaved = true },
+                    ChessGameResponseMessage.MoveSuccessful,
+                    HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(
+                    ex,
+                    "Exception while saving game result. GameId: {GameId}",
+                    connectionRequestDTO?.Data?.GameId);
+
+                return ConnectionResponseDTO<
+                    SaveGameEventAndWinnerResponseDTO,
+                    ChessGameResponseMessage>
+                .CreateErrorResponse(
+                    new SaveGameEventAndWinnerResponseDTO { IsSaved = false },
+                    ChessGameResponseMessage.InternalServerError,
+                    HttpStatusCode.InternalServerError);
+            }
+        }
+
+
         public async Task<ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
             ConnectionRequestDTO<SavePositionsRequestDTO> savePositionsRequest)
         {
@@ -110,6 +203,50 @@ namespace ChessGame.Core.Services.Services.BoardService
                     ["Fail to Save Board State into DB"]);
         }
 
-    }
+        public async Task<ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+     GetGameHistoryAsync(ConnectionRequestDTO<GetGameHistoryRequestDTO> requestDTO)
+        {
+            logger.LogInformation(
+                "Getting game history. GameId: {GameId}",
+                requestDTO.Data.GameId);
 
+            var gameHistoryResult =
+                await chessGameHistoryRepository.GetGameHistoryByGameIdAsync(
+                    requestDTO.Data.GameId);
+
+            if (!gameHistoryResult.Any())
+            {
+                logger.LogWarning(
+                    "Game history not found. GameId: {GameId}",
+                    requestDTO.Data.GameId);
+
+                return ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
+                    .CreateErrorResponse(
+                        null!,
+                        ChessGameResponseMessage.InvalidData,
+                        HttpStatusCode.BadRequest,
+                        []);
+            }
+
+            var historiesDTO = new GetGameHistoryResponseDTO
+            {
+                GameId = requestDTO.Data.GameId
+            };
+
+            foreach (var history in gameHistoryResult)
+                historiesDTO.FEN.Add(history);
+
+            logger.LogInformation(
+                "Game history successfully retrieved. GameId: {GameId}, MovesCount: {Count}",
+                requestDTO.Data.GameId,
+                historiesDTO.FEN.Count);
+
+            return ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
+                .CreateSuccessResponse(
+                    historiesDTO,
+                    ChessGameResponseMessage.SuccessData,
+                    HttpStatusCode.OK);
+        }
+
+    }
 }

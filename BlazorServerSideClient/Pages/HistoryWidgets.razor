@@ -1,39 +1,57 @@
 ﻿@page "/HistoryWidgets"
 @using System.Globalization
 @using System.Security.Claims
-@using BlazorServerSideClient.Services.Requests
+@inject NavigationManager NavigationManager
 @using ChessGameBlazorClient.ApiServices
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @inject AuthenticationStateProvider AuthState
 @inject ChessGameService ChessGameService
 
 @code {
-    private int CardsPerPage = 6;
+    private int CardsPerPage = 8;
     private int CurrentOpponentIndex = 0;
     private int CurrentPage = 0;
 
     private ClaimsPrincipal _user;
-
+    private Guid _currentUserGuid;
     private bool _isLoading = true;
     private string? _error;
 
 
     private List<HistoryGameDTO> AllGames = new();
 
+    private List<KeyValuePair<string, int>> OpponentsAndToalGamesCount = new();
+
     private List<KeyValuePair<string, Guid>> Opponents = new();
+
     private Dictionary<string, List<HistoryGameDTO>> GamesByOpponent = new();
+
     protected override async Task OnInitializedAsync()
     {
+
         _user = (await AuthState.GetAuthenticationStateAsync()).User;
+        UnAuthorizedUser();
+        _currentUserGuid = Guid.Parse(_user.Claims.Where(Claim => Claim.Type == ClaimTypes.NameIdentifier).First().Value);
 
         if (!AllGames.Any())
-
-            await InitializeAllGames();
-
-        _isLoading = false;
+            try
+            {
+                await InitializeAllGames();
+                _isLoading = false;
+            }
+            catch (Exception ex)
+            {
+                _error = ex.Message;
+            }
     }
-
+    private void UnAuthorizedUser()
+    {
+        if (_user.Identity?.IsAuthenticated == false)
+            NavigationManager.NavigateTo("/Identity/Account/Login?returnUrl=/HistoryWidgets", true);
+    }
 
 
     private IEnumerable<HistoryGameDTO> PagedGamesForCurrentOpponent()
@@ -41,17 +59,15 @@
         var keyValuePair = Opponents[CurrentOpponentIndex];
         if (!GamesByOpponent.TryGetValue(keyValuePair.Key, out var value)) return Enumerable.Empty<HistoryGameDTO>();
 
-        return value
-            .Skip(CurrentPage * CardsPerPage)
-            .Take(CardsPerPage);
+        return value;
     }
 
     private int TotalPagesForCurrentOpponent()
     {
         var keyValuePair = Opponents[CurrentOpponentIndex];
-        if (!GamesByOpponent.TryGetValue(keyValuePair.Key, out var value)) return 1;
-        var count = value.Count;
-        return Math.Max(1, (int)Math.Ceiling(count / (double)CardsPerPage));
+        var opponentAndGamesCountPair = OpponentsAndToalGamesCount.Where(gamesCount => keyValuePair.Key == gamesCount.Key).FirstOrDefault();
+        if (opponentAndGamesCountPair.Equals(default(KeyValuePair<string, int>)) || opponentAndGamesCountPair.Value == 0) return 1;
+        return Math.Max(1, (int)Math.Ceiling(opponentAndGamesCountPair.Value / (double)CardsPerPage));
     }
     //per current Opponent Pages
     private async Task PrevPage()
@@ -61,6 +77,7 @@
     }
     private async Task NextPage()
     {
+        var x = TotalPagesForCurrentOpponent();
         if (CurrentPage < TotalPagesForCurrentOpponent() - 1) CurrentPage++;
 
         await GroupGames();
@@ -87,7 +104,9 @@
 
     private async Task GoToNextOpponent()
     {
-        CurrentOpponentIndex += 1;
+        if (CurrentOpponentIndex < Opponents.Count - 1)
+            CurrentOpponentIndex++;
+
         CurrentPage = 0;
         await GroupGames();
     }
@@ -111,9 +130,13 @@
         });
 
         Opponents.AddRange(
-            allGameHistories?.Data.AllGamesHistories.GroupBy(game => game.Opponent).ToDictionary(groupGame =>
-                groupGame.Key, groupGame =>
-                groupGame.Select(grp => grp.OpponentGuid).First()) ?? []);
+            allGameHistories?.Data.OpponentHistories.ToDictionary(groupGame =>
+                groupGame.Opponent, groupGame =>
+                groupGame.OpponentGuid) ?? []);
+
+        OpponentsAndToalGamesCount.AddRange(allGameHistories?.Data.OpponentHistories.ToDictionary(groupGame =>
+                groupGame.Opponent, groupGame =>
+                groupGame.TotalCount) ?? []);
 
         Opponents.ForEach(opponent => GamesByOpponent[opponent.Key] = []);
 
@@ -137,7 +160,6 @@
 
 
         CurrentOpponentIndex = Math.Min(CurrentOpponentIndex, Opponents.Count - 1);
-        CurrentPage = 0;
     }
 
     private string ResultClass(string result) => result?.ToLower() switch
@@ -193,7 +215,7 @@ else
             <div class="cards-grid">
                 @foreach (var g in PagedGamesForCurrentOpponent())
                 {
-                    <article class="game-card @ResultClass(g.GameEvent.ToString())">
+                    <article class="game-card @ResultClass(g.GameEvent == GameEvent.Over ? g.WinnerPlayerGuid == _currentUserGuid ? "win" : "lose" : g.GameEvent.ToString())">
                         <div class="card-top">
                             <div class="card-opponent">@g.Opponent</div>
                             <div class="card-result">@ResultLabel(g.GameEvent.ToString())</div>
@@ -221,7 +243,7 @@ else
                         </div>
 
                         <div class="card-footer">
-                            <button class="view-btn">View</button>
+                            <button class="view-btn" @onclick="() => GoToGameHistory(_user.Claims.Where(Claim => Claim.Type == ClaimTypes.Name).First().Value, g.Opponent, g.GameId)">View</button>
                             <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
                         </div>
                     </article>
@@ -232,18 +254,49 @@ else
             {
                 <div class="empty">No games yet with this opponent.</div>
             }
-        </section>
+    </section>
 
         <footer class="hw-footer">
             <div class="pager">
-                <button class="pg-btn" @onclick="PrevPage" disabled="@(CurrentPage == 0)">← Prev</button>
-                <div class="pg-info">Page <strong>@(CurrentPage + 1)</strong> of <strong>@TotalPagesForCurrentOpponent()</strong></div>
-                <button class="pg-btn" @onclick="NextPage" disabled="@(CurrentPage >= TotalPagesForCurrentOpponent() - 1)">Next →</button>
+                <button class="pg-btn"
+                        @onclick="PrevPage"
+                        @attributes="PrevDisabled">
+                    ← Prev
+                </button>
+
+                <div class="pg-info">
+                    Page <strong>@(CurrentPage + 1)</strong>
+                    of <strong>@TotalPagesForCurrentOpponent()</strong>
+                </div>
+
+                <button class="pg-btn"
+                        @onclick="NextPage"
+                        @attributes="NextDisabled">
+                    Next →
+                </button>
             </div>
 
             <div class="bottom-actions">
                 <button class="primary">Open full history</button>
             </div>
         </footer>
-    </div>
+
+    @code {
+        private Dictionary<string, object>? PrevDisabled =>
+        CurrentPage == 0
+        ? new() { ["disabled"] = true }
+        : null;
+
+        private Dictionary<string, object>? NextDisabled =>
+        CurrentPage >= TotalPagesForCurrentOpponent() - 1
+        ? new() { ["disabled"] = true }
+        : null;
+
+        public async Task GoToGameHistory(string currentPlayerName, string opponentPlayerName, Guid gameId)
+        {
+            var query = $"/GameHistory?Player1Name={currentPlayerName}&Player2Name={opponentPlayerName}&GameId={gameId}";
+            NavigationManager.NavigateTo(query, true);
+        }
+    }
+</div>
 }

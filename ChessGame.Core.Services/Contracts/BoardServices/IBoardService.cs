@@ -1,7 +1,4 @@
-﻿using SharedResources.ChessGameResource.Enums.Colors;
-using SharedResources.ChessGameResource.Models;
-using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+﻿using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -17,5 +14,10 @@ namespace ChessGame.Core.Services.Contracts.BoardServices
 
         Task<ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
             ConnectionRequestDTO<SavePositionsRequestDTO> savePositionsRequest);
+
+        Task<ConnectionResponseDTO<SaveGameEventAndWinnerResponseDTO, ChessGameResponseMessage>> SaveGameEventAndWinnerAsync(
+            ConnectionRequestDTO<SaveGameEventAndWinnerRequestDTO> connectionRequestDTO);
+        Task<ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+     GetGameHistoryAsync(ConnectionRequestDTO<GetGameHistoryRequestDTO> requestDTO);
     }
 }

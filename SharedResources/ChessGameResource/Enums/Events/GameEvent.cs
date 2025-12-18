@@ -4,6 +4,7 @@
     {
         None,
         Start,
+        Over,
         Win,
         Lose,
         Draw,

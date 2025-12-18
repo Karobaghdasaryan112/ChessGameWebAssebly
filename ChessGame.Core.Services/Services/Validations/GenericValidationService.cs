@@ -27,6 +27,7 @@ namespace ChessGame.Core.Services.Services.Validations
         IValidator<SendGameStateReqeustDTO> sendGameStateRequestValidator,
         IValidator<SubmitMoveRequestDTO> submitMoveRequestValidator,
         IValidator<IsKingMateRequestDTO> iskingMateStateRequestValidator,
+        IValidator<GetGameHistoryRequestDTO> getGameHistoryRequestValidator,
 
         //Game Responses
         IValidator<BoardStateResponseDTO> boardStateResponseValidator,
@@ -87,6 +88,8 @@ namespace ChessGame.Core.Services.Services.Validations
                 SendGameStateReqeustDTO => (IValidator<T>)sendGameStateRequestValidator,
                 SubmitMoveRequestDTO => (IValidator<T>)submitMoveRequestValidator,
                 IsKingMateRequestDTO => (IValidator<T>)iskingMateStateRequestValidator,
+                GetGameHistoryRequestDTO => (IValidator<T>)getGameHistoryRequestValidator,
+
 
                 // Responses
                 BoardStateResponseDTO => (IValidator<T>)boardStateResponseValidator,

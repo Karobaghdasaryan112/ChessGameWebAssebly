@@ -73,7 +73,6 @@ window.BuildBoard = {
 
         var startIndex = figureColor === 1 ? 7 : 0;
         var icrement = figureColor === 1 ? -1 : +1;
-
         var j = startIndex;
         var i = startIndex;
 

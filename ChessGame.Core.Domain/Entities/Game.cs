@@ -20,8 +20,8 @@ namespace ChessGame.Domain.Domain.Entities
 
         public GameEvent GameEvent { get; set; } = GameEvent.None;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
     }
 }

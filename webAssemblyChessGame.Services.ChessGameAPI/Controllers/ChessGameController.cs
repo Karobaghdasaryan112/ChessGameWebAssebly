@@ -60,5 +60,27 @@ namespace ChessService.API.ChessGameAPI.Controllers
             return
                 !gamesPaginationResult.IsSuccess ? BadRequest(gamesPaginationResult) : Ok(gamesPaginationResult);
         }
+        [HttpGet("gameHistory")]
+        public async Task<IActionResult> GetGameHistoryByGameIdAndPlayerIdAsync([FromQuery] Guid gameId)
+        {
+            var gameHistoryRequest =
+                new ChessGameRequest<GetGameHistoryRequestDTO>()
+                {
+                    requestType = new GetGameHistoryRequestDTO()
+                    {
+                        GameId = gameId
+                    }
+                };
+            var requestQuery = new GetGameHistoryQuery<
+                IRequestTypes<GetGameHistoryRequestDTO>,
+                IResponseTypes<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+                (gameHistoryRequest);
+
+
+            var gameHistoryResult = await mediator.Send(requestQuery);
+
+            return
+                !gameHistoryResult.IsSuccess ? BadRequest(gameHistoryResult) : Ok(gameHistoryResult);
+        }
     }
 }

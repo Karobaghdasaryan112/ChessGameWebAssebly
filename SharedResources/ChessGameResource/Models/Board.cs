@@ -1,8 +1,8 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.ChessGameResource.Figures;
-using System.Text.Json.Serialization;
-using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.Contracts.ChessGameResourceContracts;
 
 namespace SharedResources.ChessGameResource.Models
 {
@@ -10,7 +10,7 @@ namespace SharedResources.ChessGameResource.Models
     /// Represents the chessboard in the game.
     /// Handles initialization and retrieval of blocks and chess pieces.
     /// </summary>
-    public class Board
+    public class Board : ICusotomComparable
     {
         public Board(FigureColors figureColor)
         {
@@ -29,20 +29,20 @@ namespace SharedResources.ChessGameResource.Models
         /// <summary>
         /// 8x8 grid representing the chess board. Each Block may contain a chess piece or be empty.
         /// </summary>
-        public  Block[][]? BoardBlocks { get; set; }
+        public Block[][]? BoardBlocks { get; set; }
 
-        public  FigureColors FigureColor { get; set; }
+        public FigureColors FigureColor { get; set; }
 
         public Turn Turn = Turn.White;
         public void SwitchTurn()
         {
-            Turn = 
-                Turn == Turn.White ? 
-                Turn.Black : 
+            Turn =
+                Turn == Turn.White ?
+                Turn.Black :
                 Turn.White;
         }
 
-        public  void CreateBoard(FigureColors figureColor = default)
+        public void CreateBoard(FigureColors figureColor = default)
         {
             if (BoardBlocks != default)
                 return;
@@ -54,7 +54,7 @@ namespace SharedResources.ChessGameResource.Models
         /// Creates and fills the 8x8 board with blocks and places the appropriate chess pieces.
         /// </summary>
         /// <param name="figureColor">The player's chosen figure color</param>
-        public  void CreateBlocks(FigureColors figureColor = default)
+        public void CreateBlocks(FigureColors figureColor = default)
         {
 
             BoardBlocks = new Block[8][];
@@ -100,7 +100,7 @@ namespace SharedResources.ChessGameResource.Models
         /// <summary>
         /// Retrieves a block using vertical and horizontal enum coordinates.
         /// </summary>
-        public  Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
+        public Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
         {
             CreateBoard();
             return BoardBlocks[(int)verticalOrientation][(int)horizontalOrientation];
@@ -109,7 +109,7 @@ namespace SharedResources.ChessGameResource.Models
         /// <summary>
         /// Retrieves a block using a Position object.
         /// </summary>
-        public  Block GetBlockByPosition(Position position)
+        public Block GetBlockByPosition(Position position)
         {
             CreateBoard();
             var block = BoardBlocks[(int)position.VerticalOrientation][(int)position.HorizontalOrientation];
@@ -119,7 +119,7 @@ namespace SharedResources.ChessGameResource.Models
         /// <summary>
         /// Retrieves a block using a Position object.
         /// </summary>
-        public  Block GetBlockByPosition(int verticalOrientation, int horizontalOrientation)
+        public Block GetBlockByPosition(int verticalOrientation, int horizontalOrientation)
         {
             CreateBoard();
             return BoardBlocks[verticalOrientation][horizontalOrientation];
@@ -127,7 +127,7 @@ namespace SharedResources.ChessGameResource.Models
 
         public List<Block> GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
         {
-            if(BoardBlocks is null)
+            if (BoardBlocks is null)
                 throw new InvalidOperationException("BoardBlocks is not initialized.");
 
             var selectedBlocks = BoardBlocks.SelectMany(blocks => blocks.Where(block =>
@@ -141,6 +141,22 @@ namespace SharedResources.ChessGameResource.Models
             return selectedKing;
         }
 
-    }
 
+        public List<Block> CompareTo(Board other)
+        {
+            List<Block> nonEqualBlocks = new();
+            var currentBoardBlocks = BoardBlocks;
+            var otherBoardBlocks = other.BoardBlocks;
+            for (int indexI = 0; indexI < 8; indexI++)
+            {
+                for (int indexJ = 0; indexJ < 8; indexJ++)
+                {
+                    if (currentBoardBlocks[indexI][indexJ].CompareTo(otherBoardBlocks[indexI][indexJ]) != 0)
+                    {
+                        nonEqualBlocks.Add(currentBoardBlocks[indexI][indexJ]);
+                    }
+                }
+            }
+        }
+    }   
 }

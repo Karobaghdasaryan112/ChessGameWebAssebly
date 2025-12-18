@@ -38,7 +38,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             if (!validationResult.IsValid)
             {
-                var errorMessages = 
+                var errorMessages =
                     validationResult.
                     Errors.
                     Select(error => error.ErrorMessage).
@@ -46,7 +46,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
                 return ChessGameResponse<BoardInitializeResponseDTO>.CreateErrorResponse(
                     ChessGameResponseMessage.GameCreationFailed,
-                    HttpStatusCode.BadRequest, 
+                    HttpStatusCode.BadRequest,
                     errorMessages);
             }
 

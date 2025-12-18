@@ -1,11 +1,12 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.CriticalValues;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
 namespace SharedResources.ChessGameResource.Models
 {
-    public class Block : IBlock
+    public class Block : IBlock, IComparable<Block>
     {
         public Position Position { get; set; }
         public IFigure Figure { get; set; }
@@ -59,6 +60,28 @@ namespace SharedResources.ChessGameResource.Models
                 else
                     break;
             }
+        }
+
+        public int CompareTo(Block? block)
+        {
+            if (block.Figure == null && this.Figure == null)
+                return (int)ComparableEvent.Equal;
+
+            if (block.Figure?.FigureColor == this.Figure?.FigureColor && block.Figure?.FigureType == this.Figure?.FigureType)
+                return (int)ComparableEvent.Equal;
+
+
+
+            if (block.Figure.FigureColor != this.Figure.FigureColor)
+                return (int)ComparableEvent.Cut;
+
+
+
+            if (block.Figure == null && this.Figure != null)
+                return (int)ComparableEvent.Move;
+
+
+            throw new ArgumentException();
         }
     }
 }

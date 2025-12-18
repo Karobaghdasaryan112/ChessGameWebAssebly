@@ -48,5 +48,18 @@ namespace ChessGameBlazorClient.ApiServices
                     ChessGameResponseMessage>(
                     requestUri.ToString());
         }
+
+        public async Task<ChessGameResponse<GetGameHistoryResponseDTO>?> GetGameHistoryAsync(GetGameHistoryRequestDTO getGameHistoryRequestDTO)
+        {
+            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame, Actions.ChessGameAction.GameHistory, [
+                new KeyValuePair<string,string>("gameId",$"{getGameHistoryRequestDTO.GameId}")
+                ]);
+
+            return await
+                    GetAsync<ChessGameResponse<GetGameHistoryResponseDTO>,
+                        GetGameHistoryResponseDTO,
+                        ChessGameResponseMessage>(
+                        requestUri.ToString());
+        }
     }
 }

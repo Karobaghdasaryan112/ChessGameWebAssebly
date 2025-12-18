@@ -17,7 +17,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
         public async Task<List<string>> GetGameHistoryByGameIdAsync(Guid gameId)
         =>
-             await _chessGameDbContext.ChessGamesHistory
+             await _chessGameDbContext.ChessGamesHistory.AsNoTracking()
                 .Where(chessGameHistory =>
                     chessGameHistory.GameId == gameId)
                 .Select(selectedGameHistory =>

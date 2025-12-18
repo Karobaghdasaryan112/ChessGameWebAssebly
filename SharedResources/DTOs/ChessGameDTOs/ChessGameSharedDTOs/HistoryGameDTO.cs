@@ -7,8 +7,10 @@ namespace SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
         public string Opponent { get; set; }
         public Guid OpponentGuid { get; set; }
         public GameEvent GameEvent { get; set; }
-
+        public int OpponentGamesCount { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTime Date { get; set; }
+        public Guid WinnerPlayerGuid { get; set; }
+        public Guid GameId { get; set; }
     }
 }

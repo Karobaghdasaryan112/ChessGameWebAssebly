@@ -8,7 +8,7 @@ namespace ChessGame.Domain.Domain.Entities
         public Guid GameId { get; set; } 
         public string FEN { get; set; } = string.Empty;
 
-        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
-        public DateTime UpdateDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

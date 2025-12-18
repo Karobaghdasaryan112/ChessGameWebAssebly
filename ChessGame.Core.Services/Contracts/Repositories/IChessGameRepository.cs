@@ -1,6 +1,8 @@
 ﻿using ChessGame.Domain.Domain.Entities;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 
 namespace ChessGame.Core.Services.Contracts.Repositories
 {
@@ -14,20 +16,11 @@ namespace ChessGame.Core.Services.Contracts.Repositories
             string player2Name,
             int player1Time, int player2Time);
         Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2);
-        Task<bool> MovePiece(Guid gameId, string player, Block block);
-        Task<bool> SubmitMove(Guid gameId, Position currentPosition, Position movePosition, string player);
-        Task<bool> ResignGame(Guid gameId, string player);
-        Task<bool> OfferDraw(Guid gameId, string player);
-        Task<bool> AcceptDraw(Guid gameId, string player);
-        Task<bool> DeclineDraw(Guid gameId, string player);
-        Task<string> GetGameState(Guid gameId);
-        Task<string> GetCurrentTurn(Guid gameId);
-        Task<string> GetWinner(Guid gameId);
-        Task<bool> IsPlayerInGame(Guid gameId, string player);
-        Task<bool> IsGameOver(Guid gameId);
+
+        Task<bool> SaveGameResult(Guid winnerPlayer, Guid gameId);
 
         Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(Guid currentPlayerGuid, Guid opponentPlayerGuid,
             int currentPage, int pageSize);
-        Task<List<Game>> GetAllGames(Guid currentPlayerId);
+        Task<List<OpponentsHistoryDTO>> GetAllGames(Guid currentPlayerId);
     }
 }

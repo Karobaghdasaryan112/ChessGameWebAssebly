@@ -1,5 +1,4 @@
-﻿using System.Net;
-using ChessGame.Core.Services.Contracts.BoardServices;
+﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
@@ -21,6 +20,8 @@ using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
+using System.Diagnostics;
+using System.Net;
 using SubmitMoveResponseDTO = SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs.SubmitMoveResponseDTO;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
@@ -38,11 +39,29 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>,
                 IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>
     {
+        
+
+        /// <summary>
+        /// Processes a chess move request, validates the move, updates the game state, and returns the result of the
+        /// move operation.
+        /// </summary>
+        /// <remarks>This method handles the full lifecycle of a chess move, including move validation,
+        /// board state updates, and communication with connected clients. It also manages special game states such as
+        /// check and checkmate, and ensures that the game state is persisted after a successful move. If the move
+        /// results in check or checkmate, appropriate notifications are sent to clients and the game may be
+        /// concluded.</remarks>
+        /// <param name="request">The move logic command containing the details of the move to process, including the current board state and
+        /// move coordinates.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+        /// <returns>A response object containing the result of the move operation, including move details and a status message.
+        /// Returns an error response if the move is invalid or if an internal error occurs.</returns>
         public async Task<IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> Handle(
             MoveLogicCommand<IRequestTypes<BoardStateRequestDTO>,
                 IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
+            Stopwatch sp = new Stopwatch();
+            sp.Start();
             var submitMoveRequest = new ChessGameRequest<SubmitMoveRequestDTO>()
             {
                 requestType =
@@ -87,7 +106,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             if (mediatRSubmitMoveResponse.Data is { IsKingChecked: true })
             {
-                    
+
                 var checkedKingForMe =
                     request.Request.requestType.GameState.GetBlockByFigureTypeAndColor(FigureType.King,
                         (FigureColors)request.Request.requestType.GameState.Turn);
@@ -96,7 +115,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 request.Request.requestType.From = null;
                 request.Request.requestType.To = null;
 
-                //TO DO
                 await connectionService.SendBoardStateToClient(
                     new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                     request.Request.requestType.Player, true);
@@ -160,7 +178,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     request.Request.requestType.IsKingMate = true;
 
 
-
                     await connectionService.SendBoardStateToClient(
                         new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                         request.Request.requestType.Player, false, false);
@@ -178,6 +195,16 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                         }
                     };
 
+                    var winnerPlayerGuid = connectionService.CurrentConnectionState.Where(connection => connection.Value.UserName == request.Request.requestType.Player).First();
+
+                    await service.SaveGameEventAndWinnerAsync(new ConnectionRequestDTO<SaveGameEventAndWinnerRequestDTO>()
+                    {
+                        Data = new SaveGameEventAndWinnerRequestDTO()
+                        {
+                            GameId = request.Request.requestType.GameId,
+                            WinnerPlayerGuid = winnerPlayerGuid.Key
+                        }
+                    });
 
                     await connectionService.RemoveUsersFromGameAsync(removeUsersFromGameRequest);
 
@@ -196,15 +223,17 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 }
             }
 
-            //Opponent Client MyConnection -True
+
             await connectionService.SendBoardStateToClient(
                 new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                 request.Request.requestType.Player, true);
 
-            //Opponent Client MyConnection -False
             await connectionService.SendBoardStateToClient(
                 new ConnectionRequestDTO<BoardStateRequestDTO>() { Data = request.Request.requestType },
                 request.Request.requestType.Player, false);
+
+            sp.Stop();
+            var x = 10;
 
             return ChessGameResponse<MoveResponseDTO>.CreateSuccessResponse(new MoveResponseDTO()
             {

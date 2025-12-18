@@ -38,7 +38,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
         {
             var validationResult = await genericValidation.ValidateAsync(request.Request.requestType);
             if (!validationResult.IsValid)
-                ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
+              return  ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
                     null!, ChessGameResponseMessage.InvalidData,
                     HttpStatusCode.BadRequest, null!);
 
@@ -50,7 +50,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             return ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
                 new GetAllHistoryWidgetsResponseDTO()
                 {
-                    AllGamesHistories = result.Data.AllGamesHistories
+                    OpponentHistories = result.Data.OpponentHistories
                 }, ChessGameResponseMessage.GameCreated, HttpStatusCode.Accepted, null);
         }
     }
