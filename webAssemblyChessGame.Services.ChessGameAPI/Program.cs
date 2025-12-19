@@ -11,5 +11,4 @@ public class Program
         .ConfigureWebHostDefaults(
             config => config.UseStartup<Startup>()
             );
-    
 }

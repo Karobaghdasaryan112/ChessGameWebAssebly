@@ -6,16 +6,11 @@
 @using ChessGame.Core.Services.Extentions
 @using ChessGameBlazorClient.ApiServices
 @using ChessGameBlazorClient.UI.Services
-@using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Models
-@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 @inject ChessGameService ChessGameService
 @inject SignalRService HubClient
-@inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject AuthenticationStateProvider AuthenticationState
 
@@ -42,7 +37,7 @@
 
         <div class="nav-middle">
             <span class="move-label">Move</span>
-            <span id="moveIndex" class="move-number">@_moveNumber</span>
+            <span id="moveIndex" class="move-number">@CurrentState</span>
         </div>
 
         <button id="nextBtn" class="nav-btn" @onclick="ReceiveNextStateAsync">Next ⟶</button>
@@ -56,11 +51,11 @@
 
 @code {
     [Parameter]
-    [SupplyParameterFromQuery(Name = "Player1Id")]
+    [SupplyParameterFromQuery(Name = "Player1Name")]
     public string? Player1Name { get; set; }
 
     [Parameter]
-    [SupplyParameterFromQuery(Name = "Player2Id")]
+    [SupplyParameterFromQuery(Name = "Player2Name")]
     public string? Player2Name { get; set; }
 
     [Parameter]
@@ -71,7 +66,6 @@
 
     private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
 
-    private static int _moveNumber { get; set; }
 
     private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
 
@@ -80,9 +74,6 @@
     private List<string> BoardStatesAsJson = new();
     private List<Board> BoardStates = new();
 
-    private string? PreviusBoardStateAsJson { get; set; }
-    private string? NextBoardStateAsJson { get; set; }
-
     private Board? PreviusBoardState { get; set; }
     private Board? NextBoardState { get; set; }
 
@@ -90,62 +81,74 @@
 
     private int FigureColor { get; set; }
 
+
+
     protected override async Task OnInitializedAsync()
     {
+        //configure Hub Connection
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
         await JS.ShowPlayers(Player1Name!, Player2Name!);
 
+
+
         DotNetRef = DotNetObjectReference.Create(this);
 
+        FigureColor = currentUserName == Player1Name ? 0 : 1;
+
+
+        //Setup gameStates from Server
         var gameStatesResponse = await ChessGameService.GetGameHistoryAsync(new GetGameHistoryRequestDTO()
         {
             GameId = GameId
         });
 
         var boardStates = gameStatesResponse?.Data.FEN!;
+
+
+        //Add States to class property
         boardStates.ForEach(boardState =>
-            {
+        {
+            var board = boardState.FromFenToBoard();
+            BoardStates.Add(board);
+        });
 
-                var board = boardState.FromFenToBoard();
-                BoardStates.Add(board);
+        //convert first State to JSON
+        var startStateAsJson = JsonSerializer.Serialize(boardStates[0].FromFenToBoard().BoardBlocks);
 
-                var stateAsJson = JsonSerializer.Serialize(boardState.FromFenToBoard().BoardBlocks);
-                BoardStatesAsJson.Add(stateAsJson);
 
-            });
-
-        FigureColor = currentUserName == Player1Name ? 0 : 1;
-
-        await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef);
+        //Show state
+        await JS.ShowBoardState(startStateAsJson!, FigureColor, DotNetRef);
     }
 
+
+
+    //Privet Methods
     private async Task ReceivePreviousStateAsync()
     {
-        if (CurrentState > 0 && CurrentState <= BoardStatesAsJson.Count() - 1)
+        if (CurrentState > 0 && CurrentState <= BoardStates.Count() - 1)
         {
-            _moveNumber--;
             CurrentState--;
 
             SetUpPreviousAndNextBoardState();
+            var blockChangesHistory = BoardStates[CurrentState + 1].CompareTo(BoardStates[CurrentState]);
 
-            await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef!);
-            await InvokeAsync(StateHasChanged);
+            await JS.ReceiveBlockChangesHistory(blockChangesHistory);
         }
     }
 
     private async Task ReceiveNextStateAsync()
     {
-        if (CurrentState >= 0 && CurrentState < BoardStatesAsJson.Count() - 1)
+        if (CurrentState >= 0 && CurrentState < BoardStates.Count() - 1)
         {
-            _moveNumber++;
+
             CurrentState++;
 
             SetUpPreviousAndNextBoardState();
+            var blockChangesHistory = BoardStates[CurrentState - 1].CompareTo(BoardStates[CurrentState]);
 
-            await JS.ShowBoardState(BoardStatesAsJson[CurrentState]!, FigureColor, DotNetRef!);
-            await InvokeAsync(StateHasChanged);
+            await JS.ReceiveBlockChangesHistory(blockChangesHistory);
         }
     }
 
@@ -154,19 +157,12 @@
         int previousIndex = 0;
         int nextIndex = 0;
 
-        previousIndex = Math.Clamp(CurrentState - 1, 0, BoardStatesAsJson.Count - 1);
-        nextIndex = Math.Clamp(CurrentState + 1, 0, BoardStatesAsJson.Count - 1);
-
-        PreviusBoardStateAsJson = BoardStatesAsJson[previousIndex]!;
-        NextBoardStateAsJson = BoardStatesAsJson[nextIndex]!;
+        previousIndex = Math.Clamp(CurrentState - 1, 0, BoardStates.Count - 1);
+        nextIndex = Math.Clamp(CurrentState + 1, 0, BoardStates.Count - 1);
 
         PreviusBoardState = BoardStates[previousIndex];
         NextBoardState = BoardStates[nextIndex];
 
-    }
-    private void SendBoardAction()
-    {
-        
     }
 
 }

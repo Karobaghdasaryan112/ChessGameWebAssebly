@@ -71,15 +71,12 @@ namespace SharedResources.ChessGameResource.Models
                 return (int)ComparableEvent.Equal;
 
 
-
-            if (block.Figure.FigureColor != this.Figure.FigureColor)
+            if (block.Figure?.FigureColor != this.Figure?.FigureColor)
                 return (int)ComparableEvent.Cut;
-
 
 
             if (block.Figure == null && this.Figure != null)
                 return (int)ComparableEvent.Move;
-
 
             throw new ArgumentException();
         }

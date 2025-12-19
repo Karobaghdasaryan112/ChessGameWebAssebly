@@ -65,7 +65,7 @@
     private int TotalPagesForCurrentOpponent()
     {
         var keyValuePair = Opponents[CurrentOpponentIndex];
-        var opponentAndGamesCountPair = OpponentsAndToalGamesCount.Where(gamesCount => keyValuePair.Key == gamesCount.Key).FirstOrDefault();
+        var opponentAndGamesCountPair = OpponentsAndToalGamesCount.FirstOrDefault(gamesCount => keyValuePair.Key == gamesCount.Key);
         if (opponentAndGamesCountPair.Equals(default(KeyValuePair<string, int>)) || opponentAndGamesCountPair.Value == 0) return 1;
         return Math.Max(1, (int)Math.Ceiling(opponentAndGamesCountPair.Value / (double)CardsPerPage));
     }
@@ -215,6 +215,7 @@ else
             <div class="cards-grid">
                 @foreach (var g in PagedGamesForCurrentOpponent())
                 {
+
                     <article class="game-card @ResultClass(g.GameEvent == GameEvent.Over ? g.WinnerPlayerGuid == _currentUserGuid ? "win" : "lose" : g.GameEvent.ToString())">
                         <div class="card-top">
                             <div class="card-opponent">@g.Opponent</div>
@@ -243,7 +244,7 @@ else
                         </div>
 
                         <div class="card-footer">
-                            <button class="view-btn" @onclick="() => GoToGameHistory(_user.Claims.Where(Claim => Claim.Type == ClaimTypes.Name).First().Value, g.Opponent, g.GameId)">View</button>
+                            <button class="view-btn" @onclick="() => GoToGameHistory(g.player1Name,g.player2Name, g.GameId)">View</button>
                             <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
                         </div>
                     </article>

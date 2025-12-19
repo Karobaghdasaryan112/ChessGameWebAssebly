@@ -141,6 +141,7 @@ namespace SharedResources.ChessGameResource.Models
             return selectedKing;
         }
 
+        //getting current NonEquatable Blocks and next or previous NonEquatableBlocks for convert it
 
         public List<Block> CompareTo(Board other)
         {
@@ -152,11 +153,11 @@ namespace SharedResources.ChessGameResource.Models
                 for (int indexJ = 0; indexJ < 8; indexJ++)
                 {
                     if (currentBoardBlocks[indexI][indexJ].CompareTo(otherBoardBlocks[indexI][indexJ]) != 0)
-                    {
-                        nonEqualBlocks.Add(currentBoardBlocks[indexI][indexJ]);
-                    }
+                        nonEqualBlocks.Add(otherBoardBlocks[indexI][indexJ]);
                 }
             }
+
+            return nonEqualBlocks;
         }
-    }   
+    }
 }

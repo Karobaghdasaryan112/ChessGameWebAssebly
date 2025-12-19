@@ -6,6 +6,9 @@ namespace SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
     {
         public string Opponent { get; set; }
         public Guid OpponentGuid { get; set; }
+        public string player1Name { get; set; }
+        public string player2Name { get; set; }
+
         public GameEvent GameEvent { get; set; }
         public int OpponentGamesCount { get; set; }
         public TimeSpan Duration { get; set; }

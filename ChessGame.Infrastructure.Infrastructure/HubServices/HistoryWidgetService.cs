@@ -73,6 +73,9 @@ namespace ChessGame.Core.Services.Services.HubServices
                 Date = paginateGame.UpdateDate,
                 Duration = TimeSpan.FromMinutes((paginateGame.Player1Time + paginateGame.Player2Time)),
                 GameEvent = paginateGame.GameEvent,
+                player1Name = paginateGame.Player1Name,
+                player2Name = paginateGame.Player2Name,
+
                 Opponent =
                     paginateGame.Player1 == opponentPlayerGuid ? paginateGame.Player1Name : paginateGame.Player2Name,
                 WinnerPlayerGuid = paginateGame.WinnerPlayer,

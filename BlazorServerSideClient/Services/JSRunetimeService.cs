@@ -1,7 +1,6 @@
-﻿using BlazorServerSideClient.Pages;
-using Microsoft.JSInterop;
-using NuGet.Protocol;
+﻿using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
+using static BlazorServerSideClient.Pages.GameHistory;
 
 namespace BlazorServerSideClient.Services
 {
@@ -54,6 +53,9 @@ namespace BlazorServerSideClient.Services
 
         public ValueTask KingMateNotifier(Position kingPosition, string currentPlayer, bool isWin)
             => _js.SafeInvokeVoidAsync(_logger, "KingMateNotification.Notify", kingPosition, currentPlayer, isWin);
+
+        public ValueTask ReceiveBlockChangesHistory(List<Block> blockChangesHistory)
+            => _js.SafeInvokeVoidAsync(_logger, "ReceiveBlockChangesHistory.Change", blockChangesHistory);
     }
     public static class JSRuntimeSafeExtensions
     {
@@ -65,7 +67,7 @@ namespace BlazorServerSideClient.Services
             string identifier,
             params object[] args)
         {
-            for (int i = 0; i <= RetryCount; i++)
+            for (var i = 0; i <= RetryCount; i++)
             {
                 try
                 {
@@ -79,18 +81,18 @@ namespace BlazorServerSideClient.Services
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    logger.LogWarning($"JS call '{identifier}' skipped (JSRuntime disposed).");
+                    logger.LogWarning("JS call '{Identifier}' skipped (JSRuntime disposed).", identifier);
                     return;
                 }
                 catch (InvalidOperationException ex)
                 {
-                    logger.LogWarning($"JS call '{identifier}' invalid (component disposed).");
+                    logger.LogWarning("JS call '{Identifier}' invalid (component disposed).", identifier);
                     return;
                 }
                 catch (Exception ex)
                 {
                     if (i == RetryCount)
-                        logger.LogError(ex, $"Unexpected JS error while calling '{identifier}'.");
+                        logger.LogError(ex, "Unexpected JS error while calling '{Identifier}'.", identifier);
                 }
                 await Task.Delay(200);
             }
@@ -128,7 +130,7 @@ namespace BlazorServerSideClient.Services
                 catch (Exception ex)
                 {
                     if (i == RetryCount)
-                        logger.LogError(ex, $"Unexpected JS error while calling '{identifier}'.");
+                        logger.LogError(ex, "Unexpected JS error while calling '{Identifier}'.", identifier);
                 }
 
                 await Task.Delay(200);

@@ -359,3 +359,52 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('mouseenter', () => btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 }));
     });
 });
+
+
+
+window.ReceiveBlockChangesHistory = {
+    Change: function (changedBlocks) {
+
+        changedBlocks.forEach(block => {
+
+
+            if (!block || !block.position) return;
+
+            const vertical = block.position.verticalOrientation;
+            const horizontal = block.position.horizontalOrientation;
+
+            const cell = document.getElementById(`${vertical}${horizontal}`);
+            if (!cell) return;
+
+
+            const oldPiece = cell.querySelector("img");
+            if (oldPiece) {
+                cell.removeChild(oldPiece);
+            }
+
+            if (block.figure) {
+                const img = document.createElement("img");
+                var colorFolder;
+                if (block.figure.figureColor === 1) {
+                    colorFolder = "black";
+                } else {
+                    colorFolder = "white";
+                }
+
+                const figureType = block.figure.$type.split('.').pop();
+                img.style.position = "absolute";
+                img.style.top = "50%";
+                img.style.left = "50%";
+                img.style.transform = "translate(-50%, -50%)";
+                img.style.width = "80%";
+                img.style.height = "80%";
+                img.style.zIndex = "10";
+                img.src = `/PNGs/${colorFolder}/${figureType}.png`;
+                img.draggable = false;
+                cell.appendChild(img);
+            }
+        });
+
+        ShowMovableAndCutableBlocks.Clear();
+    }
+};

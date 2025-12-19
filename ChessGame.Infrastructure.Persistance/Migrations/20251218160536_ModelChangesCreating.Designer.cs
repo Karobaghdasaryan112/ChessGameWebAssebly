@@ -4,6 +4,7 @@ using ChessGame.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChessGame.Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(ChessGameDbContext))]
-    partial class ChessGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251218160536_ModelChangesCreating")]
+    partial class ModelChangesCreating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
