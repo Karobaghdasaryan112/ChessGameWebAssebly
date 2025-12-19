@@ -14,41 +14,49 @@
 @inject JSRunetimeService JS
 @inject AuthenticationStateProvider AuthenticationState
 
-<div class="game-history-wrap">
-    <div class="leftCard">
-        <div class="playersInfo">
-            <div class="player">
-                <div class="avatar" id="avatar1">P1</div>
-                <div class="playerInfo">
-                    <span class="name" id="player1Name">Player 1: —</span>
-                    <span class="meta" id="player1Meta">Rating: — · Online</span>
+@if (string.IsNullOrEmpty(_error))
+{
+    <div class="game-history-wrap">
+        <div class="leftCard">
+            <div class="playersInfo">
+                <div class="player">
+                    <div class="avatar" id="avatar1">P1</div>
+                    <div class="playerInfo">
+                        <span class="name" id="player1Name">Player 1: —</span>
+                        <span class="meta" id="player1Meta">Rating: — · Online</span>
+                    </div>
                 </div>
+
+                <div style="text-align:center">
+                    <div style="font-weight:800">Game Page</div>
+                    <div style="color:var(--muted);font-size:13px;margin-top:4px">Friendly match · Blitz 5+0</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="history-nav">
+            <button id="prevBtn" class="nav-btn" @onclick="ReceivePreviousStateAsync">⟵ Prev</button>
+
+            <div class="nav-middle">
+                <span class="move-label">Move</span>
+                <span id="moveIndex" class="move-number">@CurrentState</span>
             </div>
 
-            <div style="text-align:center">
-                <div style="font-weight:800">Game Page</div>
-                <div style="color:var(--muted);font-size:13px;margin-top:4px">Friendly match · Blitz 5+0</div>
-            </div>
-
-        </div>
-    </div>
-    <div class="history-nav">
-        <button id="prevBtn" class="nav-btn" @onclick="ReceivePreviousStateAsync">⟵ Prev</button>
-
-        <div class="nav-middle">
-            <span class="move-label">Move</span>
-            <span id="moveIndex" class="move-number">@CurrentState</span>
+            <button id="nextBtn" class="nav-btn" @onclick="ReceiveNextStateAsync">Next ⟶</button>
         </div>
 
-        <button id="nextBtn" class="nav-btn" @onclick="ReceiveNextStateAsync">Next ⟶</button>
+        <div class="boardWrap">
+            <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+        </div>
+
     </div>
-
-    <div class="boardWrap">
-        <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
+}
+else
+{
+    <div>
+        @_error;
     </div>
-
-</div>
-
+}
 @code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "Player1Name")]
@@ -80,7 +88,7 @@
     private int CurrentState { get; set; } = 0;
 
     private int FigureColor { get; set; }
-
+    private string _error { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -103,7 +111,12 @@
         {
             GameId = GameId
         });
-
+        if (!gameStatesResponse.IsSuccess)
+        {
+            _error = gameStatesResponse.Errors == default ? gameStatesResponse.message.MessageOutput : "SomeThing is wnent wrong";
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
         var boardStates = gameStatesResponse?.Data.FEN!;
 
 

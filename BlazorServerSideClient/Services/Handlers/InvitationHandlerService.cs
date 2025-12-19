@@ -10,10 +10,10 @@ namespace BlazorServerSideClient.Services.Handlers
     public class InvitationHandlerService : IInvitationHandlerService
     {
         JSRunetimeService _jSRunetimeService { get; set; }
-        public Action<ConnectionResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
+        public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
         public SendInvitationsResponseDTO? lastInvite { get; set; }
         public NavigationManager _navigationManager { get; set; }
-        Action<ConnectionResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived { get => OnReceived; set => OnReceived = value; }
+        Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived { get => OnReceived; set => OnReceived = value; }
 
         public InvitationHandlerService(JSRunetimeService JSRunetimeService, NavigationManager NavigationManager)
         {
@@ -33,7 +33,7 @@ namespace BlazorServerSideClient.Services.Handlers
             };
 
             OnReceived?.Invoke(
-                new ConnectionResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>()
+                new ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>()
                 {
                     Data = new SendInvitationsResponseDTO()
                     {

@@ -12,43 +12,43 @@ namespace BlazorServerSideClient.Services.Requests
     public class ConnectionRequestService(SignalRService signalRService) : IConnectionReqeustService
     {
         public async Task<
-            ConnectionResponseDTO<
+            ResponseDTO<
                 AddUserConnectionResponseDTO,
-                ChessGameResponseMessage>> GetUserConnection(ConnectionRequestDTO<GetUserConnectionRequestDTO> getUserConnectionRequestDTO)
+                ChessGameResponseMessage>> GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         AddUserConnectionResponseDTO,
                         ChessGameResponseMessage>>
                         ("GetUserConnection", getUserConnectionRequestDTO);
         }
         public async Task<
-            ConnectionResponseDTO<
+            ResponseDTO<
                 AddUserConnectionResponseDTO,
-                ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
+                ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         AddUserConnectionResponseDTO,
                         ChessGameResponseMessage>>
                         ("AddConnectionAsync", addUserConnectionRequestDTO);
         }
         public async Task<
-            ConnectionResponseDTO<
+            ResponseDTO<
                 RemoveUserConnectionResponseDTO,
-                ChessGameResponseMessage>> RemoveConnectionAsync(ConnectionRequestDTO<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO)
+                ChessGameResponseMessage>> RemoveConnectionAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.
                 InvokeAsync<
-                  ConnectionResponseDTO<
+                  ResponseDTO<
                       RemoveUserConnectionResponseDTO,
                       ChessGameResponseMessage>>
                         ("RemoveConnectionAsync", removeUserConnectionRequestDTO.Data.UserGuid);

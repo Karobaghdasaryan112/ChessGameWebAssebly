@@ -10,14 +10,14 @@ namespace ChessGame.Core.Services.Contracts.BoardServices
 {
     public interface IBoardService
     {
-        Task<ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>> InitializeBoardAsync(ConnectionRequestDTO<BoardInitializeRequestDTO> connectionRequestDto);
+        Task<ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>> InitializeBoardAsync(ConnectionRequestDTO<BoardInitializeRequestDTO> connectionRequestDto);
 
-        Task<ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
+        Task<ResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
             ConnectionRequestDTO<SavePositionsRequestDTO> savePositionsRequest);
 
-        Task<ConnectionResponseDTO<SaveGameEventAndWinnerResponseDTO, ChessGameResponseMessage>> SaveGameEventAndWinnerAsync(
+        Task<ResponseDTO<SaveGameEventAndWinnerResponseDTO, ChessGameResponseMessage>> SaveGameEventAndWinnerAsync(
             ConnectionRequestDTO<SaveGameEventAndWinnerRequestDTO> connectionRequestDTO);
-        Task<ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+        Task<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
      GetGameHistoryAsync(ConnectionRequestDTO<GetGameHistoryRequestDTO> requestDTO);
     }
 }

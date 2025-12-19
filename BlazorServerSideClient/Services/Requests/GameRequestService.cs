@@ -18,11 +18,11 @@ namespace BlazorServerSideClient.Services.Requests
     public class GameRequestService(SignalRService signalRService, IConnectionHandlerService connectionHandlerService)
         : IGameRequestService
     {
-        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDto)
+        public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO getOnlinePlayersRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnection();
             var allGamersResult = await hubConnection.InvokeAsync<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         GetOnlinePlayersResponseDTO,
                         ChessGameResponseMessage>>
                 ("GetOnlinePlayersAsync", getOnlinePlayersRequestDto);
@@ -34,11 +34,11 @@ namespace BlazorServerSideClient.Services.Requests
             return allGamersResult;
         }
 
-        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDto)
+        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto)
         {
             var hubConnection = await signalRService.GetHubConnection();
             var result = await hubConnection.InvokeAsync<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         SendGameStateResponseDTO,
                         ChessGameResponseMessage>>
                 ("SendGameStateAsync", gameStateReqeustDto);
@@ -49,26 +49,26 @@ namespace BlazorServerSideClient.Services.Requests
         {
             var hubConnection = await (signalRService.GetHubConnection());
             await hubConnection.InvokeAsync<
-                    IResponseTypes<
+                    ResponseDTO<
                         UserConnectionDTO,
                         ChessGameResponseMessage>>
                 ("ClearGameAsync", gameId);
         }
 
-        public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDto)
+        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto)
         {
             var hubConnection = await (signalRService.GetHubConnection());
             return await hubConnection.InvokeAsync<
-                 ConnectionResponseDTO<
+                 ResponseDTO<
                         MoveResponseDTO,
                         ChessGameResponseMessage>>("SendMoveAsync", sendMoveConnectionRequestDto);
         }
 
-        public async Task<ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDto)
+        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDto)
         {
             var hubConnection = await (signalRService.GetHubConnection());
             return await hubConnection.InvokeAsync<
-                ConnectionResponseDTO<
+                ResponseDTO<
                     ClickResponseDTO,
                     ChessGameResponseMessage>>
                     ("SendClickAsync", sendClickConnectionRequestDto);
@@ -82,7 +82,7 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
         //NotImplemented
-        public Task<ConnectionResponseDTO<ChessGameErrorDTO, ChessGameResponseMessage>> FigureClick()
+        public Task<ResponseDTO<ChessGameErrorDTO, ChessGameResponseMessage>> FigureClick()
         {
             throw new NotImplementedException();
         }

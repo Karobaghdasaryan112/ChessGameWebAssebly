@@ -4,12 +4,11 @@ using ChessGame.Core.Services.Services.Validations;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -26,32 +25,31 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             IHistoryWidgetService>(validator, logger, service),
             IRequestHandler<
                 GetAllHistoryWidgetsQuery<
-                    IRequestTypes<GetAllHistoryWidgetRequestDTO>,
-                    IResponseTypes<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>,
-                    IResponseTypes<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
+                    GetAllHistoryWidgetRequestDTO,
+                    ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>,
+                    ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
     {
 
-        public async Task<IResponseTypes<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> Handle(
-            GetAllHistoryWidgetsQuery<IRequestTypes<GetAllHistoryWidgetRequestDTO>,
-                IResponseTypes<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> request,
+        public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> Handle(
+            GetAllHistoryWidgetsQuery<GetAllHistoryWidgetRequestDTO, ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
-            var validationResult = await genericValidation.ValidateAsync(request.Request.requestType);
+            var validationResult = await genericValidation.ValidateAsync(request.Request);
             if (!validationResult.IsValid)
-              return  ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
-                    null!, ChessGameResponseMessage.InvalidData,
-                    HttpStatusCode.BadRequest, null!);
+                return ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                      null!, ChessGameResponseMessage.InvalidData,
+                      HttpStatusCode.BadRequest);
 
             var connectionRequest = new ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO>()
             {
-                Data = request.Request.requestType
+                Data = request.Request
             };
             var result = await service.GetAllOpponents(connectionRequest);
-            return ChessGameResponse<GetAllHistoryWidgetsResponseDTO>.CreateSuccessResponse(
+            return ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new GetAllHistoryWidgetsResponseDTO()
                 {
                     OpponentHistories = result.Data.OpponentHistories
-                }, ChessGameResponseMessage.GameCreated, HttpStatusCode.Accepted, null);
+                }, ChessGameResponseMessage.GameCreated, HttpStatusCode.Accepted);
         }
     }
 }

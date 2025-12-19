@@ -116,7 +116,7 @@ namespace ChessGameBlazorClient.UI.Services
 
 
                 _hubConnection.On<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         ReceivePlayersResponseDTO,
                         ChessGameResponseMessage>>
                 ("ReseivePlayersAsync", async (
@@ -124,7 +124,7 @@ namespace ChessGameBlazorClient.UI.Services
                 );
 
                 _hubConnection.On<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         BoardStateResponseDTO,
                         ChessGameResponseMessage>>(
                     "ReceiveBoardUpdateAsync",

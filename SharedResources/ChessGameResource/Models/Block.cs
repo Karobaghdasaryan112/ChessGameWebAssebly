@@ -78,7 +78,8 @@ namespace SharedResources.ChessGameResource.Models
             if (block.Figure == null && this.Figure != null)
                 return (int)ComparableEvent.Move;
 
-            throw new ArgumentException();
+            return int.MinValue;
+
         }
     }
 }

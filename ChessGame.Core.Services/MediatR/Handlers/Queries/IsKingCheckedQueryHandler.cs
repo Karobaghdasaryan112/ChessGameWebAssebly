@@ -10,10 +10,10 @@ using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
-using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
 using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries
@@ -47,9 +47,9 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             (validator, logger, service),
             IRequestHandler<
                 IsKingCheckedQuery<
-                    IRequestTypes<IsKingCheckedRequestDTO>,
-                    IResponseTypes<IsKingCheckedResponseDTO, ChessGameResponseMessage>>,
-                IResponseTypes<IsKingCheckedResponseDTO, ChessGameResponseMessage>>
+                    IsKingCheckedRequestDTO,
+                    ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>,
+                ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>
     {
         public async Task<IResponseTypes<IsKingCheckedResponseDTO, ChessGameResponseMessage>>
             Handle(
@@ -71,7 +71,42 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 null);
 
             var myColor = (FigureColors)chosenColor;
-            
+
+            var kingBlock = currentBoard.GetBlockByFigureTypeAndColor(FigureType.King, myColor).First();
+            if (await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Queen, myColor, currentBoard,
+                    [FigureType.Queen]) ||
+                await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Rook, myColor, currentBoard,
+                    [FigureType.Rook, FigureType.Queen]) ||
+                await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Bishop, myColor, currentBoard,
+                    [FigureType.Queen, FigureType.Bishop]) ||
+                await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Knight, myColor, currentBoard,
+                    [FigureType.Knight]) ||
+                await IsKingCheckedBy<FigureType>(kingBlock, FigureType.King, myColor, currentBoard,
+                    [FigureType.King]) ||
+                await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Pawn, myColor, currentBoard,
+                    [FigureType.Pawn, FigureType.Bishop, FigureType.King, FigureType.Queen]))
+                response.Data.IsKingChecked = true;
+            else
+                response.Data.IsKingChecked = false;
+            return response;
+        }
+
+        public async Task<ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>> Handle(
+            IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>> request,
+            CancellationToken cancellationToken)
+        {
+            var chosenColor = request.Request.ChosenColor;
+            var currentBoard = request.Request.CurrentBoard;
+            var response = ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                new IsKingCheckedResponseDTO()
+                {
+                    IsKingChecked = false
+                },
+                ChessGameResponseMessage.MoveSuccessful,
+                HttpStatusCode.OK);
+
+            var myColor = (FigureColors)chosenColor;
+
             var kingBlock = currentBoard.GetBlockByFigureTypeAndColor(FigureType.King, myColor).First();
             if (await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Queen, myColor, currentBoard,
                     [FigureType.Queen]) ||

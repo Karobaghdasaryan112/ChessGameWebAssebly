@@ -1,10 +1,9 @@
 ﻿using ChessGame.Core.Services.MediatR.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
-using SharedResources.Requests;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
 namespace ChessService.API.ChessGameAPI.Controllers
@@ -16,17 +15,13 @@ namespace ChessService.API.ChessGameAPI.Controllers
         [HttpGet("history")]
         public async Task<IActionResult> GetHistoryWidgetsAsync([FromQuery] Guid playerId)
         {
-            var allHistoryWidgetsRequest = new ChessGameRequest<GetAllHistoryWidgetRequestDTO>()
-            {
-                requestType =
+            var allHistoryWidgetsRequest =
                     new GetAllHistoryWidgetRequestDTO()
                     {
                         CurrentPlayerId = playerId
-                    }
-            };
-            var requestQuery = new GetAllHistoryWidgetsQuery<
-                IRequestTypes<GetAllHistoryWidgetRequestDTO>,
-                IResponseTypes<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>(allHistoryWidgetsRequest);
+                    };
+            var requestQuery = new GetAllHistoryWidgetsQuery<GetAllHistoryWidgetRequestDTO,
+                ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>(allHistoryWidgetsRequest);
 
             var getHistoryResult = await mediator.Send(requestQuery);
 
@@ -39,20 +34,17 @@ namespace ChessService.API.ChessGameAPI.Controllers
             [FromQuery] Guid opponentPlayerId, [FromQuery] int currentPage, [FromQuery] int pageSize)
         {
             var historyWidgetsPaginationByOpponentRequest =
-                new ChessGameRequest<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO>()
-                {
-                    requestType = new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
-                    {
-                        CurrentPage = currentPage,
-                        PageSize = pageSize,
-                        CurrentPlayerGuid = currentPlayerId,
-                        OpponentPlayerGuid = opponentPlayerId
-                    }
-                };
+                     new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
+                     {
+                         CurrentPage = currentPage,
+                         PageSize = pageSize,
+                         CurrentPlayerGuid = currentPlayerId,
+                         OpponentPlayerGuid = opponentPlayerId
+                     };
 
             var requestQuery = new GetHistoryWidgetsPaginationQuery<
-                IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO>,
-                IResponseTypes<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>(
+                GetGamesByCurrentAndOpponentIdsPaginationRequestDTO,
+                ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>(
                 historyWidgetsPaginationByOpponentRequest);
 
             var gamesPaginationResult = await mediator.Send(requestQuery);
@@ -64,18 +56,15 @@ namespace ChessService.API.ChessGameAPI.Controllers
         public async Task<IActionResult> GetGameHistoryByGameIdAndPlayerIdAsync([FromQuery] Guid gameId)
         {
             var gameHistoryRequest =
-                new ChessGameRequest<GetGameHistoryRequestDTO>()
-                {
-                    requestType = new GetGameHistoryRequestDTO()
-                    {
-                        GameId = gameId
-                    }
-                };
-            var requestQuery = new GetGameHistoryQuery<
-                IRequestTypes<GetGameHistoryRequestDTO>,
-                IResponseTypes<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
-                (gameHistoryRequest);
+                     new GetGameHistoryRequestDTO()
+                     {
+                         GameId = gameId
+                     };
 
+            var requestQuery = new GetGameHistoryQuery<
+                GetGameHistoryRequestDTO,
+                ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+                (gameHistoryRequest);
 
             var gameHistoryResult = await mediator.Send(requestQuery);
 

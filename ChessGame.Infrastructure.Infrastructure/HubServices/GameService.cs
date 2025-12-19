@@ -9,13 +9,10 @@ using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
-using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
@@ -35,27 +32,27 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>>
-            GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
+        public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>>
+            GetOnlinePlayersAsync(GetONlinePlayersRequestDTO connectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await validationService.ValidateAsync(connectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(connectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(GetOnlinePlayersResponseDTO)))!;
 
 
             var onlinePlayers = connectionService.CurrentConnectionState
-                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.Data.UserGuid)
+                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.UserGuid)
                 .ToDictionary();
             if (!onlinePlayers.Any())
                 return
-                    ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
+                    ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                         .CreateErrorResponse(
                             null!,
                             ChessGameResponseMessage.UserConnectionNotFound,
                             System.Net.HttpStatusCode.BadRequest);
             return
-                ConnectionResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
+                ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                     .CreateSuccessResponse(
                         new GetOnlinePlayersResponseDTO() { OnlinePlayers = onlinePlayers },
                         ChessGameResponseMessage.UserConnectionFoundSuccess,
@@ -63,18 +60,18 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-        public async Task<ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(
-            ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
+        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(
+            SendGameStateReqeustDTO gameStateReqeustDTO)
         {
             //Validate the Request Data
-            var validationResult = (await validationService.ValidateAsync(gameStateReqeustDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(gameStateReqeustDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(SendGameStateResponseDTO)))!;
 
 
-            ActiveGames.ActiveGamesAndBoards.TryGetValue(gameStateReqeustDTO.Data.GameId, out var gameState);
+            ActiveGames.ActiveGamesAndBoards.TryGetValue(gameStateReqeustDTO.GameId, out var gameState);
 
-            return await Task.FromResult(new ConnectionResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>()
+            return await Task.FromResult(new ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>()
             {
                 Data = new SendGameStateResponseDTO()
                 {
@@ -99,29 +96,29 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
 
-        public async Task<ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
-            ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
+        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
+            MoveRequestDTO sendMoveConnectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(MoveResponseDTO)))!;
 
 
-            var invalidResponse = ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+            var invalidResponse = ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                 new MoveResponseDTO()
                 {
-                    GameId = sendMoveConnectionRequestDTO.Data.GameId,
-                    Player = sendMoveConnectionRequestDTO.Data.Player
+                    GameId = sendMoveConnectionRequestDTO.GameId,
+                    Player = sendMoveConnectionRequestDTO.Player
                 },
                 ChessGameResponseMessage.InvalidMove,
                 System.Net.HttpStatusCode.BadRequest);
 
 
             //current Board State from Server
-            var gameState = ActiveGames.ActiveGamesAndBoards[sendMoveConnectionRequestDTO.Data.GameId];
+            var gameState = ActiveGames.ActiveGamesAndBoards[sendMoveConnectionRequestDTO.GameId];
 
-            var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.Data.CurrentPosition);
+            var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.CurrentPosition);
 
             if (currentPositionBlock.EventColor != EventColors.Cut && currentPositionBlock.EventColor != EventColors.Move)
                 return invalidResponse;
@@ -130,14 +127,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             var boardStateRequestDTO =
                 new BoardStateRequestDTO
                 {
-                    GameId = sendMoveConnectionRequestDTO.Data.GameId,
+                    GameId = sendMoveConnectionRequestDTO.GameId,
                     CutableFigure = default,
-                    Player = sendMoveConnectionRequestDTO.Data.Player,
-                    From = sendMoveConnectionRequestDTO.Data.From,
-                    To = sendMoveConnectionRequestDTO.Data.To,
+                    Player = sendMoveConnectionRequestDTO.Player,
+                    From = sendMoveConnectionRequestDTO.From,
+                    To = sendMoveConnectionRequestDTO.To,
                     GameState = gameState,
                     OpponentColor =
-                        sendMoveConnectionRequestDTO.Data.MyColor == FigureColors.Black
+                        sendMoveConnectionRequestDTO.MyColor == FigureColors.Black
                             ? FigureColors.White
                             : FigureColors.Black,
                     IsReadyToEvent =
@@ -149,12 +146,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                 };
 
             var moveLogicCommandHandler =
-                new MoveLogicCommand<IRequestTypes<BoardStateRequestDTO>,
-                    IResponseTypes<MoveResponseDTO, ChessGameResponseMessage>>(
-                    new ChessGameRequest<BoardStateRequestDTO>()
-                    {
-                        requestType = boardStateRequestDTO,
-                    });
+                new MoveLogicCommand<BoardStateRequestDTO,
+                    ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(boardStateRequestDTO);
 
             if (boardStateRequestDTO.IsReadyToEvent == IsReady.None)
                 return invalidResponse;
@@ -162,56 +155,54 @@ namespace ChessGame.Core.Services.Services.HubServices
             {
                 var moveCommandResponse = await mediator.Send(moveLogicCommandHandler);
                 return moveCommandResponse.IsSuccess
-                    ? ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    ? ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                         moveCommandResponse.Data,
-                        moveCommandResponse.message,
-                        moveCommandResponse.StatusCode)
-                    : ConnectionResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        moveCommandResponse.Message,
+                        moveCommandResponse.HttpStatusCode)
+                    : ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                         moveCommandResponse.Data,
-                        moveCommandResponse.message,
-                        moveCommandResponse.StatusCode);
+                        moveCommandResponse.Message,
+                        moveCommandResponse.HttpStatusCode);
             }
         }
 
-        public async Task<ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
-            ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDTO)
+        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
+            ClickRequestDTO sendClickConnectionRequestDTO)
         {
             //Validate the Request Data
-            var validationResult = (await validationService.ValidateAsync(sendClickConnectionRequestDTO.Data));
+            var validationResult = (await validationService.ValidateAsync(sendClickConnectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(ClickResponseDTO)))!;
 
 
-            var gameState = ActiveGames.ActiveGamesAndBoards[sendClickConnectionRequestDTO.Data.GameId];
-            
-            var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.CurrentPosition);
+            var gameState = ActiveGames.ActiveGamesAndBoards[sendClickConnectionRequestDTO.GameId];
+
+            var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.CurrentPosition);
 
 
 
-            var requestDTO = new ChessGameRequest<CanClickRequestDTO>()
+
+            var requestDTO = new CanClickRequestDTO
             {
-                requestType = new CanClickRequestDTO
-                {
-                    ClickedBlockInformationDto = sendClickConnectionRequestDTO.Data.PreviusBlockInformationDTO,
-                    CurrentBlock = currentPositionBlock,
-                    CurrentBoardBoardState = gameState,
-                    FigureColor = sendClickConnectionRequestDTO.Data.MyColor
-                }
+                ClickedBlockInformationDto = sendClickConnectionRequestDTO.PreviusBlockInformationDTO,
+                CurrentBlock = currentPositionBlock,
+                CurrentBoardBoardState = gameState,
+                FigureColor = sendClickConnectionRequestDTO.MyColor
             };
             var sendClickQuery = new SendClickQuery<
-                IRequestTypes<CanClickRequestDTO>,
-                IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
+                CanClickRequestDTO,
+                ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
 
 
 
-            var canClickResponse = await mediator.Send<IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>(sendClickQuery);
+            var canClickResponse = await mediator.Send<ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(sendClickQuery);
 
             if (!canClickResponse.IsSuccess)
-                return ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                return ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new ClickResponseDTO()
                     {
-                        GameId = sendClickConnectionRequestDTO.Data.GameId,
-                        Player = sendClickConnectionRequestDTO.Data.Player
+                        GameId = sendClickConnectionRequestDTO.GameId,
+                        Player = sendClickConnectionRequestDTO.Player
                     },
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
@@ -219,16 +210,16 @@ namespace ChessGame.Core.Services.Services.HubServices
             gameState.ResetEventableBlocks();
 
             var positions =
-                gameState.GetBlockByPosition(sendClickConnectionRequestDTO.Data.From).Figure
-                    .GetMovableAndCuttableBlocks(sendClickConnectionRequestDTO.Data.From, gameState);
+                gameState.GetBlockByPosition(sendClickConnectionRequestDTO.From).Figure
+                    .GetMovableAndCuttableBlocks(sendClickConnectionRequestDTO.From, gameState);
 
-            return ConnectionResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+            return ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new ClickResponseDTO()
                 {
                     CutableBlocks = positions.CutableBlock,
                     MovableBlocks = positions.MovableBlock,
-                    GameId = sendClickConnectionRequestDTO.Data.GameId,
-                    Player = sendClickConnectionRequestDTO.Data.Player
+                    GameId = sendClickConnectionRequestDTO.GameId,
+                    Player = sendClickConnectionRequestDTO.Player
                 },
                 ChessGameResponseMessage.SuccessUserConnections,
                 System.Net.HttpStatusCode.OK);

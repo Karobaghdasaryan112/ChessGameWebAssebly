@@ -24,12 +24,12 @@ namespace BlazorServerSideClient.Services.Requests
             await hubConnection.InvokeAsync("CancelInviteAsync", inviterPlayerGuid, receiverUserGuid);
         }
 
-        public async Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest)
+        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest)
         {
             var hubConnection = await signalRService.GetHubConnection();
             return await hubConnection.
                 InvokeAsync<
-                    ConnectionResponseDTO<
+                    ResponseDTO<
                         AcceptInvitationResponseDTO,
                         ChessGameResponseMessage>>
                         ("AcceptInviteAsync", acceptInvitationRequest);

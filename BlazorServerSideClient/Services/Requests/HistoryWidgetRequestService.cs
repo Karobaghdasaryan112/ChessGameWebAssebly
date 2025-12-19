@@ -11,12 +11,12 @@ namespace BlazorServerSideClient.Services.Requests
 {
     public class HistoryWidgetRequestService(SignalRService signalRService) : IHistoryWidgetRequestService
     {
-        public async Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
-            GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestDTO)
+        public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
+            GetAllOpponents(GetAllHistoryWidgetRequestDTO getAllHistoryWidgetsRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
             return await hubConnection.InvokeAsync<
-                ConnectionResponseDTO<
+                ResponseDTO<
                     GetAllHistoryWidgetsResponseDTO,
                     ChessGameResponseMessage>>("GetAllOpponents", getAllHistoryWidgetsRequestDTO);
 

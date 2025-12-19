@@ -3,7 +3,7 @@ using System.Net;
 
 namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 {
-    public class ConnectionResponseDTO<TDto, TMessage> where TMessage : ChessGameResponseMessage
+    public class ResponseDTO<TDto, TMessage> where TMessage : ChessGameResponseMessage
     {
         public TDto Data { get; set; }
         public TMessage Message { get; set; }
@@ -11,13 +11,13 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
         public List<string> Errors { get; set; }
         public bool IsSuccess { get; set; }
 
-        public static ConnectionResponseDTO<TDto, TMessage> CreateErrorResponse(
+        public static ResponseDTO<TDto, TMessage> CreateErrorResponse(
             TDto responseDTO,
             TMessage errorMessage,
             HttpStatusCode httpStatusCode = default,
             List<string> errors = default)
         {
-            return new ConnectionResponseDTO<TDto, TMessage>()
+            return new ResponseDTO<TDto, TMessage>()
             {
                 IsSuccess = false,
                 Data = responseDTO,
@@ -27,12 +27,12 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
             };
         }
 
-        public static ConnectionResponseDTO<TDto, TMessage> CreateSuccessResponse(
+        public static ResponseDTO<TDto, TMessage> CreateSuccessResponse(
             TDto responseDTO,
             TMessage message,
             HttpStatusCode httpStatusCode = default)
         {
-            return new ConnectionResponseDTO<TDto, TMessage>()
+            return new ResponseDTO<TDto, TMessage>()
             {
                 IsSuccess = true,
                 Data = responseDTO,

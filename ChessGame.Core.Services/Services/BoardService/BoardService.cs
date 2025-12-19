@@ -20,7 +20,7 @@ namespace ChessGame.Core.Services.Services.BoardService
         IChessGameHistoryRepository chessGameHistoryRepository)
         : IBoardService
     {
-        public async Task<ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>>
+        public async Task<ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>>
             InitializeBoardAsync(ConnectionRequestDTO<BoardInitializeRequestDTO> connectionRequestDto)
         {
 
@@ -41,7 +41,7 @@ namespace ChessGame.Core.Services.Services.BoardService
             {
                 logger.LogError("Failed to create a new game between {Player1} and {Player2}",
                     connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
-                return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new BoardInitializeResponseDTO()
                     {
                         GameId = Guid.Empty
@@ -58,7 +58,7 @@ namespace ChessGame.Core.Services.Services.BoardService
             {
                 logger.LogError("Failed to retrieve game ID for players {Player1} and {Player2}",
                     connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
-                return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new BoardInitializeResponseDTO()
                     {
                         GameId = Guid.Empty
@@ -72,7 +72,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                 logger.LogInformation("Game successfully created between {Player1} and {Player2}",
                     connectionRequestDto.Data.Player1Id, connectionRequestDto.Data.Player2Id);
 
-            return ConnectionResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+            return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new BoardInitializeResponseDTO()
                 {
                     GameId = gameId
@@ -81,7 +81,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                 HttpStatusCode.Created);
         }
 
-        public async Task<ConnectionResponseDTO<SaveGameEventAndWinnerResponseDTO,
+        public async Task<ResponseDTO<SaveGameEventAndWinnerResponseDTO,
         ChessGameResponseMessage>>
         SaveGameEventAndWinnerAsync(
             ConnectionRequestDTO<SaveGameEventAndWinnerRequestDTO> connectionRequestDTO)
@@ -94,7 +94,7 @@ namespace ChessGame.Core.Services.Services.BoardService
             {
                 logger.LogWarning("Request or Request.Data is null");
 
-                return ConnectionResponseDTO<
+                return ResponseDTO<
                     SaveGameEventAndWinnerResponseDTO,
                     ChessGameResponseMessage>
                 .CreateErrorResponse(
@@ -111,7 +111,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     connectionRequestDTO.Data.GameId,
                     connectionRequestDTO.Data.WinnerPlayerGuid);
 
-                return ConnectionResponseDTO<
+                return ResponseDTO<
                     SaveGameEventAndWinnerResponseDTO,
                     ChessGameResponseMessage>
                 .CreateErrorResponse(
@@ -133,7 +133,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                         connectionRequestDTO.Data.GameId,
                         connectionRequestDTO.Data.WinnerPlayerGuid);
 
-                    return ConnectionResponseDTO<
+                    return ResponseDTO<
                         SaveGameEventAndWinnerResponseDTO,
                         ChessGameResponseMessage>
                     .CreateErrorResponse(
@@ -147,7 +147,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     connectionRequestDTO.Data.GameId,
                     connectionRequestDTO.Data.WinnerPlayerGuid);
 
-                return ConnectionResponseDTO<
+                return ResponseDTO<
                     SaveGameEventAndWinnerResponseDTO,
                     ChessGameResponseMessage>
                 .CreateSuccessResponse(
@@ -162,7 +162,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     "Exception while saving game result. GameId: {GameId}",
                     connectionRequestDTO?.Data?.GameId);
 
-                return ConnectionResponseDTO<
+                return ResponseDTO<
                     SaveGameEventAndWinnerResponseDTO,
                     ChessGameResponseMessage>
                 .CreateErrorResponse(
@@ -173,7 +173,7 @@ namespace ChessGame.Core.Services.Services.BoardService
         }
 
 
-        public async Task<ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
+        public async Task<ResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>> SavePositionsAsync(
             ConnectionRequestDTO<SavePositionsRequestDTO> savePositionsRequest)
         {
             var chessGameHistoryModel = new ChessGameHistory()
@@ -186,7 +186,7 @@ namespace ChessGame.Core.Services.Services.BoardService
             var isGameStateSaved = await chessGameHistoryRepository.SaveGameStateAsync(chessGameHistoryModel);
 
             return isGameStateSaved
-                ? ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                ? ResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                     new SavePositionsResponseDTO()
                     {
                         IsSave = true
@@ -194,7 +194,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     ChessGameResponseMessage.GameCreated,
                     HttpStatusCode.OK)
 
-                : ConnectionResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                : ResponseDTO<SavePositionsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new SavePositionsResponseDTO()
                     {
                         IsSave = false
@@ -203,7 +203,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     ["Fail to Save Board State into DB"]);
         }
 
-        public async Task<ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+        public async Task<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
      GetGameHistoryAsync(ConnectionRequestDTO<GetGameHistoryRequestDTO> requestDTO)
         {
             logger.LogInformation(
@@ -220,7 +220,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                     "Game history not found. GameId: {GameId}",
                     requestDTO.Data.GameId);
 
-                return ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
+                return ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
                     .CreateErrorResponse(
                         null!,
                         ChessGameResponseMessage.InvalidData,
@@ -241,7 +241,7 @@ namespace ChessGame.Core.Services.Services.BoardService
                 requestDTO.Data.GameId,
                 historiesDTO.FEN.Count);
 
-            return ConnectionResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
+            return ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                     historiesDTO,
                     ChessGameResponseMessage.SuccessData,

@@ -35,7 +35,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 receiverUserGuid,
                 gameId);
 
-        public async Task SendPalyersInformationAsync(ConnectionResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> receivePlayersResponseDTO) =>
+        public async Task SendPalyersInformationAsync(ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> receivePlayersResponseDTO) =>
             await _hubContext.
             Clients.
             Group(
@@ -68,7 +68,7 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
-        public async Task ReceiveBoardUpdateAsync(ConnectionResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
+        public async Task ReceiveBoardUpdateAsync(ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
            => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
 
     }

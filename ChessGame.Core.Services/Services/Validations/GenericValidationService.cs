@@ -153,14 +153,14 @@ namespace ChessGame.Core.Services.Services.Validations
 
     public static class ValidationExtension
     {
-        public static async Task<ConnectionResponseDTO<TDto, ChessGameResponseMessage>> ReturnValidationResult<TDto>(this ValidationResult validationResult, TDto dto)
+        public static async Task<ResponseDTO<TDto, ChessGameResponseMessage>> ReturnValidationResult<TDto>(this ValidationResult validationResult, TDto dto)
         {
             if (!validationResult.IsValid)
             {
                 var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
                 return await
                     Task.FromResult(
-                        ConnectionResponseDTO<TDto, ChessGameResponseMessage>
+                        ResponseDTO<TDto, ChessGameResponseMessage>
                         .CreateErrorResponse(
                             dto,
                             ChessGameResponseMessage.InvalidData,
@@ -168,7 +168,7 @@ namespace ChessGame.Core.Services.Services.Validations
                             errorMessages));
             }
             return await Task.FromResult(
-                ConnectionResponseDTO<TDto, ChessGameResponseMessage>
+                ResponseDTO<TDto, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                     dto,
                     ChessGameResponseMessage.SuccessData,

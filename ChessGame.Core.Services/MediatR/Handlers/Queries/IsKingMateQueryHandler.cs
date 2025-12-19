@@ -12,9 +12,9 @@ using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Requests;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -34,41 +34,39 @@ public class IsKingMateQueryHandler(
     MediatR_Base<IsKingMateRequestDTO, IsKingMateQueryHandler, IBoardService>(validator, logger,
         boardService),
     IRequestHandler<
-        IsKingMateQuery<IRequestTypes<IsKingMateRequestDTO>,
-            IResponseTypes<IsKingMateResponseDTO, ChessGameResponseMessage>>,
-        IResponseTypes<IsKingMateResponseDTO, ChessGameResponseMessage>>
+        IsKingMateQuery<IsKingMateRequestDTO,
+            ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>>,
+        ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>>
 {
-    public async Task<IResponseTypes<IsKingMateResponseDTO, ChessGameResponseMessage>>
-        Handle(
-            IsKingMateQuery<IRequestTypes<IsKingMateRequestDTO>,
-                IResponseTypes<IsKingMateResponseDTO, ChessGameResponseMessage>> request,
-            CancellationToken cancellationToken)
+    public async Task<ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>> Handle(
+        IsKingMateQuery<IsKingMateRequestDTO, ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>> request,
+        CancellationToken cancellationToken)
     {
-
-        var validationResult = await genericValidation.ValidateAsync(request.Request.requestType);
+        var validationResult = await genericValidation.ValidateAsync(request.Request);
         if (!validationResult.IsValid)
-            return ChessGameResponse<IsKingMateResponseDTO>.CreateErrorResponse(
-                default(IsKingMateResponseDTO),
+            return ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                default(IsKingMateResponseDTO)!,
                 ChessGameResponseMessage.InvalidData,
                 HttpStatusCode.BadRequest, validationResult.Errors.Select(error =>
                     error.ErrorMessage).ToList());
 
-        var currentBoard = request.Request.requestType.CurrentBoard;
-        var chosenColor = request.Request.requestType.ChosenColor;
-        var gameId = request.Request.requestType.GameId;
-        var result = ChessGameResponse<IsKingMateResponseDTO>.CreateSuccessResponse(new IsKingMateResponseDTO()
+        var currentBoard = request.Request.CurrentBoard;
+        var chosenColor = request.Request.ChosenColor;
+        var gameId = request.Request.GameId;
+        var result = ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new IsKingMateResponseDTO()
         {
             IsKingMate = true,
-        }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK, null);
+        }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK);
+
         if (await IsKingMateByAsync<FigureType>(FigureType.King, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Queen, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Rook, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Knight, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Bishop, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Pawn, chosenColor, currentBoard, gameId, mediator))
-            return await Task.FromResult(result);
+            return result;
         result.Data.IsKingMate = false;
-        return await Task.FromResult(result);
+        return result;
     }
 
     /// <summary>

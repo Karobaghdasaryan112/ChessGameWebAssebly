@@ -5,13 +5,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.ChessGameResource.Enums.Colors;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -25,30 +22,23 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
     GenericValidationService genericValidation)
         : MediatR_Base<CanClickRequestDTO, SendClickQueryHandler, IBoardService>(validator, logger, service),
         IRequestHandler<
-            SendClickQuery<IRequestTypes<CanClickRequestDTO>,
-                IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>,
-            IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>>
+            SendClickQuery<CanClickRequestDTO,
+                ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>,
+            ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>
     {
-        public async Task<IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>> Handle(
-            SendClickQuery<IRequestTypes<CanClickRequestDTO>,
-                IResponseTypes<CanClickResponseDTO, ChessGameResponseMessage>> request, 
-            CancellationToken cancellationToken)
+        public async Task<ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>> Handle(SendClickQuery<CanClickRequestDTO, ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>> request, CancellationToken cancellationToken)
         {
             //Request Data
-            var figureColor = request.Request.requestType.FigureColor;
-            var currentBlock = request.Request.requestType.CurrentBlock;
-            var previusBlockInformationDTO = request.Request.requestType.ClickedBlockInformationDto;
-            var currentBoard = request.Request.requestType.CurrentBoardBoardState!;
+            var figureColor = request.Request.FigureColor;
+            var currentBlock = request.Request.CurrentBlock;
+            var previusBlockInformationDTO = request.Request.ClickedBlockInformationDto;
+            var currentBoard = request.Request.CurrentBoardBoardState!;
 
+            var successResponse = ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                        new CanClickResponseDTO() { },
+                        ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted);
 
-            if ((int)figureColor !=
-                (int)currentBoard.Turn)
-            {
-                logger.LogWarning("It's not the turn of player with color {Color}",
-                    figureColor);
-
-                return 
-                    ChessGameResponse<CanClickResponseDTO>.CreateErrorResponse(
+            var errorResponse = ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                         new CanClickResponseDTO()
                         {
                             ClickedBlock = null
@@ -56,6 +46,14 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                         ChessGameResponseMessage.InvalidMove,
                         HttpStatusCode.BadRequest,
                         ["It's not the turn of the player"]);
+
+            if ((int)figureColor !=
+                (int)currentBoard.Turn)
+            {
+                logger.LogWarning("It's not the turn of player with color {Color}",
+                    figureColor);
+
+                return errorResponse;
             }
 
             var currentBlockFromServer = currentBoard.GetBlockByPosition(currentBlock.Position);
@@ -68,13 +66,10 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                     figureColor,
                     currentBlock.Position);
 
-                return await Task.FromResult(
-                    ChessGameResponse<CanClickResponseDTO>.CreateSuccessResponse(
-                        new CanClickResponseDTO()
-                        {
-                            ClickedBlock = currentBlockFromServer
-                        },
-                        ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted,null));
+
+                successResponse.Data.ClickedBlock = currentBlockFromServer;
+
+                return successResponse;
             }
 
             //if the current player is clicked previusly and now clicked on a movable or cutable position
@@ -82,28 +77,18 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             if (previusBlockInformationDTO?.ClickedPosition == null ||
                 (currentBlockFromServer.EventColor != EventColors.Cut &&
                  currentBlockFromServer.EventColor != EventColors.Move))
-                return await Task.FromResult(
-                    ChessGameResponse<CanClickResponseDTO>.CreateErrorResponse(
-                        new CanClickResponseDTO()
-                        {
-                            ClickedBlock = null
-                        },
-                        ChessGameResponseMessage.InvalidMove,
-                        HttpStatusCode.BadRequest,
-                        ["It's not the turn of the player"]));
+                return errorResponse;
 
             logger.LogInformation("Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}",
                 figureColor,
                 previusBlockInformationDTO.ClickedPosition,
                 currentBlock.Position);
 
-            return await Task.FromResult(
-                ChessGameResponse<CanClickResponseDTO>.CreateSuccessResponse(
-                    new CanClickResponseDTO()
-                    {
-                        ClickedBlock = currentBlockFromServer
-                    },
-                    ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted,null));
-        }   
+
+            successResponse.Data.ClickedBlock = currentBlockFromServer;
+
+            return successResponse;
+
+        }
     }
 }

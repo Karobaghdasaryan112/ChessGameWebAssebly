@@ -8,7 +8,7 @@ namespace BlazorServerSideClient.Contracts.Requests
 {
     public interface IHistoryWidgetRequestService
     {
-        Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>> GetAllOpponents(
-            ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> getAllHistoryWidgetsRequestDTO);
+        Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
+                    GetAllOpponents(GetAllHistoryWidgetRequestDTO getAllHistoryWidgetsRequestDTO);
     }
 }

@@ -1,13 +1,10 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.Contracts.Repositories;
 using ChessGame.Core.Services.Services.Validations;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 using IHistoryWidgetService = ChessGame.Core.Services.Contracts.BoardServices.IHistoryWidgetService;
@@ -21,16 +18,20 @@ namespace ChessGame.Core.Services.Services.HubServices
         IChessGameRepository chessGameRepository)
         : IHistoryWidgetService
     {
-        public async Task<ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
-            GetAllOpponents(ConnectionRequestDTO<GetAllHistoryWidgetRequestDTO> getAllHistoryReqeustDTO)
+        public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
+            GetAllOpponents(GetAllHistoryWidgetRequestDTO getAllHistoryReqeustDTO)
         {
-            var validationResult = await genericValidationService.ValidateAsync(getAllHistoryReqeustDTO.Data);
+            var validationResult = await genericValidationService.ValidateAsync(getAllHistoryReqeustDTO);
             if (!validationResult.IsValid)
-                return await validationResult.ReturnValidationResult(default(GetAllHistoryWidgetsResponseDTO));
+                return ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new GetAllHistoryWidgetsResponseDTO { OpponentHistories = new List<OpponentsHistoryDTO>() },
+                    ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest,
+                    validationResult.Errors.Select(error => error.ErrorMessage).ToList());
 
-            var allGamesResult = await chessGameRepository.GetAllGames(getAllHistoryReqeustDTO.Data.CurrentPlayerId);
+            var allGamesResult = await chessGameRepository.GetAllGames(getAllHistoryReqeustDTO.CurrentPlayerId);
 
-            return ConnectionResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>
+            return ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                 new GetAllHistoryWidgetsResponseDTO()
                 {
@@ -41,21 +42,22 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
         public async
-            Task<IResponseTypes<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>
+            Task<ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>>
             GetGamesByCurrentAndOpponentIdsPagination(
-                IRequestTypes<GetGamesByCurrentAndOpponentIdsPaginationRequestDTO> requestDto)
+                GetGamesByCurrentAndOpponentIdsPaginationRequestDTO requestDto)
         {
-            var validationResult = await genericValidationService.ValidateAsync(requestDto.requestType);
+            var validationResult = await genericValidationService.ValidateAsync(requestDto);
             if (!validationResult.IsValid)
-                return ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>.CreateErrorResponse(
+                return ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    null,
                     ChessGameResponseMessage.InvalidData,
                     HttpStatusCode.BadRequest,
                     validationResult.Errors.Select(error => error.ErrorMessage).ToList());
 
-            var currentPage = requestDto.requestType.CurrentPage;
-            var pageSize = requestDto.requestType.PageSize;
-            var opponentPlayerGuid = requestDto.requestType.OpponentPlayerGuid;
-            var currentPlayerGuid = requestDto.requestType.CurrentPlayerGuid;
+            var currentPage = requestDto.CurrentPage;
+            var pageSize = requestDto.PageSize;
+            var opponentPlayerGuid = requestDto.OpponentPlayerGuid;
+            var currentPlayerGuid = requestDto.CurrentPlayerGuid;
 
             var gamesPaginationResult =
                 await chessGameRepository.
@@ -82,11 +84,11 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             }));
 
-            return ChessGameResponse<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO>
+            return ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                     new GetGamesByCurrentAndOpponentIdsPaginationResponseDTO() { AllGamesHistories = allGamesDto },
                     ChessGameResponseMessage.SuccessData,
-                    HttpStatusCode.OK, null);
+                    HttpStatusCode.OK);
         }
     }
 }

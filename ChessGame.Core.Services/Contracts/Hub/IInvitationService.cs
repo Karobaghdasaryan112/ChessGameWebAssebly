@@ -10,7 +10,8 @@ namespace ChessGame.Core.Services.Contracts.Hub
     public interface IInvitationService
     {
 
-        Task<ConnectionResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest);
+        Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
+                    AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest);
         Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO);
         Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
     }
