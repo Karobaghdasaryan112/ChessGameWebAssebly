@@ -53,6 +53,7 @@ public class IsKingMateQueryHandler(
         var currentBoard = request.Request.CurrentBoard;
         var chosenColor = request.Request.ChosenColor;
         var gameId = request.Request.GameId;
+
         var result = ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new IsKingMateResponseDTO()
         {
             IsKingMate = true,
@@ -121,13 +122,10 @@ public class IsKingMateQueryHandler(
                 var toBlockFigureTemp = currentBoard.GetBlockByPosition(executable.Position).Figure;
 
 
-                var submitMoveRequest = new ChessGameRequest<SubmitMoveRequestDTO>()
-                {
-                    requestType = submitMoveRequestDTO
-                };
+
                 var submitMoveCommand =
-                    new SubmitMoveCommand<IRequestTypes<SubmitMoveRequestDTO>,
-                        IResponseTypes<SubmitMoveResponseDTO, ChessGameResponseMessage>>(submitMoveRequest);
+                    new SubmitMoveCommand<SubmitMoveRequestDTO,
+                        ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(submitMoveRequestDTO);
 
                 var mediatRSubmitMoveResponse = await mediator.Send(submitMoveCommand);
 
@@ -152,7 +150,6 @@ public class IsKingMateQueryHandler(
 
             return true;
         }
-
         return false;
     }
 }

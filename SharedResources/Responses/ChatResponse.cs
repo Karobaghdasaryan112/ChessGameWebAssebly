@@ -1,13 +1,11 @@
-﻿using SharedResources.Contracts.DTOs;
-using SharedResources.Contracts.RequestsAndResponses;
+﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
 namespace SharedResources.Responses
 {
-    public class ChatResponse<TDto> : IResponseTypes<TDto, ChatResponseMessage>
-        where TDto : IChatResponseDTO
+    public class ChatResponse<TDto> : ResponseDTO<TDto, ChatResponseMessage>
     {
         public bool IsSuccess { get; set; }
         public ChatResponseMessage Message { get; set; }
@@ -21,7 +19,7 @@ namespace SharedResources.Responses
         public ChatResponseMessage message { get ; set ; }
         public IdentityErrorDTO? IdentityErrorDTO { get ; set ; }
 
-        public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
+        public ResponseDTO<TDto, ChatResponseMessage> CreateErrorResponse(
             string errorMessage,
             HttpStatusCode statusCode)
         {
@@ -32,7 +30,7 @@ namespace SharedResources.Responses
             return _chatResponse;
         }
 
-        public IResponseTypes<TDto, ChatResponseMessage> CreateErrorResponse(
+        public ResponseDTO<TDto, ChatResponseMessage> CreateErrorResponse(
             ChatResponseMessage responseMessage,
             HttpStatusCode statusCode,
             List<string> errors)
@@ -45,7 +43,7 @@ namespace SharedResources.Responses
             return _chatResponse;
         }
 
-        public IResponseTypes<TDto, ChatResponseMessage> CreateSuccessResponse(
+        public ResponseDTO<TDto, ChatResponseMessage> CreateSuccessResponse(
             TDto data,
             ChatResponseMessage message,
             HttpStatusCode statusCode)

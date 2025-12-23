@@ -35,7 +35,6 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>>
             GetOnlinePlayersAsync(GetONlinePlayersRequestDTO connectionRequestDTO)
         {
-            //Validate the Request Data
             var validationResult = (await validationService.ValidateAsync(connectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(GetOnlinePlayersResponseDTO)))!;
@@ -63,7 +62,6 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(
             SendGameStateReqeustDTO gameStateReqeustDTO)
         {
-            //Validate the Request Data
             var validationResult = (await validationService.ValidateAsync(gameStateReqeustDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(SendGameStateResponseDTO)))!;
@@ -99,7 +97,6 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
             MoveRequestDTO sendMoveConnectionRequestDTO)
         {
-            //Validate the Request Data
             var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(MoveResponseDTO)))!;
@@ -115,7 +112,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 System.Net.HttpStatusCode.BadRequest);
 
 
-            //current Board State from Server
             var gameState = ActiveGames.ActiveGamesAndBoards[sendMoveConnectionRequestDTO.GameId];
 
             var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.CurrentPosition);
@@ -169,7 +165,6 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
             ClickRequestDTO sendClickConnectionRequestDTO)
         {
-            //Validate the Request Data
             var validationResult = (await validationService.ValidateAsync(sendClickConnectionRequestDTO));
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(ClickResponseDTO)))!;
@@ -178,8 +173,6 @@ namespace ChessGame.Core.Services.Services.HubServices
             var gameState = ActiveGames.ActiveGamesAndBoards[sendClickConnectionRequestDTO.GameId];
 
             var currentPositionBlock = gameState.GetBlockByPosition(sendClickConnectionRequestDTO.CurrentPosition);
-
-
 
 
             var requestDTO = new CanClickRequestDTO
@@ -195,7 +188,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
 
-            var canClickResponse = await mediator.Send<ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(sendClickQuery);
+            var canClickResponse = await mediator.Send(sendClickQuery);
 
             if (!canClickResponse.IsSuccess)
                 return ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(

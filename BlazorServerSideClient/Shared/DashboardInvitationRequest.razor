@@ -68,14 +68,11 @@
     private async Task AcceptInvite()
     {
         await InvitationRequestService.AcceptInviteAsync(
-            new ConnectionRequestDTO<AcceptInvitationRequestDTO>()
-            {
-                Data = new AcceptInvitationRequestDTO()
-                {
-                    inviterUserGuid = InviterUserGuid,
-                    receiverUserGuid = ReceiverUserGuid
-                }
-            });
+           new AcceptInvitationRequestDTO()
+               {
+                   inviterUserGuid = InviterUserGuid,
+                   receiverUserGuid = ReceiverUserGuid
+               });
     }
 
     private async Task DeclineInvite()

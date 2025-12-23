@@ -93,7 +93,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //configure Hub Connection
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
@@ -105,33 +104,28 @@ else
 
         FigureColor = currentUserName == Player1Name ? 0 : 1;
 
-
-        //Setup gameStates from Server
         var gameStatesResponse = await ChessGameService.GetGameHistoryAsync(new GetGameHistoryRequestDTO()
         {
             GameId = GameId
         });
         if (!gameStatesResponse.IsSuccess)
         {
-            _error = gameStatesResponse.Errors == default ? gameStatesResponse.message.MessageOutput : "SomeThing is wnent wrong";
+            _error = gameStatesResponse.Errors == default ? gameStatesResponse.CustomError : "SomeThing is wnent wrong";
             await InvokeAsync(StateHasChanged);
             return;
         }
         var boardStates = gameStatesResponse?.Data.FEN!;
 
 
-        //Add States to class property
         boardStates.ForEach(boardState =>
         {
             var board = boardState.FromFenToBoard();
             BoardStates.Add(board);
         });
 
-        //convert first State to JSON
         var startStateAsJson = JsonSerializer.Serialize(boardStates[0].FromFenToBoard().BoardBlocks);
 
 
-        //Show state
         await JS.ShowBoardState(startStateAsJson!, FigureColor, DotNetRef);
     }
 

@@ -102,28 +102,22 @@
         if (Guid.TryParse(userGuid, out var userIdAsGuid))
         {
             await ConnectionRequest.AddConnectionAsync(
-                new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
-                {
-                    Data = new AddUserConnectionRequestDTO()
-                    {
-                        userConnection = new UserConnectionDTO()
-                        {
-                            ConnectionId = hubConnection.ConnectionId!,
-                            Gameinfo = null,
-                            GameId = Guid.Empty,
-                            UserName = userName
-                        },
-                        userGuid = userIdAsGuid
-                    }
-                });
+          new AddUserConnectionRequestDTO()
+          {
+              userConnection = new UserConnectionDTO()
+              {
+                  ConnectionId = hubConnection.ConnectionId!,
+                  Gameinfo = null,
+                  GameId = Guid.Empty,
+                  UserName = userName
+              },
+              userGuid = userIdAsGuid
+          });
 
             var allGamers = await GameRequest.GetOnlinePlayersAsync(
-                new ConnectionRequestDTO<GetONlinePlayersRequestDTO>()
+                new GetONlinePlayersRequestDTO()
                 {
-                    Data = new GetONlinePlayersRequestDTO()
-                    {
-                        UserGuid = userIdAsGuid
-                    }
+                    UserGuid = userIdAsGuid
                 });
 
             if (allGamers.IsSuccess)
@@ -139,18 +133,15 @@
         var receiverUserGuid = receiverPlayer.Key;
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
         {
-            var sendInviteRequest = new ConnectionRequestDTO<SendInvitationRequestDTO>()
+            var sendInviteRequest = new SendInvitationRequestDTO()
             {
-                Data = new SendInvitationRequestDTO()
+                ReceiverUserConnection = receiverPlayer.Value,
+                InviterUserConnection = new UserConnectionDTO()
                 {
-                    ReceiverUserConnection = receiverPlayer.Value,
-                    InviterUserConnection = new UserConnectionDTO()
-                    {
-                        UserName = userName
-                    },
-                    InviterPlayerId = inviterUserGuid,
-                    ReceiverPlayerId = receiverUserGuid
-                }
+                    UserName = userName
+                },
+                InviterPlayerId = inviterUserGuid,
+                ReceiverPlayerId = receiverUserGuid
             };
             await InvitationRequest.SendInviteAsync(sendInviteRequest);
         }

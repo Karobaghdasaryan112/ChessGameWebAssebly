@@ -19,7 +19,7 @@ namespace ChessGame.Infrastructure.Infrastructure
             services.AddScoped<GameHub>();
 
             services.AddSignalR()
-        .AddHubOptions<ChessGame.Infrastructure.Infrastructure.Hubs.GameHub>(options =>
+        .AddHubOptions<GameHub>(options =>
         {
             options.KeepAliveInterval = TimeSpan.FromSeconds(1);
 

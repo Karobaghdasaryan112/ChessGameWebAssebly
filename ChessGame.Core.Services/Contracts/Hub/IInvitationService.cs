@@ -12,7 +12,7 @@ namespace ChessGame.Core.Services.Contracts.Hub
 
         Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
                     AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest);
-        Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO);
+        Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO);
         Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
     }
 }

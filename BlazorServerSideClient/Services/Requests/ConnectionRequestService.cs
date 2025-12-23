@@ -2,7 +2,6 @@
 using ChessGameBlazorClient.UI.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
@@ -51,7 +50,7 @@ namespace BlazorServerSideClient.Services.Requests
                   ResponseDTO<
                       RemoveUserConnectionResponseDTO,
                       ChessGameResponseMessage>>
-                        ("RemoveConnectionAsync", removeUserConnectionRequestDTO.Data.UserGuid);
+                        ("RemoveConnectionAsync", removeUserConnectionRequestDTO.UserGuid);
         }
     }
 }

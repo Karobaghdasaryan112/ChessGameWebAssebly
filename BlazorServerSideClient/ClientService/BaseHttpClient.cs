@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static ChessGameBlazorClient.ServiceEndpoints.Actions;
 using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace ChessGameBlazorClient.UI.ClientService
 {
@@ -34,14 +35,14 @@ namespace ChessGameBlazorClient.UI.ClientService
         /// Sends a POST request with a typed request body and deserializes the typed response.
         /// </summary>
         /// <typeparam name="TRequest">The type of the request body.</typeparam>
-        /// <typeparam name="TResponse">The full response type implementing <see cref="IResponseTypes{TData, TMessage}"/>.</typeparam>
+        /// <typeparam name="TResponse">The full response type implementing <see cref="ResponseDTO{TData, TMessage}"/>.</typeparam>
         /// <typeparam name="TData">The DTO type within the response.</typeparam>
         /// <typeparam name="TMessage">The message type used in the response.</typeparam>
         /// <param name="uri">The target URI of the POST request.</param>
         /// <param name="data">The request body to send.</param>
         /// <returns>A deserialized response of type <typeparamref name="TResponse"/>.</returns>
         protected async Task<TResponse?> PostAsync<TRequest, TResponse, TData, TMessage>(Uri uri, TRequest data)
-            where TResponse : IResponseTypes<TData, TMessage>
+            where TResponse : ResponseDTO<TData, TMessage>
             where TData : IResponseDTO
             where TMessage : IMessage
         {
@@ -60,13 +61,13 @@ namespace ChessGameBlazorClient.UI.ClientService
         /// <summary>
         /// Sends a GET request and deserializes the typed response.
         /// </summary>
-        /// <typeparam name="TResponse">The full response type implementing <see cref="IResponseTypes{TData, TMessage}"/>.</typeparam>
+        /// <typeparam name="TResponse">The full response type implementing <see cref="ResponseDTO{TData, TMessage}"/>.</typeparam>
         /// <typeparam name="TData"></typeparam>
         /// <typeparam name="TMessage"></typeparam>
         /// <param name="url">The full URL to send the GET request to.</param>
         /// <returns>A deserialized response of type <typeparamref name="TResponse"/>.</returns>
         protected async Task<TResponse?> GetAsync<TResponse, TData, TMessage>(string url)
-            where TResponse : IResponseTypes<TData, TMessage>
+            where TResponse : ResponseDTO<TData, TMessage>
             where TData : IResponseDTO
             where TMessage : IMessage
         {

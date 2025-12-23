@@ -12,19 +12,24 @@ namespace BlazorServerSideClient.Services.Requests
 {
     public class InvitationRequestService(SignalRService signalRService) : IInivitationReqeustService
     {
-        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
+        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
         {
+
             var hubConnection = await signalRService.GetHubConnection();
-             await hubConnection.InvokeAsync("SendInviteAsync", connectionRequestDTO);
+
+            await hubConnection.InvokeAsync("SendInviteAsync", connectionRequestDTO);
+
         }
         public async Task CancelInviteAsync(Guid inviterPlayerGuid, Guid receiverUserGuid)
         {
+
             var hubConnection = await signalRService.GetHubConnection();
-            //TO:do : Implement CancelInviteAsync in Hub
+
             await hubConnection.InvokeAsync("CancelInviteAsync", inviterPlayerGuid, receiverUserGuid);
+
         }
 
-        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest)
+        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest)
         {
             var hubConnection = await signalRService.GetHubConnection();
             return await hubConnection.

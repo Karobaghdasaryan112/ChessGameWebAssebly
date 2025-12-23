@@ -141,8 +141,6 @@ namespace SharedResources.ChessGameResource.Models
             return selectedKing;
         }
 
-        //getting current NonEquatable Blocks and next or previous NonEquatableBlocks for convert it
-
         public List<Block> CompareTo(Board other)
         {
             List<Block> nonEqualBlocks = new();

@@ -1,17 +1,11 @@
 ﻿using IdentityService.API.IdentityAPI.Contracts;
 using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
-using SharedResources.Requests;
 using SharedResources.Responses.ResponseMessages;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace IdentityService.API.IdentityAPI.Controllers
 {
@@ -39,9 +33,9 @@ namespace IdentityService.API.IdentityAPI.Controllers
         {
 
             var userRegistrationCommand = new UserSigninCommand<
-                IRequestTypes<LoginDTO>,
-                IResponseTypes<SignInDTO, IdentityResponseMesage>>
-                (new IdentityRequest<LoginDTO>(loginRequest));
+                LoginDTO,
+                ResponseDTO<SignInDTO, IdentityResponseMesage>>
+                (loginRequest);
 
             var loginResult = await _mediator.Send(userRegistrationCommand);
 
@@ -52,9 +46,9 @@ namespace IdentityService.API.IdentityAPI.Controllers
         public async Task<IActionResult> RegistrationAsync(RegistrationDTO registerRequest)
         {
            var userRegistrationCommand = new UserRegistrationCommand<
-                IRequestTypes<RegistrationDTO>,
-                IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>
-                (new IdentityRequest<RegistrationDTO>(registerRequest));
+                RegistrationDTO,
+                ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>>
+                (registerRequest);
 
             return Ok(await _mediator.Send(userRegistrationCommand));
         }

@@ -40,15 +40,14 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
             var inviterConnectionInformation = await connectionService.GetUserConnection(
-                new ConnectionRequestDTO<GetUserConnectionRequestDTO>()
-                {
-                    Data = new GetUserConnectionRequestDTO() { UserGuid = acceptInvitationRequest.inviterUserGuid }
-                });
+             new GetUserConnectionRequestDTO()
+             {
+                 UserGuid = acceptInvitationRequest.inviterUserGuid
+             });
             var receiverConnectionInformation = await connectionService.GetUserConnection(
-                new ConnectionRequestDTO<GetUserConnectionRequestDTO>()
+                new GetUserConnectionRequestDTO()
                 {
-                    Data = new GetUserConnectionRequestDTO()
-                    { UserGuid = acceptInvitationRequest.receiverUserGuid }
+                    UserGuid = acceptInvitationRequest.receiverUserGuid
                 });
 
             if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess)
@@ -61,14 +60,15 @@ namespace ChessGame.Core.Services.Services.HubServices
                     inviterConnectionInformation.Errors
                 );
             }
-            //Get UserInfos From ConnectionService (ConcurrentDictionary<Guid(userGuid),UserConnectionDTO(UserInfo)>)
+
             var isInviterExists =
                 connectionService.CurrentConnectionState.TryGetValue(acceptInvitationRequest.inviterUserGuid,
                     out var inviterUser);
             var isReceiverExists =
                 connectionService.CurrentConnectionState.TryGetValue(acceptInvitationRequest.receiverUserGuid,
                     out var receiverUser);
-            //TO DO request using players names and times
+
+
             if (!isInviterExists || !isReceiverExists)
                 ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new AcceptInvitationResponseDTO(),
@@ -91,8 +91,10 @@ namespace ChessGame.Core.Services.Services.HubServices
                     Player1Id = acceptInvitationRequest.inviterUserGuid,
                     Player2Id = acceptInvitationRequest.receiverUserGuid
                 });
-            //infos getting success
+
             var result = await mediator.Send(command);
+            var data = result.Data;
+            var isSuccess = result.IsSuccess;
 
             await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
                 inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
@@ -107,7 +109,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 receiverConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.receiverUserGuid,
                 result.Data.GameId);
-
 
 
 
@@ -151,7 +152,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
+        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
         {
             await baseHubService.SendInviteAsync(connectionRequestDTO);
         }

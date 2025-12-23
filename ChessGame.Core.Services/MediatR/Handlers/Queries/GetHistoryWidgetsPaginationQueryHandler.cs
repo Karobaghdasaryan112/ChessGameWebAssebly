@@ -56,18 +56,10 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
         {
             var validationResult = await genericValidation.ValidateAsync(request.Request);
             if (!validationResult.IsValid)
-                return ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    null!,
-                    ChessGameResponseMessage.InvalidData,
-                    HttpStatusCode.BadRequest,
-                    validationResult.
-                        Errors.
-                        Select(error =>
-                            error.ErrorMessage).
-                        ToList());
+                return ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(null!,ChessGameResponseMessage.InvalidData,HttpStatusCode.BadRequest,
+                    validationResult.Errors.Select(error =>error.ErrorMessage).ToList());
 
-            return await service.
-                GetGamesByCurrentAndOpponentIdsPagination(request.Request);
+            return await service.GetGamesByCurrentAndOpponentIdsPagination(request.Request);
         }
     }
 }

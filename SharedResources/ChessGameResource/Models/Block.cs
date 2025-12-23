@@ -37,7 +37,10 @@ namespace SharedResources.ChessGameResource.Models
                 row += rowStep;
                 col += colStep;
 
-                if ((row <= (int)CriticalPositions.lowCriticalValue || row >= (int)CriticalPositions.highCriticalValue || col <= (int)CriticalPositions.lowCriticalValue || col >= (int)CriticalPositions.highCriticalValue))
+                if ((row <= (int)CriticalPositions.lowCriticalValue ||
+                    row >= (int)CriticalPositions.highCriticalValue ||
+                    col <= (int)CriticalPositions.lowCriticalValue ||
+                    col >= (int)CriticalPositions.highCriticalValue))
                     break;
                 if (row < 0 || row > 7 || col < 0 || col > 7)
                 {

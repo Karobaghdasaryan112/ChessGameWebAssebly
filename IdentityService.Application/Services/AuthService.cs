@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.Responses;
@@ -54,7 +55,7 @@ namespace IdentityService.API.IdentityAPI.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> CreateUserAsync(RegistrationDTO registrationDTO, CancellationToken cancellationToken)
+        public async Task<ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>> CreateUserAsync(RegistrationDTO registrationDTO, CancellationToken cancellationToken)
         {
             var failedResult = IdentityResponse<RegistrationResponseDTO>.CreateErrorResponse(IdentityResponseMesage.UserCreationFailed, System.Net.HttpStatusCode.BadRequest, new List<string>());
 
@@ -92,7 +93,7 @@ namespace IdentityService.API.IdentityAPI.Services
             return IdentityResponse<RegistrationResponseDTO>.CreateErrorResponse(IdentityResponseMesage.InternalServerError, System.Net.HttpStatusCode.InternalServerError, new List<string>());
         }
 
-        public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> LoginAsync(LoginDTO loginDTO)
+        public async Task<ResponseDTO<SignInDTO, IdentityResponseMesage>> LoginAsync(LoginDTO loginDTO)
         {
             var result = await _signInManager.PasswordSignInAsync(loginDTO.email, loginDTO.password, false, false);
             if (!result.Succeeded)
@@ -169,7 +170,7 @@ namespace IdentityService.API.IdentityAPI.Services
             user.RefreshToken = refreshToken;
             return refreshToken;
         }
-        public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> RefreshTokenAsync(RefreshTokenDTO refreshDTO)
+        public async Task<ResponseDTO<SignInDTO, IdentityResponseMesage>> RefreshTokenAsync(RefreshTokenDTO refreshDTO)
         {
 
             var user = await _userManager.Users

@@ -4,6 +4,7 @@ using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.MediatR;
@@ -25,8 +26,8 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
          MediatR_Base<RegistrationDTO, UserRegistrationCommandHandler, IAuthService>,
          IRequestHandler<
              UserRegistrationCommand<
-                 IRequestTypes<RegistrationDTO>, IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>,
-                 IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>>
+                 RegistrationDTO, ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>>,
+                 ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>>
     {
         public UserRegistrationCommandHandler(IValidator<RegistrationDTO> validator, ILogger<UserRegistrationCommandHandler> logger, IAuthService service)
             : base(validator, logger, service)
@@ -35,7 +36,7 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         }
         /// <summary>
         /// Processes a <see cref="UserRegistrationCommand{TRequest, TResponse}"/> by validating the request,
-        /// calling the user creation service, and returning a response wrapped in <see cref="IResponseTypes{TData, TMessage}"/>.
+        /// calling the user creation service, and returning a response wrapped in <see cref="ResponseDTO{TData, TMessage}"/>.
         /// </summary>
         /// <param name="request">The registration command containing the user's registration data.</param>
         /// <param name="cancellationToken">A cancellation token for cooperative task cancellation.</param>
@@ -44,28 +45,28 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         /// or an error response if it fails.
         /// </returns>
 
-        public async Task<IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> Handle(
+        public async Task<ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>> Handle(
             UserRegistrationCommand<
-                IRequestTypes<RegistrationDTO>,
-                IResponseTypes<RegistrationResponseDTO, IdentityResponseMesage>> request,
+                RegistrationDTO,
+                ResponseDTO<RegistrationResponseDTO, IdentityResponseMesage>> request,
                 CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request.RequestDTO.requestType, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request.RequestDTO, cancellationToken);
             if (!validationResult.IsValid)
-                return IdentityResponse<RegistrationResponseDTO>.
-                    CreateErrorResponse(
+                return ResponseDTO<RegistrationResponseDTO,IdentityResponseMesage>.
+                    CreateErrorResponse(null!,
                         IdentityResponseMesage.UserCreationFailed,
                         System.Net.HttpStatusCode.BadRequest,
                         validationResult.Errors.Select(error => error.ErrorMessage).ToList());
 
             try
             {
-                return await _service.CreateUserAsync(request.RequestDTO.requestType, cancellationToken);
+                return await _service.CreateUserAsync(request.RequestDTO, cancellationToken);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error during registration.");
-                return IdentityResponse<RegistrationResponseDTO>.CreateErrorResponse(
+                return ResponseDTO<RegistrationResponseDTO,IdentityResponseMesage>.CreateErrorResponse(null!,
                     IdentityResponseMesage.UserCreationFailed,
                     System.Net.HttpStatusCode.InternalServerError,
                     new List<string>());

@@ -1,5 +1,5 @@
 ﻿using SharedResources.Contracts.DTOs;
-using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.ErrorResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace SharedResources.Responses
 {
-    public class IdentityResponse<TDto> : IResponseTypes<TDto, IdentityResponseMesage>
+    public class IdentityResponse<TDto> : ResponseDTO<TDto, IdentityResponseMesage>
        where TDto : class, IIdentityResponseDTO
     {
         [JsonConstructor]
@@ -25,7 +25,7 @@ namespace SharedResources.Responses
         public IdentityResponseMesage message { get; set; } = IdentityResponseMesage.Initialize;
         public IdentityErrorDTO? IdentityErrorDTO { get; set; }
 
-        public static IResponseTypes<TDto, IdentityResponseMesage> CreateSuccessResponse(
+        public static ResponseDTO<TDto, IdentityResponseMesage> CreateSuccessResponse(
         TDto data, IdentityResponseMesage message, HttpStatusCode statusCode)
         {
             return new IdentityResponse<TDto>
@@ -38,7 +38,7 @@ namespace SharedResources.Responses
             };
         }
 
-        public static IResponseTypes<TDto, IdentityResponseMesage> CreateErrorResponse(
+        public static ResponseDTO<TDto, IdentityResponseMesage> CreateErrorResponse(
             IdentityResponseMesage responseMessage, HttpStatusCode statusCode, List<string> errors)
         {
             return new IdentityResponse<TDto>

@@ -4,6 +4,7 @@ using IdentityService.Application.Features.MediatR.Requests.Commands;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.Contracts.RequestsAndResponses;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
 using SharedResources.MediatR;
@@ -25,8 +26,8 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         MediatR_Base<LoginDTO, UserSigninCommandHandler, IAuthService>,
         IRequestHandler<
             UserSigninCommand<
-                IRequestTypes<LoginDTO>, IResponseTypes<SignInDTO, IdentityResponseMesage>>,
-                IResponseTypes<SignInDTO, IdentityResponseMesage>>
+                LoginDTO, ResponseDTO<SignInDTO, IdentityResponseMesage>>,
+                ResponseDTO<SignInDTO, IdentityResponseMesage>>
 
     {
         public UserSigninCommandHandler(IValidator<LoginDTO> validator, ILogger<UserSigninCommandHandler> logger, IAuthService service) : base(validator, logger, service)
@@ -42,18 +43,18 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
         /// </param>
         /// <param name="cancellationToken">A token to cancel the operation.</param>
         /// <returns>
-        /// A task that resolves to an <see cref="IResponseTypes{SignInDTO, IdentityResponseMesage}"/> containing either:
+        /// A task that resolves to an <see cref="ResponseDTO{SignInDTO, IdentityResponseMesage}"/> containing either:
         /// - Success: a <see cref="SignInDTO"/> with token and user data, or
         /// - Failure: validation or authentication error details.
         /// </returns>
 
 
-        public async Task<IResponseTypes<SignInDTO, IdentityResponseMesage>> Handle(
-            UserSigninCommand<IRequestTypes<LoginDTO>, 
-                IResponseTypes<SignInDTO, IdentityResponseMesage>> request, 
+        public async Task<ResponseDTO<SignInDTO, IdentityResponseMesage>> Handle(
+            UserSigninCommand<LoginDTO, 
+                ResponseDTO<SignInDTO, IdentityResponseMesage>> request, 
             CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request._requestDTO.requestType, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(request._requestDTO, cancellationToken);
 
             if (!validationResult.IsValid)
             {
@@ -65,7 +66,7 @@ namespace IdentityService.Application.Features.MediatR.Handlers.Commands
                     errors);
             }
 
-            var response = await _service.LoginAsync(request._requestDTO.requestType);
+            var response = await _service.LoginAsync(request._requestDTO);
 
             if (response != null && response.IsSuccess)
             {

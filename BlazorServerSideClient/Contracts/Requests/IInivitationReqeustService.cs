@@ -9,8 +9,8 @@ namespace BlazorServerSideClient.Contracts.Requests
 {
     public interface IInivitationReqeustService
     {
-        Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO);
+        Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO);
         Task CancelInviteAsync(Guid inviterPlayerGuid, Guid receiverUserGuid);
-        Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequest);
+        Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest);
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
@@ -62,19 +61,15 @@ namespace ChessGameBlazorClient.UI.Services
                 var userIdAsGuid = Guid.Parse(userId!);
 
                 await _hubConnection.SendAsync("AddConnectionAsync",
-                    new ConnectionRequestDTO<AddUserConnectionRequestDTO>()
-                    {
-                        Data = new AddUserConnectionRequestDTO()
-                        {
-                            userConnection = new UserConnectionDTO()
-                            {
-                                ConnectionId = _hubConnection.ConnectionId,
-                                UserName = userName!
-                            },
-                            userGuid = userIdAsGuid
-                        }
-                    });
-
+                  new AddUserConnectionRequestDTO()
+                  {
+                      userConnection = new UserConnectionDTO()
+                      {
+                          ConnectionId = _hubConnection.ConnectionId,
+                          UserName = userName!
+                      },
+                      userGuid = userIdAsGuid
+                  });
                 return _hubConnection;
             }
             finally

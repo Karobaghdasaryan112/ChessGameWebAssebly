@@ -44,11 +44,11 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //InvitationService 
 
-        public async Task SendInviteAsync(ConnectionRequestDTO<SendInvitationRequestDTO> connectionRequestDTO)
+        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
            => await invitationService.SendInviteAsync(connectionRequestDTO);
 
-        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(ConnectionRequestDTO<AcceptInvitationRequestDTO> acceptInvitationRequestDTO)
-            => await invitationService.AcceptInviteAsync(new ConnectionRequestDTO<AcceptInvitationRequestDTO>() { Data = new AcceptInvitationRequestDTO() { inviterUserGuid = acceptInvitationRequestDTO.Data.inviterUserGuid, receiverUserGuid = acceptInvitationRequestDTO.Data.receiverUserGuid } });
+        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequestDTO)
+            => await invitationService.AcceptInviteAsync(new AcceptInvitationRequestDTO() { inviterUserGuid = acceptInvitationRequestDTO.inviterUserGuid, receiverUserGuid = acceptInvitationRequestDTO.receiverUserGuid });
 
         public async Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
             => await invitationService.CancelInviteAsync(inviterUserGuid, receiverUserGuid);
@@ -63,19 +63,19 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             => await gameService.ClearGameAsync(gameId);
 
         //TO:DO
-        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(ConnectionRequestDTO<SendGameStateReqeustDTO> gameStateReqeustDTO)
+        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDTO)
             => await gameService.SendGameStateAsync(gameStateReqeustDTO);
 
-        public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(ConnectionRequestDTO<GetONlinePlayersRequestDTO> connectionRequestDTO)
+        public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO connectionRequestDTO)
             => await gameService.GetOnlinePlayersAsync(connectionRequestDTO);
 
-        public Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(ConnectionRequestDTO<MoveRequestDTO> sendMoveConnectionRequestDTO)
+        public Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDTO)
             => gameService.SendMoveAsync(sendMoveConnectionRequestDTO);
 
         public async Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId)
             => await gameService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
 
-        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ConnectionRequestDTO<ClickRequestDTO> sendClickConnectionRequestDTO)
+        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO)
             => await gameService.SendClickAsync(sendClickConnectionRequestDTO);
 
         //GameService
@@ -84,14 +84,14 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         //connectionService
 
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(Guid currentUserGuid)
-            => await connectionService.RemoveConnectionAsUserGuidAsync(new ConnectionRequestDTO<RemoveUserConnectionRequestDTO>() { Data = new RemoveUserConnectionRequestDTO() { UserGuid = currentUserGuid } });
+            => await connectionService.RemoveConnectionAsUserGuidAsync( new RemoveUserConnectionRequestDTO() { UserGuid = currentUserGuid });
 
-        public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(ConnectionRequestDTO<AddUserConnectionRequestDTO> addUserConnectionRequestDTO)
+        public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
             => await connectionService.AddConnectionAsync(addUserConnectionRequestDTO);
 
         public async Task<ResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>> GetUserConnectionAsync(Guid userGuid)
-             => await connectionService.GetUserConnection(new ConnectionRequestDTO<GetUserConnectionRequestDTO>() { Data = new GetUserConnectionRequestDTO() { UserGuid = userGuid } });
-        public async Task<ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(ConnectionRequestDTO<BoardStateRequestDTO> boardStateConnectionRequestDTO, string player, bool isMyConnection)
+             => await connectionService.GetUserConnection(new GetUserConnectionRequestDTO() { UserGuid = userGuid });
+        public async Task<ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(BoardStateRequestDTO boardStateConnectionRequestDTO, string player, bool isMyConnection)
             => await connectionService.SendBoardStateToClient(boardStateConnectionRequestDTO, player, isMyConnection);
 
         //connectionService
