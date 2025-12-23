@@ -14,6 +14,7 @@ using BoardInitializeRequestDTO = SharedResources.DTOs.ChessGameDTOs.RequestDTOs
 namespace ChessGame.Core.Services.Services.BoardService
 {
     public class BoardService(
+        IChessGameUnitOfWork unitOfWork,
         ILogger<BoardService> logger,
         IChessGameRepository chessGameRepository,
         IChessGameHistoryRepository chessGameHistoryRepository)
@@ -23,18 +24,20 @@ namespace ChessGame.Core.Services.Services.BoardService
             InitializeBoardAsync(BoardInitializeRequestDTO connectionRequestDto)
         {
 
-            var isCreated = await chessGameRepository.CreateGame(
-                connectionRequestDto.Player1Id,
-                connectionRequestDto.Player2Id,
+              chessGameRepository.CreateGame(
+               connectionRequestDto.Player1Id,
+               connectionRequestDto.Player2Id,
 
-                GameEvent.Start,
+               GameEvent.Start,
 
-                connectionRequestDto.Player1Name,
-                connectionRequestDto.Player2Name,
+               connectionRequestDto.Player1Name,
+               connectionRequestDto.Player2Name,
 
-                (int)connectionRequestDto.Player1Time.TotalSeconds,
-                (int)connectionRequestDto.Player2Time.TotalSeconds);
+               (int)connectionRequestDto.Player1Time.TotalSeconds,
+               (int)connectionRequestDto.Player2Time.TotalSeconds);
 
+
+            var isCreated = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);
 
             if (!isCreated)
             {
@@ -105,7 +108,9 @@ namespace ChessGame.Core.Services.Services.BoardService
 
             try
             {
-                var isSaved = await chessGameRepository.SaveGameResult(connectionRequestDTO.WinnerPlayerGuid, connectionRequestDTO.GameId);
+                await chessGameRepository.SaveGameResult(connectionRequestDTO.WinnerPlayerGuid, connectionRequestDTO.GameId);
+
+                var isSaved = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);
 
                 if (!isSaved)
                 {
@@ -139,7 +144,9 @@ namespace ChessGame.Core.Services.Services.BoardService
                 CreateDate = DateTime.UtcNow,
                 UpdateDate = DateTime.UtcNow
             };
-            var isGameStateSaved = await chessGameHistoryRepository.SaveGameStateAsync(chessGameHistoryModel);
+
+            await chessGameHistoryRepository.SaveGameStateAsync(chessGameHistoryModel);
+            var isGameStateSaved = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);
 
             return
                 isGameStateSaved

@@ -26,6 +26,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Persistance
             });
             services.AddScoped<IChessGameRepository, ChessGameRepository>();
             services.AddScoped<IChessGameHistoryRepository, ChessGameHistoryRepository>();
+            services.AddScoped<IChessGameUnitOfWork, UnitOfWork>();
         }
     }
 }

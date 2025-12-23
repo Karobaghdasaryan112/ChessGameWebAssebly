@@ -18,9 +18,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of opponent history data
         /// transfer objects, each representing an opponent and the total number of games played against them. The list
         /// is empty if the player has not played any games.</returns>
-        public async Task<List<OpponentsHistoryDTO>> GetAllGames(Guid currentPlayerId)
-        {
-            return await chessGameDbContext.ChessGames.AsNoTracking()
+        public Task<List<OpponentsHistoryDTO>> GetAllGames(Guid currentPlayerId)
+            => chessGameDbContext.ChessGames.AsNoTracking()
                 .Where(game =>
                     game.Player1 == currentPlayerId ||
                     game.Player2 == currentPlayerId)
@@ -34,7 +33,6 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
                     OpponentGuid = grpGame.First().Player1 == currentPlayerId ? grpGame.First().Player2 : grpGame.First().Player1,
                     TotalCount = grpGame.Count()
                 }).ToListAsync();
-        }
 
         /// <summary>
         /// Retrieves a paginated list of games between the specified current player and opponent, ordered by the most
@@ -48,10 +46,9 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <param name="pageSize">The number of games to include in each page. Must be greater than 0.</param>
         /// <returns>A list of games involving both the current player and the opponent, limited to the specified page and page
         /// size. The list is ordered by update date in descending order.</returns>
-        public async Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(
+        public Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(
             Guid currentPlayerGuid, Guid opponentPlayerGuid, int currentPage, int pageSize)
-        {
-            var res = await chessGameDbContext.ChessGames.
+            => chessGameDbContext.ChessGames.
                  Where(game =>
                      (game.Player1 == currentPlayerGuid &&
                       game.Player2 == opponentPlayerGuid) ||
@@ -61,8 +58,7 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
                  Skip(currentPage * pageSize).
                  Take(pageSize).
                  ToListAsync();
-            return res;
-        }
+
 
         /// <summary>
         /// Creates a new chess game record with the specified players, event, and time controls.
@@ -77,9 +73,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the game was
         /// created successfully; otherwise, <see langword="false"/>.</returns>
 
-        public async Task<bool> CreateGame(Guid player1, Guid player2, GameEvent gameEvent, string player1Name, string player2Name, int player1Time, int player2Time)
-        {
-            chessGameDbContext.ChessGames.Add(
+        public void CreateGame(Guid player1, Guid player2, GameEvent gameEvent, string player1Name, string player2Name, int player1Time, int player2Time)
+          => chessGameDbContext.ChessGames.Add(
                 new Game()
                 {
                     Player1Name = player1Name,
@@ -98,9 +93,6 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
                 });
 
-            return (await chessGameDbContext.SaveChangesAsync()) > 0;
-        }
-
 
         /// <summary>
         /// Retrieves the unique identifier of the most recently created chess game between the specified players.
@@ -112,17 +104,15 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <param name="player2">The unique identifier of the second player.</param>
         /// <returns>A <see cref="Guid"/> representing the game identifier if a game exists between the specified players;
         /// otherwise, <see cref="Guid.Empty"/>.</returns>
-        public async Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2)
-        {
-            var game = await chessGameDbContext.
+        public Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2)
+        => chessGameDbContext.
                 ChessGames.
                 OrderByDescending(game =>
-                    game.CreateDate)
-                .FirstOrDefaultAsync(game =>
-                    game.Player1 == player1 && game.Player2 == player2);
-            return game?.Id ?? Guid.Empty;
-
-        }
+                    game.CreateDate).
+                Where(game =>
+                    game.Player1 == player1 && game.Player2 == player2)
+                .Select(orderedGame => orderedGame.Id)
+                .FirstOrDefaultAsync();
 
         /// <summary>
         /// Saves the result of a completed chess game by recording the winner and updating the game status.
@@ -133,16 +123,14 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <param name="gameId">The unique identifier of the chess game to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the game
         /// result was saved successfully; otherwise, <see langword="false"/>.</returns>
-        public async Task<bool> SaveGameResult(Guid winnerPlayer, Guid gameId)
+        public async Task SaveGameResult(Guid winnerPlayer, Guid gameId)
         {
             var selectedGame = await chessGameDbContext.ChessGames.Where(game => game.Id == gameId).FirstOrDefaultAsync();
-            if (selectedGame == null)
-                return false;
+
             selectedGame.GameEvent = GameEvent.Over;
             selectedGame.WinnerPlayer = winnerPlayer;
             selectedGame.UpdateDate = DateTime.UtcNow;
             chessGameDbContext.Update(selectedGame);
-            return await chessGameDbContext.SaveChangesAsync() > 0;
         }
     }
 }

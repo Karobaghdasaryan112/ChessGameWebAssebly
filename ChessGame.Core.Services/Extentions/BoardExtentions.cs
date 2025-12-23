@@ -7,7 +7,6 @@ namespace ChessGame.Core.Services.Extentions
     {
         public static void ResetEventableBlocks(this Board board)
         {
-            //reset the previous selected Blocks(Movable and cuttable)
             var preventableBoardBlocks =
                 board.BoardBlocks!.
                     SelectMany(blockI =>

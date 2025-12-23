@@ -30,21 +30,15 @@ namespace ChessGame.Core.Services.Extentions
                             fenBuilder.Append(block.Figure.GetFenChar());
                         }
                         else
-                        {
                             emptyCount++;
-                        }
                     }
                 }
 
                 if (emptyCount > 0)
-                {
                     fenBuilder.Append(emptyCount);
-                }
 
                 if (row < 7)
-                {
                     fenBuilder.Append('/');
-                }
             }
 
             return fenBuilder.ToString();

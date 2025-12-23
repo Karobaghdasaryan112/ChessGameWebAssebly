@@ -60,103 +60,103 @@ window.Players = {
 }
 
 window.BuildBoard = {
-    Build: function (JsonBlocks, figureColor, dotNetRef) {
+    Build(JsonBlocks, figureColor, dotNetRef) {
         const blocks = JSON.parse(JsonBlocks);
-        const mainBoardDiv = document.getElementById("chessboard");
-        mainBoardDiv.innerHTML = "";
-        mainBoardDiv.style.display = "grid";
-        mainBoardDiv.style.gridTemplateRows = "repeat(8, 1fr)";
-        mainBoardDiv.style.gridTemplateColumns = "repeat(8, 1fr)";
-        mainBoardDiv.style.width = "800px";
-        mainBoardDiv.style.height = "800px";
-        mainBoardDiv.style.gap = "2px";
+        const board = document.getElementById("chessboard");
 
-        var startIndex = figureColor === 1 ? 7 : 0;
-        var icrement = figureColor === 1 ? -1 : +1;
-        var j = startIndex;
-        var i = startIndex;
+        // Reset board
+        board.innerHTML = "";
+        board.style.cssText = `
+            display: grid;
+            grid-template: repeat(8, 1fr) / repeat(8, 1fr);
+            width: 800px;
+            height: 800px;
+            gap: 2px;
+        `;
 
-        while (i >= 0 && i < 8) {
-            j = startIndex;
-            while (j >= 0 && j < 8) {
+        const start = figureColor === 1 ? 7 : 0;
+        const step = figureColor === 1 ? -1 : 1;
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = start; i >= 0 && i < 8; i += step) {
+            for (let j = start; j >= 0 && j < 8; j += step) {
                 const block = blocks[i][j];
-
-                const cell = document.createElement("div");
-                cell.style.position = "relative";
-                cell.style.width = "100px";
-                cell.style.height = "100px";
-                cell.style.boxSizing = "border-box";
-                cell.style.border = "1px solid #000";
-                cell.style.transition = "background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
-                cell.style.backgroundColor = block.BlockColor === 0 ? "gray" : "white";
-
-                cell.addEventListener("click", () => {
-                    const loggerDiv = document.getElementById("Logger-Div");
-                    if (loggerDiv.children.length > 10)
-                        loggerDiv.innerHTML = "";
-                    const loggerInfo = document.createElement("div");
-                    loggerInfo.classList.add("log-item");
-
-                    loggerInfo.innerHTML =
-                        `<span class="log-pos">Cell: (${i},${j})</span>
-                         <span class="log-figure">${block.Figure?.$type ?? "Empty"}</span>`;
-
-                    loggerDiv.appendChild(loggerInfo);
-                    const id = cell.id;
-
-                    const indexI = parseInt(id[0]);
-                    const indexJ = parseInt(id[1]);
-
-                    dotNetRef.invokeMethodAsync("OnCellClick", indexI, indexJ);
-                });
-                if (block.HighlightColor) {
-                    cell.style.backgroundColor = block.HighlightColor;
-                }
-                cell.id = `${i}${j}`;
-                if (block.Figure) {
-                    const piece = document.createElement("img");
-                    piece.style.position = "absolute";
-                    piece.style.top = "50%";
-                    piece.style.left = "50%";
-                    piece.style.transform = "translate(-50%, -50%)";
-                    piece.style.width = "80%";
-                    piece.style.height = "80%";
-                    piece.style.zIndex = "10";
-
-                    var colorFolder;
-                    if (block.Figure.FigureColor === 1) {
-                        colorFolder = "black";
-                    } else {
-                        colorFolder = "white";
-                    }
-
-                    const figureType = block.Figure.$type.split('.').pop();
-                    piece.src = `/PNGs/${colorFolder}/${figureType}.png`;
-                    cell.appendChild(piece);
-                }
-                const originalColor = cell.style.backgroundColor;
-                cell.addEventListener("mouseenter", () => {
-                    if (cell.style.backgroundColor != "white" && cell.style.backgroundColor != "gray")
-                        return;
-
-                    cell.style.backgroundColor = "rgb(240, 216, 107)";
-                    cell.style.transform = "scale(1.05)";
-                });
-                cell.addEventListener("mouseleave", () => {
-                    if (cell.style.backgroundColor != "rgb(240, 216, 107)")
-                        return;
-
-                    cell.style.backgroundColor = originalColor;
-                    cell.style.transform = "scale(1)";
-                });
-
-                mainBoardDiv.appendChild(cell);
-                j += icrement;
+                const cell = createCell(i, j, block, dotNetRef);
+                fragment.appendChild(cell);
             }
-            i += icrement;
         }
+
+        board.appendChild(fragment);
     }
 };
+
+function createCell(i, j, block, dotNetRef) {
+    const cell = document.createElement("div");
+    cell.id = `${i}${j}`;
+    cell.style.cssText = `
+        position: relative;
+        width: 100px;
+        height: 100px;
+        box-sizing: border-box;
+        border: 1px solid #000;
+        transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
+        background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
+    `;
+
+    // Click
+    cell.addEventListener("click", () =>
+        dotNetRef.invokeMethodAsync("OnCellClick", i, j)
+    );
+
+    // Hover
+    var realColor = cell.style.backgroundColor;
+    cell.addEventListener("mouseenter", () => {
+        const baseColor = cell.style.backgroundColor;
+
+        if ((baseColor === "rgba(0, 255, 0, 0.45)") || (baseColor === "rgba(0, 255, 0, 0.45)")) return;
+        if ((baseColor == "white" || baseColor == "gray")) {
+            cell.style.backgroundColor = "rgb(240, 216, 107)";
+            cell.style.transform = "scale(1.05)";
+        }
+    });
+    cell.addEventListener("mouseleave", () => {
+        const baseColor = cell.style.backgroundColor;
+
+        if ((baseColor === "rgba(0, 255, 0, 0.45)") || (baseColor === "rgba(0, 255, 0, 0.45)")) return;
+
+        if (baseColor !== "white" && baseColor !== "gray" && baseColor === "rgb(240, 216, 107)") {
+            cell.style.backgroundColor = realColor;
+            cell.style.transform = "scale(1)";
+        }
+    });
+
+    // Figure
+    if (block.Figure) {
+        cell.appendChild(createPiece(block.Figure));
+    }
+
+    return cell;
+}
+function createPiece(figure) {
+    const piece = document.createElement("img");
+    const colorFolder = figure.FigureColor === 1 ? "black" : "white";
+    const type = figure.$type.split('.').pop();
+
+    piece.src = `/PNGs/${colorFolder}/${type}.png`;
+    piece.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        z-index: 10;
+    `;
+
+    return piece;
+}
+
 window.ShowMovableAndCutableBlocks = {
     Paint: function (cutableBlocks, movableBlocks) {
 

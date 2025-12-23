@@ -51,18 +51,14 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var validationResult = await _validator.ValidateAsync(request.RequestDTO, cancellationToken);
 
             if (!validationResult.IsValid)
-            {
-                var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-
-                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest, errorMessages);
-            }
+                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.
+                    CreateErrorResponse(ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest, validationResult.Errors.Select(error => error.ErrorMessage).ToList());
 
             var initializeGameResponseDTO = await _service.InitializeBoardAsync(request.RequestDTO);
 
             if (!initializeGameResponseDTO.IsSuccess)
-            {
-                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(initializeGameResponseDTO.Message, initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
-            }
+                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.
+                    CreateErrorResponse(initializeGameResponseDTO.Message, initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
 
             var BoardInitialize = new Board(default(FigureColors));
 
@@ -71,7 +67,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             if (!addingResult)
             {
                 _logger.LogError("Failed to add the new game with ID {GameId} to active games.", initializeGameResponseDTO.Data.GameId);
-                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.InternalServerError, ["Field To Add Game Into Active Games"]);
+                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.
+                    CreateErrorResponse(ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.InternalServerError, ["Field To Add Game Into Active Games"]);
             }
 
             var responseData = new BoardInitializeResponseDTO()

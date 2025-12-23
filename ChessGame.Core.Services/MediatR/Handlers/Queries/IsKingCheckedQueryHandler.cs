@@ -7,12 +7,10 @@ using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Figures;
 using SharedResources.ChessGameResource.Models;
-using SharedResources.Contracts.RequestsAndResponses;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
-using SharedResources.Responses;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
@@ -73,6 +71,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             var myColor = (FigureColors)chosenColor;
 
             var kingBlock = currentBoard.GetBlockByFigureTypeAndColor(FigureType.King, myColor).First();
+
             if (await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Queen, myColor, currentBoard,
                     [FigureType.Queen]) ||
                 await IsKingCheckedBy<FigureType>(kingBlock, FigureType.Rook, myColor, currentBoard,
