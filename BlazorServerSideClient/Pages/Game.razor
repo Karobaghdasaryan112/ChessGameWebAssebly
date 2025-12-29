@@ -3,6 +3,7 @@
 @using System.Text.Json
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
+@using ChessGameBlazorClient.ApiServices
 @using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
@@ -13,6 +14,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 @inject SignalRService HubClient
+@inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject AuthenticationStateProvider AuthenticationState
@@ -45,6 +47,11 @@
                 <button class="btn" id="btnUndo" title="Undo last">↶ Undo</button>
                 <button class="btn" id="btnOffer" title="Offer draw">🤝 Offer</button>
                 <button class="btn primary" id="btnNew" title="New game">✳ New Game</button>
+                <button class="btn helper"
+                        @onclick="GetOptimizedMove"
+                        disabled="@isBusy">
+                    ♟️ Helper
+                </button>
             </div>
         </div>
 
@@ -112,6 +119,8 @@
 
 
     //Properties
+
+    private bool isBusy = false;
 
     private HubConnection? _hubConnection;
 
@@ -257,7 +266,33 @@
         ClickRequestDTO.From = from;
     }
 
-    //JS Methods
+
+    private async Task GetOptimizedMove()
+    {
+        if (isBusy)
+            return;
+
+        isBusy = true;
+
+        try
+        {
+            var optimizedMoveResponse = await ChessGameService.GetOptimizedMoveAsync(new GetOptimizedMoveRequestDTO()
+            {
+                GameId = GameId,
+                ChosenColor = MyColor,
+                IsMaximizingPlayer = true
+            });
+
+            if (optimizedMoveResponse.IsSuccess)
+            {
+                await JS.ReceiveOptimalMoves(optimizedMoveResponse.Data.FromPosition, optimizedMoveResponse.Data.ToPosition);
+            }
+        }
+        finally
+        {
+            isBusy = false;
+        }
+    }
 
     public async Task SendMoveAsync(string move)
     {

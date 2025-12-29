@@ -1,5 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -10,6 +11,8 @@ namespace SharedResources.ChessGameResource.Figures
         public Rook() { }
         public FigureType FigureType => FigureType.Rook;
         public FigureColors FigureColor { get; set; }
+
+        public FigureScores FigureScore => FigureScores.Rook;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -38,6 +41,14 @@ namespace SharedResources.ChessGameResource.Figures
         public string GetFenChar()
         {
             return FigureColor == FigureColors.White ? "R" : "r";
+        }
+
+        public object Clone()
+        {
+            return new Rook
+            {
+                FigureColor = this.FigureColor
+            };
         }
     }
 }

@@ -6,7 +6,7 @@ using SharedResources.Contracts.ChessGameResourceContracts;
 
 namespace SharedResources.ChessGameResource.Models
 {
-    public class Block : IBlock, IComparable<Block>
+    public class Block : IBlock, IComparable<Block>,ICloneable
     {
         public Position Position { get; set; }
         public IFigure Figure { get; set; }
@@ -83,6 +83,17 @@ namespace SharedResources.ChessGameResource.Models
 
             return int.MinValue;
 
+        }
+
+        public object Clone()
+        {
+            return new Block
+            {
+                Position = new Position(this.Position.VerticalOrientation, this.Position.HorizontalOrientation),
+                Figure = this.Figure != null ? (IFigure)this.Figure.Clone() : null,
+                BlockColor = this.BlockColor,
+                EventColor = this.EventColor
+            };
         }
     }
 }

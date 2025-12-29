@@ -52,7 +52,7 @@ namespace ChessGameBlazorClient.ApiServices
         public async Task<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>?> GetGameHistoryAsync(GetGameHistoryRequestDTO getGameHistoryRequestDTO)
         {
             var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame, Actions.ChessGameAction.GameHistory, [
-                new KeyValuePair<string,string>("gameId",$"{getGameHistoryRequestDTO.GameId}")
+                new KeyValuePair<string,string>("gameId",$"{getGameHistoryRequestDTO.GameId}"),
                 ]);
 
             return await
@@ -60,6 +60,21 @@ namespace ChessGameBlazorClient.ApiServices
                         GetGameHistoryResponseDTO,
                         ChessGameResponseMessage>(
                         requestUri.ToString());
+        }
+
+        public async Task<ResponseDTO<GetOptimizedMoveResponseDTO,ChessGameResponseMessage>?> GetOptimizedMoveAsync(GetOptimizedMoveRequestDTO getOptimizedMoveRequestDTO)
+        {
+            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame, Actions.ChessGameAction.GetOptimizedMove,
+                [
+                    new KeyValuePair<string,string>("gameId",$"{getOptimizedMoveRequestDTO.GameId}"),
+                    new KeyValuePair<string,string>("myColor",$"{getOptimizedMoveRequestDTO.ChosenColor}"),
+                    new KeyValuePair<string,string>("isMaximizingPlayer",$"{getOptimizedMoveRequestDTO.IsMaximizingPlayer}")
+                ]);
+
+            return await
+                GetAsync<ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>, 
+                GetOptimizedMoveResponseDTO,
+                ChessGameResponseMessage>(requestUri.ToString());
         }
     }
 }

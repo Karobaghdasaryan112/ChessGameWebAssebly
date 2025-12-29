@@ -1,5 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace SharedResources.ChessGameResource.Figures
         public Queen() { }
         public FigureType FigureType => FigureType.Queen;
         public FigureColors FigureColor { get; set; }
+
+        public FigureScores FigureScore => FigureScores.Queen;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -43,6 +46,14 @@ namespace SharedResources.ChessGameResource.Figures
         public string GetFenChar()
         {
             return FigureColor == FigureColors.White ? "Q" : "q";
+        }
+
+        public object Clone()
+        {
+            return new Queen
+            {
+                FigureColor = this.FigureColor
+            };
         }
     }
 }

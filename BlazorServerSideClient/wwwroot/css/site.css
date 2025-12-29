@@ -881,3 +881,9 @@ html, body {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 }
+
+.highlight-border {
+    border: 3px solid red; 
+    box-sizing: border-box; 
+    transition: border 0.3s;
+}

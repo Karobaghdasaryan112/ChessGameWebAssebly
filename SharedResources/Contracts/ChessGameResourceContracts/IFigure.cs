@@ -1,5 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Figures;
 using SharedResources.ChessGameResource.Models;
 using System.Text.Json.Serialization;
@@ -12,10 +13,13 @@ namespace SharedResources.Contracts.ChessGameResourceContracts
     [JsonDerivedType(typeof(Bishop), "bishop")]
     [JsonDerivedType(typeof(Knight), "knight")]
     [JsonDerivedType(typeof(Pawn), "pawn")]
-    public interface IFigure
+    public interface IFigure : ICloneable
     {
+
         string FigurePath => $"{FigureType}{FigureColor}.png";
         FigureType FigureType { get; }
+
+        FigureScores FigureScore { get;}
         FigureColors FigureColor {  get; set; }
         MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition = null);
         string GetFenChar();

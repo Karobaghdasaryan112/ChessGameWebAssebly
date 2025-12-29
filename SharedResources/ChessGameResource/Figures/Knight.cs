@@ -1,6 +1,7 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.CriticalValues;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -13,6 +14,8 @@ namespace SharedResources.ChessGameResource.Figures
         }
         public FigureType FigureType => FigureType.Knight;
         public FigureColors FigureColor { get; set; }
+
+        public FigureScores FigureScore => FigureScores.Knight;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -86,6 +89,14 @@ namespace SharedResources.ChessGameResource.Figures
                 throw;
             }
            
+        }
+
+        public object Clone()
+        {
+            return new Knight
+            {
+                FigureColor = this.FigureColor
+            };
         }
     }
 }

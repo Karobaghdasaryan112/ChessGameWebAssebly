@@ -21,6 +21,8 @@ namespace BlazorServerSideClient.Services
         public ValueTask InviteAcceptedMessage()
             => _js.SafeInvokeVoidAsync(_logger, "alert", "Your Invite was accepted!");
 
+        public ValueTask ReceiveOptimalMoves(Position from,Position to)
+            => _js.SafeInvokeVoidAsync(_logger, "ReceiveOptimalMoves.Show", from,to);
         public ValueTask WinNotifier_opponentLeft()
             => _js.SafeInvokeVoidAsync(_logger, "alert", "The opponent left. You win!");
 

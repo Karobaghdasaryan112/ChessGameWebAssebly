@@ -1,6 +1,7 @@
 ﻿using ChessGame.Core.Services.MediatR.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -70,6 +71,23 @@ namespace ChessService.API.ChessGameAPI.Controllers
 
             return
                 !gameHistoryResult.IsSuccess ? BadRequest(gameHistoryResult) : Ok(gameHistoryResult);
+        }
+        [HttpGet("getOptimizedMove")]
+        public async Task<IActionResult> GetOptimizedMoveAync([FromQuery] Guid gameId, [FromQuery] FigureColors myColor, [FromQuery] bool isMaximizingPlayer)
+        {
+            var optimizedMoveRequest =
+                     new GetOptimizedMoveRequestDTO()
+                     {
+                         ChosenColor = myColor,
+                         GameId = gameId
+                     };
+            var requestQuery = new GetOptimizedMoveQuery<
+                GetOptimizedMoveRequestDTO,
+                ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>
+                (optimizedMoveRequest);
+            var optimizedMoveResult = await mediator.Send(requestQuery);
+            return
+                !optimizedMoveResult.IsSuccess ? BadRequest(optimizedMoveResult) : Ok(optimizedMoveResult);
         }
     }
 }

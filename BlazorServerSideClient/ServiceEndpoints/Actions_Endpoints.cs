@@ -24,6 +24,7 @@
             Resign,
             History,
             HistoryPagination,
+            GetOptimizedMove,
             GameHistory
         }
 

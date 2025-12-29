@@ -80,6 +80,7 @@ namespace ChessGameBlazorClient.UI.Services
 
         public async Task RegisterConnectionHandlers()
         {
+
             await GetHubConnection();
 
             if (_hubConnection != null)
@@ -128,6 +129,12 @@ namespace ChessGameBlazorClient.UI.Services
 
 
             }
+
+            _hubConnection.Closed += async (error) =>
+            {
+                Console.WriteLine("Disconnected");
+                await Task.CompletedTask;
+            };
         }
     }
 }

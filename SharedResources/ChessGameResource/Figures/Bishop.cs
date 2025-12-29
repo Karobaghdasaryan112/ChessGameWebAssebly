@@ -1,5 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -10,6 +11,7 @@ namespace SharedResources.ChessGameResource.Figures
         public Bishop() { }
         public FigureType FigureType => FigureType.Bishop;
         public FigureColors FigureColor { get; set; }
+        public FigureScores FigureScore => FigureScores.Bishop;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -39,6 +41,14 @@ namespace SharedResources.ChessGameResource.Figures
         public string GetFenChar()
         {
             return FigureColor == FigureColors.White ? "B" : "b";
+        }
+
+        public object Clone()
+        {
+            return new Bishop
+            {
+                FigureColor = this.FigureColor
+            };
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SharedResources.ChessGameResource.Models
     /// Represents the chessboard in the game.
     /// Handles initialization and retrieval of blocks and chess pieces.
     /// </summary>
-    public class Board : ICusotomComparable
+    public class Board : ICusotomComparable, ICloneable
     {
         public Board(FigureColors figureColor)
         {
@@ -125,6 +125,15 @@ namespace SharedResources.ChessGameResource.Models
             return BoardBlocks[verticalOrientation][horizontalOrientation];
         }
 
+        /// <summary>
+        /// Retrieves all blocks on the board that contain a figure matching the specified type and color.
+        /// </summary>
+        /// <param name="figureType">The type of figure to search for within the board blocks.</param>
+        /// <param name="figureColor">The color of the figure to search for within the board blocks.</param>
+        /// <returns>A list of blocks containing a figure with the specified type and color. The list is empty if no such blocks
+        /// are found.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the board blocks have not been initialized.</exception>
+
         public List<Block> GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
         {
             if (BoardBlocks is null)
@@ -141,6 +150,15 @@ namespace SharedResources.ChessGameResource.Models
             return selectedKing;
         }
 
+        /// <summary>
+        /// Compares the current board to another board and returns a list of blocks that differ between them.
+        /// </summary>
+        /// <remarks>Blocks are compared by their positions in the board. Only blocks that differ in value
+        /// are included in the returned list. The comparison assumes both boards are 8x8 in size.</remarks>
+        /// <param name="other">The board to compare with the current board. Must not be null and must have the same dimensions as the
+        /// current board.</param>
+        /// <returns>A list of blocks from the specified board that are not equal to the corresponding blocks in the current
+        /// board. The list is empty if all blocks are equal.</returns>
         public List<Block> CompareTo(Board other)
         {
             List<Block> nonEqualBlocks = new();
@@ -157,5 +175,30 @@ namespace SharedResources.ChessGameResource.Models
 
             return nonEqualBlocks;
         }
+
+
+        /// <summary>
+        /// Creates a new object that is a deep copy of the current Board instance.
+        /// </summary>
+        /// <remarks>The returned object is independent of the original Board. Changes to the cloned Board
+        /// or its blocks do not affect the original instance, and vice versa.</remarks>
+        /// <returns>A new object that is a deep copy of this Board, including all contained blocks and their state.</returns>
+        public object Clone()
+        {
+            var clonedBoard = new Board(this.FigureColor)
+            {
+                Turn = this.Turn,
+                BoardBlocks = new Block[8][]
+            };
+            for (int i = 0; i < 8; i++)
+            {
+                clonedBoard.BoardBlocks[i] = new Block[8];
+                for (int j = 0; j < 8; j++)
+                {
+                    clonedBoard.BoardBlocks[i][j] = (Block)this.BoardBlocks[i][j].Clone();
+                }
+            }
+            return clonedBoard;
+        }
     }
-}
+} 

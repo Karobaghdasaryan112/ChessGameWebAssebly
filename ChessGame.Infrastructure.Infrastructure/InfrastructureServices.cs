@@ -22,7 +22,6 @@ namespace ChessGame.Infrastructure.Infrastructure
         .AddHubOptions<GameHub>(options =>
         {
             options.KeepAliveInterval = TimeSpan.FromSeconds(1);
-
             options.HandshakeTimeout = TimeSpan.FromSeconds(150000);
             options.EnableDetailedErrors = true;
         });

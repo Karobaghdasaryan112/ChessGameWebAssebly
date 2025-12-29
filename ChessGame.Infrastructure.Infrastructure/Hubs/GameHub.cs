@@ -31,12 +31,12 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            Console.WriteLine(10);
             await connectionService.RemoveConnectionAsConnectionIdAsync(
                      new RemoveUserConnectionRequestDTO()
                      {
                          ConnectionId = Context.ConnectionId
                      });
-
             await base.OnDisconnectedAsync(exception);
         }
 

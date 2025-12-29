@@ -408,3 +408,44 @@ window.ReceiveBlockChangesHistory = {
         ShowMovableAndCutableBlocks.Clear();
     }
 };
+window.ReceiveOptimalMoves = {
+    Show: function (from, to) {
+        const fromCell = document.getElementById(`${from.verticalOrientation}${from.horizontalOrientation}`);
+        const toCell = document.getElementById(`${to.verticalOrientation}${to.horizontalOrientation}`);
+
+        if (fromCell && toCell) {
+            const originalFromBg = fromCell.style.backgroundColor;
+            const originalToBg = toCell.style.backgroundColor;
+
+
+            fromCell.style.backgroundColor = "#800000"; 
+            toCell.style.backgroundColor = "#800000";
+
+            setTimeout(() => {
+                fromCell.style.backgroundColor = originalFromBg;
+                toCell.style.backgroundColor = originalToBg;
+            }, 4000);
+        }
+    }
+};
+
+
+
+
+
+//window.addEventListener("beforeunload", () => {
+//    if (connection.state === signalR.HubConnectionState.Connected) {
+//        connection.stop();
+//    }
+//});
+
+
+//window.addEventListener("beforeunload", () => {
+//    const signalRConnection = new signalR.HubConnectionBuilder();
+//    if (
+//        signalRConnection &&
+//        signalRConnection.state === signalR.HubConnectionState.Connected
+//    ) {
+//        signalRConnection.stop();
+//    }
+//});
