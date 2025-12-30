@@ -1,5 +1,6 @@
 ﻿using ChessGame.Core.Services.MediatR.Handlers.Commands;
 using ChessGame.Core.Services.MediatR.Handlers.Queries;
+using ChessGame.Core.Services.Services.HelperService;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,7 @@ namespace ChessGame.Core.Services
 
                 cfg.Lifetime = ServiceLifetime.Scoped;
             });
-
+            services.AddScoped<HelperService>();
             services.AddValidatorsFromAssembly(typeof(SubmitMoveRequestDTOValidator).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(SubmitMoveResponseDTOValidator).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(GetAllHistoryWidgetsRequestDTOValidator).Assembly, ServiceLifetime.Scoped);

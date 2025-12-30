@@ -1,7 +1,9 @@
 ﻿using ChessGame.Core.Services.Constants;
 using ChessGame.Core.Services.Contracts.BoardServices;
+using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
+using ChessGame.Core.Services.Services.HelperService;
 using ChessGame.Core.Services.Services.Validations;
 using FluentValidation;
 using MediatR;
@@ -14,24 +16,39 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses.ResponseMessages;
+using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 {
     public class GetOptimizedMoveQueryHandler(
-       IValidator<GetOptimizedMoveRequestDTO> validator,
-       ILogger<GetOptimizedMoveQueryHandler> logger,
+        IValidator<GetOptimizedMoveRequestDTO> validator,
+        ILogger<GetOptimizedMoveQueryHandler> logger,
         IBoardService boardService,
+        IConnectionService connectionService,
+        HelperService helperService,
         IMediator mediator,
         GenericValidationService genericValidationService) :
-        MediatR_Base<GetOptimizedMoveRequestDTO, GetOptimizedMoveQueryHandler, IBoardService>(validator, logger, boardService),
+        MediatR_Base<GetOptimizedMoveRequestDTO, GetOptimizedMoveQueryHandler, IBoardService>(validator, logger,
+            boardService),
         IRequestHandler<
             GetOptimizedMoveQuery<
                 GetOptimizedMoveRequestDTO,
                 ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>,
             ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>
     {
+
+        public class SearchResult
+        {
+            public int Score { get; set; }
+            public Position? From { get; set; }
+            public Position? To { get; set; }
+        }
+
         public async Task<ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>
-            Handle(GetOptimizedMoveQuery<GetOptimizedMoveRequestDTO, ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>> request, CancellationToken cancellationToken)
+            Handle(
+                GetOptimizedMoveQuery<GetOptimizedMoveRequestDTO,
+                    ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>> request,
+                CancellationToken cancellationToken)
         {
             //Valdidation
             var validationResult = await genericValidationService.ValidateAsync(request.RequestDTO);
@@ -39,7 +56,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             {
                 return await Task.FromResult(ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>
                     .CreateErrorResponse(ChessGameResponseMessage.InvalidData, System.Net.HttpStatusCode.BadRequest,
-                    validationResult.Errors.Select(e => e.ErrorMessage).ToList()));
+                        validationResult.Errors.Select(e => e.ErrorMessage).ToList()));
             }
 
             //Existing Game Check
@@ -51,246 +68,235 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             }
 
 
-            //initialize alpha-beta parameters and depth
-            int depth = HelperConstants.MAX_DEPTH;
-            bool isMaximizingPlayer = true;
-            int alpha = HelperConstants.ALPHA;
-            int beta = HelperConstants.BETA;
+            var aiColor = request.RequestDTO.ChosenColor;
+            var depth = HelperConstants.MAX_DEPTH;
 
-            var currentColor = request.RequestDTO.ChosenColor;//TO DO : Determine current color based on the game state
-            try
-            {
-                var bestScoreResult = await AlphaBeta(request.RequestDTO.GameId, board, depth, alpha, beta, isMaximizingPlayer, currentColor, mediator);
-                var bestScoreBoard = _boardAndScores.FirstOrDefault(x => x.Value == bestScoreResult).Key;
-                var differenceBlocks = board.CompareTo(bestScoreBoard);
-                var bestMove = new GetOptimizedMoveResponseDTO
+            var result = AlphaBetaRoot(request.RequestDTO.GameId, board, depth, int.MinValue, int.MaxValue, aiColor);
+
+
+            return ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>
+                .CreateSuccessResponse(new GetOptimizedMoveResponseDTO
                 {
-                    FromPosition = differenceBlocks[1].Position,
-                    ToPosition = differenceBlocks[0].Position,
+                    FromPosition = result.From!,
+                    ToPosition = result.To!,
                     GameId = request.RequestDTO.GameId
-                };
-                return ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>
-                    .CreateSuccessResponse(bestMove, ChessGameResponseMessage.SuccessData, System.Net.HttpStatusCode.OK);
-            }
-            catch (Exception ex)
-            {
-                var x = 10;
-            }
-            return null;
+                },
+                    ChessGameResponseMessage.SuccessData,
+                    HttpStatusCode.OK);
         }
-        private async Task<int> AlphaBeta(Guid gameId, Board board, int depth, int alpha, int beta, bool isMaximizingPlayer, FigureColors currentColor, IMediator mediator)
+
+        private SearchResult AlphaBetaRoot(Guid gameId, Board board, int depth, int alpha, int beta, FigureColors aiColor)
+        {
+            SearchResult bestResult = new() { Score = int.MinValue };
+
+            var moves = GeneratePossibleMoves(board);
+
+            foreach (var move in moves)
+            {
+                foreach (var to in move.Value)
+                {
+                    var nextBoard = (Board)board.Clone();
+
+                    var submit = TryApplyMove(gameId, nextBoard, move.Key, to);
+                    if (!submit)
+                        continue;
+
+                    nextBoard.SwitchTurn();
+
+                    var score = AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
+
+                    if (score > bestResult.Score)
+                    {
+                        bestResult.Score = score;
+                        bestResult.From = move.Key;
+                        bestResult.To = to;
+                    }
+
+                    alpha = Math.Max(alpha, score);
+                    if (beta <= alpha)
+                        break;
+                }
+            }
+
+            return bestResult;
+        }
+
+
+        private int AlphaBeta(Guid gameId, Board board, int depth, int alpha, int beta, FigureColors aiColor)
         {
             if (depth == 0)
-                return await GetStatePoint(gameId, board, currentColor, mediator);
+                return Evaluate(gameId, board, aiColor);
 
-            var possibleMoves = GeneratePossibleMoves(board);
+            bool isMaximizing = (FigureColors)board.Turn == aiColor;
 
-            if (isMaximizingPlayer)
+            var moves = GeneratePossibleMoves(board);
+
+            if (isMaximizing)
             {
                 int maxEval = int.MinValue;
 
-                foreach (var move in possibleMoves)
+                foreach (var move in moves)
                 {
-                    foreach (var toPosition in move.Value)
+                    foreach (var to in move.Value)
                     {
-
                         var nextBoard = (Board)board.Clone();
-                        nextBoard.Turn = board.Turn;
 
-                        var moveCommand = new SubmitMoveCommand<
-                            SubmitMoveRequestDTO,
-                            ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(
-                            new SubmitMoveRequestDTO
-                            {
-                                GameId = gameId,
-                                From = move.Key,
-                                To = toPosition,
-                                CurrentBoardState = nextBoard
-                            });
-
-                        var result = await mediator.Send(moveCommand);
-
-                        if (result is { IsSuccess: true, Data.IsKingChecked: true } ||
-                            result is { IsSuccess: true, Data.IsKingMate: true })
-                        {
+                        if (!TryApplyMove(gameId, nextBoard, move.Key, to))
                             continue;
-                        }
 
                         nextBoard.SwitchTurn();
-                        var nextColor = currentColor == FigureColors.White ? FigureColors.Black : FigureColors.White;
 
-                        int eval = await AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, false, nextColor, mediator);
+                        int eval =  AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
 
                         maxEval = Math.Max(maxEval, eval);
                         alpha = Math.Max(alpha, eval);
 
-                        Console.WriteLine($"MaxEval {maxEval}");
-                        Console.WriteLine($"ToPosition {toPosition.ToString()}");
-                        Console.WriteLine($"nextColor {nextColor}");
-
-                        if (depth == HelperConstants.MAX_DEPTH)
-                            _boardAndScores[nextBoard] = eval;
-
                         if (beta <= alpha)
-                            break;
+                            return maxEval;
                     }
                 }
-
                 return maxEval;
             }
             else
             {
                 int minEval = int.MaxValue;
 
-                foreach (var move in possibleMoves)
+                foreach (var move in moves)
                 {
-                    foreach (var toPosition in move.Value)
+                    foreach (var to in move.Value)
                     {
                         var nextBoard = (Board)board.Clone();
-                        nextBoard.Turn = board.Turn;
 
-                        var moveCommand = new SubmitMoveCommand<
-                            SubmitMoveRequestDTO,
-                            ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(
-                            new SubmitMoveRequestDTO
-                            {
-                                GameId = gameId,
-                                From = move.Key,
-                                To = toPosition,
-                                CurrentBoardState = nextBoard
-                            });
-
-                        var result = await mediator.Send(moveCommand);
-
-                        if (result is { IsSuccess: true, Data.IsKingChecked: true } ||
-                            result is { IsSuccess: true, Data.IsKingMate: true })
-                        {
+                        if (!TryApplyMove(gameId, nextBoard, move.Key, to))
                             continue;
-                        }
 
                         nextBoard.SwitchTurn();
-                        var nextColor = currentColor == FigureColors.White ? FigureColors.Black : FigureColors.White;
 
-                        int eval = await AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, true, nextColor, mediator);
+                        int eval =  AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
 
                         minEval = Math.Min(minEval, eval);
                         beta = Math.Min(beta, eval);
 
-                        Console.WriteLine($"MaxEval {minEval}");
-                        Console.WriteLine($"ToPosition {toPosition.ToString()}");
-                        Console.WriteLine($"nextColor {nextColor}");
-
-                        if (depth == HelperConstants.MAX_DEPTH)
-                            _boardAndScores[nextBoard] = eval;
-
                         if (beta <= alpha)
-                            break;
+                            return minEval;
                     }
                 }
-
                 return minEval;
             }
         }
 
-
-        private async Task<int> GetStatePoint(Guid gameId, Board board, FigureColors curreentColor, IMediator mediator)
+        private bool TryApplyMove(Guid gameId, Board board, Position from, Position to)
         {
-            var blocks = board.BoardBlocks.SelectMany(blocks => blocks.Where(block => block.Figure != null)).ToList();
+            var cmd = new SubmitMoveCommand<
+                SubmitMoveRequestDTO,
+                ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(
+                new SubmitMoveRequestDTO
+                {
+                    GameId = gameId,
+                    From = from,
+                    To = to,
+                    CurrentBoardState = board
+                });
+
+            var result = helperService.SubmitMoveByHelper(from, to, board);
+
+            return result is { IsMoveSuccess: true, IsKingChecked: false, IsKingMate: false };
+        }
+
+        private int Evaluate(
+            Guid gameId,
+            Board board,
+            FigureColors aiColor)
+        {
             int score = 0;
 
-            var isKingMateQuery = new IsKingMateQuery<IsKingMateRequestDTO, ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>>(
-            new IsKingMateRequestDTO
-            {
-                ChosenColor = (Turn)curreentColor,
-                CurrentBoard = board,
-                GameId = gameId
-            });
+            var blocks = board.BoardBlocks
+                .SelectMany(x => x)
+                .Where(b => b.Figure != null)
+                .ToList();
 
-            var isKingCheckQuery = new IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(new IsKingCheckedRequestDTO()
-            {
-                ChosenColor = (Turn)curreentColor,
-                CurrentBoard = board,
-                GameId = gameId
-            });
-
-            score += MaterialScore(blocks, curreentColor);
-            score += AttackScore(blocks, board, curreentColor);
-            score += await KingSafetyScore(board, curreentColor, mediator, isKingMateQuery, isKingCheckQuery);
+            score += MaterialScore(blocks, aiColor);
+            score += KingSafetyScore(gameId, board, aiColor);
 
             return score;
         }
-        int MaterialScore(List<Block> blocks, FigureColors currentColor)
+
+
+        private int MaterialScore(List<Block> blocks, FigureColors aiColor)
         {
             int score = 0;
 
             foreach (var block in blocks)
             {
                 int value = (int)block.Figure.FigureScore;
-
-                score += block.Figure.FigureColor == currentColor ? value : -value;
+                score += block.Figure.FigureColor == aiColor ? value : -value;
             }
 
             return score;
         }
-        int AttackScore(List<Block> blocks, Board board, FigureColors currentColor)
+        private int KingSafetyScore(
+            Guid gameId,
+            Board board,
+            FigureColors aiColor)
+        {
+
+            var check = helperService.IsKingCheckByHelper(aiColor, board);
+
+            if (!check) return 0;
+            var mate = helperService.IsKingMateStateByHelper(board, aiColor);
+            if (mate)
+                return -100_000;
+            return -200;
+
+        }
+
+        private int AttackScore(
+            List<Block> blocks,
+            Board board,
+            FigureColors aiColor)
         {
             int score = 0;
 
-            foreach (var block in blocks)
+            foreach (var attacker in blocks)
             {
-                var cuttableBlocks = block.Figure.GetMovableAndCuttableBlocks(block.Position, board).CutableBlock;
-                foreach (var cuttableBlock in cuttableBlocks)
-                {
-                    var value = (int)cuttableBlock.Figure.FigureScore / 10;
+                var moves = attacker.Figure
+                    .GetMovableAndCuttableBlocks(attacker.Position, board);
 
-                    score += cuttableBlock.Figure.FigureColor == currentColor
-                        ? value
-                        : -value;
+                foreach (var target in moves.CutableBlock)
+                {
+                    int targetValue = (int)target.Figure.FigureScore;
+                    int attackerValue = (int)attacker.Figure.FigureScore;
+
+                    // выгодная атака
+                    int attackScore = targetValue - attackerValue / 2;
+
+                    if (attacker.Figure.FigureColor == aiColor)
+                        score += Math.Max(0, attackScore);
+                    else
+                        score -= Math.Max(0, attackScore);
                 }
             }
+
             return score;
         }
 
 
-        async Task<int> KingSafetyScore(
-            Board board,
-            FigureColors currentColor,
-            IMediator mediator,
-            IsKingMateQuery<IsKingMateRequestDTO, ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>> isKingMateQuery,
-            IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>> isKingCheckedQuery)
-        {
-            var isKingMateResponse = await mediator.Send(isKingMateQuery);
-            if (isKingMateResponse is { IsSuccess: true, Data.IsKingMate: true })
-            {
-
-                return (FigureColors)board.Turn == currentColor
-                    ? -100_000
-                    : 100_000;
-            }
-
-            var isKingCheckedResponse = await mediator.Send(isKingCheckedQuery);
-            if (isKingCheckedResponse is { IsSuccess: true, Data.IsKingChecked: true })
-            {
-                return (FigureColors)board.Turn == currentColor
-                    ? -200
-                    : 200;
-            }
-
-            return 0;
-        }
         public List<KeyValuePair<Position, List<Position>>> GeneratePossibleMoves(Board board)
         {
             var possibleMoves = new List<KeyValuePair<Position, List<Position>>>();
-
-            foreach (var block in board.BoardBlocks.SelectMany(blocks => blocks.Where(block => block.Figure != null && block.Figure?.FigureColor == (FigureColors)board.Turn)))
+            foreach (var block in board.BoardBlocks.SelectMany(blocks =>
+                         blocks.Where(block =>
+                             block.Figure != null && block.Figure?.FigureColor == (FigureColors)board.Turn)))
             {
+
                 var moves = block.Figure.GetMovableAndCuttableBlocks(block.Position, board);
+
                 var movables = moves.MovableBlock.Select(block => block.Position).ToList();
+                var cuttables = moves.CutableBlock.Select(block => block.Position).ToList();
                 possibleMoves.Add(new KeyValuePair<Position, List<Position>>(block.Position, movables));
+                possibleMoves.Add(new KeyValuePair<Position, List<Position>>(block.Position, cuttables));
             }
             return possibleMoves;
         }
-        private Dictionary<Board, int> _boardAndScores { get; set; } = new Dictionary<Board, int>();
-
     }
 }
