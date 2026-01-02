@@ -7,6 +7,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
 {
     public class BoardStateRequestDTO : IRequestDTO
     {
+        public bool IsOpponentComputer { get; set; }
         public Guid GameId { get; set; }
         public Position? From {  get; set; }
         public Position? To { get; set; }

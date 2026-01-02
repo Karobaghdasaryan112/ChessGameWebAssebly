@@ -11,11 +11,34 @@ namespace SharedResources.ChessGameResource.Figures
     {
         public Knight()
         {
+
         }
+
+        private double[][] _startGameKnightTable = new double[8][]
+        {
+            new double[] { -5, -4, -3, -3, -3, -3, -4, -5 },
+            new double[] { -4, -2, 0, 0, 0, 0, -2, -4 },
+            new double[] { -3, 0, 1, 2, 2, 1, 0, -3 },
+            new double[] { -3, 1, 2, 3, 3, 2, 1, -3 },
+            new double[] { -3, 0, 2, 3, 3, 2, 0, -3 },
+            new double[] { -3, 1, 1, 2, 2, 1, 1, -3 },
+            new double[] { -4, -2, 0, 1, 1, 0, -2, -4 },
+            new double[] { -5, -4, -3, -3, -3, -3, -4, -5 }
+        };
+
+        private double[][] _midGameKnightTable => _startGameKnightTable;
+
+        private double[][] _endGameKnightTable => _startGameKnightTable; 
+
+
+        public double[][] MidGameTable => _midGameKnightTable;
+        public double[][] StartGameTable => _startGameKnightTable;
+        public double[][] EndGameTable => _endGameKnightTable;
+
+
         public FigureType FigureType => FigureType.Knight;
         public FigureColors FigureColor { get; set; }
 
-        public FigureScores FigureScore => FigureScores.Knight;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -57,7 +80,7 @@ namespace SharedResources.ChessGameResource.Figures
             return FigureColor == FigureColors.White ? "N" : "n";
         }
 
-        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions,Board board)
+        private void AddPositions(int row, int col, int rowStep, int colStep, MovableAndCutablePositions positions, Board board)
         {
             try
             {
@@ -88,7 +111,7 @@ namespace SharedResources.ChessGameResource.Figures
                 Console.WriteLine(e);
                 throw;
             }
-           
+
         }
 
         public object Clone()

@@ -1,6 +1,7 @@
 ﻿using ChessGame.Core.Services.Extentions;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Figures;
 using SharedResources.ChessGameResource.Models;
 
@@ -54,7 +55,7 @@ namespace ChessGame.Core.Services.Services.HelperService
                     return false;
 
 
-                
+
                 foreach (var executable in enumerableOfExecutable)
                 {
                     var toBlockFigureTemp = currentBoard.GetBlockByPosition(executable.Position).Figure;
@@ -90,6 +91,10 @@ namespace ChessGame.Core.Services.Services.HelperService
         public bool IsKingCheckByHelper(FigureColors chosenColor, Board currentBoard)
         {
             var myColor = (FigureColors)chosenColor;
+            if (currentBoard == default || chosenColor == FigureColors.None)
+            {
+                var x = 10;
+            }
 
             var kingBlock = currentBoard.GetBlockByFigureTypeAndColor(FigureType.King, myColor).First();
 
@@ -129,7 +134,8 @@ namespace ChessGame.Core.Services.Services.HelperService
                 }
             };
             var possibleMovableAndCuttable =
-                kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
+                kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard,
+                    kingBlockClone);
 
             var figuresForCheck = possibleMovableAndCuttable.CutableBlock.Where(block =>
                 figureTypes.Contains<FigureType>(block.Figure.FigureType));
@@ -164,7 +170,11 @@ namespace ChessGame.Core.Services.Services.HelperService
                 response.IsMoveSuccess = false;
                 return response;
             }
-
+            if (toBlock?.Figure?.FigureType == FigureType.King)
+            {
+                response.IsMoveSuccess = false;
+                return response;
+            }
             var toBlockTemp = toBlock.Figure;
 
             toBlock.Figure = fromBlock.Figure;
@@ -174,15 +184,44 @@ namespace ChessGame.Core.Services.Services.HelperService
 
             if (!isKingCheckResponse)
             {
+                boardState.SwitchTurn();
                 return response;
             }
 
             fromBlock.Figure = toBlock.Figure;
             toBlock.Figure = toBlockTemp;
             response.IsKingChecked = true;
+            response.IsMoveSuccess = false;
             return response;
         }
+
+        public GamePhase GetGamePhase(Board board)
+        {
+            int materialSum = 0;
+
+            foreach (var block in board.BoardBlocks.SelectMany(x => x).Where(b => b.Figure != null))
+            {
+                switch (block.Figure.FigureType)
+                {
+                    case FigureType.Pawn: materialSum += 1; break;
+                    case FigureType.Knight: materialSum += 3; break;
+                    case FigureType.Bishop: materialSum += 3; break;
+                    case FigureType.Rook: materialSum += 5; break;
+                    case FigureType.Queen: materialSum += 9; break;
+                }
+            }
+
+            double materialPercent = materialSum / 39.0 * 100;
+
+            if (materialPercent > 70)
+                return GamePhase.StartGame;
+            else if (materialPercent > 30)
+                return GamePhase.Midgame;
+            else
+                return GamePhase.Endgame;
+        }
     }
+
 
     public class SubmitMoveByHelperDTO
     {

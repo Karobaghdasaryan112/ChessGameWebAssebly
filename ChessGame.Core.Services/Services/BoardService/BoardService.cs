@@ -2,7 +2,6 @@
 using ChessGame.Core.Services.Contracts.Repositories;
 using ChessGame.Domain.Domain.Entities;
 using Microsoft.Extensions.Logging;
-using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -24,17 +23,17 @@ namespace ChessGame.Core.Services.Services.BoardService
             InitializeBoardAsync(BoardInitializeRequestDTO connectionRequestDto)
         {
 
-              chessGameRepository.CreateGame(
-               connectionRequestDto.Player1Id,
-               connectionRequestDto.Player2Id,
+            chessGameRepository.CreateGame(
+             connectionRequestDto.Player1Id,
+             connectionRequestDto.Player2Id,
+             
+             connectionRequestDto.GameEvent,
 
-               GameEvent.Start,
+             connectionRequestDto.Player1Name,
+             connectionRequestDto.Player2Name,
 
-               connectionRequestDto.Player1Name,
-               connectionRequestDto.Player2Name,
-
-               (int)connectionRequestDto.Player1Time.TotalSeconds,
-               (int)connectionRequestDto.Player2Time.TotalSeconds);
+             (int)connectionRequestDto.Player1Time.TotalSeconds,
+             (int)connectionRequestDto.Player2Time.TotalSeconds);
 
 
             var isCreated = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);

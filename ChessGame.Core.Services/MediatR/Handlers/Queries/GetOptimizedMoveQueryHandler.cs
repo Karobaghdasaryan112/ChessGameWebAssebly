@@ -1,7 +1,5 @@
 ﻿using ChessGame.Core.Services.Constants;
 using ChessGame.Core.Services.Contracts.BoardServices;
-using ChessGame.Core.Services.Contracts.Hub;
-using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
 using ChessGame.Core.Services.Services.HelperService;
 using ChessGame.Core.Services.Services.Validations;
@@ -9,6 +7,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
@@ -18,15 +17,14 @@ using SharedResources.MediatR;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
 
+
 namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 {
     public class GetOptimizedMoveQueryHandler(
         IValidator<GetOptimizedMoveRequestDTO> validator,
         ILogger<GetOptimizedMoveQueryHandler> logger,
         IBoardService boardService,
-        IConnectionService connectionService,
         HelperService helperService,
-        IMediator mediator,
         GenericValidationService genericValidationService) :
         MediatR_Base<GetOptimizedMoveRequestDTO, GetOptimizedMoveQueryHandler, IBoardService>(validator, logger,
             boardService),
@@ -39,7 +37,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 
         public class SearchResult
         {
-            public int Score { get; set; }
+            public double Score { get; set; }
             public Position? From { get; set; }
             public Position? To { get; set; }
         }
@@ -69,9 +67,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 
 
             var aiColor = request.RequestDTO.ChosenColor;
-            var depth = HelperConstants.MAX_DEPTH;
 
-            var result = AlphaBetaRoot(request.RequestDTO.GameId, board, depth, int.MinValue, int.MaxValue, aiColor);
+            var result = AlphaBetaRoot(request.RequestDTO.GameId, board, HelperConstants.MAX_DEPTH, int.MinValue, int.MaxValue, aiColor);
 
 
             return ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>
@@ -85,9 +82,17 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                     HttpStatusCode.OK);
         }
 
-        private SearchResult AlphaBetaRoot(Guid gameId, Board board, int depth, int alpha, int beta, FigureColors aiColor)
+        private SearchResult AlphaBetaRoot(Guid gameId, Board board, int depth, double alpha, double beta, FigureColors aiColor)
         {
-            SearchResult bestResult = new() { Score = int.MinValue };
+            bool isMaxRoot = (FigureColors)board.Turn == aiColor;
+
+            SearchResult bestResult = new()
+            {
+                Score = isMaxRoot ? double.NegativeInfinity
+                                  : double.PositiveInfinity
+            };
+
+
 
             var moves = GeneratePossibleMoves(board);
 
@@ -101,18 +106,29 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                     if (!submit)
                         continue;
 
-                    nextBoard.SwitchTurn();
-
                     var score = AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
 
-                    if (score > bestResult.Score)
+                    if (isMaxRoot)
                     {
-                        bestResult.Score = score;
-                        bestResult.From = move.Key;
-                        bestResult.To = to;
+                        if (score > bestResult.Score)
+                        {
+                            bestResult.Score = score;
+                            bestResult.From = move.Key;
+                            bestResult.To = to;
+                        }
+                        alpha = Math.Max(alpha, score);
+                    }
+                    else
+                    {
+                        if (score < bestResult.Score)
+                        {
+                            bestResult.Score = score;
+                            bestResult.From = move.Key;
+                            bestResult.To = to;
+                        }
+                        beta = Math.Min(beta, score);
                     }
 
-                    alpha = Math.Max(alpha, score);
                     if (beta <= alpha)
                         break;
                 }
@@ -122,7 +138,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
         }
 
 
-        private int AlphaBeta(Guid gameId, Board board, int depth, int alpha, int beta, FigureColors aiColor)
+        private double AlphaBeta(Guid gameId, Board board, int depth, double alpha, double beta, FigureColors aiColor)
         {
             if (depth == 0)
                 return Evaluate(gameId, board, aiColor);
@@ -133,7 +149,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
 
             if (isMaximizing)
             {
-                int maxEval = int.MinValue;
+                double maxEval = int.MinValue;
 
                 foreach (var move in moves)
                 {
@@ -144,9 +160,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                         if (!TryApplyMove(gameId, nextBoard, move.Key, to))
                             continue;
 
-                        nextBoard.SwitchTurn();
 
-                        int eval =  AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
+                        var eval = AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
 
                         maxEval = Math.Max(maxEval, eval);
                         alpha = Math.Max(alpha, eval);
@@ -155,11 +170,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                             return maxEval;
                     }
                 }
+
                 return maxEval;
             }
             else
             {
-                int minEval = int.MaxValue;
+                double minEval = int.MaxValue;
 
                 foreach (var move in moves)
                 {
@@ -170,9 +186,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                         if (!TryApplyMove(gameId, nextBoard, move.Key, to))
                             continue;
 
-                        nextBoard.SwitchTurn();
-
-                        int eval =  AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
+                        double eval = AlphaBeta(gameId, nextBoard, depth - 1, alpha, beta, aiColor);
 
                         minEval = Math.Min(minEval, eval);
                         beta = Math.Min(beta, eval);
@@ -181,104 +195,79 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                             return minEval;
                     }
                 }
+
                 return minEval;
             }
         }
 
         private bool TryApplyMove(Guid gameId, Board board, Position from, Position to)
         {
-            var cmd = new SubmitMoveCommand<
-                SubmitMoveRequestDTO,
-                ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(
-                new SubmitMoveRequestDTO
-                {
-                    GameId = gameId,
-                    From = from,
-                    To = to,
-                    CurrentBoardState = board
-                });
-
             var result = helperService.SubmitMoveByHelper(from, to, board);
 
-            return result is { IsMoveSuccess: true, IsKingChecked: false, IsKingMate: false };
+            return result is { IsMoveSuccess: true };
         }
 
-        private int Evaluate(
+        private double Evaluate(
             Guid gameId,
             Board board,
             FigureColors aiColor)
         {
-            int score = 0;
+            double score = 0;
+
+            var gamePhase = helperService.GetGamePhase(board);
 
             var blocks = board.BoardBlocks
                 .SelectMany(x => x)
                 .Where(b => b.Figure != null)
                 .ToList();
 
-            score += MaterialScore(blocks, aiColor);
+            score += MaterialScore(blocks, board, gamePhase, aiColor);
             score += KingSafetyScore(gameId, board, aiColor);
-
             return score;
         }
 
 
-        private int MaterialScore(List<Block> blocks, FigureColors aiColor)
+        private double MaterialScore(List<Block> blocks, Board board, GamePhase gamePhase, FigureColors aiColor)
         {
-            int score = 0;
+            double score = 0;
 
             foreach (var block in blocks)
             {
-                int value = (int)block.Figure.FigureScore;
+                double value = FigureScores.GetFigureScore(gamePhase, block.Figure.FigureType);
+                value += block.Figure.GetPositionalScore(
+                            block.Position,
+                            gamePhase,
+                            block.Figure.FigureColor == FigureColors.White
+                        );
                 score += block.Figure.FigureColor == aiColor ? value : -value;
             }
 
             return score;
         }
+
         private int KingSafetyScore(
             Guid gameId,
             Board board,
             FigureColors aiColor)
         {
 
-            var check = helperService.IsKingCheckByHelper(aiColor, board);
-
-            if (!check) return 0;
-            var mate = helperService.IsKingMateStateByHelper(board, aiColor);
-            if (mate)
-                return -100_000;
-            return -200;
-
-        }
-
-        private int AttackScore(
-            List<Block> blocks,
-            Board board,
-            FigureColors aiColor)
-        {
             int score = 0;
 
-            foreach (var attacker in blocks)
-            {
-                var moves = attacker.Figure
-                    .GetMovableAndCuttableBlocks(attacker.Position, board);
+            if (helperService.IsKingMateStateByHelper(board, aiColor))
+                return -100_000;
 
-                foreach (var target in moves.CutableBlock)
-                {
-                    int targetValue = (int)target.Figure.FigureScore;
-                    int attackerValue = (int)attacker.Figure.FigureScore;
+            var opponent = aiColor == FigureColors.White
+                ? FigureColors.Black
+                : FigureColors.White;
 
-                    // выгодная атака
-                    int attackScore = targetValue - attackerValue / 2;
-
-                    if (attacker.Figure.FigureColor == aiColor)
-                        score += Math.Max(0, attackScore);
-                    else
-                        score -= Math.Max(0, attackScore);
-                }
-            }
+            if (helperService.IsKingMateStateByHelper(board, opponent))
+                return 100_000;
 
             return score;
+
         }
+
+       
 
 
         public List<KeyValuePair<Position, List<Position>>> GeneratePossibleMoves(Board board)
@@ -292,10 +281,11 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 var moves = block.Figure.GetMovableAndCuttableBlocks(block.Position, board);
 
                 var movables = moves.MovableBlock.Select(block => block.Position).ToList();
-                var cuttables = moves.CutableBlock.Select(block => block.Position).ToList();
-                possibleMoves.Add(new KeyValuePair<Position, List<Position>>(block.Position, movables));
-                possibleMoves.Add(new KeyValuePair<Position, List<Position>>(block.Position, cuttables));
+                var executables = moves.CutableBlock.Select(block => block.Position).ToList();
+                executables.AddRange(movables);
+                possibleMoves.Add(new KeyValuePair<Position, List<Position>>(block.Position, executables));
             }
+
             return possibleMoves;
         }
     }

@@ -198,6 +198,7 @@ namespace SharedResources.ChessGameResource.Models
                     clonedBoard.BoardBlocks[i][j] = (Block)this.BoardBlocks[i][j].Clone();
                 }
             }
+
             return clonedBoard;
         }
     }

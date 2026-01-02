@@ -13,9 +13,42 @@ namespace SharedResources.ChessGameResource.Figures
         {
 
         }
+
+        public double[][] MidGameTable => MidGameKingTable;
+        public double[][] StartGameTable => StartGameKingTable;
+
+        public double[][] EndGameTable => EndGameKingTable;
+        // StartGame: король в безопасности
+        public double[][] StartGameKingTable = new double[8][]
+        {
+            new double[] { 5.0, 5.0, 5.0, -5.0, -5.0, 5.0, 5.0, 5.0 },
+            new double[] { 5.0, 5.0, -5.0, -5.0, -5.0, -5.0, 5.0, 5.0 },
+            new double[] { -5.0, -5.0, -10.0, -10.0, -10.0, -10.0, -5.0, -5.0 },
+            new double[] { -10.0, -10.0, -20.0, -20.0, -20.0, -20.0, -10.0, -10.0 },
+            new double[] { -10.0, -10.0, -20.0, -20.0, -20.0, -20.0, -10.0, -10.0 },
+            new double[] { -5.0, -5.0, -10.0, -10.0, -10.0, -10.0, -5.0, -5.0 },
+            new double[] { 5.0, 5.0, -5.0, -5.0, -5.0, -5.0, 5.0, 5.0 },
+            new double[] { 5.0, 5.0, 5.0, -5.0, -5.0, 5.0, 5.0, 5.0 }
+        };
+
+        // MidGame: король чуть безопаснее
+        public double[][] MidGameKingTable => StartGameKingTable;
+
+        // EndGame: активный король
+        public double[][] EndGameKingTable = new double[8][]
+        {
+            new double[] { -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0 },
+            new double[] { -5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -5.0 },
+            new double[] { -5.0, 0.0, 5.0, 5.0, 5.0, 5.0, 0.0, -5.0 },
+            new double[] { -5.0, 0.0, 5.0, 10.0, 10.0, 5.0, 0.0, -5.0 },
+            new double[] { -5.0, 0.0, 5.0, 10.0, 10.0, 5.0, 0.0, -5.0 },
+            new double[] { -5.0, 0.0, 5.0, 5.0, 5.0, 5.0, 0.0, -5.0 },
+            new double[] { -5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -5.0 },
+            new double[] { -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0 }
+        };
+
         public FigureType FigureType => FigureType.King;
         public FigureColors FigureColor { get; set; }
-        public FigureScores FigureScore => FigureScores.King;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {

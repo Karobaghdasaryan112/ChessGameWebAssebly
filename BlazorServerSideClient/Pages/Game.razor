@@ -114,6 +114,10 @@
     [SupplyParameterFromQuery(Name = "Player2")]
     public string Player2Name { get; set; }
 
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "Computer")]
+    public bool IsComputerOpponent { get; set; }
+
     //Parameters
 
 
@@ -143,6 +147,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         await HubClient.GetHubConnection();
         await HubClient.RegisterConnectionHandlers();
 
@@ -168,6 +173,11 @@
 
             InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
         }
+
+        if (IsComputerOpponent && Player1Name == "Computer")
+        {
+            await AIMoveAtFirst();
+        }
     }
 
     //JS Methods
@@ -178,6 +188,7 @@
         await HubClient.RegisterConnectionHandlers();
 
         await JS.ClearSelectedBlocks((int)MyColor);
+
 
 
         SetUpRequestsPositions(new Position(row, col));
@@ -242,12 +253,42 @@
         ClickedBlockInformationDTO.ClickedPosition = default;
         return true;
     }
+    private async Task<bool> AIMoveAtFirst()
+    {
+        var requestDTO = new MoveRequestDTO()
+        {
+            IsAIFirstMove = true,
+            GameId = GameId,
+            IsOpponentComputer = IsComputerOpponent,
+            Player = currentUserName,
+            MyColor = MyColor,
+            PreviusBlockInformationDTO = ClickedBlockInformationDTO,
+            CurrentPlayerId = Guid.NewGuid(),
+            From = new Position(-1, -1), // Indicate that AI should determine the move
+            To = new Position(-1, -1), // Indicate that AI should determine the move
+            CurrentPosition = new Position(-1, -1) // Indicate that AI should determine the move
+
+        };
+        var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
+
+        if (!positionsResult.IsSuccess)
+            return false;
+
+        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+            await JS.UpdateBoardAfterMove(requestDTO.From, requestDTO.To, (int)MyColor);
+        else
+            await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);
+
+        ClickedBlockInformationDTO.ClickedPosition = default;
+        return true;
+    }
 
     //Request Methods
     private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
     {
         MoveRequestDTO.GameId = gameId;
         ClickRequestDTO.GameId = gameId;
+        MoveRequestDTO.IsOpponentComputer = IsComputerOpponent;
 
         MoveRequestDTO.Player = player;
         ClickRequestDTO.Player = player;

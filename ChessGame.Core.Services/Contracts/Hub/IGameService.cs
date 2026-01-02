@@ -18,6 +18,8 @@ namespace ChessGame.Core.Services.Contracts.Hub
         Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
             MoveRequestDTO sendMoveConnectionRequestDTO);
         Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId);
-        Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO); 
+        Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO);
+        Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
+           TrainingGameRequestDTO trainingGameRequestDTO);
     }
 }

@@ -11,11 +11,50 @@ namespace SharedResources.ChessGameResource.Figures
     {
         public Pawn() { }
 
+        public double[][] _startGameTable = new double[8][]
+        {
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 5, 5, 5, 5, 5, 5, 5, 5 },
+            new double[] { 1, 1, 2, 3, 3, 2, 1, 1 },
+            new double[] { 0, 0, 1, 2, 2, 1, 0, 0 },
+            new double[] { 0, 0, 0, 2, 2, 0, 0, 0 },
+            new double[] { 0, 0, 0, -1, -1, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
+        public double[][] _midGameTable = new double[8][]
+        {
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 5, 5, 5, 5, 5, 5, 5, 5 },
+            new double[] { 2, 2, 3, 4, 4, 3, 2, 2 },
+            new double[] { 1, 1, 2, 3, 3, 2, 1, 1 },
+            new double[] { 0, 0, 1, 2, 2, 1, 0, 0 },
+            new double[] { 0, 0, 0, 1, 1, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
+        public double[][] _endGameTable = new double[8][]
+        {
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 10, 10, 10, 10, 10, 10, 10, 10 },
+            new double[] { 5, 5, 6, 8, 8, 6, 5, 5 },
+            new double[] { 2, 2, 4, 6, 6, 4, 2, 2 },
+            new double[] { 0, 0, 2, 4, 4, 2, 0, 0 },
+            new double[] { 0, 0, 0, 2, 2, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
+
+        public double[][] MidGameTable => _midGameTable;
+        public double[][] StartGameTable => _startGameTable;
+        public double[][] EndGameTable => _endGameTable;
         public FigureType FigureType => FigureType.Pawn;
 
         public FigureColors FigureColor { get; set; }
 
-        public FigureScores FigureScore => FigureScores.Pawn;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
@@ -67,8 +106,8 @@ namespace SharedResources.ChessGameResource.Figures
                 var increment = rowStep < 0 ? -1 : 1;
                 row += increment;
 
-                if (row < (int)CriticalPositions.lowCriticalValue ||
-                    row > (int)CriticalPositions.highCriticalValue) continue;
+                if (row <= (int)CriticalPositions.lowCriticalValue ||
+                    row >= (int)CriticalPositions.highCriticalValue) continue;
 
                 var block = board.GetBlockByPosition(row, col);
 

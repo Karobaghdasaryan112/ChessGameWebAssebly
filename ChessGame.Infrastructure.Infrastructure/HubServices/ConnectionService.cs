@@ -218,29 +218,39 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             if (!validationResult.IsValid)
                 return (await validationResult.ReturnValidationResult(default(BoardStateResponseDTO)))!;
 
-            var selectedGameKeyValue = CurrentConnectionState.Where(gameIdUserConnection =>
+
+
+            string selectedGameOpponentConnectionId = string.Empty;
+            if (boardStateConnectionRequestDTO.IsOpponentComputer)
+            {
+                selectedGameOpponentConnectionId = CurrentConnectionState
+                    .FirstOrDefault(connection => connection.Value.UserName == player).Value.ConnectionId!;
+            }
+            else
+            {
+                var selectedGameKeyValue = CurrentConnectionState.Where(gameIdUserConnection =>
                     gameIdUserConnection.Value?.GameId ==
                     boardStateConnectionRequestDTO.GameId)
                 .Select(selectedGameUserConnection => selectedGameUserConnection.Value).ToList();
 
 
-            selectedGameKeyValue = isMyConnection
-                ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == player).ToList()
-                : selectedGameKeyValue.Where(keyValue => keyValue.UserName != player).ToList();
+                selectedGameKeyValue = isMyConnection
+                    ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == player).ToList()
+                    : selectedGameKeyValue.Where(keyValue => keyValue.UserName != player).ToList();
 
 
-            if (selectedGameKeyValue == null)
-                return ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    new BoardStateResponseDTO()
-                    {
-                        GameId = boardStateConnectionRequestDTO.GameId,
-                        Player = boardStateConnectionRequestDTO.Player
-                    },
-                    ChessGameResponseMessage.InvalidMove,
-                    System.Net.HttpStatusCode.BadRequest);
+                if (selectedGameKeyValue == null)
+                    return ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        new BoardStateResponseDTO()
+                        {
+                            GameId = boardStateConnectionRequestDTO.GameId,
+                            Player = boardStateConnectionRequestDTO.Player
+                        },
+                        ChessGameResponseMessage.InvalidMove,
+                        System.Net.HttpStatusCode.BadRequest);
 
-            var selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;
-
+                selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;
+            }
 
             var boardStateResposneDTO = new BoardStateResponseDTO()
             {

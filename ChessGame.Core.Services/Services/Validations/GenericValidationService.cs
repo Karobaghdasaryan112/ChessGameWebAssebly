@@ -18,6 +18,7 @@ namespace ChessGame.Core.Services.Services.Validations
     public class GenericValidationService(
         //Game
         //Requests
+        IValidator<TrainingGameRequestDTO> trainingGameRequestValidator,
         IValidator<BoardInitializeRequestDTO> boardInitializeRequestValidator,
         IValidator<BoardStateRequestDTO> boardStateRequestValidator,
         IValidator<CanClickRequestDTO> canClickRequestValidator,
@@ -80,6 +81,7 @@ namespace ChessGame.Core.Services.Services.Validations
                 //////////////////////////////////////////////////////////////////////////////////////
                 //Game
                 // Requests
+                TrainingGameRequestDTO => (IValidator<T>)trainingGameRequestValidator,
                 BoardInitializeRequestDTO => (IValidator<T>)boardInitializeRequestValidator,
                 BoardStateRequestDTO => (IValidator<T>)boardStateRequestValidator,
                 CanClickRequestDTO => (IValidator<T>)canClickRequestValidator,

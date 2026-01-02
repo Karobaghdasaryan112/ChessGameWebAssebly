@@ -1,6 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
-using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -9,10 +8,46 @@ namespace SharedResources.ChessGameResource.Figures
     public class Rook : IFigure
     {
         public Rook() { }
+
+        public double[][] MidGameTable { get; } = new double[8][]
+        {
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 5, 5, 5, 5, 5, 5, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
+        public double[][] StartGameTable { get; } = new double[8][]
+        {
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 },
+            new double[] { 0, 5, 5, 5, 5, 5, 5, 0 },
+            new double[] { 0, -5, -5, -5, -5, -5, -5, 0 },
+            new double[] { 0, -5, -5, -5, -5, -5, -5, 0 },
+            new double[] { 0, -5, -5, -5, -5, -5, -5, 0 },
+            new double[] { 0, -5, -5, -5, -5, -5, -5, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
+        public double[][] EndGameTable { get; } = new double[8][]
+        {
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 5, 5, 0, 0, 0 },
+            new double[] { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
+
         public FigureType FigureType => FigureType.Rook;
         public FigureColors FigureColor { get; set; }
 
-        public FigureScores FigureScore => FigureScores.Rook;
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {

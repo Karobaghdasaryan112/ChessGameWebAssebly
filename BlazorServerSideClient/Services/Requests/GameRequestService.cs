@@ -27,6 +27,11 @@ namespace BlazorServerSideClient.Services.Requests
             return allGamersResult;
         }
 
+        public async Task<ResponseDTO<TrainingGameResponseDTO,ChessGameResponseMessage>> RequestTrainingGameAsync(TrainingGameRequestDTO trainingGameRequestDto)
+        {
+            var hubConnection = await signalRService.GetHubConnection();
+            return await hubConnection.InvokeAsync<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>>("RequestTrainingGameAsync", trainingGameRequestDto);
+        }
         public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto)
         {
             var hubConnection = await signalRService.GetHubConnection();

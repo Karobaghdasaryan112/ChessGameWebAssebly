@@ -1,0 +1,11 @@
+﻿using SharedResources.ChessGameResource.Models;
+
+namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
+{
+    public class TrainingGameResponseDTO
+    {
+        public string ClientConnectionId { get; set; }
+        public Guid GameId { get; set; }
+        public Board Board { get; set; }
+    }
+}

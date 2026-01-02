@@ -1,0 +1,146 @@
+﻿@page "/Training"
+@using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Services
+@using ChessGameBlazorClient.ApiServices
+@using ChessGameBlazorClient.UI.Services
+@using System.Security.Claims
+@using SharedResources.ChessGameResource.Enums.Colors
+@using SharedResources.ChessGameResource.Enums.Training
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
+@inject NavigationManager Navigation
+@inject SignalRService HubClient
+@inject ChessGameService ChessGameService
+@inject IGameRequestService GameRequestService
+@inject JSRunetimeService JS
+@inject AuthenticationStateProvider AuthenticationState
+@attribute [Authorize]
+
+<h3>Training Page</h3>
+
+<p>
+    Welcome to the Training Page! Here you can practice your chess skills against various
+    AI opponents and improve your strategies.
+</p>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="~/Js/site.js"></script>
+</head>
+@if (string.IsNullOrEmpty(_error))
+{
+    <div class="training-container">
+        <div class="training-card">
+
+            <h2 class="section-title">Choose Your Color</h2>
+
+            <div class="button-group">
+                <button class="color-btn"
+                        @onclick="() => SetPlayerColor(FigureColors.White)">
+                    ♔ Play as White
+                </button>
+
+                <button class="color-btn"
+                        @onclick="() => SetPlayerColor(FigureColors.Black)">
+                    ♚ Play as Black
+                </button>
+            </div>
+
+            @if (_selectedColor == FigureColors.None)
+            {
+                <p class="hint-text">
+                    Please select your color to continue
+                </p>
+            }
+            else
+            {
+                <h2 class="section-title">Choose Your Opponent</h2>
+
+                <div class="button-group">
+                    <button class="opponent-btn easy"
+                            @onclick="() => StartTrainingGame(TrainingDifficulty.Easy)">
+                        Easy AI
+                    </button>
+
+                    <button class="opponent-btn medium"
+                            @onclick="() => StartTrainingGame(TrainingDifficulty.Medium)">
+                        Medium AI
+                    </button>
+
+                    <button class="opponent-btn hard"
+                            @onclick="() => StartTrainingGame(TrainingDifficulty.Hard)">
+                        Hard AI
+                    </button>
+                </div>
+            }
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="error-message">
+        @_error
+    </div>
+}
+
+
+@code {
+    private string _error = string.Empty;
+    private string Player1Name = string.Empty;
+    private string Player2Name = string.Empty;
+    private Task<AuthenticationState> AuthState => AuthenticationState.GetAuthenticationStateAsync();
+    private FigureColors _selectedColor = FigureColors.None;
+    public async void SetPlayerColor(FigureColors color)
+    {
+        var currentPlayerName = (await AuthState).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+        Player1Name = color == FigureColors.White ? currentPlayerName : "Computer";
+        Player2Name = color == FigureColors.Black ? currentPlayerName : "Computer";
+        _selectedColor = color;
+        await InvokeAsync(StateHasChanged);
+    }
+    private async Task StartTrainingGame(TrainingDifficulty trainingDifficulty)
+    {
+        try
+        {
+            var authState = await AuthenticationState.GetAuthenticationStateAsync();
+            var user = authState.User;
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (Guid.TryParse(userId, out var playerGuid))
+            {
+                var player1Guid = _selectedColor == FigureColors.White ? playerGuid : Guid.Empty;
+                var player2Guid = _selectedColor == FigureColors.Black ? playerGuid : Guid.Empty;
+
+                var trainingRequest = new TrainingGameRequestDTO
+                {
+                    Player1Guid = player1Guid,
+                    Player2Guid = player2Guid,
+                    Player1Name = Player1Name,
+                    Player2Name = Player2Name,
+                    ClientConnectionId = (await HubClient.GetHubConnection())?.ConnectionId!,
+                    TrainingDifficulty = trainingDifficulty,
+                    
+                };
+                var response = await GameRequestService.RequestTrainingGameAsync(trainingRequest);
+                if (response.IsSuccess)
+                {
+                    Navigation.NavigateTo($"/Game?GameId={response.Data.GameId}&Player1={Player1Name}&Player2={Player2Name}&Computer={true}");
+                }
+                else
+                {
+                    _error = "Failed to start training game. Please try again.";
+                }
+            }
+            else
+            {
+                _error = "Invalid user ID.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = $"An error occurred: {ex.Message}";
+        }
+    }
+}

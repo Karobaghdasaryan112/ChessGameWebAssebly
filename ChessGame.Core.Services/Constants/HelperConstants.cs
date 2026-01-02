@@ -2,7 +2,8 @@
 {
     public class HelperConstants
     {
-        public const int MAX_DEPTH = 5;
+        //Default depth for minimax algorithm
+        public static int MAX_DEPTH = 4;
         public const int ALPHA = int.MinValue;
         public const int BETA = int.MaxValue;
     }

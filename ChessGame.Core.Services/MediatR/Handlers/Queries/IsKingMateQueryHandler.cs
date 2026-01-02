@@ -77,23 +77,25 @@ public class IsKingMateQueryHandler(
         Board? currentBoard, Guid gameId, IMediator mediator) where TFigureType : Enum
     {
         if (currentBoard == null)
-            return await Task.FromResult(false);
+            return false;
+
         var figureBlocks =
             currentBoard.GetBlockByFigureTypeAndColor((FigureType)(object)figureType, (FigureColors)myColor);
+
         if (!figureBlocks.Any())
-            return await Task.FromResult(true);
+            return true;
+
         foreach (var figureBlock in figureBlocks)
         {
             if ((Turn)myColor != currentBoard?.Turn)
-                return await Task.FromResult(false);
+                return false;
 
             var figureMovableAndCuttable = figureBlock.Figure
                 .GetMovableAndCuttableBlocks(figureBlock.Position, currentBoard);
-            if (figureMovableAndCuttable is
-                    not { MovableBlock: not null, CutableBlock: not null } ||
-                (!figureMovableAndCuttable.MovableBlock.Any() &&
-                 !figureMovableAndCuttable.CutableBlock.Any()))
-                return await Task.FromResult(true);
+
+            //if (figureMovableAndCuttable is not { MovableBlock: not null, CutableBlock: not null } ||
+            //    (!figureMovableAndCuttable.MovableBlock.Any() && !figureMovableAndCuttable.CutableBlock.Any()))
+            //    return true;
 
             var cuttable = figureMovableAndCuttable.CutableBlock;
             var movable = figureMovableAndCuttable.MovableBlock;
@@ -104,7 +106,7 @@ public class IsKingMateQueryHandler(
 
             if (enumerableOfExecutable.Any(executable =>
                     executable.EventColor is not EventColors.Cut and not EventColors.Move))
-                return await Task.FromResult(false);
+                return false;
 
 
             var submitMoveRequestDTO = new SubmitMoveRequestDTO()
@@ -118,8 +120,6 @@ public class IsKingMateQueryHandler(
             {
                 submitMoveRequestDTO.To = executable.Position;
                 var toBlockFigureTemp = currentBoard.GetBlockByPosition(executable.Position).Figure;
-
-
 
                 var submitMoveCommand =
                     new SubmitMoveCommand<SubmitMoveRequestDTO,
@@ -145,9 +145,7 @@ public class IsKingMateQueryHandler(
 
                 return false;
             }
-
-            return true;
         }
-        return false;
+        return true;
     }
 }

@@ -35,10 +35,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return resultValidation;
             }
 
-            var playersInformation = new KeyValuePair<Guid, Guid>(acceptInvitationRequest.inviterUserGuid,
-                acceptInvitationRequest.receiverUserGuid);
-
-
             var inviterConnectionInformation = await connectionService.GetUserConnection(
              new GetUserConnectionRequestDTO()
              {

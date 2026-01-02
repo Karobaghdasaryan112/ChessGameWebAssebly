@@ -75,6 +75,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO)
             => await gameService.SendClickAsync(sendClickConnectionRequestDTO);
 
+        public async Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
+            TrainingGameRequestDTO trainingGameRequestDTO) => await gameService.RequestTrainingGameAsync(trainingGameRequestDTO);
+
         //GameService
 
 

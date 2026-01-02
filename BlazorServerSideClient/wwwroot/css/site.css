@@ -887,3 +887,88 @@ html, body {
     box-sizing: border-box; 
     transition: border 0.3s;
 }
+
+
+
+.training-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, #1e1e2f, #0d0d14);
+    font-family: 'Inter', sans-serif;
+}
+
+.training-card {
+    background: #151520;
+    padding: 32px 40px;
+    border-radius: 16px;
+    width: 380px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.section-title {
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.color-btn,
+.opponent-btn {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.color-btn {
+    background: #2b2b3c;
+    color: #fff;
+}
+
+    .color-btn:hover {
+        background: #3b3b52;
+    }
+
+.opponent-btn.easy {
+    background: #2e7d32;
+    color: #fff;
+}
+
+.opponent-btn.medium {
+    background: #f9a825;
+    color: #000;
+}
+
+.opponent-btn.hard {
+    background: #c62828;
+    color: #fff;
+}
+
+.opponent-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.hint-text {
+    color: #aaa;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.error-message {
+    color: #ff4d4f;
+    text-align: center;
+    margin-top: 40px;
+}

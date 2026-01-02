@@ -1,6 +1,7 @@
 ﻿using ChessGame.Infrastructure.Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -32,7 +33,8 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public async Task RemoveFromGroupAsync(string groupName, List<string> connectionIds) =>
             connectionIds.ForEach(async connectionId => await _hubContext.Groups.RemoveFromGroupAsync(connectionId, groupName));
-
+        public async Task RequestTrainingGameAsync(TrainingGameResponseDTO trainingGameResponseDTO)
+            => await _hubContext.Clients.Client(trainingGameResponseDTO.ClientConnectionId).SendAsync("ReceiveTrainingGameRequestAsync", trainingGameResponseDTO);
         public async Task ReceiveBoardUpdateAsync(ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
            => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
     }

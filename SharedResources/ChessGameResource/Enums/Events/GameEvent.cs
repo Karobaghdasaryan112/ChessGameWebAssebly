@@ -3,6 +3,7 @@
     public enum GameEvent
     {
         None,
+        Training,
         Start,
         Over,
         Win,
