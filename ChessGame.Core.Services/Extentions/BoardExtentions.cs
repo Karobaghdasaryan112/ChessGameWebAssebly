@@ -13,7 +13,8 @@ namespace ChessGame.Core.Services.Extentions
                         blockI.Where(blockJ =>
                             blockJ.EventColor is
                                 EventColors.Cut or
-                                EventColors.Move).
+                                EventColors.Move or
+                                EventColors.Castle).
                             ToArray());
 
             foreach (var preventableBoardBlock in preventableBoardBlocks)

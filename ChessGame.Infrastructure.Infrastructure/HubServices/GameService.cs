@@ -227,7 +227,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.CurrentPosition);
 
-            if (currentPositionBlock.EventColor != EventColors.Cut && currentPositionBlock.EventColor != EventColors.Move)
+            if (currentPositionBlock.EventColor != EventColors.Cut && currentPositionBlock.EventColor != EventColors.Move && currentPositionBlock.EventColor != EventColors.Castle)
                 return invalidResponse;
 
             var boardStateRequestDTO =
@@ -249,6 +249,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                             ? IsReady.IsReadyToMove :
                         currentPositionBlock.EventColor == EventColors.Cut
                             ? IsReady.IsReadyToCut :
+                        currentPositionBlock.EventColor == EventColors.Castle
+                            ? IsReady.IsReadyToCastle :
                         IsReady.None,
                     IsOpponentComputer = sendMoveConnectionRequestDTO.IsOpponentComputer,
                 };
@@ -298,7 +300,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 CanClickRequestDTO,
                 ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
 
-
+            gameState.ResetEventableBlocks();
 
             var canClickResponse = await mediator.Send(sendClickQuery);
 
@@ -312,7 +314,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                     ChessGameResponseMessage.InvalidMove,
                     System.Net.HttpStatusCode.BadRequest);
 
-            gameState.ResetEventableBlocks();
 
             var positions =
                 gameState.GetBlockByPosition(sendClickConnectionRequestDTO.From).Figure
@@ -321,10 +322,12 @@ namespace ChessGame.Core.Services.Services.HubServices
             return ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new ClickResponseDTO()
                 {
+                    CastlingInfosDTOs = canClickResponse.Data.CastlingInfosDTO!,
                     CutableBlocks = positions.CutableBlock,
                     MovableBlocks = positions.MovableBlock,
                     GameId = sendClickConnectionRequestDTO.GameId,
-                    Player = sendClickConnectionRequestDTO.Player
+                    Player = sendClickConnectionRequestDTO.Player,
+
                 },
                 ChessGameResponseMessage.SuccessUserConnections,
                 System.Net.HttpStatusCode.OK);

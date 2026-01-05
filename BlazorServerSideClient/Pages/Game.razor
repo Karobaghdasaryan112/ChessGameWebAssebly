@@ -226,7 +226,7 @@
         if (!positionsResult.IsSuccess)
             return false;
 
-        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!);
+        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!,positionsResult.Data.CastlingInfosDTOs);
         ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
         ClickedBlockInformationDTO.GameId = requestDTO.GameId;
 
@@ -245,7 +245,7 @@
         if (!positionsResult.IsSuccess)
             return false;
 
-        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove || positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToCastle)
             await JS.UpdateBoardAfterMove(requestDTO.From, requestDTO.To, (int)MyColor);
         else
             await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);

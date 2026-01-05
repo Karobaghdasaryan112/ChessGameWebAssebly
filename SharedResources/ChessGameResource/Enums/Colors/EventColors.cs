@@ -5,6 +5,7 @@
         None = 0,
         Move = 1,
         Cut = 2,
-        Check = 3
+        Castle = 3,
+        Check = 4
     }
 }

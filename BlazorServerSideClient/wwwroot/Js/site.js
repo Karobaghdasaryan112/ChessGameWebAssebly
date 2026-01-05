@@ -158,7 +158,7 @@ function createPiece(figure) {
 }
 
 window.ShowMovableAndCutableBlocks = {
-    Paint: function (cutableBlocks, movableBlocks) {
+    Paint: function (cutableBlocks, movableBlocks, castlingInfosDTOs) {
 
         function highlightCell(cell, color) {
 
@@ -175,6 +175,15 @@ window.ShowMovableAndCutableBlocks = {
                 cell.style.transform = "scale(1)";
             }, 300);
         }
+        castlingInfosDTOs.forEach(castling => {
+            if (castling.isCastling) {
+                const vertical = castling.castlingPosition.verticalOrientation;
+                const horizontal = castling.castlingPosition.horizontalOrientation;
+                const cell = document.getElementById(`${vertical}${horizontal}`);
+                cell.className = "castable";
+                highlightCell(cell, "rgba(148, 199, 145, 0.45)");
+            }
+        });
 
         cutableBlocks.forEach(block => {
             const vertical = block.position.verticalOrientation;
@@ -196,6 +205,25 @@ window.ShowMovableAndCutableBlocks = {
 
         const allCellsCutable = document.querySelectorAll("[class^='cutable']");
         const allCellsMovable = document.querySelectorAll("[class^='movable']");
+        const allCellsCastable = document.querySelectorAll("[class^='castable']");
+        if (allCellsCastable)
+            allCellsCastable.forEach(cell => {
+                const id = cell.id;
+                const indexI = parseInt(id[0]);
+                const indexJ = parseInt(id[1]);
+                cell.className = "";
+                cell.style.transition = "background-color 0.2s ease, border-radius 0.2s ease";
+
+                var backgroundColor
+                if (figureColor == 1)
+                    backgroundColor = (indexI + indexJ) % 2 == 1 ? "white" : "gray";
+                else {
+                    backgroundColor = (14 - (indexI) + indexJ) % 2 == 1 ? "white" : "gray";
+                }
+
+                cell.style.backgroundColor = backgroundColor;
+                cell.style.borderRadius = "0px";
+            });
         if (allCellsCutable)
             allCellsCutable.forEach(cell => {
                 const id = cell.id;

@@ -5,6 +5,9 @@ using ChessGame.Core.Services.MediatR.Requests.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
@@ -79,16 +82,49 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 HttpStatusCode.OK,
                 null!);
 
-            // Resetting any eventable blocks on the board before processing the move
-            request.RequestDTO.CurrentBoardState.ResetEventableBlocks();
+
 
             // Checking if there is a figure at the from position
             if (fromBlock?.Figure == null)
                 return CheckFromBlock(fromPosition!, fromBlock!, toBlock!, gameId, response);
 
             // Swapping the figures between the from and to blocks to simulate the move
-            var toBlockTemp = SwithFigures(fromBlock!, toBlock!);
 
+
+            var toBlockTemp = SwithFigures(fromBlock!, toBlock!);
+            // Handle castling logic
+            if (toBlock.EventColor == EventColors.Castle)
+            {
+                //Short or Long castle(from Getting Rook)
+                int kingincrement = 0;
+                int rookIncrement = 0;
+                var isShort = (int)toBlock.Position.HorizontalOrientation > 4 ? 7 : 0;
+                if(isShort == 7)
+                {
+                    kingincrement = 1;
+                    rookIncrement = 1;
+                }
+                else
+                {
+                    kingincrement = -1;
+                    rookIncrement = -2;
+                }
+
+                var rookBlock = currentBoardState.GetBlockByPosition(toBlock.Position.VerticalOrientation, (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation + rookIncrement));
+
+                var rookNewPosition = new Position(toBlock.Position.VerticalOrientation, (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation - kingincrement));
+                var rookNewBlock = currentBoardState.GetBlockByPosition(rookNewPosition!);
+                response.Data.CastlingRookPositions = new CastlingRookPositions()
+                {
+                    RookFrom = rookBlock.Position,
+                    RookTo = rookNewPosition
+                };
+                SwithFigures(rookBlock, rookNewBlock!);
+
+            }
+
+            // Resetting any eventable blocks on the board before processing the move
+            request.RequestDTO.CurrentBoardState.ResetEventableBlocks();
 
             logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId, fromPosition, toPosition);
 
@@ -115,7 +151,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check", fromPosition, toPosition, gameId);
 
-            RevertMove(fromBlock!, toBlock!, toBlockTemp!);
+            RevertMove(fromBlock!, toBlock!, toBlockTemp.Figure!);
 
             response.Data.IsKingChecked = true;
 
@@ -142,14 +178,13 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             responseDTO.IsSuccess = false;
             return responseDTO;
         }
-        private IFigure SwithFigures(Block fromBlock, Block toBlock)
+        private Block SwithFigures(Block fromBlock, Block toBlock)
         {
-            var toBlockTemp = toBlock.Figure;
+            var toBlockTemp = toBlock;
             toBlock.Figure = fromBlock.Figure;
             fromBlock.Figure = null!;
             return toBlockTemp!;
         }
-
         private void RevertMove(Block fromBlock, Block toBlock, IFigure toBlockTemp)
         {
             fromBlock.Figure = toBlock.Figure;

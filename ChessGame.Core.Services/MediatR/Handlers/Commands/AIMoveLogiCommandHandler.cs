@@ -66,7 +66,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var mediatRSubmitAiMoveResponse = await mediatR.Send(submitMoveAiCommand, cancellationToken);
 
             if (!mediatRSubmitAiMoveResponse.IsSuccess)
-                return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(null!, ChessGameResponseMessage.InvalidMove, HttpStatusCode.BadRequest);
+                return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(null!, ChessGameResponseMessage.InvalidMove, HttpStatusCode.BadRequest);
 
 
             //Save Positions after AI Move
@@ -80,10 +80,15 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             //If Saving Positions Fails, return Error Response
             if (!saveAiPositionsResponse.IsSuccess)
                 return
-                    ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(new MoveResponseDTO()
+                    ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(new AIMoveLogicResponseDTO()
                     {
-                        GameId = request.RequestDTO.BoardRequestDTO.GameId,
-                        Player = request.RequestDTO.BoardRequestDTO.Player
+                        MoveResponseDTO = new MoveResponseDTO()
+                        {
+                            GameId = request.RequestDTO.BoardRequestDTO.GameId,
+                            Player = request.RequestDTO.BoardRequestDTO.Player
+                        },
+                        //    GameId = request.RequestDTO.BoardRequestDTO.GameId,
+                        //Player = request.RequestDTO.BoardRequestDTO.Player
                     },
                     ChessGameResponseMessage.InternalServerError, HttpStatusCode.InternalServerError);
 
@@ -110,8 +115,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 CurrentBoard = request.RequestDTO.BoardRequestDTO.GameState,
             });
 
-
-
             //Check if Opponent King is in Check after AI Move
             var mediatRIsKingCheckAfterAIMove = await mediatR.Send(isKingCheckAfterAIMoveQuery, cancellationToken);
 
@@ -131,20 +134,46 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 var isKingMateStateRequest = await mediatR.Send(new IsKingMateQuery<IsKingMateRequestDTO, ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>>(data), cancellationToken);
 
                 //TO DO :King Mate Logic(Its should be mediatR Command)
+                var kingMateCommand = new KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(
+                    new KingMateLogicRequestDTO()
+                    {
+                        boardStateRequestDTO = new BoardStateRequestDTO()
+                        {
+                            GameId = request.RequestDTO.BoardRequestDTO.GameId,
+                            GameState = request.RequestDTO.BoardRequestDTO.GameState,
+                            Player = request.RequestDTO.BoardRequestDTO.Player,
+                        },
+                        isComputerWin = true,
+                        IsTrainingGame = true
+                    });
                 if (isKingMateStateRequest is { IsSuccess: true, Data.IsKingMate: true })
-                    return await KingMateLogicAsync(clientBoardStateAfterAiMove, isKingMateStateRequest, true, true);
+                {
+                    var kingMateLogicResponse = await mediatR.Send(kingMateCommand, cancellationToken);
+                    return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new AIMoveLogicResponseDTO()
+                    {
+                        MoveResponseDTO = new MoveResponseDTO()
+                        {
+                            IsReadyToEvent = kingMateLogicResponse.Data.IsReadyToEvent,
+                            Player = request.RequestDTO.BoardRequestDTO.Player,
+                            GameId = request.RequestDTO.BoardRequestDTO.GameId,
 
+                        },
+                    }, ChessGameResponseMessage.GameOver,
+                    HttpStatusCode.OK);
+                }
                 clientBoardStateAfterAiMove.IsKingChecked = true;
-
             }
 
             await connectionService.SendBoardStateToClient(clientBoardStateAfterAiMove, request.RequestDTO.BoardRequestDTO.Player, false);
 
-            return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new MoveResponseDTO()
+            return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new AIMoveLogicResponseDTO()
             {
-                GameId = request.RequestDTO.BoardRequestDTO.GameId,
-                Player = request.RequestDTO.BoardRequestDTO.Player,
-                IsReadyToEvent = IsReady.IsReadyToMove,
+                MoveResponseDTO = new MoveResponseDTO()
+                {
+                    IsReadyToEvent = IsReady.IsReadyToMove,
+                    Player = request.RequestDTO.BoardRequestDTO.Player,
+                    GameId = request.RequestDTO.BoardRequestDTO.GameId,
+                },
             },
             ChessGameResponseMessage.MoveSuccessful,
             HttpStatusCode.OK);

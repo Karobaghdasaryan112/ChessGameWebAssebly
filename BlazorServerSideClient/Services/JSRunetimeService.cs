@@ -1,5 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using static BlazorServerSideClient.Pages.GameHistory;
 
 namespace BlazorServerSideClient.Services
@@ -38,8 +39,8 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef) where T : class
             => _js.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
-        public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions)
-            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions);
+        public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions,List<CastlingInfosDTO> castlingInfosDTOs)
+            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions,castlingInfosDTOs);
 
         public ValueTask ClearSelectedBlocks(int figureColor)
             => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Clear", figureColor);

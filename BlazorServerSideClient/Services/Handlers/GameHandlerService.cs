@@ -19,7 +19,7 @@ namespace BlazorServerSideClient.Services.Handlers
             ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
         {
 
-            if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+            if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove || gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToCastle)
             {
                 if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
                     await jSRuneTimeService.UpdateBoardAfterMove(
