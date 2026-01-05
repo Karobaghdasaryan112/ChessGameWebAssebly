@@ -35,14 +35,14 @@ namespace SharedResources.ChessGameResource.Figures
         };
 
         // EndGame
-        public double[][] EndGameQueenTable => StartGameQueenTable; // почти не меняется
+        public double[][] EndGameQueenTable => StartGameQueenTable; 
 
         public double[][] MidGameTable => MidGameQueenTable;
         public double[][] StartGameTable => StartGameQueenTable;
         public double[][] EndGameTable => EndGameQueenTable;
         public FigureType FigureType => FigureType.Queen;
         public FigureColors FigureColor { get; set; }
-
+        public bool IsMoves { get; set; }
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {

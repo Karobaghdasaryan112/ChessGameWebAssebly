@@ -5,6 +5,8 @@ using ChessGame.Core.Services.MediatR.Requests.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using SharedResources.ChessGameResource.Models;
+using SharedResources.Contracts.ChessGameResourceContracts;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -57,11 +59,15 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
+            // Extracting necessary data from the request
             var fromPosition = request.RequestDTO.From;
             var toPosition = request.RequestDTO.To;
             var gameId = request.RequestDTO.GameId;
             var currentBoardState = request.RequestDTO.CurrentBoardState;
 
+            // Retrieving the blocks corresponding to the from and to positions
+            var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
+            var toBlock = currentBoardState.GetBlockByPosition(toPosition!);
 
             var response = ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new SubmitMoveResponseDTO()
@@ -73,31 +79,18 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 HttpStatusCode.OK,
                 null!);
 
-
-            var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
-            var toBlock = currentBoardState.GetBlockByPosition(toPosition!);
-
+            // Resetting any eventable blocks on the board before processing the move
             request.RequestDTO.CurrentBoardState.ResetEventableBlocks();
 
+            // Checking if there is a figure at the from position
             if (fromBlock?.Figure == null)
-            {
-                logger.LogWarning("No figure found at position {Position} in game {GameId}", fromPosition, gameId);
+                return CheckFromBlock(fromPosition!, fromBlock!, toBlock!, gameId, response);
 
-                response.Data.IsMoveSuccess = false;
-                response.Errors =
-                [
-                    $"If there is no figure at the from-{fromBlock.Position.VerticalOrientation}{fromBlock.Position.HorizontalOrientation} position"
-                ];
-                response.IsSuccess = false;
-                return response;
-            }
+            // Swapping the figures between the from and to blocks to simulate the move
+            var toBlockTemp = SwithFigures(fromBlock!, toBlock!);
 
-            var toBlockTemp = toBlock.Figure;
 
-            toBlock.Figure = fromBlock.Figure;
-            fromBlock.Figure = null!;
-
-            logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId,fromPosition, toPosition);
+            logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId, fromPosition, toPosition);
 
             var requestQuery = new IsKingCheckedRequestDTO()
             {
@@ -108,23 +101,59 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var query =
                 new IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(requestQuery);
 
+            // Checking if the king is in check after the move
             var isKingCheckedResult = await mediator.Send(query, cancellationToken);
 
+            // If the king is not in check, the move is successful
             if (isKingCheckedResult.IsSuccess && !isKingCheckedResult.Data.IsKingChecked)
             {
+                toBlock.Figure.IsMoves = true;
                 return response;
             }
-            logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",fromPosition, toPosition, gameId);
 
-            fromBlock.Figure = toBlock.Figure;
-            toBlock.Figure = toBlockTemp;
+            // If the king is in check, revert the move and update the response accordingly
+
+            logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check", fromPosition, toPosition, gameId);
+
+            RevertMove(fromBlock!, toBlock!, toBlockTemp!);
 
             response.Data.IsKingChecked = true;
 
-
-            logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,fromPosition, toPosition);
+            logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId, fromPosition, toPosition);
 
             return response;
+        }
+
+        //private methods
+        private ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage> CheckFromBlock(
+            Position fromPosition,
+            Block fromBlock,
+            Block toBlock,
+            Guid gameId,
+            ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage> responseDTO)
+        {
+            logger.LogWarning("No figure found at position {Position} in game {GameId}", fromPosition, gameId);
+
+            responseDTO.Data.IsMoveSuccess = false;
+            responseDTO.Errors =
+            [
+                $"If there is no figure at the from-{fromBlock.Position.VerticalOrientation}{fromBlock.Position.HorizontalOrientation} position"
+            ];
+            responseDTO.IsSuccess = false;
+            return responseDTO;
+        }
+        private IFigure SwithFigures(Block fromBlock, Block toBlock)
+        {
+            var toBlockTemp = toBlock.Figure;
+            toBlock.Figure = fromBlock.Figure;
+            fromBlock.Figure = null!;
+            return toBlockTemp!;
+        }
+
+        private void RevertMove(Block fromBlock, Block toBlock, IFigure toBlockTemp)
+        {
+            fromBlock.Figure = toBlock.Figure;
+            toBlock.Figure = toBlockTemp;
         }
     }
 }

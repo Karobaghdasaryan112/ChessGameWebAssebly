@@ -1,7 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.CriticalValues;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
-using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -28,7 +27,7 @@ namespace SharedResources.ChessGameResource.Figures
 
         private double[][] _midGameKnightTable => _startGameKnightTable;
 
-        private double[][] _endGameKnightTable => _startGameKnightTable; 
+        private double[][] _endGameKnightTable => _startGameKnightTable;
 
 
         public double[][] MidGameTable => _midGameKnightTable;
@@ -38,7 +37,7 @@ namespace SharedResources.ChessGameResource.Figures
 
         public FigureType FigureType => FigureType.Knight;
         public FigureColors FigureColor { get; set; }
-
+        public bool IsMoves { get; set; }
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {

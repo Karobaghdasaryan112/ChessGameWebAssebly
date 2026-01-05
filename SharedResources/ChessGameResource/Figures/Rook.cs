@@ -47,7 +47,7 @@ namespace SharedResources.ChessGameResource.Figures
 
         public FigureType FigureType => FigureType.Rook;
         public FigureColors FigureColor { get; set; }
-
+        public bool IsMoves { get; set; }
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {

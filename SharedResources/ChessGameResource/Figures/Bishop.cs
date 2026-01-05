@@ -1,6 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.FigureTypes;
-using SharedResources.ChessGameResource.Enums.Scores;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.ChessGameResourceContracts;
 
@@ -36,7 +35,7 @@ namespace SharedResources.ChessGameResource.Figures
 
         public FigureType FigureType => FigureType.Bishop;
         public FigureColors FigureColor { get; set; }
-
+        public bool IsMoves { get; set; }
 
         public MovableAndCutablePositions GetMovableAndCuttableBlocks(Position position, Board board, Block? kingBlockForCheckCondition)
         {
