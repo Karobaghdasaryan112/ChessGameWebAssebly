@@ -64,9 +64,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                 {
                     IsKingChecked = false
                 },
-                ChessGameResponseMessage.MoveSuccessful,
-                HttpStatusCode.OK,
-                null);
+                ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK, null);
 
             var myColor = (FigureColors)chosenColor;
 
@@ -105,6 +103,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
         {
             if (!Enum.IsDefined(typeof(TFigureType), figureType))
                 return await Task.FromResult(false);
+            
             var kingBlockClone = new Block
             {
                 Position = kingBlock.Position,
@@ -119,22 +118,24 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
                     _ => throw new ArgumentException()
                 }
             };
-            var possibleMovableAndCuttable =
-                kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
+            
+            var possibleMovableAndCuttable = kingBlockClone.Figure.GetMovableAndCuttableBlocks(kingBlockClone.Position, currentBoard, kingBlockClone);
 
-            var figuresForCheck = possibleMovableAndCuttable.CutableBlock.Where(block =>
-                figureTypes.Contains<FigureType>(block.Figure.FigureType));
+            var figuresForCheck = possibleMovableAndCuttable.CutableBlock.Where(block => figureTypes.Contains<FigureType>(block.Figure.FigureType));
 
             var figureForChecks = figuresForCheck as Block[] ?? figuresForCheck.ToArray();
 
             if (!figureForChecks.Any())
                 return await Task.FromResult(false);
+            
             foreach (var figureForCheck in figureForChecks)
             {
                 logger.LogInformation("King of color {Color} is in check by figure at position {Position}",
                     myColor, figureForCheck.Position);
             }
 
+            Console.WriteLine($"{kingBlockClone.Figure.FigureType} King Clone Figure Type");
+            Console.WriteLine("new Log from KingCheckQueryHandler -- - - - - -- --- ");
             return await Task.FromResult(true);
         }
     }

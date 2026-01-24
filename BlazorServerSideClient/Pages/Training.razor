@@ -110,8 +110,8 @@ else
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (Guid.TryParse(userId, out var playerGuid))
             {
-                var player1Guid = _selectedColor == FigureColors.White ? playerGuid : Guid.Empty;
-                var player2Guid = _selectedColor == FigureColors.Black ? playerGuid : Guid.Empty;
+                var player1Guid = _selectedColor == FigureColors.White ? playerGuid : Guid.NewGuid();
+                var player2Guid = _selectedColor == FigureColors.Black ? playerGuid :Guid.NewGuid();
 
                 var trainingRequest = new TrainingGameRequestDTO
                 {

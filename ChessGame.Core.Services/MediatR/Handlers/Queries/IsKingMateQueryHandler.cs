@@ -52,10 +52,11 @@ public class IsKingMateQueryHandler(
         var chosenColor = request.Request.ChosenColor;
         var gameId = request.Request.GameId;
 
-        var result = ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(new IsKingMateResponseDTO()
-        {
-            IsKingMate = true,
-        }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK);
+        var result = ResponseDTO<IsKingMateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+            new IsKingMateResponseDTO()
+            {
+                IsKingMate = true,
+            }, ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.OK);
 
         if (await IsKingMateByAsync<FigureType>(FigureType.King, chosenColor, currentBoard, gameId, mediator) &&
             await IsKingMateByAsync<FigureType>(FigureType.Queen, chosenColor, currentBoard, gameId, mediator) &&
@@ -93,9 +94,6 @@ public class IsKingMateQueryHandler(
             var figureMovableAndCuttable = figureBlock.Figure
                 .GetMovableAndCuttableBlocks(figureBlock.Position, currentBoard);
 
-            //if (figureMovableAndCuttable is not { MovableBlock: not null, CutableBlock: not null } ||
-            //    (!figureMovableAndCuttable.MovableBlock.Any() && !figureMovableAndCuttable.CutableBlock.Any()))
-            //    return true;
 
             var cuttable = figureMovableAndCuttable.CutableBlock;
             var movable = figureMovableAndCuttable.MovableBlock;
@@ -105,9 +103,8 @@ public class IsKingMateQueryHandler(
             var enumerableOfExecutable = executables.ToList();
 
             if (enumerableOfExecutable.Any(executable =>
-                    executable.EventColor is not EventColors.Cut and not EventColors.Move))
+                    executable.EventColor is not EventColors.Cut and not EventColors.Move and EventColors.Castle))
                 return false;
-
 
             var submitMoveRequestDTO = new SubmitMoveRequestDTO()
             {
@@ -119,15 +116,14 @@ public class IsKingMateQueryHandler(
             foreach (var executable in enumerableOfExecutable)
             {
                 submitMoveRequestDTO.To = executable.Position;
-                var toBlockFigureTemp = currentBoard.GetBlockByPosition(executable.Position).Figure;
+                var toBlockFigureTemp = ((Block)currentBoard.GetBlockByPosition(executable.Position).Clone()).Figure;
 
                 var submitMoveCommand =
                     new SubmitMoveCommand<SubmitMoveRequestDTO,
                         ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(submitMoveRequestDTO);
-
+                
                 var mediatRSubmitMoveResponse = await mediator.Send(submitMoveCommand);
-
-
+                
                 if (mediatRSubmitMoveResponse is { Data.IsKingChecked: true })
                     continue;
 
@@ -137,8 +133,7 @@ public class IsKingMateQueryHandler(
                     currentBoard.GetBlockByPosition(figureBlock.Position);
 
                 var toBlock =
-                    currentBoard.GetBlockByPosition(executable.Position);
-                var fromTempFigure = fromBlock.Figure;
+                    currentBoard.GetBlockByPosition(submitMoveRequestDTO.To);
 
                 fromBlock.Figure = toBlock.Figure;
                 toBlock.Figure = toBlockFigureTemp;

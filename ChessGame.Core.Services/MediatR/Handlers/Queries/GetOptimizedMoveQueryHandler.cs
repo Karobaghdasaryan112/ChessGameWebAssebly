@@ -232,7 +232,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             double score = 0;
 
             foreach (var block in blocks)
-            {
+            {   
                 double value = FigureScores.GetFigureScore(gamePhase, block.Figure.FigureType);
                 value += block.Figure.GetPositionalScore(
                             block.Position,
@@ -266,8 +266,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Queries
             return score;
 
         }
-
-       
 
 
         public List<KeyValuePair<Position, List<Position>>> GeneratePossibleMoves(Board board)

@@ -54,5 +54,4 @@ namespace ChessGame.Infrastructure.Persistance.Data
             }
         }
     }
-
 }

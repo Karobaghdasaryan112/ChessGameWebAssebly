@@ -17,10 +17,10 @@ namespace ChessService.API.ChessGameAPI.Controllers
         public async Task<IActionResult> GetHistoryWidgetsAsync([FromQuery] Guid playerId)
         {
             var allHistoryWidgetsRequest =
-                    new GetAllHistoryWidgetRequestDTO()
-                    {
-                        CurrentPlayerId = playerId
-                    };
+                new GetAllHistoryWidgetRequestDTO()
+                {
+                    CurrentPlayerId = playerId
+                };
             var requestQuery = new GetAllHistoryWidgetsQuery<GetAllHistoryWidgetRequestDTO,
                 ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>(allHistoryWidgetsRequest);
 
@@ -31,17 +31,20 @@ namespace ChessService.API.ChessGameAPI.Controllers
         }
 
         [HttpGet("historyPagination")]
-        public async Task<IActionResult> GetHistoryWidgetsPaginationByOpponentAsync([FromQuery] Guid currentPlayerId,
-            [FromQuery] Guid opponentPlayerId, [FromQuery] int currentPage, [FromQuery] int pageSize)
+        public async Task<IActionResult> GetHistoryWidgetsPaginationByOpponentAsync(
+            [FromQuery] Guid currentPlayerId,
+            [FromQuery] Guid opponentPlayerId,
+            [FromQuery] int currentPage,
+            [FromQuery] int pageSize)
         {
             var historyWidgetsPaginationByOpponentRequest =
-                     new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
-                     {
-                         CurrentPage = currentPage,
-                         PageSize = pageSize,
-                         CurrentPlayerGuid = currentPlayerId,
-                         OpponentPlayerGuid = opponentPlayerId
-                     };
+                new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
+                {
+                    CurrentPage = currentPage,
+                    PageSize = pageSize,
+                    CurrentPlayerGuid = currentPlayerId,
+                    OpponentPlayerGuid = opponentPlayerId
+                };
 
             var requestQuery = new GetHistoryWidgetsPaginationQuery<
                 GetGamesByCurrentAndOpponentIdsPaginationRequestDTO,
@@ -53,18 +56,19 @@ namespace ChessService.API.ChessGameAPI.Controllers
             return
                 !gamesPaginationResult.IsSuccess ? BadRequest(gamesPaginationResult) : Ok(gamesPaginationResult);
         }
+
         [HttpGet("gameHistory")]
         public async Task<IActionResult> GetGameHistoryByGameIdAndPlayerIdAsync([FromQuery] Guid gameId)
         {
             var gameHistoryRequest =
-                     new GetGameHistoryRequestDTO()
-                     {
-                         GameId = gameId
-                     };
+                new GetGameHistoryRequestDTO()
+                {
+                    GameId = gameId
+                };
 
             var requestQuery = new GetGameHistoryQuery<
-                GetGameHistoryRequestDTO,
-                ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
+                    GetGameHistoryRequestDTO,
+                    ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>>
                 (gameHistoryRequest);
 
             var gameHistoryResult = await mediator.Send(requestQuery);
@@ -72,18 +76,20 @@ namespace ChessService.API.ChessGameAPI.Controllers
             return
                 !gameHistoryResult.IsSuccess ? BadRequest(gameHistoryResult) : Ok(gameHistoryResult);
         }
+
         [HttpGet("getOptimizedMove")]
-        public async Task<IActionResult> GetOptimizedMoveAync([FromQuery] Guid gameId, [FromQuery] FigureColors myColor, [FromQuery] bool isMaximizingPlayer)
+        public async Task<IActionResult> GetOptimizedMoveAync([FromQuery] Guid gameId, [FromQuery] FigureColors myColor,
+            [FromQuery] bool isMaximizingPlayer)
         {
             var optimizedMoveRequest =
-                     new GetOptimizedMoveRequestDTO()
-                     {
-                         ChosenColor = myColor,
-                         GameId = gameId
-                     };
+                new GetOptimizedMoveRequestDTO()
+                {
+                    ChosenColor = myColor,
+                    GameId = gameId
+                };
             var requestQuery = new GetOptimizedMoveQuery<
-                GetOptimizedMoveRequestDTO,
-                ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>
+                    GetOptimizedMoveRequestDTO,
+                    ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>>
                 (optimizedMoveRequest);
             var optimizedMoveResult = await mediator.Send(requestQuery);
             return

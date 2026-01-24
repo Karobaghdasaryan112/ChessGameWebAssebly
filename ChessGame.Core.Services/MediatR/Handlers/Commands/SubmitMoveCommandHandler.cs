@@ -19,7 +19,6 @@ using System.Net;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 {
-
     /// <summary>
     /// Handles the submission of a chess move command, validating the request, updating the board state, and
     /// determining the result of the move.
@@ -58,8 +57,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         /// outcome of the move submission, including whether the move was successful and if the king is in check.</returns>
         public async Task<ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>> Handle(
             SubmitMoveCommand<SubmitMoveRequestDTO,
-            ResponseDTO<SubmitMoveResponseDTO,
-            ChessGameResponseMessage>> request,
+                ResponseDTO<SubmitMoveResponseDTO,
+                    ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
             // Extracting necessary data from the request
@@ -71,27 +70,26 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             // Retrieving the blocks corresponding to the from and to positions
             var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
             var toBlock = currentBoardState.GetBlockByPosition(toPosition!);
+            WriteSubmitMoveLogger("Submit Move Before move", gameId, fromPosition, toPosition, fromBlock, toBlock);
 
             var response = ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new SubmitMoveResponseDTO()
                 {
-                    IsKingChecked = false,
-                    IsKingMate = false,
-                    IsMoveSuccess = true
+                    IsKingChecked = false, IsKingMate = false, IsMoveSuccess = true
                 }, ChessGameResponseMessage.MoveSuccessful,
                 HttpStatusCode.OK,
                 null!);
 
-
-
-            // Checking if there is a figure at the from position
+            // Checking if there is a figure at the From position
             if (fromBlock?.Figure == null)
                 return CheckFromBlock(fromPosition!, fromBlock!, toBlock!, gameId, response);
 
             // Swapping the figures between the from and to blocks to simulate the move
 
-
             var toBlockTemp = SwithFigures(fromBlock!, toBlock!);
+
+            WriteSubmitMoveLogger("Submit Move After move", gameId, fromPosition, toPosition, fromBlock, toBlock);
+
             // Handle castling logic
             if (toBlock.EventColor == EventColors.Castle)
             {
@@ -99,7 +97,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 int kingincrement = 0;
                 int rookIncrement = 0;
                 var isShort = (int)toBlock.Position.HorizontalOrientation > 4 ? 7 : 0;
-                if(isShort == 7)
+                
+                if (isShort == 7)
                 {
                     kingincrement = 1;
                     rookIncrement = 1;
@@ -110,9 +109,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     rookIncrement = -2;
                 }
 
-                var rookBlock = currentBoardState.GetBlockByPosition(toBlock.Position.VerticalOrientation, (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation + rookIncrement));
+                var rookBlock = currentBoardState.GetBlockByPosition(toBlock.Position.VerticalOrientation,
+                    (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation + rookIncrement));
 
-                var rookNewPosition = new Position(toBlock.Position.VerticalOrientation, (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation - kingincrement));
+                var rookNewPosition = new Position(toBlock.Position.VerticalOrientation,
+                    (HorizontalOrientation)((int)toBlock.Position.HorizontalOrientation - kingincrement));
+
                 var rookNewBlock = currentBoardState.GetBlockByPosition(rookNewPosition!);
                 response.Data.CastlingRookPositions = new CastlingRookPositions()
                 {
@@ -120,13 +122,13 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     RookTo = rookNewPosition
                 };
                 SwithFigures(rookBlock, rookNewBlock!);
-
             }
 
             // Resetting any eventable blocks on the board before processing the move
             request.RequestDTO.CurrentBoardState.ResetEventableBlocks();
 
-            logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId, fromPosition, toPosition);
+            logger.LogInformation("Move submitted in game {GameId} from {FromPosition} to {ToPosition}", gameId,
+                fromPosition, toPosition);
 
             var requestQuery = new IsKingCheckedRequestDTO()
             {
@@ -135,7 +137,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             };
 
             var query =
-                new IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(requestQuery);
+                new IsKingCheckedQuery<IsKingCheckedRequestDTO,
+                    ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(requestQuery);
 
             // Checking if the king is in check after the move
             var isKingCheckedResult = await mediator.Send(query, cancellationToken);
@@ -149,23 +152,24 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             // If the king is in check, revert the move and update the response accordingly
 
-            logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check", fromPosition, toPosition, gameId);
+            logger.LogWarning("Move from {FromPosition} to {ToPosition} in game {GameId} would leave king in check",
+                fromPosition, toPosition, gameId);
 
             RevertMove(fromBlock!, toBlock!, toBlockTemp.Figure!);
 
+            WriteSubmitMoveLogger("Revert Move After move", gameId, fromPosition, toPosition, fromBlock, toBlock);
+
             response.Data.IsKingChecked = true;
 
-            logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId, fromPosition, toPosition);
+            logger.LogInformation("Move revert in game {GameId} from {FromPosition} to {ToPosition}", gameId,
+                fromPosition, toPosition);
 
             return response;
         }
 
         //private methods
-        private ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage> CheckFromBlock(
-            Position fromPosition,
-            Block fromBlock,
-            Block toBlock,
-            Guid gameId,
+        private ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage> CheckFromBlock(Position fromPosition,
+            Block fromBlock, Block toBlock, Guid gameId,
             ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage> responseDTO)
         {
             logger.LogWarning("No figure found at position {Position} in game {GameId}", fromPosition, gameId);
@@ -178,17 +182,31 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             responseDTO.IsSuccess = false;
             return responseDTO;
         }
+
         private Block SwithFigures(Block fromBlock, Block toBlock)
         {
-            var toBlockTemp = toBlock;
+            var toBlockTemp = (Block)toBlock.Clone();
             toBlock.Figure = fromBlock.Figure;
             fromBlock.Figure = null!;
             return toBlockTemp!;
         }
+
         private void RevertMove(Block fromBlock, Block toBlock, IFigure toBlockTemp)
         {
             fromBlock.Figure = toBlock.Figure;
             toBlock.Figure = toBlockTemp;
+        }
+
+        private void WriteSubmitMoveLogger(string eventTime, Guid gameId, Position fromPosition, Position toPosition,
+            Block fromBlock, Block toBlock)
+        {
+            Console.WriteLine(eventTime);
+            Console.WriteLine($"GameId: {gameId}");
+            Console.WriteLine($"FromPosition: {fromPosition}");
+            Console.WriteLine($"ToPosition: {toPosition}");
+            Console.WriteLine($"FromBlock FIgureType: {fromBlock?.Figure?.FigureType}:");
+            Console.WriteLine($"FromBlock FIgureType: {fromBlock?.Figure?.FigureType}:");
+            Console.WriteLine($"ToBlock FIgureType: {toBlock?.Figure?.FigureType}:");
         }
     }
 }

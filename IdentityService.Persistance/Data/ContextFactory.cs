@@ -11,7 +11,7 @@ namespace IdentityService.Persistance.Data
         public IdentityContext CreateDbContext(string[] args)
         {
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-            string? jsonFile = @"C:\Users\karapet.baghdasaryan\source\repos\ChessGameWebAssembly\ChessGameWebAssebly\IdentityService.API.IdentityAPI\appsettings.json";
+            string? jsonFile = @"/Users/user/RiderProjects/ChessGameWebAssebly/IdentityService.API.IdentityAPI/appsettings.json";
 
 
             IConfigurationRoot configuration = new ConfigurationBuilder()

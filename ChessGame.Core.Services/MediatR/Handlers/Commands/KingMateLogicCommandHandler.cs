@@ -15,28 +15,39 @@ using SharedResources.Validation.ChessGameValidations.RequestValidations.Connect
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 {
-    public class KingMateLogicCommandHandler(IValidator<KingMateLogicRequestDTO> validator, ILogger<KingMateLogicCommandHandler> logger, IConnectionService connectionService, IBoardService boardService) :
-        MediatR_Base<KingMateLogicRequestDTO, KingMateLogicCommandHandler, IBoardService>(validator, logger, boardService),
-        IRequestHandler<
+    public class KingMateLogicCommandHandler(
+        IValidator<KingMateLogicRequestDTO> validator,
+        ILogger<KingMateLogicCommandHandler> logger,
+        IConnectionService connectionService,
+        IBoardService boardService) :
+        MediatR_Base<KingMateLogicRequestDTO, KingMateLogicCommandHandler, IBoardService>(validator, logger,
+            boardService),
+        IRequestHandler< 
             KingMateLogicCommand<
                 KingMateLogicRequestDTO,
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>,
             ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
     {
-        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> 
-            Handle(KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> request, 
-            CancellationToken cancellationToken)
+        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
+            Handle(
+                KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
+                    request,
+                CancellationToken cancellationToken)
         {
             request.RequestDTO.boardStateRequestDTO.IsKingMate = true;
+
             if (request.RequestDTO.IsTrainingGame)
             {
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO, request.RequestDTO.boardStateRequestDTO.Player, false, !request.RequestDTO.isComputerWin);
+                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
+                    request.RequestDTO.boardStateRequestDTO.Player, false, !request.RequestDTO.isComputerWin);
             }
             else
             {
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO, request.RequestDTO.boardStateRequestDTO.Player, false, false);
+                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
+                    request.RequestDTO.boardStateRequestDTO.Player, false, false);
 
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO, request.RequestDTO.boardStateRequestDTO.Player, true, true);
+                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
+                    request.RequestDTO.boardStateRequestDTO.Player, true, true);
             }
 
             var removeUsersFromGameRequest =
@@ -45,14 +56,15 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     GameId = (request.RequestDTO.boardStateRequestDTO.GameId),
                 };
 
-            var winnerPlayerGuid = connectionService.CurrentConnectionState.Where(connection => connection.Value.UserName == request.RequestDTO.boardStateRequestDTO.Player).First();
+            var winnerPlayerGuid = connectionService.CurrentConnectionState.Where(connection =>
+connection.Value.UserName == request.RequestDTO.boardStateRequestDTO.Player)?.First();
 
             await boardService.SaveGameEventAndWinnerAsync(
-                 new SaveGameEventAndWinnerRequestDTO()
-                 {
-                     GameId = request.RequestDTO.boardStateRequestDTO.GameId,
-                     WinnerPlayerGuid = winnerPlayerGuid.Key
-                 });
+                new SaveGameEventAndWinnerRequestDTO()
+                {
+                    GameId = request.RequestDTO.boardStateRequestDTO.GameId,
+                    WinnerPlayerGuid = winnerPlayerGuid!.Value.Key!
+                });
 
             await connectionService.RemoveUsersFromGameAsync(removeUsersFromGameRequest);
 
@@ -61,7 +73,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new MoveResponseDTO()
                 {
-                    
                     GameId = request.RequestDTO.boardStateRequestDTO.GameId,
                     Player = request.RequestDTO.boardStateRequestDTO.Player,
                     IsReadyToEvent = IsReady.IsReadyToCut

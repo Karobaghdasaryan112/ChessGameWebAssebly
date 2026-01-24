@@ -105,7 +105,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection));
 
             return successResponse;
-
         }
 
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>>
@@ -133,7 +132,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     new RemoveUserConnectionResponseDTO() { IsRemoved = true },
                     ChessGameResponseMessage.UserConnectionRemovedSuccess,
                     HttpStatusCode.Found);
-
         }
 
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>>
@@ -173,7 +171,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     },
                     ChessGameResponseMessage.UserConnectionRemovedSuccess,
                     HttpStatusCode.Found);
-
         }
 
         public async Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>>
@@ -219,7 +216,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 return (await validationResult.ReturnValidationResult(default(BoardStateResponseDTO)))!;
 
 
-
             string selectedGameOpponentConnectionId = string.Empty;
             if (boardStateConnectionRequestDTO.IsOpponentComputer)
             {
@@ -229,9 +225,9 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             else
             {
                 var selectedGameKeyValue = CurrentConnectionState.Where(gameIdUserConnection =>
-                    gameIdUserConnection.Value?.GameId ==
-                    boardStateConnectionRequestDTO.GameId)
-                .Select(selectedGameUserConnection => selectedGameUserConnection.Value).ToList();
+                        gameIdUserConnection.Value?.GameId ==
+                        boardStateConnectionRequestDTO.GameId)
+                    .Select(selectedGameUserConnection => selectedGameUserConnection.Value).ToList();
 
 
                 selectedGameKeyValue = isMyConnection
