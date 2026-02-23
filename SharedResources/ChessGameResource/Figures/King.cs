@@ -17,7 +17,8 @@ namespace SharedResources.ChessGameResource.Figures
         public double[][] StartGameTable => StartGameKingTable;
 
         public double[][] EndGameTable => EndGameKingTable;
-        // StartGame: король в безопасности
+
+        // StartGame: 
         public double[][] StartGameKingTable = new double[8][]
         {
             new double[] { 5.0, 5.0, 5.0, -5.0, -5.0, 5.0, 5.0, 5.0 },
@@ -30,10 +31,10 @@ namespace SharedResources.ChessGameResource.Figures
             new double[] { 5.0, 5.0, 5.0, -5.0, -5.0, 5.0, 5.0, 5.0 }
         };
 
-        // MidGame: король чуть безопаснее
+        // MidGame: 
         public double[][] MidGameKingTable => StartGameKingTable;
 
-        // EndGame: активный король
+        // EndGame: 
         public double[][] EndGameKingTable = new double[8][]
         {
             new double[] { -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0 },

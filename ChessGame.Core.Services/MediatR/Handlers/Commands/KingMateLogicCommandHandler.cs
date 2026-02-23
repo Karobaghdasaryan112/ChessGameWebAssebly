@@ -44,10 +44,10 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             else
             {
                 await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
-                    request.RequestDTO.boardStateRequestDTO.Player, false, false);
+                    request.RequestDTO.boardStateRequestDTO.Player,isMyConnection: false,win: false);
 
                 await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
-                    request.RequestDTO.boardStateRequestDTO.Player, true, true);
+                    request.RequestDTO.boardStateRequestDTO.Player,isMyConnection: true,win: true);
             }
 
             var removeUsersFromGameRequest =
@@ -57,7 +57,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 };
 
             var winnerPlayerGuid = connectionService.CurrentConnectionState.Where(connection =>
-connection.Value.UserName == request.RequestDTO.boardStateRequestDTO.Player)?.First();
+            connection.Value.UserName == request.RequestDTO.boardStateRequestDTO.Player)?.First();
 
             await boardService.SaveGameEventAndWinnerAsync(
                 new SaveGameEventAndWinnerRequestDTO()

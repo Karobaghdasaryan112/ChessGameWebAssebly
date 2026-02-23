@@ -22,6 +22,12 @@ namespace BlazorServerSideClient.Services
         public ValueTask InviteAcceptedMessage()
             => _js.SafeInvokeVoidAsync(_logger, "alert", "Your Invite was accepted!");
 
+        public ValueTask DisableAllGameState(string gameClassName)
+            => _js.SafeInvokeVoidAsync(_logger, "GameDiv.Disable", gameClassName);
+
+        public ValueTask EnableAllGameState(string gameClassName)
+            => _js.SafeInvokeVoidAsync(_logger, "GameDiv.Enable", gameClassName);
+
         public ValueTask ReceiveOptimalMoves(Position from,Position to)
             => _js.SafeInvokeVoidAsync(_logger, "ReceiveOptimalMoves.Show", from,to);
         public ValueTask WinNotifier_opponentLeft()
@@ -59,6 +65,9 @@ namespace BlazorServerSideClient.Services
 
         public ValueTask ReceiveBlockChangesHistory(List<Block> blockChangesHistory)
             => _js.SafeInvokeVoidAsync(_logger, "ReceiveBlockChangesHistory.Change", blockChangesHistory);
+
+        public ValueTask NotifyOpponentUserDisconnected(string opponentUserName)
+            => _js.SafeInvokeVoidAsync(_logger, "OpponentDisconnected.Notify", $"Your opponent {opponentUserName} has disconnected. You win!");
     }
     public static class JSRuntimeSafeExtensions
     {

@@ -10,5 +10,9 @@ namespace BlazorServerSideClient.Services.Handlers
         {
             OnlinePlayersUpdated?.Invoke(userConnection);
         }
+        public void DisconnectedNotification(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
+        {
+            OnlinePlayersUpdated?.Invoke(opponentUserConnection);
+        }
     }
 }

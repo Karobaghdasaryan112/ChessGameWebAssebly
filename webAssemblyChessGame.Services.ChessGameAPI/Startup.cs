@@ -70,6 +70,7 @@ namespace ChessService.API.ChessGameAPI
                 endpoint.MapControllers();
                 endpoint.MapHub<GameHub>("/gameHub");
             });
+
         }
     }
 }

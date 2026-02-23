@@ -16,8 +16,6 @@ namespace ChessGame.Infrastructure.Infrastructure
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddScoped<GameHub>();
-
             services.AddSignalR()
         .AddHubOptions<GameHub>(options =>
         {

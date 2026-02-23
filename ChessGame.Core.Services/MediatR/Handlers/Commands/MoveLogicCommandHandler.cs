@@ -149,7 +149,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 //King Mate Logic via MediatR
                 if (isKingMateStateRequest is { IsSuccess: true, Data.IsKingMate: true })
                 {
-                    var kingMateLogicCommand = new KingMateLogicCommand<BoardStateRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(request.Request);
+                    var kingMateLogicRequestDTO = new KingMateLogicRequestDTO()
+                    {
+                        boardStateRequestDTO = request.Request,
+                        IsTrainingGame = false,
+                    };
+                    var kingMateLogicCommand = new KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(kingMateLogicRequestDTO);
                     return await mediator.Send(kingMateLogicCommand, cancellationToken);
                 }
 

@@ -972,3 +972,51 @@ html, body {
     text-align: center;
     margin-top: 40px;
 }
+.game-disabled {
+    pointer-events: none; 
+    opacity: 0.5; 
+    transition: 0.2s ease;
+}
+
+
+
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.loader-container {
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 16px;
+    opacity: 0.9;
+}

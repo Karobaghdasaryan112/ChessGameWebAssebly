@@ -1,9 +1,12 @@
 ﻿using ChessGame.Infrastructure.Infrastructure.Hubs;
+using ChessGame.Infrastructure.Infrastructure.HubServices;
 using Microsoft.AspNetCore.SignalR;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
@@ -37,5 +40,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             => await _hubContext.Clients.Client(trainingGameResponseDTO.ClientConnectionId).SendAsync("ReceiveTrainingGameRequestAsync", trainingGameResponseDTO);
         public async Task ReceiveBoardUpdateAsync(ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
            => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
+
+        public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid,UserConnectionDTO> opponentUserConnection)
+           => await _hubContext.Clients.Client(opponentUserConnection.Value.ConnectionId).SendAsync("DisconnectedNotification",opponentUserConnection);
     }
 }

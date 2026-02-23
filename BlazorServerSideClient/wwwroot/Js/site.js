@@ -69,9 +69,9 @@ window.BuildBoard = {
         board.style.cssText = `
             display: grid;
             grid-template: repeat(8, 1fr) / repeat(8, 1fr);
-            width: 800px;
-            height: 800px;
-            gap: 2px;
+            width: 900px;
+            height: 900px;
+            gap: -100px;
         `;
 
         const start = figureColor === 1 ? 7 : 0;
@@ -99,7 +99,7 @@ function createCell(i, j, block, dotNetRef) {
         width: 100px;
         height: 100px;
         box-sizing: border-box;
-        border: 1px solid #000;
+        border: 0px solid #000;
         transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
         background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
     `;
@@ -457,23 +457,88 @@ window.ReceiveOptimalMoves = {
     }
 };
 
+//window.GameDiv = {
+//    Hide: function (gameClassName) {
+//        window.GameDiv = {
+//            Disable: function (gameClassName) {
+//                var elements = document.getElementsByClassName(gameClassName);
 
+//                for (var i = 0; i < elements.length; i++) {
+//                    elements[i].classList.add("game-disabled");
+//                }
+//            },
 
+//            Enable: function (gameClassName) {
+//                var elements = document.getElementsByClassName(gameClassName);
 
-
-//window.addEventListener("beforeunload", () => {
-//    if (connection.state === signalR.HubConnectionState.Connected) {
-//        connection.stop();
+//                for (var i = 0; i < elements.length; i++) {
+//                    elements[i].classList.remove("game-disabled");
+//                }
+//            }
+//        };
 //    }
-//});
+//};
 
+window.GameDiv = {
 
-//window.addEventListener("beforeunload", () => {
-//    const signalRConnection = new signalR.HubConnectionBuilder();
-//    if (
-//        signalRConnection &&
-//        signalRConnection.state === signalR.HubConnectionState.Connected
-//    ) {
-//        signalRConnection.stop();
-//    }
-//});
+    Disable: function (gameClassName) {
+        var elements = document.getElementsByClassName(gameClassName);
+
+        for (var i = 0; i < elements.length; i++) {
+
+            var parent = elements[i];
+
+            parent.style.position = "relative";
+
+            var overlay = document.createElement("div");
+            overlay.className = "game-overlay";
+
+            overlay.innerHTML = `
+                <div class="loader-container">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Calculating best move...</div>
+                </div>
+            `;
+
+            parent.appendChild(overlay);
+        }
+    },
+
+    Enable: function (gameClassName) {
+        var elements = document.getElementsByClassName(gameClassName);
+
+        for (var i = 0; i < elements.length; i++) {
+            var overlay = elements[i].querySelector(".game-overlay");
+            if (overlay)
+                overlay.remove();
+        }
+    }
+
+};
+
+window.OpponentDisconnected = {
+    Notify: function (message) {
+
+        let notification = document.createElement("div");
+        notification.innerText = message;
+
+        notification.style.position = "fixed";
+        notification.style.top = "20px";
+        notification.style.right = "20px";
+        notification.style.padding = "15px 25px";
+        notification.style.backgroundColor = "#2ecc71";
+        notification.style.color = "white";
+        notification.style.fontSize = "16px";
+        notification.style.borderRadius = "8px";
+        notification.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+        notification.style.zIndex = "9999";
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+            window.location.href = "/dashboard"; 
+        }, 1000);
+    }
+};
+

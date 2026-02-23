@@ -50,6 +50,7 @@ namespace ChessGame.Core.Services.Services.Validations
         IValidator<GetUserConnectionRequestDTO> getUserConnectionValidator,
         IValidator<RemoveUserConnectionRequestDTO> removeUserConnectionValidator,
         IValidator<RemoveUserFromGameRequestDTO> removeUserFromGameRequestValidator,
+        IValidator<DisconnectedUserNotificationRequestDTO> disconnectedUserNotificationRequestValidator,
 
         //Connection Responses
         IValidator<AddUserConnectionResponseDTO> addUserConnectionResponseValidator,
@@ -117,6 +118,7 @@ namespace ChessGame.Core.Services.Services.Validations
                 GetUserConnectionRequestDTO => (IValidator<T>)getUserConnectionValidator,
                 RemoveUserConnectionRequestDTO => (IValidator<T>)removeUserConnectionValidator,
                 RemoveUserFromGameRequestDTO => (IValidator<T>)removeUserFromGameRequestValidator,
+                DisconnectedUserNotificationRequestDTO => (IValidator<T>)disconnectedUserNotificationRequestValidator,
 
                 // Responses
                 GetUserConnectionResponseDTO => (IValidator<T>)getUserConnectionResponseValidator,

@@ -20,7 +20,8 @@ namespace ChessGame.Core.Services
                 cfg.RegisterServicesFromAssemblies(
                     typeof(BoardInitializeCommandHandler).Assembly,
                     typeof(GetAllHistoryWidgetsQueryHandler).Assembly,
-                    typeof(GetOptimizedMoveQueryHandler).Assembly
+                    typeof(GetOptimizedMoveQueryHandler).Assembly,
+                    typeof(KingMateLogicCommandHandler).Assembly
                 );
 
                 cfg.Lifetime = ServiceLifetime.Scoped;

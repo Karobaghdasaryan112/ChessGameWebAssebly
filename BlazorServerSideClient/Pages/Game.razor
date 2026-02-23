@@ -27,7 +27,8 @@
     <script src="~/Js/site.js"></script>
 </head>
 <MateNotifier />
-<div class="wrap">
+<div class="wrap"
+     disabled="@isBusy">
     <div class="leftCard">
         <div class="playersInfo">
             <div class="player">
@@ -120,11 +121,10 @@
 
     //Parameters
 
-
-
     //Properties
 
     private bool isBusy = false;
+    private string _optimizeMoveLoadingClassName = "chessboard";
 
     private HubConnection? _hubConnection;
 
@@ -139,6 +139,7 @@
     private string currentUserGuid => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
     //Properties
+
     //Reqeusts
     private MoveRequestDTO MoveRequestDTO = new MoveRequestDTO();
     private ClickRequestDTO ClickRequestDTO = new ClickRequestDTO();
@@ -312,7 +313,7 @@
     {
         if (isBusy)
             return;
-
+        await JS.DisableAllGameState(_optimizeMoveLoadingClassName);
         isBusy = true;
 
         try
@@ -332,6 +333,7 @@
         finally
         {
             isBusy = false;
+            await JS.EnableAllGameState(_optimizeMoveLoadingClassName);
         }
     }
 

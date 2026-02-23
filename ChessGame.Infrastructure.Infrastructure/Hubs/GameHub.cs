@@ -31,14 +31,23 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine(10);
+            // Notify the opponent that the user has disconnected
+            await connectionService.NotifyDisconnectedUser(
+                new DisconnectedUserNotificationRequestDTO()
+                {
+                    ConnectionId = Context.ConnectionId
+                });
+
+            //Remove the user's connection from the database
             await connectionService.RemoveConnectionAsConnectionIdAsync(
                      new RemoveUserConnectionRequestDTO()
                      {
                          ConnectionId = Context.ConnectionId
                      });
+
             await base.OnDisconnectedAsync(exception);
         }
+
 
 
         //InvitationService 
@@ -84,7 +93,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         //connectionService
 
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(Guid currentUserGuid)
-            => await connectionService.RemoveConnectionAsUserGuidAsync( new RemoveUserConnectionRequestDTO() { UserGuid = currentUserGuid });
+            => await connectionService.RemoveConnectionAsUserGuidAsync(new RemoveUserConnectionRequestDTO() { UserGuid = currentUserGuid });
 
         public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
             => await connectionService.AddConnectionAsync(addUserConnectionRequestDTO);
@@ -93,6 +102,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
              => await connectionService.GetUserConnection(new GetUserConnectionRequestDTO() { UserGuid = userGuid });
         public async Task<ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(BoardStateRequestDTO boardStateConnectionRequestDTO, string player, bool isMyConnection)
             => await connectionService.SendBoardStateToClient(boardStateConnectionRequestDTO, player, isMyConnection);
+
+
 
         //connectionService
 

@@ -1,5 +1,6 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
@@ -45,6 +46,11 @@ namespace BlazorServerSideClient.Services.Handlers
                     await jSRuneTimeService.KingCheckedNotifier(gameStateconnectionResponseDto.Data.KingPosition);
                     break;
             }
+        }
+        public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
+        {
+            var opponentUserName = opponentUserConnection.Value.UserName;
+            await jSRuneTimeService.NotifyOpponentUserDisconnected(opponentUserName!);
         }
     }
 }

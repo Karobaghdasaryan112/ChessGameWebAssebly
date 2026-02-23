@@ -122,6 +122,8 @@
 
             if (allGamers.IsSuccess)
                 activeGamers = allGamers.Data.OnlinePlayers!;
+
+                await hubConnection.StopAsync();
         }
     }
 
@@ -152,4 +154,6 @@
         if (user.Identity?.IsAuthenticated == false)
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
     }
+
+  
 }

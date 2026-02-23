@@ -18,7 +18,7 @@
     private ClaimsPrincipal _user;
     private Guid _currentUserGuid;
     private bool _isLoading = true;
-    private string? _error;
+    private string? _error = string.Empty;
 
 
     private List<HistoryGameDTO> AllGames = new();
@@ -56,6 +56,7 @@
 
     private IEnumerable<HistoryGameDTO> PagedGamesForCurrentOpponent()
     {
+        if (Opponents == default || !Opponents.Any()) return Enumerable.Empty<HistoryGameDTO>();
         var keyValuePair = Opponents[CurrentOpponentIndex];
         if (!GamesByOpponent.TryGetValue(keyValuePair.Key, out var value)) return Enumerable.Empty<HistoryGameDTO>();
 
@@ -145,7 +146,11 @@
 
     private async Task GroupGames()
     {
+        if (Opponents == default || !Opponents.Any())
+            return;
+
         var userGuid = Guid.Parse(_user.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value!);
+
         var gamesPaginationPerOpponentResponse = await ChessGameService.GetGamesPaginationPerOpponentAsync(new GetGamesByCurrentAndOpponentIdsPaginationRequestDTO()
         {
             CurrentPlayerGuid = userGuid,
@@ -160,6 +165,7 @@
 
 
         CurrentOpponentIndex = Math.Min(CurrentOpponentIndex, Opponents.Count - 1);
+
     }
 
     private string ResultClass(string result) => result?.ToLower() switch
@@ -179,13 +185,13 @@
         <span>Loading history...</span>
     </div>
 }
-else if (_error != null)
+else if (!string.IsNullOrEmpty(_error))
 {
     <div class="hw-error">
         @_error
     </div>
 }
-else
+else if(Opponents.Any())
 {
     <div class="hw-wrap">
         <header class="hw-header">
@@ -244,7 +250,7 @@ else
                         </div>
 
                         <div class="card-footer">
-                            <button class="view-btn" @onclick="() => GoToGameHistory(g.player1Name,g.player2Name, g.GameId)">View</button>
+                            <button class="view-btn" @onclick="() => GoToGameHistory(g.player1Name, g.player2Name, g.GameId)">View</button>
                             <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
                         </div>
                     </article>
@@ -300,4 +306,8 @@ else
         }
     }
 </div>
+}
+else
+{
+    <div class="empty">No games yet.</div>
 }

@@ -21,5 +21,6 @@ namespace ChessGame.Core.Services.Contracts.Hub
         Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO);
         Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>> RemoveUsersFromGameAsync(RemoveUserFromGameRequestDTO removeUserFromGameRequestDTO);
         Task<ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(BoardStateRequestDTO boardStateConnectionRequestDTO, string player,bool isMyConnection, bool win = false);
+        Task<ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>> NotifyDisconnectedUser(DisconnectedUserNotificationRequestDTO disconnectedUserNotificationRequestDTO);
     }
 }

@@ -9,10 +9,12 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessService.API.ChessGameAPI.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
     public class ChessGameController(IMediator mediator) : ControllerBase
     {
+
         [HttpGet("history")]
         public async Task<IActionResult> GetHistoryWidgetsAsync([FromQuery] Guid playerId)
         {
@@ -29,6 +31,7 @@ namespace ChessService.API.ChessGameAPI.Controllers
             return
                 !getHistoryResult.IsSuccess ? BadRequest(getHistoryResult) : Ok(getHistoryResult);
         }
+
 
         [HttpGet("historyPagination")]
         public async Task<IActionResult> GetHistoryWidgetsPaginationByOpponentAsync(
@@ -57,6 +60,7 @@ namespace ChessService.API.ChessGameAPI.Controllers
                 !gamesPaginationResult.IsSuccess ? BadRequest(gamesPaginationResult) : Ok(gamesPaginationResult);
         }
 
+
         [HttpGet("gameHistory")]
         public async Task<IActionResult> GetGameHistoryByGameIdAndPlayerIdAsync([FromQuery] Guid gameId)
         {
@@ -77,6 +81,7 @@ namespace ChessService.API.ChessGameAPI.Controllers
                 !gameHistoryResult.IsSuccess ? BadRequest(gameHistoryResult) : Ok(gameHistoryResult);
         }
 
+
         [HttpGet("getOptimizedMove")]
         public async Task<IActionResult> GetOptimizedMoveAync([FromQuery] Guid gameId, [FromQuery] FigureColors myColor,
             [FromQuery] bool isMaximizingPlayer)
@@ -95,5 +100,7 @@ namespace ChessService.API.ChessGameAPI.Controllers
             return
                 !optimizedMoveResult.IsSuccess ? BadRequest(optimizedMoveResult) : Ok(optimizedMoveResult);
         }
+
+
     }
 }
