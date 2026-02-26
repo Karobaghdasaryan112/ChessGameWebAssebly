@@ -28,8 +28,8 @@ namespace BlazorServerSideClient.Services
         public ValueTask EnableAllGameState(string gameClassName)
             => _js.SafeInvokeVoidAsync(_logger, "GameDiv.Enable", gameClassName);
 
-        public ValueTask ReceiveOptimalMoves(Position from,Position to)
-            => _js.SafeInvokeVoidAsync(_logger, "ReceiveOptimalMoves.Show", from,to);
+        public ValueTask ReceiveOptimalMoves(Position from, Position to)
+            => _js.SafeInvokeVoidAsync(_logger, "ReceiveOptimalMoves.Show", from, to);
         public ValueTask WinNotifier_opponentLeft()
             => _js.SafeInvokeVoidAsync(_logger, "alert", "The opponent left. You win!");
 
@@ -45,8 +45,8 @@ namespace BlazorServerSideClient.Services
         public ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef) where T : class
             => _js.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
-        public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions,List<CastlingInfosDTO> castlingInfosDTOs)
-            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions,castlingInfosDTOs);
+        public ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions, List<CastlingInfosDTO> castlingInfosDTOs)
+            => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions, castlingInfosDTOs);
 
         public ValueTask ClearSelectedBlocks(int figureColor)
             => _js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Clear", figureColor);
@@ -71,7 +71,7 @@ namespace BlazorServerSideClient.Services
     }
     public static class JSRuntimeSafeExtensions
     {
-        private const int RetryCount = 1;
+        public const int RetryCount = 1;
 
         public static async ValueTask SafeInvokeVoidAsync(
             this IJSRuntime js,
@@ -79,6 +79,7 @@ namespace BlazorServerSideClient.Services
             string identifier,
             params object[] args)
         {
+
             for (var i = 0; i <= RetryCount; i++)
             {
                 try
@@ -116,6 +117,7 @@ namespace BlazorServerSideClient.Services
             string identifier,
             params object[] args)
         {
+
             for (int i = 0; i <= RetryCount; i++)
             {
                 try

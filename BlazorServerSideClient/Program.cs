@@ -90,6 +90,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors(options => {
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

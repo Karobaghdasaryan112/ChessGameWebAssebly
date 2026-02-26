@@ -1,4 +1,79 @@
-﻿window.getCookie = function (name) {
+﻿window.ChessGame = function (hubURL, userName, userGuid) {
+
+    let connection = new signalR.HubConnectionBuilder()
+        .withUrl(hubURL)
+        .withAutomaticReconnect()
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+    console.log(typeof signalR);
+
+    async function start() {
+        try {
+            await connection.start();
+            console.log("Connected. ConnectionId:", connection.connectionId);
+
+            await connection.invoke("AddConnectionAsync", {
+                userConnection: {
+                    connectionId: connection.connectionId,
+                    userName: userName
+                },
+                userGuid: userGuid
+            });
+
+        } catch (err) {
+            console.error(err);
+            setTimeout(start, 2000);
+        }
+    }
+
+    connection.on("ReceiveUpdatedUsers", function (userConnection) {
+        console.log("Updated users:", userConnection);
+    });
+
+    connection.on("ReceiveInvite",
+        function (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) {
+            console.log("Invite received");
+        });
+
+    connection.on("InviteAcceptedAsync",
+        function (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid) {
+            console.log("Invite accepted");
+        });
+
+    connection.on("ReceiveBoardUpdateAsync",
+        function (boardStateResponse) {
+            console.log("Board updated:", boardStateResponse);
+        });
+
+    connection.on("DisconnectedNotification",
+        function (opponentUserConnection) {
+            console.log("Opponent disconnected");
+        });
+
+    connection.on("ReseivePlayersAsync", function (connectionResponseDTO) {
+        console.log("Players info received:", connectionResponseDTO);
+    })
+
+    connection.onclose(function (error) {
+        console.log("Disconnected", error);
+    });
+
+    start();
+
+    return {
+        stop: async function () {
+            await connection.stop();
+        },
+        getConnectionId: function () {
+            return connection.connectionId;
+        },
+        getConnection: function () {
+            return connection;
+        }
+    };
+};
+
+window.getCookie = function (name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
@@ -457,27 +532,6 @@ window.ReceiveOptimalMoves = {
     }
 };
 
-//window.GameDiv = {
-//    Hide: function (gameClassName) {
-//        window.GameDiv = {
-//            Disable: function (gameClassName) {
-//                var elements = document.getElementsByClassName(gameClassName);
-
-//                for (var i = 0; i < elements.length; i++) {
-//                    elements[i].classList.add("game-disabled");
-//                }
-//            },
-
-//            Enable: function (gameClassName) {
-//                var elements = document.getElementsByClassName(gameClassName);
-
-//                for (var i = 0; i < elements.length; i++) {
-//                    elements[i].classList.remove("game-disabled");
-//                }
-//            }
-//        };
-//    }
-//};
 
 window.GameDiv = {
 

@@ -19,9 +19,10 @@ namespace ChessService.API.ChessGameAPI
                 options.AddDefaultPolicy(policy =>
                 {
                     policy
+                        .WithOrigins("http://localhost:5191") 
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowAnyOrigin();
+                        .AllowCredentials(); 
                 });
             });
 
@@ -57,10 +58,10 @@ namespace ChessService.API.ChessGameAPI
                 app.UseSwaggerUI();
             }
 
+
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCors();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
