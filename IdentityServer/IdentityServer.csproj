@@ -34,4 +34,9 @@
     <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20260106203550_InitialCreateMacOS.cs" />
+    <Compile Remove="Migrations\20260106203550_InitialCreateMacOS.Designer.cs" />
+  </ItemGroup>
+
 </Project>
