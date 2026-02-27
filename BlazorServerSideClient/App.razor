@@ -1,20 +1,24 @@
-﻿@using ChessGameBlazorClient.UI.Services
+﻿@using BlazorServerSideClient.Helpers
+@using ChessGameBlazorClient.UI.Services
 @using ChessGame.Infrastructure.Infrastructure.Hubs
+@using Microsoft.AspNetCore.Components.Server.Circuits
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @inject AuthenticationStateProvider AuthStateProvider
 @inject SignalRService HubClient
+@inject Circuit circuit
 <style>
     :root {
         --bg: #0f1724;
         --card: #0f1724aa;
-        --glass: rgba(255,255,255,0.06);
-        --accent: linear-gradient(135deg,#7f5af0,#4cc9f0);
+        --glass: rgba(255, 255, 255, 0.06);
+        --accent: linear-gradient(135deg, #7f5af0, #4cc9f0);
         --muted: #9aa4b2;
         --white: #f8fafc;
         --cell-light: #f3efe9;
         --cell-dark: #2e3440;
         --board-radius: 18px;
         --gap: 18px;
-        --board-size: min(72vmin,720px);
+        --board-size: min(72vmin, 720px);
         --cell-radius: 8px;
         font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
@@ -22,7 +26,7 @@
     html, body {
         height: 100%;
         margin: 0;
-        background: radial-gradient(1000px 400px at 10% 10%, rgba(124,58,237,0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76,201,240,0.06), transparent 10%), var(--bg);
+        background: radial-gradient(1000px 400px at 10% 10%, rgba(124, 58, 237, 0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76, 201, 240, 0.06), transparent 10%), var(--bg);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: var(--white);
@@ -31,8 +35,8 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>
@@ -42,6 +46,7 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
 @code {
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -53,7 +58,16 @@
             var user = authState.User;
             var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
-            await HubClient.GetHubConnection();
+            var hubConnection = await HubClient.GetHubConnection();
+            var circuitAddingResult = await CircuitHelper.TryAddToCircuit(circuit, new UserConnectionDTO
+            {
+                ConnectionId = hubConnection.ConnectionId,
+                UserName = userName,
+                Gameinfo = default,
+                GameId = default
+            });
+            if (!circuitAddingResult)
+                throw new AbandonedMutexException();
         }
     }
 }

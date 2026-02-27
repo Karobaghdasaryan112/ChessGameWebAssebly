@@ -14,7 +14,7 @@ namespace BlazorServerSideClient.Contracts.Requests
         Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto);
         Task ClearGameAsync(Guid gameId);
         Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(TrainingGameRequestDTO trainingGameRequestDto);
-        Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto);
+        Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto);    
         Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId);
         Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDto);
     }

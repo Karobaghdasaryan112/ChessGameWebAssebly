@@ -6,6 +6,7 @@ using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
 using BlazorServerSideClient.Services.Requests;
 using ChessGame.Core.Services.MediatR.Handlers.Commands;
+using ChessGame.Infrastructure.Infrastructure.Hubs;
 using ChessGameBlazorClient.ApiServices;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
@@ -13,6 +14,7 @@ using ChessGameBlazorClient.UI.Services;
 using FluentValidation;
 using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -28,7 +30,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddSingleton<CircuitHandler, MyCircuitHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
@@ -49,6 +51,7 @@ builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>(
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
 builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestService>();
+
 
 builder.Services.AddSignalR()
     .AddNewtonsoftJsonProtocol(options =>
@@ -88,7 +91,6 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

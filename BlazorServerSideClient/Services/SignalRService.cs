@@ -8,6 +8,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
+using Microsoft.JSInterop;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -35,7 +36,7 @@ namespace ChessGameBlazorClient.UI.Services
             _user = _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
         }
 
-        public async Task<HubConnection> GetHubConnection()
+        public async Task<HubConnection> GetHubConnection(bool isCircuitHub = false)
         {
             await _semaphore.WaitAsync();
             try
@@ -55,6 +56,8 @@ namespace ChessGameBlazorClient.UI.Services
                     await Task.Delay(200);
                 }
 
+                if (isCircuitHub)
+                    return _hubConnection;                    
                 var userName = _user.Claims?.First(claim => claim.Type == ClaimTypes.Name)?.Value;
                 var userId = _user.Claims?.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -78,6 +81,8 @@ namespace ChessGameBlazorClient.UI.Services
             }
         }
 
+
+        
         public async Task DisconnectAsync()
         {
             await _hubConnection?.StopAsync();

@@ -53,6 +53,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     HttpStatusCode.Found));
         }
 
+
         public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>>
             AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
         {
@@ -192,10 +193,11 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     connection.Value.ConnectionId == disconnectedUserNotificationRequestDTO.ConnectionId);
 
                 // If the current connection is not found, return a success response with null active game
-                var opponentForCurrentConnection = CurrentConnectionState.Where(aliveConnection =>
-                    aliveConnection.Value.GameId == currentConnection.Value.GameId &&
+                var opponentForCurrentConnection = CurrentConnectionState
+                    .FirstOrDefault(aliveConnection => 
+                        aliveConnection.Value.GameId == currentConnection.Value.GameId &&
                         (aliveConnection.Value.Gameinfo?.Players.Value == currentConnection.Key ||
-                        aliveConnection.Value.Gameinfo?.Players.Key == currentConnection.Key)).FirstOrDefault();
+                         aliveConnection.Value.Gameinfo?.Players.Key == currentConnection.Key));
 
 
                 if (!opponentForCurrentConnection.Equals(default))
