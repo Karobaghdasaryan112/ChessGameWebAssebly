@@ -10,8 +10,9 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class InvitationRequestService(SignalRService signalRService) : IInivitationReqeustService
+    public class InvitationRequestService(IServiceScopeFactory serviceScopeFactory) : IInivitationReqeustService
     {
+        private readonly SignalRService signalRService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<SignalRService>();
         public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
         {
 

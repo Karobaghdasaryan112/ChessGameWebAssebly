@@ -1,14 +1,15 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using ChessGameBlazorClient.ServiceEndpoints;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.DotNet.Scaffolding.Shared;
+using Microsoft.JSInterop;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
-using System.Security.Claims;
-using Microsoft.JSInterop;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -19,36 +20,57 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
         private readonly IGameHandlerService _gameHandlerService;
-        private readonly IHistoryWidgetHandlerService _historyWidgetHandlerService;
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
-        private readonly ClaimsPrincipal _user;
+        private readonly IServiceProvider _provider;
+        //private readonly AuthenticationStateProvider _authenticationStateProvider;
 
         public SignalRService(
+            IServiceProvider provider,
+            //AuthenticationStateProvider authenticationStateProvider, 
             IConnectionHandlerService connectionHandlerService,
             IInvitationHandlerService invitationHandlerService,
-            IGameHandlerService gameHandlerService,
-            AuthenticationStateProvider authenticationStateProvider)
+            IGameHandlerService gameHandlerService)
         {
+            _provider = provider;
+            //_authenticationStateProvider = authenticationStateProvider;
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
-            _authenticationStateProvider = authenticationStateProvider;
-            _user = _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
         }
 
         public async Task<HubConnection> GetHubConnection(bool isCircuitHub = false)
         {
+
             await _semaphore.WaitAsync();
             try
             {
-                if (_hubConnection == null)
+                if (_hubConnection == null || isCircuitHub)
                 {
                     _hubConnection = new HubConnectionBuilder()
                         .WithUrl(BasePaths.baseUrlHub)
                         .WithAutomaticReconnect()
                         .Build();
 
+                    using var scope = _provider.CreateScope();
+                    var js = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
+                    var nav = scope.ServiceProvider.GetRequiredService<NavigationManager>();
+
                     await _hubConnection.StartAsync();
+
+                    //var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+
+                    //var user = authState.User;
+                    //var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                    //var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+                    //await _hubConnection.SendAsync("AddConnectionAsync", new AddUserConnectionRequestDTO()
+                    //{
+                    //    userConnection = new UserConnectionDTO()
+                    //    {
+                    //        ConnectionId = _hubConnection.ConnectionId!,
+                    //        UserName = userName!
+                    //    },
+                    //    userGuid = Guid.Parse(userGuid!)
+                    //});
+
                 }
 
                 while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
@@ -56,23 +78,6 @@ namespace ChessGameBlazorClient.UI.Services
                     await Task.Delay(200);
                 }
 
-                if (isCircuitHub)
-                    return _hubConnection;                    
-                var userName = _user.Claims?.First(claim => claim.Type == ClaimTypes.Name)?.Value;
-                var userId = _user.Claims?.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
-
-                var userIdAsGuid = Guid.Parse(userId!);
-
-                await _hubConnection.SendAsync("AddConnectionAsync",
-                  new AddUserConnectionRequestDTO()
-                  {
-                      userConnection = new UserConnectionDTO()
-                      {
-                          ConnectionId = _hubConnection.ConnectionId,
-                          UserName = userName!
-                      },
-                      userGuid = userIdAsGuid
-                  });
                 return _hubConnection;
             }
             finally
@@ -82,10 +87,10 @@ namespace ChessGameBlazorClient.UI.Services
         }
 
 
-        
+
         public async Task DisconnectAsync()
         {
-            await _hubConnection?.StopAsync();
+            await _hubConnection?.StopAsync()!;
         }
 
         public async Task RegisterConnectionHandlers()
@@ -135,16 +140,16 @@ namespace ChessGameBlazorClient.UI.Services
                     async (BoardStateResponseHandler) =>
                         await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
 
-                _hubConnection.On<KeyValuePair<Guid,UserConnectionDTO>>("DisconnectedNotification",
+                _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>("DisconnectedNotification",
                     async (opponentUserConnection) =>
                 {
                     await _gameHandlerService.NotifyOpponentUserDisconnected(opponentUserConnection);
-                     _connectionHandlerService.DisconnectedNotification(opponentUserConnection);
+                    _connectionHandlerService.DisconnectedNotification(opponentUserConnection);
                 });
 
             }
 
-            _hubConnection.Closed += async (error) =>
+            _hubConnection!.Closed += async (error) =>
             {
                 Console.WriteLine("Disconnected");
                 await Task.CompletedTask;

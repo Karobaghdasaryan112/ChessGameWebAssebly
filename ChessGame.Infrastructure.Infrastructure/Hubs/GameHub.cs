@@ -110,26 +110,30 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task<ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>>
             SendDisconnectedUserNotificationAsync(KeyValuePair<Guid, UserConnectionDTO> userCnnectionDTO)
         {
+            var invalidResponse = ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
+                .CreateSuccessResponse(
+                    new DisconnectedUserNotificationResponseDTO
+                    {
+                        IsUserDisconnectedSuccess = false,
+                        ActiveGame = default,
+                    },
+                    ChessGameResponseMessage.InternalServerError,
+                    HttpStatusCode.InternalServerError);
+
             // Notify the opponent that the user has disconnected
             var disconnectedUserResponse = await connectionService.NotifyDisconnectedUser(
                 new DisconnectedUserNotificationRequestDTO()
                     { ConnectionId = Context.ConnectionId });
 
+            if(!disconnectedUserResponse.IsSuccess)
+                return invalidResponse;
             //Remove the user's connection from the database
             var removedUserResponse = await connectionService.RemoveConnectionAsConnectionIdAsync(
                 new RemoveUserConnectionRequestDTO()
                     { ConnectionId = Context.ConnectionId });
 
-            if (disconnectedUserResponse.IsSuccess && removedUserResponse.IsSuccess)
-                return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
-                    .CreateSuccessResponse(
-                        new DisconnectedUserNotificationResponseDTO
-                        {
-                            IsUserDisconnectedSuccess = true,
-                            ActiveGame = disconnectedUserResponse.Data.ActiveGame,
-                        },
-                        ChessGameResponseMessage.SuccessData,
-                        HttpStatusCode.OK);
+            if(!removedUserResponse.IsSuccess)
+                return invalidResponse;
             
             return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(

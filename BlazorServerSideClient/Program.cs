@@ -40,12 +40,12 @@ builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 builder.Services.AddScoped<ChessGameService>();
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<SignalRService>();
-builder.Services.AddScoped<JSRunetimeService>();
+builder.Services.AddSingleton<SignalRService>();
+builder.Services.AddSingleton<JSRunetimeService>();
 
-builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
-builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
-builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
+builder.Services.AddSingleton<IConnectionHandlerService, ConnectionHandlerService>();
+builder.Services.AddSingleton<IGameHandlerService, GameHandlerService>();
+builder.Services.AddSingleton<IInvitationHandlerService, InvitationHandlerService>();
 
 builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();

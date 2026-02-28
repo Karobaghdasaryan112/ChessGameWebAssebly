@@ -611,3 +611,11 @@ window.initializeBeforeUnload = function () {
         e.returnValue = '';
     });
 };
+
+
+
+window.registerTabCloseHandler = function (dotNetRef) {
+    window.addEventListener("beforeunload", function () {
+        dotNetRef.invokeMethodAsync("NotifyTabClosed");
+    });
+};

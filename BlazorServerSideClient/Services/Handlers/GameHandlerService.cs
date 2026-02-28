@@ -7,8 +7,9 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
-    public class GameHandlerService(JSRunetimeService jSRuneTimeService) : IGameHandlerService
+    public class GameHandlerService(IServiceScopeFactory serviceScopeFactory) : IGameHandlerService
     {
+        private readonly JSRunetimeService jSRuneTimeService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<JSRunetimeService>();
         public async Task ReseivePlayersAsync(
             ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
         {

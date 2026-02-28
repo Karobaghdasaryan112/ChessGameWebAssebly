@@ -1,6 +1,7 @@
 ﻿using BlazorServerSideClient.Contracts.Requests;
 using ChessGameBlazorClient.UI.Services;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -8,13 +9,16 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class ConnectionRequestService(SignalRService signalRService) : IConnectionReqeustService
+    public class ConnectionRequestService(IServiceScopeFactory serviceScopeFactory) : IConnectionReqeustService
     {
+        private readonly SignalRService signalRService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<SignalRService>();
         public async Task<
             ResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO)
         {
+            var scope = serviceScopeFactory.CreateScope();
+
             var hubConnection = await signalRService.GetHubConnection();
 
             return await hubConnection.

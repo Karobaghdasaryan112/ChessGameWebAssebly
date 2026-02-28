@@ -41,7 +41,10 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task ReceiveBoardUpdateAsync(ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
            => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
 
-        public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid,UserConnectionDTO> opponentUserConnection)
-           => await _hubContext.Clients.Client(opponentUserConnection.Value.ConnectionId).SendAsync("DisconnectedNotification",opponentUserConnection);
+        public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
+        { 
+
+            await _hubContext.Clients.Client(opponentUserConnection.Value.ConnectionId).SendAsync("DisconnectedNotification", opponentUserConnection);
+        }
     }
 }

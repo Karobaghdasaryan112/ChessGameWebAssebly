@@ -8,12 +8,7 @@ namespace SharedResources.Validation.ChessGameValidations.RequestValidations.Con
         public DisconnectedUserNotificationRequestDTOValidation()
         {
             RuleFor(x => x.ConnectionId)
-                .NotEmpty().WithMessage("ConnectionId is required.")
-                .Must(BeAValidGuid).WithMessage("ConnectionId must be a valid GUID.");
-        }
-        private bool BeAValidGuid(string connectionId)
-        {
-            return Guid.TryParse(connectionId, out _);
+                .NotEmpty().WithMessage("ConnectionId is required.");
         }
     }
 }
