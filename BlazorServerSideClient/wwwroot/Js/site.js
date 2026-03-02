@@ -1,30 +1,17 @@
-﻿window.ChessGame = function (hubURL, userName, userGuid) {
-
+﻿window.ChessGame = async function (hubURL, userName, userGuid) {
     let connection = new signalR.HubConnectionBuilder()
         .withUrl(hubURL)
         .withAutomaticReconnect()
-        .configureLogging(signalR.LogLevel.Information)
         .build();
-    console.log(typeof signalR);
 
-    async function start() {
-        try {
-            await connection.start();
-            console.log("Connected. ConnectionId:", connection.connectionId);
+    await connection.start();
 
-            await connection.invoke("AddConnectionAsync", {
-                userConnection: {
-                    connectionId: connection.connectionId,
-                    userName: userName
-                },
-                userGuid: userGuid
-            });
+    await connection.invoke("AddConnectionAsync", {
+        userConnection: { connectionId: connection.connectionId, userName: userName },
+        userGuid: userGuid
+    });
 
-        } catch (err) {
-            console.error(err);
-            setTimeout(start, 2000);
-        }
-    }
+    window.signalRConnection = connection; // для invokeSignalR
 
     connection.on("ReceiveUpdatedUsers", function (userConnection) {
         console.log("Updated users:", userConnection);
@@ -58,7 +45,7 @@
         console.log("Disconnected", error);
     });
 
-    start();
+
 
     return {
         stop: async function () {
@@ -72,6 +59,27 @@
         }
     };
 };
+
+
+window.invokeSignalR = async function (identifier, request) {
+    if (!window.signalRConnection) {
+        throw new Error("SignalR connection not initialized");
+    }
+
+    if (window.signalRConnection.state !== signalR.HubConnectionState.Connected) {
+        await window.signalRConnection.start();
+    }
+
+    try {
+        const result = await window.signalRConnection.invoke(identifier, request);
+        return result;
+    } catch (err) {
+        console.error("SignalR invoke error:", err);
+        throw err;
+    }
+};
+
+
 
 window.getCookie = function (name) {
     const value = `; ${document.cookie}`;
@@ -619,3 +627,4 @@ window.registerTabCloseHandler = function (dotNetRef) {
         dotNetRef.invokeMethodAsync("NotifyTabClosed");
     });
 };
+

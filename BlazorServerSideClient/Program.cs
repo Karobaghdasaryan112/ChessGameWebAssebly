@@ -30,7 +30,6 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<CircuitHandler, MyCircuitHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
@@ -40,12 +39,12 @@ builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 builder.Services.AddScoped<ChessGameService>();
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddSingleton<SignalRService>();
-builder.Services.AddSingleton<JSRunetimeService>();
+builder.Services.AddScoped<SignalRService>();
+builder.Services.AddScoped<JSRunetimeService>();
 
-builder.Services.AddSingleton<IConnectionHandlerService, ConnectionHandlerService>();
-builder.Services.AddSingleton<IGameHandlerService, GameHandlerService>();
-builder.Services.AddSingleton<IInvitationHandlerService, InvitationHandlerService>();
+builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
+builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
+builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
 
 builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
@@ -75,8 +74,6 @@ else
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-
-app.UseHttpsRedirection();
 
 app.UseStaticFiles(new StaticFileOptions
 {

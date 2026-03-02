@@ -12,10 +12,9 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class GameRequestService(IServiceScopeFactory serviceScopeFactory, IConnectionHandlerService connectionHandlerService)
+    public class GameRequestService(SignalRService signalRService, IConnectionHandlerService connectionHandlerService,JSRunetimeService jsRunetimeService)
         : IGameRequestService
     {
-        private readonly SignalRService signalRService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<SignalRService>();
         public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO getOnlinePlayersRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnection();

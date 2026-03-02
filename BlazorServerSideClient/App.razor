@@ -1,13 +1,10 @@
-﻿@using BlazorServerSideClient.Helpers
-@using ChessGameBlazorClient.UI.Services
+﻿@using ChessGameBlazorClient.UI.Services
 @using ChessGame.Infrastructure.Infrastructure.Hubs
-@using Microsoft.AspNetCore.Components.Server.Circuits
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 @inject AuthenticationStateProvider AuthStateProvider
 @inject SignalRService HubClient
-@inject Circuit circuit
 <style>
     :root {
         --bg: #0f1724;
@@ -37,8 +34,8 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>
@@ -50,10 +47,9 @@
 </CascadingAuthenticationState>
 
 @code {
-   
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
         if (authState.User?.Identity?.IsAuthenticated == true)
@@ -65,35 +61,35 @@
             //Circuit management: we need to add the user to the circuit on the first render, so that we can manage the circuit and remove the user from the circuit when they disconnect
             if (firstRender)
             {
+                var hubConnection = await HubClient.GetHubConnection();
 
-                var hubConnection = await HubClient.GetHubConnection(true);
-
-                var circuitAddingResult = await CircuitHelper.TryAddToCircuit(circuit, new UserConnectionDTO
-                {
-                    ConnectionId = hubConnection.ConnectionId,
-                    UserName = userName,
-                    Gameinfo = default,
-                    GameId = default
-                });
-
-
-                var userIdAsGuid = Guid.Parse(userGuid!);
-
-
-                await hubConnection.SendAsync("AddConnectionAsync",
-                  new AddUserConnectionRequestDTO()
-                  {
-                      userConnection = new UserConnectionDTO()
-                      {
-                          ConnectionId = hubConnection.ConnectionId,
-                          UserName = userName!
-                      },
-                      userGuid = userIdAsGuid
-                  });
-
-                if (!circuitAddingResult)
-                    throw new AbandonedMutexException();
+                // var circuitAddingResult = await CircuitHelper.TryAddToCircuit(circuit, new UserConnectionDTO
+                // {
+                //     ConnectionId = hubConnection.ConnectionId,
+                //     UserName = userName,
+                //     Gameinfo = default,
+                //     GameId = default
+                // });
+                //
+                //
+                // var userIdAsGuid = Guid.Parse(userGuid!);
+                //
+                //
+                // await hubConnection.SendAsync("AddConnectionAsync",
+                //     new AddUserConnectionRequestDTO()
+                //     {
+                //         userConnection = new UserConnectionDTO()
+                //         {
+                //             ConnectionId = hubConnection.ConnectionId,
+                //             UserName = userName!
+                //         },
+                //         userGuid = userIdAsGuid
+                //     });
+                //
+                // if (!circuitAddingResult)
+                //     throw new AbandonedMutexException();
             }
         }
     }
+
 }

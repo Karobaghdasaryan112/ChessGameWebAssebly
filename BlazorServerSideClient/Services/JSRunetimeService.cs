@@ -12,7 +12,7 @@ namespace BlazorServerSideClient.Services
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<JSRunetimeService> _logger;
-        private const int DelayMs = 200; // задержка для всех вызовов
+        private const int DelayMs = 200; 
 
         public JSRunetimeService(IServiceScopeFactory serviceScopeFactory, ILogger<JSRunetimeService> logger)
         {
@@ -20,13 +20,16 @@ namespace BlazorServerSideClient.Services
             _logger = logger;
         }
 
-        private IJSRuntime GetJSRuntime()
+        internal IJSRuntime GetJSRuntime()
         {
             var scope = _serviceScopeFactory.CreateScope();
             return scope.ServiceProvider.GetRequiredService<IJSRuntime>();
         }
 
         private async ValueTask SafeDelay() => await Task.Delay(DelayMs);
+
+
+        //UI changed Methods
 
         public async ValueTask ShowInviteModal(int time, string userName)
         {
@@ -91,18 +94,21 @@ namespace BlazorServerSideClient.Services
             await js.SafeInvokeVoidAsync(_logger, "Players.show", player1_Name, player2_Name);
         }
 
-        public async ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef) where T : class
+        public async ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef)
+            where T : class
         {
             await SafeDelay();
             var js = GetJSRuntime();
             await js.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
         }
 
-        public async ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions, List<CastlingInfosDTO> castlingInfosDTOs)
+        public async ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions,
+            List<CastlingInfosDTO> castlingInfosDTOs)
         {
             await SafeDelay();
             var js = GetJSRuntime();
-            await js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions, castlingInfosDTOs);
+            await js.SafeInvokeVoidAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions,
+                movablePositions, castlingInfosDTOs);
         }
 
         public async ValueTask ClearSelectedBlocks(int figureColor)
@@ -151,9 +157,21 @@ namespace BlazorServerSideClient.Services
         {
             await SafeDelay();
             var js = GetJSRuntime();
-            await js.SafeInvokeVoidAsync(_logger, "OpponentDisconnected.Notify", $"Your opponent {opponentUserName} has disconnected. You win!");
+            await js.SafeInvokeVoidAsync(_logger, "OpponentDisconnected.Notify",
+                $"Your opponent {opponentUserName} has disconnected. You win!");
         }
+
+        //UI changed Methods
+        public async Task<TResponse> SendAsync<TRequest, TResponse>(string identifier, TRequest request)
+        {
+            var js = GetJSRuntime();
+            var result = await js.InvokeAsync<TResponse>("invokeSignalR",identifier, request);
+            return result;
+        }
+        
+
     }
+
     public static class JSRuntimeSafeExtensions
     {
         public const int RetryCount = 1;

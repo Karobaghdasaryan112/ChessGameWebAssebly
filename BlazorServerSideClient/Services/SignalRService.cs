@@ -1,4 +1,5 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using BlazorServerSideClient.Services;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -8,8 +9,10 @@ using Microsoft.JSInterop;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -20,18 +23,23 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
         private readonly IGameHandlerService _gameHandlerService;
-        private readonly IServiceProvider _provider;
-        //private readonly AuthenticationStateProvider _authenticationStateProvider;
-
+        private readonly JSRunetimeService _jsRunetimeService;
+        private readonly IJSRuntime? _jsRuntime;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        private readonly ILogger<SignalRService> _logger;
         public SignalRService(
-            IServiceProvider provider,
-            //AuthenticationStateProvider authenticationStateProvider, 
+            ILogger<SignalRService> logger,
+            IJSRuntime jsRuntime,
+            JSRunetimeService jsRunetimeService,    
+            AuthenticationStateProvider authenticationStateProvider, 
             IConnectionHandlerService connectionHandlerService,
             IInvitationHandlerService invitationHandlerService,
             IGameHandlerService gameHandlerService)
         {
-            _provider = provider;
-            //_authenticationStateProvider = authenticationStateProvider;
+            _logger = logger;   
+            _jsRuntime = jsRuntime;
+            _jsRunetimeService = jsRunetimeService;
+            _authenticationStateProvider = authenticationStateProvider;
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
@@ -43,40 +51,59 @@ namespace ChessGameBlazorClient.UI.Services
             await _semaphore.WaitAsync();
             try
             {
-                if (_hubConnection == null || isCircuitHub)
+                if (_hubConnection == null)
                 {
-                    _hubConnection = new HubConnectionBuilder()
-                        .WithUrl(BasePaths.baseUrlHub)
-                        .WithAutomaticReconnect()
-                        .Build();
+                    // _hubConnection = new HubConnectionBuilder()
+                    //     .WithUrl(BasePaths.baseUrlHub)
+                    //     .WithAutomaticReconnect()
+                    //     .Build();
 
-                    using var scope = _provider.CreateScope();
-                    var js = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
-                    var nav = scope.ServiceProvider.GetRequiredService<NavigationManager>();
+                    
+                    // await _hubConnection.StartAsync();
 
-                    await _hubConnection.StartAsync();
+                    var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 
-                    //var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-
-                    //var user = authState.User;
-                    //var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                    //var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
-                    //await _hubConnection.SendAsync("AddConnectionAsync", new AddUserConnectionRequestDTO()
-                    //{
-                    //    userConnection = new UserConnectionDTO()
-                    //    {
-                    //        ConnectionId = _hubConnection.ConnectionId!,
-                    //        UserName = userName!
-                    //    },
-                    //    userGuid = Guid.Parse(userGuid!)
-                    //});
+                    var user = authState.User;
+                    var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                    var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+                    
+                    await _jsRuntime.SafeInvokeVoidAsync(_logger,"ChessGame",BasePaths.baseUrlHub,userName,userGuid);
+                    // try
+                    // {
+                    //     var result = await _jsRunetimeService.SendAsync<
+                    //         AddUserConnectionRequestDTO,
+                    //         ResponseDTO<
+                    //             AddUserConnectionResponseDTO,
+                    //             ChessGameResponseMessage>>("AddConnectionAsync", new AddUserConnectionRequestDTO()
+                    //     {
+                    //         userConnection = new UserConnectionDTO()
+                    //         {
+                    //             ConnectionId = _hubConnection.ConnectionId!,
+                    //             UserName = userName!
+                    //         },
+                    //         userGuid = Guid.Parse(userGuid!)
+                    //     });
+                    // }
+                    // catch (Exception ex)
+                    // {
+                    //     var x = ex.Message;
+                    // }
+                    // await _hubConnection.SendAsync("AddConnectionAsync", new AddUserConnectionRequestDTO()
+                    // {
+                    //     userConnection = new UserConnectionDTO()
+                    //     {
+                    //         ConnectionId = _hubConnection.ConnectionId!,
+                    //         UserName = userName!
+                    //     },
+                    //     userGuid = Guid.Parse(userGuid!)
+                    // });
 
                 }
 
-                while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
-                {
-                    await Task.Delay(200);
-                }
+                // while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
+                // {
+                //     await Task.Delay(200);
+                // }
 
                 return _hubConnection;
             }

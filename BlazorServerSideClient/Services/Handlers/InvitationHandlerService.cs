@@ -1,6 +1,7 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -8,13 +9,14 @@ using SharedResources.Responses.ResponseMessages;
 
 public class InvitationHandlerService : IInvitationHandlerService
 {
-    private readonly IServiceScopeFactory _serviceScopeFactory;
     public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
     public SendInvitationsResponseDTO? lastInvite { get; set; }
-
-    public InvitationHandlerService(IServiceScopeFactory serviceScopeFactory)
+    private JSRunetimeService _jsRuntime { get; set; }
+    private NavigationManager _nav { get; set; }
+    public InvitationHandlerService(NavigationManager nav,JSRunetimeService jsRuntime)
     {
-        _serviceScopeFactory = serviceScopeFactory;
+        this._jsRuntime = jsRuntime;    
+        this._nav = nav;
     }
 
     public void ReceiveInvite(
@@ -23,10 +25,6 @@ public class InvitationHandlerService : IInvitationHandlerService
         UserConnectionDTO receiverUserConnection,
         Guid receiverUserGuid)
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        var jsRuntime = scope.ServiceProvider.GetRequiredService<JSRunetimeService>();
-        var nav = scope.ServiceProvider.GetRequiredService<NavigationManager>();
-
         lastInvite = new SendInvitationsResponseDTO
         {
             InviterUserConnection = inviterUserConnection
@@ -44,7 +42,7 @@ public class InvitationHandlerService : IInvitationHandlerService
             Message = ChessGameResponseMessage.SuccessInvitation
         });
 
-        jsRuntime.ShowInviteModal(15, inviterUserConnection.UserName);
+        _jsRuntime.ShowInviteModal(15, inviterUserConnection.UserName);
     }
 
     public void InviteAcceptedAsync(
@@ -54,9 +52,7 @@ public class InvitationHandlerService : IInvitationHandlerService
         Guid receiverUserGuid,
         Guid gameGuid)
     {
-        using var scope = _serviceScopeFactory.CreateScope();
-        var nav = scope.ServiceProvider.GetRequiredService<NavigationManager>();
-        nav.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
+        _nav.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
     }
 
   

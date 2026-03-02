@@ -9,52 +9,57 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class ConnectionRequestService(IServiceScopeFactory serviceScopeFactory) : IConnectionReqeustService
+    public class ConnectionRequestService(SignalRService signalRService,JSRunetimeService _jsRunetimeService) : IConnectionReqeustService
     {
-        private readonly SignalRService signalRService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<SignalRService>();
+
         public async Task<
             ResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO)
         {
-            var scope = serviceScopeFactory.CreateScope();
 
             var hubConnection = await signalRService.GetHubConnection();
-
-            return await hubConnection.
-                InvokeAsync<
+            return await
+                _jsRunetimeService.SendAsync<
+                    GetUserConnectionRequestDTO,
                     ResponseDTO<
                         AddUserConnectionResponseDTO,
-                        ChessGameResponseMessage>>
-                        ("GetUserConnection", getUserConnectionRequestDTO);
+                        ChessGameResponseMessage>>("GetUserConnection", getUserConnectionRequestDTO);
+            // return await hubConnection.
+            //     InvokeAsync<
+            //         ResponseDTO<
+            //             AddUserConnectionResponseDTO,
+            //             ChessGameResponseMessage>>
+            //             ("GetUserConnection", getUserConnectionRequestDTO);
         }
+
         public async Task<
             ResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
-
-            return await hubConnection.
-                InvokeAsync<
+            return await
+                _jsRunetimeService.SendAsync<
+                    AddUserConnectionRequestDTO,
                     ResponseDTO<
                         AddUserConnectionResponseDTO,
-                        ChessGameResponseMessage>>
-                        ("AddConnectionAsync", addUserConnectionRequestDTO);
+                        ChessGameResponseMessage>>("AddConnectionAsync", addUserConnectionRequestDTO);
         }
+
         public async Task<
             ResponseDTO<
                 RemoveUserConnectionResponseDTO,
-                ChessGameResponseMessage>> RemoveConnectionAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
+                ChessGameResponseMessage>> RemoveConnectionAsync(
+            RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
             var hubConnection = await signalRService.GetHubConnection();
 
-            return await hubConnection.
-                InvokeAsync<
-                  ResponseDTO<
-                      RemoveUserConnectionResponseDTO,
-                      ChessGameResponseMessage>>
-                        ("RemoveConnectionAsync", removeUserConnectionRequestDTO.UserGuid);
+            return await hubConnection.InvokeAsync<
+                    ResponseDTO<
+                        RemoveUserConnectionResponseDTO,
+                        ChessGameResponseMessage>>
+                ("RemoveConnectionAsync", removeUserConnectionRequestDTO.UserGuid);
         }
     }
 }

@@ -9,9 +9,9 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class HistoryWidgetRequestService(IServiceScopeFactory serviceScopeFactory) : IHistoryWidgetRequestService
+    public class HistoryWidgetRequestService(SignalRService signalRService) : IHistoryWidgetRequestService
     {
-        private readonly SignalRService signalRService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<SignalRService>();
+
 
         public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>>
             GetAllOpponents(GetAllHistoryWidgetRequestDTO getAllHistoryWidgetsRequestDTO)
