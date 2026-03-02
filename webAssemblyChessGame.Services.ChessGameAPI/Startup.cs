@@ -63,6 +63,7 @@ namespace ChessService.API.ChessGameAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoint =>
             {

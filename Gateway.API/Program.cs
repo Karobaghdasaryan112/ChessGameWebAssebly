@@ -35,6 +35,7 @@ app.UseMiddleware<LoggingMiddleware>();
 app.UseRouting();
 app.UseCors("AllowUI_CORS");
 app.MapControllers();
+app.UseHttpsRedirection();
 app.UseEndpoints(endpoints => { endpoints.MapReverseProxy(); });
 app.MapReverseProxy();
 

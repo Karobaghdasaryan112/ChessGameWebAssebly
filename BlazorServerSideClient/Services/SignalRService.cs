@@ -53,13 +53,7 @@ namespace ChessGameBlazorClient.UI.Services
             {
                 if (_hubConnection == null)
                 {
-                    // _hubConnection = new HubConnectionBuilder()
-                    //     .WithUrl(BasePaths.baseUrlHub)
-                    //     .WithAutomaticReconnect()
-                    //     .Build();
 
-                    
-                    // await _hubConnection.StartAsync();
 
                     var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 
@@ -68,42 +62,8 @@ namespace ChessGameBlazorClient.UI.Services
                     var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
                     
                     await _jsRuntime.SafeInvokeVoidAsync(_logger,"ChessGame",BasePaths.baseUrlHub,userName,userGuid);
-                    // try
-                    // {
-                    //     var result = await _jsRunetimeService.SendAsync<
-                    //         AddUserConnectionRequestDTO,
-                    //         ResponseDTO<
-                    //             AddUserConnectionResponseDTO,
-                    //             ChessGameResponseMessage>>("AddConnectionAsync", new AddUserConnectionRequestDTO()
-                    //     {
-                    //         userConnection = new UserConnectionDTO()
-                    //         {
-                    //             ConnectionId = _hubConnection.ConnectionId!,
-                    //             UserName = userName!
-                    //         },
-                    //         userGuid = Guid.Parse(userGuid!)
-                    //     });
-                    // }
-                    // catch (Exception ex)
-                    // {
-                    //     var x = ex.Message;
-                    // }
-                    // await _hubConnection.SendAsync("AddConnectionAsync", new AddUserConnectionRequestDTO()
-                    // {
-                    //     userConnection = new UserConnectionDTO()
-                    //     {
-                    //         ConnectionId = _hubConnection.ConnectionId!,
-                    //         UserName = userName!
-                    //     },
-                    //     userGuid = Guid.Parse(userGuid!)
-                    // });
 
                 }
-
-                // while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
-                // {
-                //     await Task.Delay(200);
-                // }
 
                 return _hubConnection;
             }

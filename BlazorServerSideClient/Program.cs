@@ -5,20 +5,15 @@ using BlazorServerSideClient.Data;
 using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
 using BlazorServerSideClient.Services.Requests;
-using ChessGame.Core.Services.MediatR.Handlers.Commands;
-using ChessGame.Infrastructure.Infrastructure.Hubs;
 using ChessGameBlazorClient.ApiServices;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.Services;
-using FluentValidation;
 using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,7 +84,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors(options => {
+app.UseHttpsRedirection();
+app.UseCors(options =>
+{
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();

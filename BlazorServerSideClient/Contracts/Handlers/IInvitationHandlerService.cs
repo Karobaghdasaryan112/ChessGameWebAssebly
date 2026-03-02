@@ -10,7 +10,7 @@ namespace BlazorServerSideClient.Contracts.Handlers
         SendInvitationsResponseDTO? lastInvite { get; set; }
         Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
 
-        void ReceiveInvite(UserConnectionDTO inviterUserConnection, Guid inviterUserGuid, UserConnectionDTO receiverUserConnection, Guid receiverUserGuid);
+        Task ReceiveInvite(UserConnectionDTO inviterUserConnection, Guid inviterUserGuid, UserConnectionDTO receiverUserConnection, Guid receiverUserGuid);
         void InviteAcceptedAsync(UserConnectionDTO inviterUserConnection, Guid inviterUserGuid, UserConnectionDTO receiverUserConnection, Guid receiverUserGuid, Guid gameGuid);
     }
 }

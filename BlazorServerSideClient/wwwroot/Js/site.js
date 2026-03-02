@@ -1,65 +1,82 @@
-﻿window.ChessGame = async function (hubURL, userName, userGuid) {
+﻿window.ChessGame = async function (hubURL, userName, userGuid,dotNetRefInvite,dotNetRefGame,dotNetRefConnection) {
+    
+    //let dotnetRef = dotnetReference;
+
     let connection = new signalR.HubConnectionBuilder()
         .withUrl(hubURL)
         .withAutomaticReconnect()
         .build();
-
+    window.signalRConnection = connection;
     await connection.start();
+    console.log({ connection })
+    window.dotNetRefrenceInvite = dotNetRefInvite;
+    window.dotNetRefrenceGame = dotNetRefGame;
+    window.dotNetRefrenceConnection = dotNetRefConnection;
 
-    await connection.invoke("AddConnectionAsync", {
-        userConnection: { connectionId: connection.connectionId, userName: userName },
-        userGuid: userGuid
-    });
-
-    window.signalRConnection = connection; // для invokeSignalR
-
-    connection.on("ReceiveUpdatedUsers", function (userConnection) {
-        console.log("Updated users:", userConnection);
-    });
+    connection.invoke("AddConnectionAsync", { UserName: userName, UserGuid: userGuid })
 
     connection.on("ReceiveInvite",
-        function (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) {
-            console.log("Invite received");
+        function (
+            inviterUserConnection,
+            inviterUserGuid,
+            receiverUserConnection,
+            receiverUserGuid) {
+
+            console.log("Invite received from SignalR");
+
+            window.dotNetRefrenceInvite.invokeMethodAsync(
+                "ReceiveInvite",
+                inviterUserConnection,
+                inviterUserGuid,
+                receiverUserConnection,
+                receiverUserGuid
+            );
         });
 
-    connection.on("InviteAcceptedAsync",
-        function (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid) {
-            console.log("Invite accepted");
+    connection.on("ReceiveUpdatedUsers",
+        function (userConnection,) {
+            window.dotNetRefrenceInvite.invokeMethodAsync(
+                "ReceiveUpdatedUsers",
+                userConnection
+            );
         });
-
-    connection.on("ReceiveBoardUpdateAsync",
-        function (boardStateResponse) {
-            console.log("Board updated:", boardStateResponse);
-        });
-
-    connection.on("DisconnectedNotification",
-        function (opponentUserConnection) {
-            console.log("Opponent disconnected");
-        });
-
-    connection.on("ReseivePlayersAsync", function (connectionResponseDTO) {
-        console.log("Players info received:", connectionResponseDTO);
-    })
-
-    connection.onclose(function (error) {
-        console.log("Disconnected", error);
-    });
-
-
 
     return {
-        stop: async function () {
-            await connection.stop();
-        },
-        getConnectionId: function () {
-            return connection.connectionId;
-        },
-        getConnection: function () {
-            return connection;
-        }
-    };
-};
+        stop: async () => await connection.stop(),
 
+        getConnectionId: () => connection.connectionId,
+
+        getConnection: () => connection,
+
+        addConnectionAsync: async (request) => await connection.invoke("AddConnectionAsync", request),
+
+        getUserConnection: async (request) => await connection.invoke("GetUserConnection", request),
+
+        removeConnectionAsync: async (request) => await connection.invoke("RemoveConnectionAsync", request),
+
+        getOnlinePlayersAsync: async (request) => await connection.invoke("GetOnlinePlayersAsync", request),
+
+        requestTrainingGameAsync: async (request) => await connection.invoke("RequestTrainingGameAsync", request),
+
+        sendGameStateAsync: async (request) => await connection.invoke("SendGameStateAsync", request),
+
+        sendMoveAsync: async (request) => await connection.invoke("SendMoveAsync", request),
+
+        sendClickAsync: async (request) => await connection.invoke("SendClickAsync", request),
+
+        sendIsSameFigureClickedAsync: async (selected, current, gameId) =>
+            await connection.invoke("SendIsSameFigureClickedAsync", { selected, current, gameId }),
+
+        sendInviteAsync: async (request) => await connection.invoke("SendInviteAsync", request),
+
+        cancelInviteAsync: async (inviterGuid, receiverGuid) => await connection.invoke("CancelInviteAsync", inviterGuid, receiverGuid),
+
+        acceptInviteAsync: async (request) => await connection.invoke("AcceptInviteAsync", request),
+
+        onReceiveUpdatedUsers: (callback) => connection.on("ReceiveUpdatedUsers", callback)
+    };
+
+};
 
 window.invokeSignalR = async function (identifier, request) {
     if (!window.signalRConnection) {
@@ -77,6 +94,23 @@ window.invokeSignalR = async function (identifier, request) {
         console.error("SignalR invoke error:", err);
         throw err;
     }
+};
+
+window.getSignalRConnectionInfo = async function () {
+
+    if (!window.signalRConnection) {
+        console.log("window.signalRConnection", await window.signalRConnection)
+        throw new Error("SignalR connection not initialized");
+    }
+
+    if (window.signalRConnection.state !== signalR.HubConnectionState.Connected) {
+        await window.signalRConnection.start();
+    }
+
+    return {
+        url: window.signalRConnection.baseUrl ?? null,
+        connectionId: window.signalRConnection.connectionId
+    };
 };
 
 
@@ -127,7 +161,7 @@ window.inviteModal = {
 
                 this.hide();
             }
-        }, 1000);
+        }, 5000);
     }
 };
 
@@ -147,7 +181,7 @@ window.BuildBoard = {
         const blocks = JSON.parse(JsonBlocks);
         const board = document.getElementById("chessboard");
 
-        // Reset board
+
         board.innerHTML = "";
         board.style.cssText = `
             display: grid;
@@ -187,12 +221,12 @@ function createCell(i, j, block, dotNetRef) {
         background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
     `;
 
-    // Click
+
     cell.addEventListener("click", () =>
         dotNetRef.invokeMethodAsync("OnCellClick", i, j)
     );
 
-    // Hover
+
     var realColor = cell.style.backgroundColor;
     cell.addEventListener("mouseenter", () => {
         const baseColor = cell.style.backgroundColor;
@@ -214,7 +248,7 @@ function createCell(i, j, block, dotNetRef) {
         }
     });
 
-    // Figure
+
     if (block.Figure) {
         cell.appendChild(createPiece(block.Figure));
     }
@@ -397,7 +431,7 @@ window.KingCheckedNotification = {
 
         cell.addEventListener("animationend", () => {
             cell.classList.remove("king-blink-flash");
-        }, {once: true});
+        }, { once: true });
     }
 };
 
@@ -422,7 +456,7 @@ window.KingMateNotification = {
             cell.classList.add("king-blink-flash");
             cell.addEventListener("animationend", () => {
                 cell.classList.remove("king-blink-flash");
-            }, {once: true});
+            }, { once: true });
         }
     }
 };
@@ -469,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const smallNext = document.querySelectorAll('.small-next');
     smallNext.forEach(btn => {
-        btn.addEventListener('mouseenter', () => btn.animate([{transform: 'scale(1)'}, {transform: 'scale(1.06)'}, {transform: 'scale(1)'}], {duration: 420}));
+        btn.addEventListener('mouseenter', () => btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 }));
     });
 });
 
@@ -608,7 +642,7 @@ window.OpponentDisconnected = {
 window.initializeBeforeUnload = function () {
     window.addEventListener("beforeunload", function (e) {
 
-        console.log("beforeunload triggered"); 
+        console.log("beforeunload triggered");
 
         if (window.DotNet) {
             DotNet.invokeMethodAsync('BlazorServerSideClient', 'OnTabClose')

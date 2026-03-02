@@ -149,8 +149,8 @@
     protected override async Task OnInitializedAsync()
     {
 
-        await HubClient.GetHubConnection();
-        await HubClient.RegisterConnectionHandlers();
+        // await HubClient.GetHubConnection();
+        // await HubClient.RegisterConnectionHandlers();
 
         await JS.ShowPlayers(Player1Name, Player2Name);
 
@@ -186,7 +186,7 @@
     public async void OnCellClick(int row, int col)
     {
         await HubClient.GetHubConnection();
-        await HubClient.RegisterConnectionHandlers();
+        // await HubClient.RegisterConnectionHandlers();
 
         await JS.ClearSelectedBlocks((int)MyColor);
 

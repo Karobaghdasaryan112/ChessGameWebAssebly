@@ -1,7 +1,5 @@
 ﻿using BlazorServerSideClient.Contracts.Requests;
 using ChessGameBlazorClient.UI.Services;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.DependencyInjection;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -9,57 +7,39 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Services.Requests
 {
-    public class ConnectionRequestService(SignalRService signalRService,JSRunetimeService _jsRunetimeService) : IConnectionReqeustService
+    public class ConnectionRequestService(SignalRService signalRService, JSRunetimeService _jsRunetimeService) : IConnectionReqeustService
     {
 
-        public async Task<
+        public Task<
             ResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO)
-        {
-
-            var hubConnection = await signalRService.GetHubConnection();
-            return await
-                _jsRunetimeService.SendAsync<
+             => _jsRunetimeService.SendAsync<
                     GetUserConnectionRequestDTO,
                     ResponseDTO<
                         AddUserConnectionResponseDTO,
                         ChessGameResponseMessage>>("GetUserConnection", getUserConnectionRequestDTO);
-            // return await hubConnection.
-            //     InvokeAsync<
-            //         ResponseDTO<
-            //             AddUserConnectionResponseDTO,
-            //             ChessGameResponseMessage>>
-            //             ("GetUserConnection", getUserConnectionRequestDTO);
-        }
 
-        public async Task<
+        public Task<
             ResponseDTO<
                 AddUserConnectionResponseDTO,
                 ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
-        {
-            var hubConnection = await signalRService.GetHubConnection();
-            return await
-                _jsRunetimeService.SendAsync<
+             => _jsRunetimeService.SendAsync<
                     AddUserConnectionRequestDTO,
                     ResponseDTO<
                         AddUserConnectionResponseDTO,
                         ChessGameResponseMessage>>("AddConnectionAsync", addUserConnectionRequestDTO);
-        }
 
-        public async Task<
+        public Task<
             ResponseDTO<
                 RemoveUserConnectionResponseDTO,
                 ChessGameResponseMessage>> RemoveConnectionAsync(
             RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
-        {
-            var hubConnection = await signalRService.GetHubConnection();
-
-            return await hubConnection.InvokeAsync<
+             => _jsRunetimeService.SendAsync<
+                    RemoveUserConnectionRequestDTO,
                     ResponseDTO<
                         RemoveUserConnectionResponseDTO,
-                        ChessGameResponseMessage>>
-                ("RemoveConnectionAsync", removeUserConnectionRequestDTO.UserGuid);
-        }
+                        ChessGameResponseMessage>>("RemoveConnectionAsync", removeUserConnectionRequestDTO);
+
     }
 }

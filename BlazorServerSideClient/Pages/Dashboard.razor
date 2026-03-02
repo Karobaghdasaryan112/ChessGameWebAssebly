@@ -1,6 +1,9 @@
 ﻿@page "/Dashboard"
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Models
+@using BlazorServerSideClient.Services
+@using ChessGameBlazorClient.ServiceEndpoints
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
@@ -8,15 +11,23 @@
 @using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
+@using SharedResources.Responses.ResponseMessages
 
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IInivitationReqeustService InvitationRequest
 @inject IConnectionHandlerService ConnectionHandler
 @inject IGameRequestService GameRequest
+@inject IGameHandlerService GameHandler
+@inject IInvitationHandlerService InvitationHandler
 @inject IConnectionReqeustService ConnectionRequest
 @inject NavigationManager Navigation
 @inject SignalRService HubClient
+@inject JSRunetimeService jsRuntime
+@inject ILogger<Dashboard> logger
 @inject IJSRuntime JS
+
 
 
 <DashboardInvitationRequest />
@@ -77,27 +88,49 @@
 </div>
 
 @code {
+    private string _connectionId = String.Empty;
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
+    private DotNetObjectReference<IInvitationHandlerService> DotNetRefInvitation;
+    private DotNetObjectReference<IGameHandlerService> DotNetRefGame;
+    private DotNetObjectReference<IConnectionHandlerService> DotNetRefConnection;
 
+
+    public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
     protected override async Task OnInitializedAsync()
     {
-
+        DotNetRefInvitation = DotNetObjectReference.Create(InvitationHandler);
+        DotNetRefGame = DotNetObjectReference.Create(GameHandler);
+        DotNetRefConnection = DotNetObjectReference.Create(ConnectionHandler);
         UnAuthorizedUser();
 
         var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var userName = user.FindFirst(ClaimTypes.Name)?.Value!;
 
-        await HubClient.RegisterConnectionHandlers();
+
 
         ConnectionHandler.OnlinePlayersUpdated += (player) =>
         {
             activeGamers[player.Key] = player.Value;
             InvokeAsync(StateHasChanged);
         };
+        var chessHub = await JS.InvokeAsync<IJSObjectReference>(
+            "ChessGame",
+            BasePaths.baseUrlHub,
+            userName,
+            userGuid,
+            DotNetRefInvitation,
+            DotNetRefGame,
+            DotNetRefConnection);
 
+        var info = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
 
-        var hubConnection = await HubClient.GetHubConnection();
+        if (info is null)
+        {
+            return;
+        }
+        _connectionId = info.ConnectionId;
+
 
         if (Guid.TryParse(userGuid, out var userIdAsGuid))
         {
@@ -106,7 +139,7 @@
           {
               userConnection = new UserConnectionDTO()
               {
-                  ConnectionId = hubConnection.ConnectionId!,
+                  ConnectionId = info.ConnectionId!,
                   Gameinfo = null,
                   GameId = Guid.Empty,
                   UserName = userName
@@ -123,7 +156,6 @@
             if (allGamers.IsSuccess)
                 activeGamers = allGamers.Data.OnlinePlayers!;
 
-                await hubConnection.StopAsync();
         }
     }
 
@@ -140,6 +172,7 @@
                 ReceiverUserConnection = receiverPlayer.Value,
                 InviterUserConnection = new UserConnectionDTO()
                 {
+                    ConnectionId = _connectionId,
                     UserName = userName
                 },
                 InviterPlayerId = inviterUserGuid,
@@ -155,5 +188,4 @@
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
     }
 
-  
 }
