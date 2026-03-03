@@ -1,4 +1,4 @@
-﻿using IdentityService.Domain.Domain;
+﻿using BlazorServerSideClient.Data.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ namespace BlazorServerSideClient.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityRole>(b =>
+            builder.Entity<ApplicationRole>(b =>
             {
                 b.Property(r => r.ConcurrencyStamp).HasMaxLength(256);
             });

@@ -2,6 +2,8 @@ using BlazorServerSideClient.Areas.Identity;
 using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Data;
+using BlazorServerSideClient.Data.IdentityModels;
+using BlazorServerSideClient.Models;
 using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
 using BlazorServerSideClient.Services.Requests;
@@ -9,23 +11,36 @@ using ChessGameBlazorClient.ApiServices;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.Services;
-using IdentityService.Domain.Domain;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders(); 
+// builder.Services
+//     .AddDefaultIdentity<ApplicationUser>(options =>
+//     {
+//         options.SignIn.RequireConfirmedAccount = true;
+//     })
+//     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+builder.Services
+    .AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
@@ -36,16 +51,21 @@ builder.Services.AddScoped<ChessGameService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
-
 builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
 builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
 builder.Services.AddScoped<IInvitationHandlerService, InvitationHandlerService>();
-
+builder.Services.AddSingleton<IEmailSender, NullEmasilSender>();
 builder.Services.AddScoped<IConnectionReqeustService, ConnectionRequestService>();
 builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
 builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestService>();
-
+builder.Services.AddCors(options => options.AddPolicy("Default",
+    policy =>
+        policy
+            .WithOrigins("https://localhost:5191")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()));
 
 builder.Services.AddSignalR()
     .AddNewtonsoftJsonProtocol(options =>
@@ -53,10 +73,8 @@ builder.Services.AddSignalR()
         options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
     });
 
-builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
-{
-    client.BaseAddress = new Uri($"{BasePaths.baseUrl}");
-});
+builder.Services.AddHttpClient("ChessGameBlazorClient.Api",
+    client => { client.BaseAddress = new Uri($"{BasePaths.baseUrl}"); });
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();
 var app = builder.Build();
 
@@ -85,13 +103,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseHttpsRedirection();
-app.UseCors(options =>
-{
-    options.AllowAnyOrigin();
-    options.AllowAnyMethod();
-    options.AllowAnyHeader();
-});
+app.UseCors();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
 app.Run();

@@ -15,7 +15,7 @@
 
     connection.invoke("AddConnectionAsync", { UserName: userName, UserGuid: userGuid })
 
-    connection.on("ReceiveInvite",
+    await connection.on("ReceiveInvite",
         function (
             inviterUserConnection,
             inviterUserGuid,
@@ -33,13 +33,16 @@
             );
         });
 
-    connection.on("ReceiveUpdatedUsers",
-        function (userConnection,) {
-            window.dotNetRefrenceInvite.invokeMethodAsync(
-                "ReceiveUpdatedUsers",
-                userConnection
-            );
-        });
+    connection.on("ReceiveUpdatedUsers", function (data) {
+        console.log("ReceiveUpdatedUsers fired:", data);
+        console.log("GUID:", data.key);
+        console.log("Connection:", data.value);
+        window.dotNetRefrenceConnection.invokeMethodAsync(
+            "ReceiveUpdatedUsers",
+            data.key,
+            data.value
+        );
+    });
 
     return {
         stop: async () => await connection.stop(),

@@ -9,10 +9,12 @@ namespace BlazorServerSideClient.Services.Handlers
         public Action<KeyValuePair<Guid, UserConnectionDTO>>? OnlinePlayersUpdated { get; set; }
 
         [JSInvokable]
-        public void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection)
+        public Task ReceiveUpdatedUsers(Guid userGuid, UserConnectionDTO connection)
         {
-            OnlinePlayersUpdated?.Invoke(userConnection);
+            OnlinePlayersUpdated?.Invoke(new KeyValuePair<Guid, UserConnectionDTO>(userGuid, connection));
+            return Task.CompletedTask;
         }
+
         [JSInvokable]
         public void DisconnectedNotification(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
         {

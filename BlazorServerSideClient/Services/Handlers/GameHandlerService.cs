@@ -1,4 +1,5 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -15,7 +16,8 @@ namespace BlazorServerSideClient.Services.Handlers
             await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!,
                 connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
         }
-
+        
+        [JSInvokable]
         public async Task ReceiveBoardUpdateAsync(
             ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
         {

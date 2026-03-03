@@ -9,7 +9,7 @@ namespace ChessGameBlazorClient.ServiceEndpoints
         /// <summary>
         /// GameHub mapping Url for ChessGame Service
         /// </summary>
-        internal static readonly string baseUrlHub = "https://localhost:5203/gameHub";
+        public static readonly string baseUrlHub = "https://localhost:5203/gameHub";
 
         /// <summary>
         /// Builds the URI for the specified identity controller and identity action.

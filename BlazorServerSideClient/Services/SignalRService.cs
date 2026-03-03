@@ -90,7 +90,7 @@ namespace ChessGameBlazorClient.UI.Services
                 _hubConnection.On<
                     KeyValuePair<Guid, UserConnectionDTO>>(
                     "ReceiveUpdatedUsers",
-                    (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)
+                    (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection.Key, userConnection.Value)
                 );
 
                 _hubConnection.On<

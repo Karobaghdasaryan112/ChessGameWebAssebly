@@ -114,6 +114,7 @@
             activeGamers[player.Key] = player.Value;
             InvokeAsync(StateHasChanged);
         };
+        
         var chessHub = await JS.InvokeAsync<IJSObjectReference>(
             "ChessGame",
             BasePaths.baseUrlHub,
