@@ -1,4 +1,15 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorServerSideClient.Contracts.Handlers
+@using BlazorServerSideClient.Services
+@using BlazorServerSideClient.Services.Handlers
+@using ChessGameBlazorClient.ServiceEndpoints
+@using System.Security.Claims
+@using ChessGameBlazorClient.UI.Services
+@inherits LayoutComponentBase
+
+@inject SignalRService signalRService
+@inject NavigationManager Nav
+@inject ILogger<MainLayout> Logger
+@inject AuthenticationStateProvider AuthProvider
 
 <PageTitle>BlazorServerSideClient</PageTitle>
 
@@ -18,3 +29,36 @@
         </article>
     </main>
 </div>
+
+@code {
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        await signalRService.GetHubConnection();
+        if (!user.Identity?.IsAuthenticated ?? true)
+        {
+            Logger.LogWarning("User is not authenticated.");
+            Nav.NavigateTo("/Identity/Account/Login");
+            return;
+        }
+
+        var userName = user.FindFirst(ClaimTypes.Name)?.Value;
+        var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userGuid))
+        {
+            Logger.LogWarning("User claims not found.");
+            return;
+        }
+
+
+
+    }
+}

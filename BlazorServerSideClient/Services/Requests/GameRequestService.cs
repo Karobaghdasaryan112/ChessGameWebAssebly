@@ -16,6 +16,7 @@ namespace BlazorServerSideClient.Services.Requests
     {
         public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO getOnlinePlayersRequestDto)
         {
+            var signalRModel = await signalRService.GetHubConnection();
 
             var allGamersResult = await jsRunetimeService.
                 SendAsync<
@@ -34,8 +35,10 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
 
-        public Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(TrainingGameRequestDTO trainingGameRequestDto)
-         => jsRunetimeService.
+        public async Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(TrainingGameRequestDTO trainingGameRequestDto)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
+            return await jsRunetimeService.
             SendAsync<
                 TrainingGameRequestDTO,
                 ResponseDTO<
@@ -43,50 +46,80 @@ namespace BlazorServerSideClient.Services.Requests
                     ChessGameResponseMessage>>(
              "RequestTrainingGameAsync",
              trainingGameRequestDto);
+        }
 
 
-        public Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto)
-            => jsRunetimeService.
-                SendAsync<
-                    SendGameStateReqeustDTO,
-                    ResponseDTO<
-                        SendGameStateResponseDTO,
-                        ChessGameResponseMessage>>(
-             "SendGameStateAsync",
-             gameStateReqeustDto);
+        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>>
+            SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
 
-        public Task ClearGameAsync(Guid gameId)
-            => jsRunetimeService.SendAsync<Guid, ResponseDTO<UserConnectionDTO, ChessGameResponseMessage>>("ClearGameAsync", gameId);
+            return await jsRunetimeService.SendAsync<
+                SendGameStateReqeustDTO,
+                ResponseDTO<
+                    SendGameStateResponseDTO,
+                    ChessGameResponseMessage>>(
+                "SendGameStateAsync",
+                gameStateReqeustDto);
+        }
 
+        public async Task
+            ClearGameAsync(Guid gameId)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
 
-        public Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto)
-            => jsRunetimeService.
-                SendAsync<
-                    MoveRequestDTO,
-                    ResponseDTO<
-                        MoveResponseDTO,
-                        ChessGameResponseMessage>>(
-             "SendMoveAsync",
-             sendMoveConnectionRequestDto);
-
-
-        public Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDto)
-            => jsRunetimeService.
-                SendAsync<
-                    ClickRequestDTO,
-                    ResponseDTO<
-                        ClickResponseDTO,
-                        ChessGameResponseMessage>>(
-             "SendClickAsync",
-             sendClickConnectionRequestDto);
+            await jsRunetimeService.SendAsync<
+               Guid,
+               ResponseDTO<
+                   UserConnectionDTO,
+                   ChessGameResponseMessage>>(
+               "ClearGameAsync",
+               gameId);
+        }
 
 
-        public Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId)
-            => jsRunetimeService.
-                SendAsync<
-                    (Position, Position, Guid),
-                    bool>(
+        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
+            SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
+
+            return await jsRunetimeService.SendAsync<
+                MoveRequestDTO,
+                ResponseDTO<
+                    MoveResponseDTO,
+                    ChessGameResponseMessage>>(
+                "SendMoveAsync",
+                sendMoveConnectionRequestDto);
+        }
+
+
+        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>>
+            SendClickAsync(ClickRequestDTO sendClickConnectionRequestDto)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
+
+            return await jsRunetimeService.SendAsync<
+                ClickRequestDTO,
+                ResponseDTO<
+                    ClickResponseDTO,
+                    ChessGameResponseMessage>>(
+                "SendClickAsync",
+                sendClickConnectionRequestDto);
+        }
+
+
+        public async Task<bool> SendIsSameFigureClickedAsync(
+            Position selectedPosition,
+            Position currentPosition,
+            Guid gameId)
+        {
+            var signalRModel = await signalRService.GetHubConnection();
+
+            return await jsRunetimeService.SendAsync<
+                (Position, Position, Guid),
+                bool>(
                 "SendIsSameFigureClickedAsync",
                 (selectedPosition, currentPosition, gameId));
+        }
     }
 }

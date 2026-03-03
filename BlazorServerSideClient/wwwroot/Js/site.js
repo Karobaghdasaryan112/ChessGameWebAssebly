@@ -82,6 +82,7 @@
 };
 
 window.invokeSignalR = async function (identifier, request) {
+
     if (!window.signalRConnection) {
         throw new Error("SignalR connection not initialized");
     }
@@ -101,10 +102,10 @@ window.invokeSignalR = async function (identifier, request) {
 
 window.getSignalRConnectionInfo = async function () {
 
-    if (!window.signalRConnection) {
-        console.log("window.signalRConnection", await window.signalRConnection)
-        throw new Error("SignalR connection not initialized");
-    }
+    //if (!window.signalRConnection) {
+    //    console.log("window.signalRConnection", await window.signalRConnection)
+    //    throw new Error("SignalR connection not initialized");
+    //}
 
     if (window.signalRConnection.state !== signalR.HubConnectionState.Connected) {
         await window.signalRConnection.start();

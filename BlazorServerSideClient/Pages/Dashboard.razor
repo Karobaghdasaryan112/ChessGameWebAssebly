@@ -91,17 +91,10 @@
     private string _connectionId = String.Empty;
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
-    private DotNetObjectReference<IInvitationHandlerService> DotNetRefInvitation;
-    private DotNetObjectReference<IGameHandlerService> DotNetRefGame;
-    private DotNetObjectReference<IConnectionHandlerService> DotNetRefConnection;
-
 
     public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        DotNetRefInvitation = DotNetObjectReference.Create(InvitationHandler);
-        DotNetRefGame = DotNetObjectReference.Create(GameHandler);
-        DotNetRefConnection = DotNetObjectReference.Create(ConnectionHandler);
         UnAuthorizedUser();
 
         var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
@@ -114,55 +107,63 @@
             activeGamers[player.Key] = player.Value;
             InvokeAsync(StateHasChanged);
         };
-        
-        var chessHub = await JS.InvokeAsync<IJSObjectReference>(
-            "ChessGame",
-            BasePaths.baseUrlHub,
-            userName,
-            userGuid,
-            DotNetRefInvitation,
-            DotNetRefGame,
-            DotNetRefConnection);
 
-        var info = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
+        // var chessHub = await JS.InvokeAsync<IJSObjectReference>(
+        //     "ChessGame",
+        //     BasePaths.baseUrlHub,
+        //     userName,
+        //     userGuid,
+        //     DotNetRefInvitation,
+        //     DotNetRefGame,
+        //     DotNetRefConnection);
 
-        if (info is null)
-        {
-            return;
-        }
-        _connectionId = info.ConnectionId;
+        // var info = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
+
+        // if (info is null)
+        // {
+        //     return;
+        // }
+        // _connectionId = info.ConnectionId;
 
 
-        if (Guid.TryParse(userGuid, out var userIdAsGuid))
-        {
-            await ConnectionRequest.AddConnectionAsync(
-          new AddUserConnectionRequestDTO()
-          {
-              userConnection = new UserConnectionDTO()
-              {
-                  ConnectionId = info.ConnectionId!,
-                  Gameinfo = null,
-                  GameId = Guid.Empty,
-                  UserName = userName
-              },
-              userGuid = userIdAsGuid
-          });
+        // if (Guid.TryParse(userGuid, out var userIdAsGuid))
+        // {
+        //     await ConnectionRequest.AddConnectionAsync(
+        //   new AddUserConnectionRequestDTO()
+        //   {
+        //       userConnection = new UserConnectionDTO()
+        //       {
+        //           ConnectionId = info.ConnectionId!,
+        //           Gameinfo = null,
+        //           GameId = Guid.Empty,
+        //           UserName = userName
+        //       },
+        //       userGuid = userIdAsGuid
+        //   });
 
-            var allGamers = await GameRequest.GetOnlinePlayersAsync(
-                new GetONlinePlayersRequestDTO()
-                {
-                    UserGuid = userIdAsGuid
-                });
 
-            if (allGamers.IsSuccess)
-                activeGamers = allGamers.Data.OnlinePlayers!;
+        var allGamers = await GameRequest.GetOnlinePlayersAsync(
+            new GetONlinePlayersRequestDTO()
+            {
+                UserGuid = Guid.Parse(userGuid)
+            });
 
-        }
+        if (allGamers.IsSuccess)
+            activeGamers = allGamers.Data.OnlinePlayers!;
+
+        // }
     }
 
 
     private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
     {
+        if (_connectionId is null)
+        {
+
+            var connectionInfo = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
+            _connectionId = connectionInfo.ConnectionId;
+        }
+
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;

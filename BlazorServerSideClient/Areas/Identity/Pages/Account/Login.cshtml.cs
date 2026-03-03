@@ -2,19 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using BlazorServerSideClient.Data.IdentityModels;
+using BlazorServerSideClient.Services;
+using BlazorServerSideClient.Services.Handlers;
+using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorServerSideClient.Areas.Identity.Pages.Account
 {
@@ -22,9 +20,24 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private IJSRuntime _jsRunTime;
+        private JSRunetimeService _jSRunetimeService;
+        private NavigationManager _nav;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        private DotNetObjectReference<InvitationHandlerService> _dotNetRefInvitation;
+        private DotNetObjectReference<GameHandlerService> _dotNetRefGame;
+        private DotNetObjectReference<ConnectionHandlerService> _dotNetRefConnection;
+
+        public LoginModel(
+            JSRunetimeService jSRunetimeService,
+            NavigationManager nav,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<LoginModel> logger,
+            IJSRuntime jsRuntime)
         {
+            _nav = nav;
+            _jSRunetimeService = jSRunetimeService;
+            _jsRunTime = jsRuntime;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -54,6 +67,8 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
         /// </summary>
         [TempData]
         public string ErrorMessage { get; set; }
+
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -104,6 +119,7 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -115,7 +131,29 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user is default(ApplicationUser))
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        _logger.LogWarning("User not found with email {Email}.", Input.Email);
+                        return Page();
+                    }
+
                     _logger.LogInformation("User logged in.");
+
+                    //InitializeDotNetReferenceObjects();
+
+                    //var chessHub =
+                    //    await _jsRunTime.SafeInvokeAsync<IJSObjectReference>(
+                    //                _logger,
+                    //                "ChessGame",
+                    //                BasePaths.baseUrlHub,
+                    //                Input.Email,
+                    //                user.Id,
+                    //                _dotNetRefInvitation,
+                    //                _dotNetRefGame,
+                    //                _dotNetRefConnection);
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -136,6 +174,12 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private void InitializeDotNetReferenceObjects()
+        {
+            _dotNetRefConnection = (_dotNetRefConnection == null) ? _dotNetRefConnection = DotNetObjectReference.Create(new ConnectionHandlerService()) : _dotNetRefConnection;
+            _dotNetRefGame = (_dotNetRefGame == null) ? DotNetObjectReference.Create(new GameHandlerService(_jSRunetimeService)) : _dotNetRefGame;
+            _dotNetRefInvitation = (_dotNetRefInvitation == null) ? DotNetObjectReference.Create(new InvitationHandlerService(_nav, _jSRunetimeService)) : _dotNetRefInvitation;
         }
     }
 }
