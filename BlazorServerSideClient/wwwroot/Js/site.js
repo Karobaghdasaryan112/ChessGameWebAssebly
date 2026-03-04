@@ -1,5 +1,5 @@
-﻿window.ChessGame = async function (hubURL, userName, userGuid,dotNetRefInvite,dotNetRefGame,dotNetRefConnection) {
-    
+﻿window.ChessGame = async function (hubURL, userName, userGuid, dotNetRefInvite, dotNetRefGame, dotNetRefConnection) {
+
     //let dotnetRef = dotnetReference;
 
     let connection = new signalR.HubConnectionBuilder()
@@ -8,12 +8,18 @@
         .build();
     window.signalRConnection = connection;
     await connection.start();
-    console.log({ connection })
+    console.log({connection})
     window.dotNetRefrenceInvite = dotNetRefInvite;
     window.dotNetRefrenceGame = dotNetRefGame;
     window.dotNetRefrenceConnection = dotNetRefConnection;
 
-    connection.invoke("AddConnectionAsync", { UserName: userName, UserGuid: userGuid })
+    connection.invoke("AddConnectionAsync", {
+        userGuid: userGuid,
+        userConnection: {
+            connectionId: connection.connectionId,
+            userName: userName
+        }
+    });
 
     await connection.on("ReceiveInvite",
         function (
@@ -44,6 +50,14 @@
         );
     });
 
+    connection.on("RemovedUserChangeNotification", function (data) {
+        console.log("RemovedUserChangeNotification", data);
+        window.dotNetRefrenceConnection.invokeMethodAsync(
+            "RemovedUserChangeNotification",
+            data.key,
+            data.value);
+    })
+
     return {
         stop: async () => await connection.stop(),
 
@@ -68,7 +82,7 @@
         sendClickAsync: async (request) => await connection.invoke("SendClickAsync", request),
 
         sendIsSameFigureClickedAsync: async (selected, current, gameId) =>
-            await connection.invoke("SendIsSameFigureClickedAsync", { selected, current, gameId }),
+            await connection.invoke("SendIsSameFigureClickedAsync", {selected, current, gameId}),
 
         sendInviteAsync: async (request) => await connection.invoke("SendInviteAsync", request),
 
@@ -116,7 +130,6 @@ window.getSignalRConnectionInfo = async function () {
         connectionId: window.signalRConnection.connectionId
     };
 };
-
 
 
 window.getCookie = function (name) {
@@ -435,7 +448,7 @@ window.KingCheckedNotification = {
 
         cell.addEventListener("animationend", () => {
             cell.classList.remove("king-blink-flash");
-        }, { once: true });
+        }, {once: true});
     }
 };
 
@@ -460,7 +473,7 @@ window.KingMateNotification = {
             cell.classList.add("king-blink-flash");
             cell.addEventListener("animationend", () => {
                 cell.classList.remove("king-blink-flash");
-            }, { once: true });
+            }, {once: true});
         }
     }
 };
@@ -507,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const smallNext = document.querySelectorAll('.small-next');
     smallNext.forEach(btn => {
-        btn.addEventListener('mouseenter', () => btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 }));
+        btn.addEventListener('mouseenter', () => btn.animate([{transform: 'scale(1)'}, {transform: 'scale(1.06)'}, {transform: 'scale(1)'}], {duration: 420}));
     });
 });
 
@@ -657,7 +670,6 @@ window.initializeBeforeUnload = function () {
         e.returnValue = '';
     });
 };
-
 
 
 window.registerTabCloseHandler = function (dotNetRef) {

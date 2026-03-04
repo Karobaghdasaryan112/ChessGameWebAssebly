@@ -1,16 +1,39 @@
 ﻿@page
+@using System.Security.Claims
 @using BlazorServerSideClient.Data.IdentityModels
+@using BlazorServerSideClient.Services
+@using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
+@using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 @attribute [IgnoreAntiforgeryToken]
 @inject SignInManager<ApplicationUser> SignInManager
+@inject JSRunetimeService JsRunetime
+@inject IJSRuntime runTime
+@inject SignalRService SignalRService
+
 @functions {
+
     public async Task<IActionResult> OnPost()
     {
         if (SignInManager.IsSignedIn(User))
         {
+            var userGuid = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userName = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+
+            var userConnectionDTO = new RemoveUserConnectionRequestDTO
+            {
+                UserGuid = Guid.Parse(userGuid),
+                ConnectionId = null
+            };
+
+            // if (userGuid != null)
+            //     await runTime.InvokeVoidAsync("invokeSignalR", "RemoveConnectionAsUserGuidAsync", userConnectionDTO);
             await SignInManager.SignOutAsync();
         }
 
         return Redirect("~/");
     }
+
 }

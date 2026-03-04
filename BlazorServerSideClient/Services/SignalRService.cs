@@ -1,4 +1,5 @@
-﻿using BlazorServerSideClient.Contracts.Handlers;
+﻿using System.Security.Claims;
+using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Models;
 using BlazorServerSideClient.Services;
 using ChessGameBlazorClient.ServiceEndpoints;
@@ -22,13 +23,17 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IGameHandlerService _gameHandlerService;
         private readonly JSRunetimeService _jsRunetimeService;
         private readonly IJSRuntime? _jsRuntime;
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
-        private  DotNetObjectReference<IConnectionHandlerService> _dotNetObjectConnection;
-        private  DotNetObjectReference<IGameHandlerService> _dotNetObjectGame;
-        private  DotNetObjectReference<IInvitationHandlerService> _dotNetObjectInvitation;
-        private  SignalRConnectionInfoModel _signalRConnectionInfoModel;
+        private AuthenticationStateProvider _authenticationStateProvider;
+        private DotNetObjectReference<IConnectionHandlerService> _dotNetObjectConnection;
+        private DotNetObjectReference<IGameHandlerService> _dotNetObjectGame;
+        private DotNetObjectReference<IInvitationHandlerService> _dotNetObjectInvitation;
+        private SignalRConnectionInfoModel _signalRConnectionInfoModel;
+
+        private ClaimsPrincipal _principal =>
+            _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
         private readonly ILogger<SignalRService> _logger;
+
         public SignalRService(
             ILogger<SignalRService> logger,
             IJSRuntime jsRuntime,
@@ -49,7 +54,9 @@ namespace ChessGameBlazorClient.UI.Services
 
         public async Task<SignalRConnectionInfoModel> GetHubConnection(bool isCircuitHub = false)
         {
-
+            if (!_principal.Identity.IsAuthenticated)
+                return _signalRConnectionInfoModel;
+            
             await _semaphore.WaitAsync();
             try
             {
@@ -72,13 +79,13 @@ namespace ChessGameBlazorClient.UI.Services
                         _dotNetObjectGame,
                         _dotNetObjectConnection);
 
-                    _signalRConnectionInfoModel = await _jsRuntime.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
+                    _signalRConnectionInfoModel =
+                        await _jsRuntime.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
 
                     return _signalRConnectionInfoModel;
                 }
 
                 return _signalRConnectionInfoModel;
-
             }
             finally
             {
@@ -87,12 +94,10 @@ namespace ChessGameBlazorClient.UI.Services
         }
 
 
-
         public async Task DisconnectAsync()
         {
             await _hubConnection?.StopAsync()!;
         }
-
 
 
         public Task InitializeAsync()

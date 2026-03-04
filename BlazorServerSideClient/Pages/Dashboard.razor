@@ -10,6 +10,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
 @using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
+@using SharedResources.ChessGameResource.Enums.Users
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
@@ -30,7 +31,7 @@
 
 
 
-<DashboardInvitationRequest />
+<DashboardInvitationRequest/>
 
 <div class="dashboard-container">
     <h2 class="dashboard-title">🎮 Player Dashboard</h2>
@@ -93,6 +94,7 @@
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
     public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         UnAuthorizedUser();
@@ -101,10 +103,12 @@
         var userName = user.FindFirst(ClaimTypes.Name)?.Value!;
 
 
-
-        ConnectionHandler.OnlinePlayersUpdated += (player) =>
+        ConnectionHandler.OnlinePlayersUpdated += (@event, player) =>
         {
-            activeGamers[player.Key] = player.Value;
+            if (@event == OnlinePlayerChangeType.Added)
+                activeGamers[player.Key] = player.Value;
+            else
+                activeGamers.Remove(player.Key);
             InvokeAsync(StateHasChanged);
         };
 
@@ -159,7 +163,6 @@
     {
         if (_connectionId is null)
         {
-
             var connectionInfo = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
             _connectionId = connectionInfo.ConnectionId;
         }
