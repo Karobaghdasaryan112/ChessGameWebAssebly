@@ -7,9 +7,9 @@ namespace SharedResources.Validation.ChessGameValidations.RequestValidations.Con
     {
         public RemoveUserConnectionRequestDTOValidation()
         {
-            RuleFor(x => x.UserGuid)
-                .NotEmpty().WithMessage("UserGuid is required.")
-                .Must(g => g != Guid.Empty).WithMessage("UserGuid cannot be empty GUID.");
+            // RuleFor(x => x.UserGuid)
+            //     .NotEmpty().WithMessage("UserGuid is required.")
+            //     .Must(g => g != Guid.Empty).WithMessage("UserGuid cannot be empty GUID.");
 
             RuleFor(x => x.ConnectionId)
                 .NotEmpty().WithMessage("ConnectionId is required.");

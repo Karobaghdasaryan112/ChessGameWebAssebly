@@ -18,7 +18,10 @@ using System.Net;
 
 namespace ChessGame.Infrastructure.Infrastructure.HubServices
 {
-    public class ConnectionService(BaseHubService baseHubService, GenericValidationService validationService, ILogger<ConnectionService> logger)
+    public class ConnectionService(
+        BaseHubService baseHubService,
+        GenericValidationService validationService,
+        ILogger<ConnectionService> logger)
         : IConnectionService
     {
         internal BaseHubService _baseHubService = baseHubService;
@@ -129,6 +132,13 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                         HttpStatusCode.NotFound,
                         [$"cannot Delete the UserConnection for User {removeUserConnectionRequestDTO.UserGuid}"]);
 
+
+            //send the removed ussr notification for UI Change
+            await _baseHubService._hubContext.Clients.All.SendAsync(
+                "RemovedUserChangeNotification",
+                removedConnection);
+
+
             return ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                     new RemoveUserConnectionResponseDTO() { IsRemoved = true },
@@ -154,54 +164,50 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     [
                         $"cannot Delete the UserConnection ConnectionId-{removeUserConnectionRequestDTO.ConnectionId}"
                     ]);
-            try
-            {
-                await _baseHubService._hubContext.Clients.Client(removeUserConnectionRequestDTO.ConnectionId).SendAsync("Ping");
+
+
+            var removeConnection = CurrentConnectionState.FirstOrDefault(connectionKvp =>
+                connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId);
+
+            
+            
+            if (removeConnection.Equals(null))
                 return errorResponse;
 
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"An error occurred while pinging the client with ConnectionId: {removeUserConnectionRequestDTO.ConnectionId}");
+            if (!CurrentConnectionState.TryRemove(removeConnection))
+                return errorResponse;
+            
+            //send the removed ussr notification for UI Change
+            await _baseHubService._hubContext.Clients.All.SendAsync(
+                "RemovedUserChangeNotification",
+                removeConnection);
 
-
-
-                var removeConnection = CurrentConnectionState.FirstOrDefault(connectionKvp =>
-                    connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId);
-
-                if (removeConnection.Equals(null))
-                    return errorResponse;
-
-                if (!CurrentConnectionState.TryRemove(removeConnection))
-                    return errorResponse;
-
-
-                return ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>
-                    .CreateSuccessResponse(
-                        new RemoveUserConnectionResponseDTO()
-                        {
-                            IsRemoved = true
-                        },
-                        ChessGameResponseMessage.UserConnectionRemovedSuccess,
-                        HttpStatusCode.Found);
-            }
+            return ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>
+                .CreateSuccessResponse(
+                    new RemoveUserConnectionResponseDTO()
+                    {
+                        IsRemoved = true
+                    },
+                    ChessGameResponseMessage.UserConnectionRemovedSuccess,
+                    HttpStatusCode.Found);
         }
 
         public async Task<ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>>
             NotifyDisconnectedUser(DisconnectedUserNotificationRequestDTO disconnectedUserNotificationRequestDTO)
         {
-
             var validationResult = await validationService.ValidateAsync(disconnectedUserNotificationRequestDTO);
             if (!validationResult.IsValid)
             {
                 logger.LogWarning(
                     $"Validation failed for DisconnectedUserNotificationRequestDTO with ConnectionId: {disconnectedUserNotificationRequestDTO.ConnectionId}. Errors: {string.Join(", ", validationResult.Errors)}");
-                return (await validationResult.ReturnValidationResult(default(DisconnectedUserNotificationResponseDTO)))!;
+                return (await validationResult.ReturnValidationResult(default(DisconnectedUserNotificationResponseDTO)))
+                    !;
             }
 
             try
             {
-                await _baseHubService._hubContext.Clients.Client(disconnectedUserNotificationRequestDTO.ConnectionId).SendAsync("Ping");
+                await _baseHubService._hubContext.Clients.Client(disconnectedUserNotificationRequestDTO.ConnectionId)
+                    .SendAsync("Ping");
 
                 // Find the current connection based on the provided ConnectionId
                 var currentConnection = CurrentConnectionState.FirstOrDefault(connection =>
@@ -212,7 +218,8 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     .FirstOrDefault(aliveConnection =>
                         aliveConnection.Value.GameId == currentConnection.Value.GameId &&
                         (aliveConnection.Value.Gameinfo?.Players.Value == currentConnection.Key ||
-                         aliveConnection.Value.Gameinfo?.Players.Key == currentConnection.Key || currentConnection.Key == default));
+                         aliveConnection.Value.Gameinfo?.Players.Key == currentConnection.Key ||
+                         currentConnection.Key == default));
 
 
                 if (opponentForCurrentConnection.Key != default && opponentForCurrentConnection.Value != default)
@@ -225,43 +232,46 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     await _baseHubService.NotifyOpponentUserDisconnected(opponentForCurrentConnection);
 
 
-                    return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                        new DisconnectedUserNotificationResponseDTO()
-                        {
-                            IsUserDisconnectedSuccess = true,
-                            ActiveGame = opponentForCurrentConnection.Value
-                        },
-                        ChessGameResponseMessage.SuccessUserConnections,
-                        HttpStatusCode.OK);
+                    return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
+                        .CreateSuccessResponse(
+                            new DisconnectedUserNotificationResponseDTO()
+                            {
+                                IsUserDisconnectedSuccess = true,
+                                ActiveGame = opponentForCurrentConnection.Value
+                            },
+                            ChessGameResponseMessage.SuccessUserConnections,
+                            HttpStatusCode.OK);
                 }
 
                 logger.LogInformation(
                     $"No opponent found for the disconnected user with ConnectionId: {disconnectedUserNotificationRequestDTO.ConnectionId}");
 
                 // If there is no opponent or the opponent is not found, return a success response with null active game
-                return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                    new DisconnectedUserNotificationResponseDTO()
-                    {
-                        IsUserDisconnectedSuccess = true,
-                        ActiveGame = null!
-                    },
-                    ChessGameResponseMessage.SuccessUserConnections,
-                    HttpStatusCode.OK);
-
+                return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
+                    .CreateSuccessResponse(
+                        new DisconnectedUserNotificationResponseDTO()
+                        {
+                            IsUserDisconnectedSuccess = true,
+                            ActiveGame = null!
+                        },
+                        ChessGameResponseMessage.SuccessUserConnections,
+                        HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"An error occurred while notifying about the disconnected user with ConnectionId: {disconnectedUserNotificationRequestDTO.ConnectionId}");
+                logger.LogError(ex,
+                    $"An error occurred while notifying about the disconnected user with ConnectionId: {disconnectedUserNotificationRequestDTO.ConnectionId}");
 
-                return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    new DisconnectedUserNotificationResponseDTO()
-                    {
-                        IsUserDisconnectedSuccess = false,
-                        ActiveGame = null!
-                    },
-                    ChessGameResponseMessage.InternalServerError,
-                    HttpStatusCode.InternalServerError,
-                    [ex.Message]);
+                return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
+                    .CreateErrorResponse(
+                        new DisconnectedUserNotificationResponseDTO()
+                        {
+                            IsUserDisconnectedSuccess = false,
+                            ActiveGame = null!
+                        },
+                        ChessGameResponseMessage.InternalServerError,
+                        HttpStatusCode.InternalServerError,
+                        [ex.Message]);
             }
         }
 
