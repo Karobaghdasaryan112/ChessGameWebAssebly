@@ -7,7 +7,6 @@ namespace BlazorServerSideClient.Contracts.Handlers
 {
     public interface IInvitationHandlerService
     {
-        SendInvitationsResponseDTO? lastInvite { get; set; }
         Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
 
         Task ReceiveInvite(UserConnectionDTO inviterUserConnection, Guid inviterUserGuid, UserConnectionDTO receiverUserConnection, Guid receiverUserGuid);

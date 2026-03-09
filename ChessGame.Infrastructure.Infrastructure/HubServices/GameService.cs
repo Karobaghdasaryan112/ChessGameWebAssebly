@@ -118,14 +118,14 @@ namespace ChessGame.Core.Services.Services.HubServices
                 });
 
             ActiveGames.ActiveGamesAndBoards.TryAdd(gameState.Data.GameId, gameState.Data.board);
-            var boardStateRespionseDTO =
+            var boardStateResponseDTO =
                  new BoardStateRequestDTO
                  {
                      GameId = gameState.Data.GameId,
                      GameState = gameState.Data.board,
 
                  };
-            await connectionService.SendBoardStateToClient(boardStateRespionseDTO, trainingGameRequestDTO.Player1Guid == Guid.Empty ? trainingGameRequestDTO.Player2Name : trainingGameRequestDTO.Player1Name, true);
+            await connectionService.SendBoardStateToClient(boardStateResponseDTO, trainingGameRequestDTO.Player1Guid == Guid.Empty ? trainingGameRequestDTO.Player2Name : trainingGameRequestDTO.Player1Name, true);
 
             return await Task.FromResult(ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new TrainingGameResponseDTO()

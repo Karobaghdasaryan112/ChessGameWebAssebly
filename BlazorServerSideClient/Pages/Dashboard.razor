@@ -112,40 +112,6 @@
             InvokeAsync(StateHasChanged);
         };
 
-        // var chessHub = await JS.InvokeAsync<IJSObjectReference>(
-        //     "ChessGame",
-        //     BasePaths.baseUrlHub,
-        //     userName,
-        //     userGuid,
-        //     DotNetRefInvitation,
-        //     DotNetRefGame,
-        //     DotNetRefConnection);
-
-        // var info = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
-
-        // if (info is null)
-        // {
-        //     return;
-        // }
-        // _connectionId = info.ConnectionId;
-
-
-        // if (Guid.TryParse(userGuid, out var userIdAsGuid))
-        // {
-        //     await ConnectionRequest.AddConnectionAsync(
-        //   new AddUserConnectionRequestDTO()
-        //   {
-        //       userConnection = new UserConnectionDTO()
-        //       {
-        //           ConnectionId = info.ConnectionId!,
-        //           Gameinfo = null,
-        //           GameId = Guid.Empty,
-        //           UserName = userName
-        //       },
-        //       userGuid = userIdAsGuid
-        //   });
-
-
         var allGamers = await GameRequest.GetOnlinePlayersAsync(
             new GetONlinePlayersRequestDTO()
             {
@@ -155,7 +121,6 @@
         if (allGamers.IsSuccess)
             activeGamers = allGamers.Data.OnlinePlayers!;
 
-        // }
     }
 
 
@@ -192,5 +157,4 @@
         if (user.Identity?.IsAuthenticated == false)
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
     }
-
 }

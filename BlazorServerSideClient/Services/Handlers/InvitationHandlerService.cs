@@ -10,7 +10,6 @@ using SharedResources.Responses.ResponseMessages;
 public class InvitationHandlerService : IInvitationHandlerService
 {
     public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
-    public SendInvitationsResponseDTO? lastInvite { get; set; }
     private JSRunetimeService _jsRuntime { get; set; }
     private NavigationManager _nav { get; set; }
     public InvitationHandlerService(NavigationManager nav, JSRunetimeService jsRuntime)

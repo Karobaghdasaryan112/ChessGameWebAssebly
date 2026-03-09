@@ -15,6 +15,7 @@
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 
+<DashboardInvitationRequest />
 <h3>Training Page</h3>
 
 <p>
@@ -111,7 +112,7 @@ else
             if (Guid.TryParse(userId, out var playerGuid))
             {
                 var player1Guid = _selectedColor == FigureColors.White ? playerGuid : Guid.NewGuid();
-                var player2Guid = _selectedColor == FigureColors.Black ? playerGuid :Guid.NewGuid();
+                var player2Guid = _selectedColor == FigureColors.Black ? playerGuid : Guid.NewGuid();
 
                 var trainingRequest = new TrainingGameRequestDTO
                 {
@@ -121,7 +122,7 @@ else
                     Player2Name = Player2Name,
                     ClientConnectionId = (await HubClient.GetHubConnection())?.ConnectionId!,
                     TrainingDifficulty = trainingDifficulty,
-                    
+
                 };
                 var response = await GameRequestService.RequestTrainingGameAsync(trainingRequest);
                 if (response.IsSuccess)

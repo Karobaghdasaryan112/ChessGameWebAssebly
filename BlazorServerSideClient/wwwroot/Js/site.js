@@ -13,7 +13,7 @@
     window.dotNetRefrenceGame = dotNetRefGame;
     window.dotNetRefrenceConnection = dotNetRefConnection;
 
-    connection.invoke("AddConnectionAsync", {
+    await connection.invoke("AddConnectionAsync", {
         userGuid: userGuid,
         userConnection: {
             connectionId: connection.connectionId,
@@ -39,7 +39,7 @@
             );
         });
 
-    connection.on("ReceiveUpdatedUsers", function (data) {
+    await connection.on("ReceiveUpdatedUsers", function (data) {
         console.log("ReceiveUpdatedUsers fired:", data);
         console.log("GUID:", data.key);
         console.log("Connection:", data.value);
@@ -50,13 +50,15 @@
         );
     });
 
-    connection.on("RemovedUserChangeNotification", function (data) {
+    await connection.on("RemovedUserChangeNotification", function (data) {
         console.log("RemovedUserChangeNotification", data);
         window.dotNetRefrenceConnection.invokeMethodAsync(
             "RemovedUserChangeNotification",
             data.key,
             data.value);
     })
+
+    await connectio.on("InviteAcceptedAsync",function())
 
     return {
         stop: async () => await connection.stop(),
