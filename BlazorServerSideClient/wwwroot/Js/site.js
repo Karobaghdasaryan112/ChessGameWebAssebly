@@ -58,7 +58,21 @@
             data.value);
     })
 
-    await connectio.on("InviteAcceptedAsync",function())
+    await connection.on("InviteAcceptedAsync",function(inviterUserConnection,inviterUserGuid,receiverUserConnection,receiverUserGuid,gameId)
+    {
+        console.log("InviteAccepted");
+        console.log("inviterUserConnection",inviterUserConnection);
+        console.log("receiverUserConnection",inviterUserGuid);
+        console.log("gameId",inviterUserGuid);  
+        
+        window.dotNetRefrenceInvite.invokeMethodAsync(
+            "InviteAcceptedAsync",
+            inviterUserConnection,
+            inviterUserGuid,
+            receiverUserConnection,
+            receiverUserGuid,
+            gameId);
+    })
 
     return {
         stop: async () => await connection.stop(),

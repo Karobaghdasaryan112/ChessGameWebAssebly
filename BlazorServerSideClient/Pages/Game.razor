@@ -17,6 +17,7 @@
 @inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
+@inject IJSRuntime jsRuneTime
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 <head>
@@ -27,6 +28,21 @@
     <script src="~/Js/site.js"></script>
 </head>
 <MateNotifier />
+<NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
+    @code
+    {
+        private async Task ConfirmLeave(LocationChangingContext context)
+        {
+            var leave = await jsRuneTime.InvokeAsync<bool>("confirm",
+                "Если вы выйдете из игры — вы проиграете. Выйти?");
+
+            if (!leave)
+            {
+                context.PreventNavigation();
+            }
+        }
+    }
+</NavigationLock>
 <div class="wrap"
      disabled="@isBusy">
     <div class="leftCard">
@@ -148,10 +164,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        // await HubClient.GetHubConnection();
-        // await HubClient.RegisterConnectionHandlers();
-
         await JS.ShowPlayers(Player1Name, Player2Name);
 
         var thisBoard = await GameRequestService.SendGameStateAsync(
@@ -186,11 +198,8 @@
     public async void OnCellClick(int row, int col)
     {
         await HubClient.GetHubConnection();
-        // await HubClient.RegisterConnectionHandlers();
 
         await JS.ClearSelectedBlocks((int)MyColor);
-
-
 
         SetUpRequestsPositions(new Position(row, col));
 

@@ -12,6 +12,7 @@ public class InvitationHandlerService : IInvitationHandlerService
     public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
     private JSRunetimeService _jsRuntime { get; set; }
     private NavigationManager _nav { get; set; }
+
     public InvitationHandlerService(NavigationManager nav, JSRunetimeService jsRuntime)
     {
         this._jsRuntime = jsRuntime;
@@ -37,9 +38,10 @@ public class InvitationHandlerService : IInvitationHandlerService
             Message = ChessGameResponseMessage.SuccessInvitation
         });
 
-         await _jsRuntime.ShowInviteModal(inviterUserConnection.UserName);
+        await _jsRuntime.ShowInviteModal(inviterUserConnection.UserName);
     }
 
+    [JSInvokable]
     public void InviteAcceptedAsync(
         UserConnectionDTO inviterUserConnection,
         Guid inviterUserGuid,
@@ -47,7 +49,8 @@ public class InvitationHandlerService : IInvitationHandlerService
         Guid receiverUserGuid,
         Guid gameGuid)
     {
-        _nav.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
+        _nav.NavigateTo(
+            $"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}",
+            true);
     }
-
 }

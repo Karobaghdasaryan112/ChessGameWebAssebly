@@ -119,7 +119,6 @@ namespace BlazorServerSideClient.Services.Requests
             Guid gameId)
         {
             var signalRModel = await signalRService.GetHubConnection();
-
             return await jsRunetimeService.SendAsync<
                 (Position, Position, Guid),
                 bool>(

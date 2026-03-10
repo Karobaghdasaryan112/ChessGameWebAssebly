@@ -78,9 +78,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             MoveRequestDTO sendMoveConnectionRequestDTO)
             => gameService.SendMoveAsync(sendMoveConnectionRequestDTO);
 
-        public async Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition,
-            Guid gameId)
-            => await gameService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
+        public async Task<bool> SendIsSameFigureClickedAsync((Position selectedPosition, Position currentPosition,Guid gameId) data)
+            => await gameService.SendIsSameFigureClickedAsync(data);
 
         public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
             ClickRequestDTO sendClickConnectionRequestDTO)
