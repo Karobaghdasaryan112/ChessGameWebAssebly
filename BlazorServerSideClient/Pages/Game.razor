@@ -33,8 +33,10 @@
     {
         private async Task ConfirmLeave(LocationChangingContext context)
         {
-            var leave = await jsRuneTime.InvokeAsync<bool>("confirm",
-                "Если вы выйдете из игры — вы проиграете. Выйти?");
+            var leave = await jsRuneTime.InvokeAsync<bool>(
+            "confirm",
+            "If you leave the game, you will lose. Do you want to leave?"
+            );
 
             if (!leave)
             {
@@ -207,7 +209,8 @@
 
         if (selectedPosition != null)
         {
-            if (await IsSameFigureColor(selectedPosition, MoveRequestDTO.CurrentPosition, GameId))
+
+            if (await IsSameFigureColor(new SameFigureRequest() { Current = MoveRequestDTO.CurrentPosition, Selected = selectedPosition, GameId = this.GameId }))
             {
                 await SelectFigure(ClickRequestDTO);
                 return;
@@ -223,9 +226,9 @@
 
     //private Methods
 
-    private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
+    private Task<bool> IsSameFigureColor(SameFigureRequest sameFigureRequest)
     {
-        return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
+        return GameRequestService.SendIsSameFigureClickedAsync(sameFigureRequest);
     }
 
     private async Task<bool> SelectFigure(ClickRequestDTO requestDTO)
@@ -236,7 +239,7 @@
         if (!positionsResult.IsSuccess)
             return false;
 
-        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!,positionsResult.Data.CastlingInfosDTOs);
+        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!, positionsResult.Data.CastlingInfosDTOs);
         ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
         ClickedBlockInformationDTO.GameId = requestDTO.GameId;
 

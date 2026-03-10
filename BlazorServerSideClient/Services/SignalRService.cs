@@ -1,16 +1,11 @@
-﻿using System.Security.Claims;
-using BlazorServerSideClient.Contracts.Handlers;
+﻿using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Models;
 using BlazorServerSideClient.Services;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Build.Framework;
 using Microsoft.JSInterop;
-using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
-using SharedResources.Responses.ResponseMessages;
+using System.Security.Claims;
 
 namespace ChessGameBlazorClient.UI.Services
 {
@@ -21,7 +16,6 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
         private readonly IGameHandlerService _gameHandlerService;
-        private readonly JSRunetimeService _jsRunetimeService;
         private readonly IJSRuntime? _jsRuntime;
         private AuthenticationStateProvider _authenticationStateProvider;
         private DotNetObjectReference<IConnectionHandlerService> _dotNetObjectConnection;
@@ -45,7 +39,6 @@ namespace ChessGameBlazorClient.UI.Services
         {
             _logger = logger;
             _jsRuntime = jsRuntime;
-            _jsRunetimeService = jsRunetimeService;
             _authenticationStateProvider = authenticationStateProvider;
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
@@ -56,7 +49,7 @@ namespace ChessGameBlazorClient.UI.Services
         {
             if (!_principal.Identity.IsAuthenticated)
                 return _signalRConnectionInfoModel;
-            
+
             await _semaphore.WaitAsync();
             try
             {

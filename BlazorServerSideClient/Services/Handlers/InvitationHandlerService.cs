@@ -50,7 +50,6 @@ public class InvitationHandlerService : IInvitationHandlerService
         Guid gameGuid)
     {
         _nav.NavigateTo(
-            $"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}",
-            true);
+            $"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
     }
 }

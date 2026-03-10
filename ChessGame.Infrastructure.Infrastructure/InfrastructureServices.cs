@@ -19,8 +19,8 @@ namespace ChessGame.Infrastructure.Infrastructure
             services.AddSignalR()
         .AddHubOptions<GameHub>(options =>
         {
-            options.KeepAliveInterval = TimeSpan.FromSeconds(1);
-            options.HandshakeTimeout = TimeSpan.FromSeconds(150000);
+            options.KeepAliveInterval = TimeSpan.FromSeconds(150000);
+            options.HandshakeTimeout = TimeSpan.FromSeconds(1500000);
             options.EnableDetailedErrors = true;
         });
             services.AddScoped(typeof(BaseHubService));

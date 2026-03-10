@@ -123,6 +123,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var isKingCheckedCommandAfterMove = new IsKingCheckedQuery<IsKingCheckedRequestDTO, ResponseDTO<IsKingCheckedResponseDTO, ChessGameResponseMessage>>(
                 new IsKingCheckedRequestDTO()
                 {
+                    GameId = request.Request.GameId,
                     ChosenColor = request.Request.GameState.Turn,
                     CurrentBoard = request.Request.GameState,
                 });
@@ -175,6 +176,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 if (mediatRSubmitMoveResponse.Data.CastlingRookPositions != default)
                 {
                     var castlingRequest = request.Request;
+
                     castlingRequest.From = mediatRSubmitMoveResponse.Data.CastlingRookPositions.RookFrom;
                     castlingRequest.To = mediatRSubmitMoveResponse.Data.CastlingRookPositions.RookTo;
                     await connectionService.SendBoardStateToClient(castlingRequest, request.Request.Player, true);

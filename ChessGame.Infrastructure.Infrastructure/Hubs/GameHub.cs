@@ -33,7 +33,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            connectionService.RemoveConnectionAsConnectionIdAsync(new RemoveUserConnectionRequestDTO
+            await connectionService.RemoveConnectionAsConnectionIdAsync(new RemoveUserConnectionRequestDTO
             {
                 UserGuid = default,
                 ConnectionId = Context.ConnectionId
@@ -78,8 +78,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             MoveRequestDTO sendMoveConnectionRequestDTO)
             => gameService.SendMoveAsync(sendMoveConnectionRequestDTO);
 
-        public async Task<bool> SendIsSameFigureClickedAsync((Position selectedPosition, Position currentPosition,Guid gameId) data)
-            => await gameService.SendIsSameFigureClickedAsync(data);
+        public async Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest)
+            => await gameService.SendIsSameFigureClickedAsync(sameFigureRequest);
 
         public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
             ClickRequestDTO sendClickConnectionRequestDTO)

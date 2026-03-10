@@ -1,14 +1,12 @@
 ﻿window.ChessGame = async function (hubURL, userName, userGuid, dotNetRefInvite, dotNetRefGame, dotNetRefConnection) {
 
-    //let dotnetRef = dotnetReference;
-
     let connection = new signalR.HubConnectionBuilder()
         .withUrl(hubURL)
         .withAutomaticReconnect()
         .build();
     window.signalRConnection = connection;
     await connection.start();
-    console.log({connection})
+    console.log({ connection })
     window.dotNetRefrenceInvite = dotNetRefInvite;
     window.dotNetRefrenceGame = dotNetRefGame;
     window.dotNetRefrenceConnection = dotNetRefConnection;
@@ -58,13 +56,12 @@
             data.value);
     })
 
-    await connection.on("InviteAcceptedAsync",function(inviterUserConnection,inviterUserGuid,receiverUserConnection,receiverUserGuid,gameId)
-    {
+    await connection.on("InviteAcceptedAsync", function (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameId) {
         console.log("InviteAccepted");
-        console.log("inviterUserConnection",inviterUserConnection);
-        console.log("receiverUserConnection",inviterUserGuid);
-        console.log("gameId",inviterUserGuid);  
-        
+        console.log("inviterUserConnection", inviterUserConnection);
+        console.log("receiverUserConnection", inviterUserGuid);
+        console.log("gameId", inviterUserGuid);
+
         window.dotNetRefrenceInvite.invokeMethodAsync(
             "InviteAcceptedAsync",
             inviterUserConnection,
@@ -75,6 +72,7 @@
     })
 
     return {
+
         stop: async () => await connection.stop(),
 
         getConnectionId: () => connection.connectionId,
@@ -97,8 +95,7 @@
 
         sendClickAsync: async (request) => await connection.invoke("SendClickAsync", request),
 
-        sendIsSameFigureClickedAsync: async (selected, current, gameId) =>
-            await connection.invoke("SendIsSameFigureClickedAsync", {selected, current, gameId}),
+        sendIsSameFigureClickedAsync: async (data) => { await connection.invoke("SendIsSameFigureClickedAsync", data) },
 
         sendInviteAsync: async (request) => await connection.invoke("SendInviteAsync", request),
 
@@ -131,11 +128,6 @@ window.invokeSignalR = async function (identifier, request) {
 };
 
 window.getSignalRConnectionInfo = async function () {
-
-    //if (!window.signalRConnection) {
-    //    console.log("window.signalRConnection", await window.signalRConnection)
-    //    throw new Error("SignalR connection not initialized");
-    //}
 
     if (window.signalRConnection.state !== signalR.HubConnectionState.Connected) {
         await window.signalRConnection.start();
@@ -464,7 +456,7 @@ window.KingCheckedNotification = {
 
         cell.addEventListener("animationend", () => {
             cell.classList.remove("king-blink-flash");
-        }, {once: true});
+        }, { once: true });
     }
 };
 
@@ -489,7 +481,7 @@ window.KingMateNotification = {
             cell.classList.add("king-blink-flash");
             cell.addEventListener("animationend", () => {
                 cell.classList.remove("king-blink-flash");
-            }, {once: true});
+            }, { once: true });
         }
     }
 };
@@ -536,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const smallNext = document.querySelectorAll('.small-next');
     smallNext.forEach(btn => {
-        btn.addEventListener('mouseenter', () => btn.animate([{transform: 'scale(1)'}, {transform: 'scale(1.06)'}, {transform: 'scale(1)'}], {duration: 420}));
+        btn.addEventListener('mouseenter', () => btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 }));
     });
 });
 

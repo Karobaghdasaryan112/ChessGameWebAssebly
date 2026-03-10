@@ -113,17 +113,13 @@ namespace BlazorServerSideClient.Services.Requests
         }
 
 
-        public async Task<bool> SendIsSameFigureClickedAsync(
-            Position selectedPosition,
-            Position currentPosition,
-            Guid gameId)
+        public async Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest)
         {
             var signalRModel = await signalRService.GetHubConnection();
             return await jsRunetimeService.SendAsync<
-                (Position, Position, Guid),
+                SameFigureRequest,
                 bool>(
-                "SendIsSameFigureClickedAsync",
-                (selectedPosition, currentPosition, gameId));
+                "SendIsSameFigureClickedAsync", sameFigureRequest);
         }
     }
 }

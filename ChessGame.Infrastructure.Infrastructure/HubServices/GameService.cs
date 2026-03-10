@@ -159,13 +159,13 @@ namespace ChessGame.Core.Services.Services.HubServices
             });
         }
 
-        public async Task<bool> SendIsSameFigureClickedAsync( (Position selectedPosition, Position currentPosition, Guid gameId) data)
+        public async Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest)
         {
             var gameState =
-                ActiveGames.ActiveGamesAndBoards[data.gameId];
+                ActiveGames.ActiveGamesAndBoards[sameFigureRequest.GameId];
 
-            var currentPositionBlock = gameState?.GetBlockByPosition(data.currentPosition);
-            var selectedPositionBlock = gameState?.GetBlockByPosition(data.selectedPosition);
+            var currentPositionBlock = gameState?.GetBlockByPosition(sameFigureRequest.Current);
+            var selectedPositionBlock = gameState?.GetBlockByPosition(sameFigureRequest.Selected);
             return await Task.FromResult(currentPositionBlock?.Figure?.FigureColor ==
                                          selectedPositionBlock?.Figure?.FigureColor);
         }

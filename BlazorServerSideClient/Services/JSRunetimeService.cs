@@ -137,23 +137,20 @@ namespace BlazorServerSideClient.Services
 
         public async Task<TResponse> SendAsync<TRequest, TResponse>(string identifier, TRequest request)
         {
+            await SafeDelay();
 
-            var result = await jsRunTime.InvokeAsync<TResponse>("invokeSignalR", identifier, request);
-            return result;
+            return await jsRunTime.InvokeAsync<TResponse>("invokeSignalR", identifier, request);
         }
 
         public async Task InvokeAsync(string identifier, params object[] objects)
         {
-
             await jsRunTime.InvokeVoidAsync(identifier, objects);
         }
-
-
     }
 
     public static class JSRuntimeSafeExtensions
     {
-        public const int RetryCount = 2;
+        public const int RetryCount = 5;
 
         public static async ValueTask SafeInvokeVoidAsync(
             this IJSRuntime js,
