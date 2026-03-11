@@ -72,7 +72,8 @@ builder.Services.AddSignalR()
     {
         options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
     });
-
+builder.Services.AddServerSideBlazor()
+    .AddCircuitOptions(options => { options.DetailedErrors = true; });
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api",
     client => { client.BaseAddress = new Uri($"{BasePaths.baseUrl}"); });
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();

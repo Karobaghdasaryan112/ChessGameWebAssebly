@@ -40,8 +40,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             connectionIds.ForEach(async connectionId => await _hubContext.Groups.RemoveFromGroupAsync(connectionId, groupName));
         public async Task RequestTrainingGameAsync(TrainingGameResponseDTO trainingGameResponseDTO)
             => await _hubContext.Clients.Client(trainingGameResponseDTO.ClientConnectionId).SendAsync("ReceiveTrainingGameRequestAsync", trainingGameResponseDTO);
-        public async Task ReceiveBoardUpdateAsync(ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> connectionResponseDTO)
-           => await _hubContext.Clients.Client(connectionResponseDTO.Data.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
+        public async Task ReceiveBoardUpdateAsync(BoardStateResponseDTO connectionResponseDTO)
+           => await _hubContext.Clients.Client(connectionResponseDTO.OpponentConnectionId).SendAsync("ReceiveBoardUpdateAsync", connectionResponseDTO);
 
         public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
         {

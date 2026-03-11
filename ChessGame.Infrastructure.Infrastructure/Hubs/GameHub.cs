@@ -33,14 +33,13 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            await connectionService.RemoveConnectionAsConnectionIdAsync(new RemoveUserConnectionRequestDTO
-            {
-                UserGuid = default,
-                ConnectionId = Context.ConnectionId
-            });
+            // await connectionService.RemoveConnectionAsConnectionIdAsync(new RemoveUserConnectionRequestDTO
+            // {
+            //     UserGuid = default,
+            //     ConnectionId = Context.ConnectionId
+            // });
             await base.OnDisconnectedAsync(exception);
         }
-
 
         //InvitationService 
 

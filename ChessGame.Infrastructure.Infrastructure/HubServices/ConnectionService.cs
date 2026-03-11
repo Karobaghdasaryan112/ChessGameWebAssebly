@@ -370,7 +370,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                     boardStateResposneDTO, ChessGameResponseMessage.Draw);
 
-            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO);
+            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO.Data);
 
             return ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new BoardStateResponseDTO()

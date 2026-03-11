@@ -70,6 +70,11 @@
             receiverUserGuid,
             gameId);
     })
+    
+    await connection.on("ReceiveBoardUpdateAsync",function(data){
+
+        window.dotNetRefrenceGame.invokeMethodAsync("ReceiveBoardUpdateAsync",data);
+    })
 
     return {
 
