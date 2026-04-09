@@ -93,7 +93,6 @@ This reflects a strong engineering idea: keep UI dumb, keep domain logic authori
 ---
 
 ## 4) Rule Enforcement and Chess Correctness
-## 4) Կանոնների կիրարկում և շախմատի ճշտություն
 
 Your logic already includes several correctness safeguards:
 - Illegal move blocking when no figure exists on source.
