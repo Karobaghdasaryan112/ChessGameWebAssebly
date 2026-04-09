@@ -1,55 +1,62 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using BlazorServerSideClient.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
-public class InvitationHandlerService : IInvitationHandlerService
+namespace BlazorServerSideClient.Services.Handlers
 {
-    public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
-    private JSRunetimeService _jsRuntime { get; set; }
-    private NavigationManager _nav { get; set; }
-
-    public InvitationHandlerService(NavigationManager nav, JSRunetimeService jsRuntime)
+    public class InvitationHandlerService : IInvitationHandlerService
     {
-        this._jsRuntime = jsRuntime;
-        this._nav = nav;
-    }
+        JSRunetimeService _jSRunetimeService { get; set; }
+        public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
+        public SendInvitationsResponseDTO? lastInvite { get; set; }
+        private NavigationManager _navigationManager { get; set; }
+        Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived { get => OnReceived; set => OnReceived = value; }
 
-    [JSInvokable]
-    public async Task ReceiveInvite(
-        UserConnectionDTO inviterUserConnection,
-        Guid inviterUserGuid,
-        UserConnectionDTO receiverUserConnection,
-        Guid receiverUserGuid)
-    {
-        OnReceived?.Invoke(new ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>
+        public InvitationHandlerService(JSRunetimeService JSRunetimeService, NavigationManager NavigationManager)
         {
-            Data = new SendInvitationsResponseDTO
+            _navigationManager = NavigationManager;
+            _jSRunetimeService = JSRunetimeService;
+        }
+
+        public async Task ReceiveInvite(
+            UserConnectionDTO inviterUserConnection,
+            Guid inviterUserGuid,
+            UserConnectionDTO receiverUserConnection,
+            Guid receiverUserGuid)
+        {
+            lastInvite = new SendInvitationsResponseDTO()
             {
                 InviterUserConnection = inviterUserConnection,
-                InviterUserGuid = inviterUserGuid,
-                ReceiverUserConnection = receiverUserConnection,
-                ReceiverUserGuid = receiverUserGuid
-            },
-            Message = ChessGameResponseMessage.SuccessInvitation
-        });
+            };
 
-        await _jsRuntime.ShowInviteModal(inviterUserConnection.UserName);
-    }
+            OnReceived?.Invoke(
+                new ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>()
+                {
+                    Data = new SendInvitationsResponseDTO()
+                    {
+                        InviterUserConnection = inviterUserConnection,
+                        InviterUserGuid = inviterUserGuid,
+                        ReceiverUserConnection = receiverUserConnection,
+                        ReceiverUserGuid = receiverUserGuid
+                    },
+                    Message = ChessGameResponseMessage.SuccessInvitation,
+                });
 
-    [JSInvokable]
-    public void InviteAcceptedAsync(
-        UserConnectionDTO inviterUserConnection,
-        Guid inviterUserGuid,
-        UserConnectionDTO receiverUserConnection,
-        Guid receiverUserGuid,
-        Guid gameGuid)
-    {
-        _nav.NavigateTo(
-            $"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
+            await _jSRunetimeService.ShowInviteModal(inviterUserConnection.UserName);
+        }
+        public void InviteAcceptedAsync(
+            UserConnectionDTO inviterUserConnection,
+            Guid inviterUserGuid,
+            UserConnectionDTO receiverUserConnection,
+            Guid receiverUserGuid,
+            Guid gameGuid)
+        {
+            _navigationManager.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
+        }
+
     }
 }
+

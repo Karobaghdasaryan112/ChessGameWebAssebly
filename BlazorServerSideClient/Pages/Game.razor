@@ -21,21 +21,21 @@
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="~/" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="~/"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="~/Js/site.js"></script>
 </head>
-<MateNotifier />
+<MateNotifier/>
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
     @code
     {
         private async Task ConfirmLeave(LocationChangingContext context)
         {
             var leave = await jsRuneTime.InvokeAsync<bool>(
-            "confirm",
-            "If you leave the game, you will lose. Do you want to leave?"
+                "confirm",
+                "If you leave the game, you will lose. Do you want to leave?"
             );
 
             if (!leave)
@@ -107,7 +107,10 @@
             </div>
 
             <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">B</div>
+                <div class="avatar"
+                     style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">
+                    B
+                </div>
                 <div>
                     <div style="font-weight:700">Black — @Player2Name</div>
                     <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
@@ -176,7 +179,6 @@
 
         if (thisBoard.Data?.Board != null)
         {
-
             var blocks = thisBoard.Data.Board.BoardBlocks;
             var jsonBoard = JsonSerializer.Serialize(blocks);
 
@@ -195,9 +197,8 @@
         }
     }
 
-    //JS Methods
-    [JSInvokable]
-    public async void OnCellClick(int row, int col)
+
+    public async Task OnCellClick(int row, int col)
     {
         await HubClient.GetHubConnection();
 
@@ -209,8 +210,7 @@
 
         if (selectedPosition != null)
         {
-
-            if (await IsSameFigureColor(new SameFigureRequest() { Current = MoveRequestDTO.CurrentPosition, Selected = selectedPosition, GameId = this.GameId }))
+            if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
             {
                 await SelectFigure(ClickRequestDTO);
                 return;
@@ -226,14 +226,13 @@
 
     //private Methods
 
-    private Task<bool> IsSameFigureColor(SameFigureRequest sameFigureRequest)
+    private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
     {
-        return GameRequestService.SendIsSameFigureClickedAsync(sameFigureRequest);
+        return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
     }
 
     private async Task<bool> SelectFigure(ClickRequestDTO requestDTO)
     {
-
         var positionsResult = await GameRequestService.SendClickAsync(requestDTO);
 
         if (!positionsResult.IsSuccess)
@@ -266,6 +265,7 @@
         ClickedBlockInformationDTO.ClickedPosition = default;
         return true;
     }
+
     private async Task<bool> AIMoveAtFirst()
     {
         var requestDTO = new MoveRequestDTO()
@@ -280,7 +280,6 @@
             From = new Position(-1, -1), // Indicate that AI should determine the move
             To = new Position(-1, -1), // Indicate that AI should determine the move
             CurrentPosition = new Position(-1, -1) // Indicate that AI should determine the move
-
         };
         var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
 
@@ -312,6 +311,7 @@
         MoveRequestDTO.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
         ClickRequestDTO.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
     }
+
     private void SetUpRequestsPositions(Position from)
     {
         MoveRequestDTO.CurrentPosition = from;
@@ -337,7 +337,7 @@
                 IsMaximizingPlayer = true
             });
 
-            if (optimizedMoveResponse.IsSuccess)
+            if (optimizedMoveResponse is { IsSuccess: true })
             {
                 await JS.ReceiveOptimalMoves(optimizedMoveResponse.Data.FromPosition, optimizedMoveResponse.Data.ToPosition);
             }
@@ -347,10 +347,5 @@
             isBusy = false;
             await JS.EnableAllGameState(_optimizeMoveLoadingClassName);
         }
-    }
-
-    public async Task SendMoveAsync(string move)
-    {
-
     }
 }

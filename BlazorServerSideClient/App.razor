@@ -51,46 +51,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+       
 
-        if (authState.User?.Identity?.IsAuthenticated == true)
-        {
-            var user = authState.User;
-            var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
-
-            //Circuit management: we need to add the user to the circuit on the first render, so that we can manage the circuit and remove the user from the circuit when they disconnect
-            if (firstRender)
-            {
-                // var hubConnection = await HubClient.GetHubConnection();
-
-                // var circuitAddingResult = await CircuitHelper.TryAddToCircuit(circuit, new UserConnectionDTO
-                // {
-                //     ConnectionId = hubConnection.ConnectionId,
-                //     UserName = userName,
-                //     Gameinfo = default,
-                //     GameId = default
-                // });
-                //
-                //
-                // var userIdAsGuid = Guid.Parse(userGuid!);
-                //
-                //
-                // await hubConnection.SendAsync("AddConnectionAsync",
-                //     new AddUserConnectionRequestDTO()
-                //     {
-                //         userConnection = new UserConnectionDTO()
-                //         {
-                //             ConnectionId = hubConnection.ConnectionId,
-                //             UserName = userName!
-                //         },
-                //         userGuid = userIdAsGuid
-                //     });
-                //
-                // if (!circuitAddingResult)
-                //     throw new AbandonedMutexException();
-            }
-        }
     }
 
 }

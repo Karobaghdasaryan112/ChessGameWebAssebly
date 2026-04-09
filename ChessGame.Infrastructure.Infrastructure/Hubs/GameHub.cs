@@ -2,7 +2,6 @@
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Services.HubServices;
 using Microsoft.AspNetCore.SignalR;
-using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
@@ -24,22 +23,13 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         IConnectionService connectionService)
         : Hub
     {
-        private readonly BaseHubService _baseHubService = baseHubService;
-
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            // await connectionService.RemoveConnectionAsConnectionIdAsync(new RemoveUserConnectionRequestDTO
-            // {
-            //     UserGuid = default,
-            //     ConnectionId = Context.ConnectionId
-            // });
-            await base.OnDisconnectedAsync(exception);
-        }
+            => await base.OnDisconnectedAsync(exception);
 
         //InvitationService 
 
@@ -128,16 +118,16 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 new DisconnectedUserNotificationRequestDTO()
                     { ConnectionId = Context.ConnectionId });
 
-            if(!disconnectedUserResponse.IsSuccess)
+            if (!disconnectedUserResponse.IsSuccess)
                 return invalidResponse;
             //Remove the user's connection from the database
             var removedUserResponse = await connectionService.RemoveConnectionAsConnectionIdAsync(
                 new RemoveUserConnectionRequestDTO()
                     { ConnectionId = Context.ConnectionId });
 
-            if(!removedUserResponse.IsSuccess)
+            if (!removedUserResponse.IsSuccess)
                 return invalidResponse;
-            
+
             return ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>
                 .CreateSuccessResponse(
                     new DisconnectedUserNotificationResponseDTO

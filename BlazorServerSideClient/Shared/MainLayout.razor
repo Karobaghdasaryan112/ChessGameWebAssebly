@@ -5,22 +5,19 @@
 @using System.Security.Claims
 @using ChessGameBlazorClient.UI.Services
 @inherits LayoutComponentBase
-
-@inject SignalRService signalRService
 @inject NavigationManager Nav
 @inject ILogger<MainLayout> Logger
 @inject AuthenticationStateProvider AuthProvider
-<DashboardInvitationRequest />
+<DashboardInvitationRequest/>
 <PageTitle>BlazorServerSideClient</PageTitle>
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu/>
     </div>
-
     <main>
         <div class="top-row px-4 auth">
-            <LoginDisplay />
+            <LoginDisplay/>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -33,32 +30,13 @@
 @code {
 
 
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
         if (!firstRender)
             return;
 
-        var authState = await AuthProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        await signalRService.GetHubConnection();
-        if (!user.Identity?.IsAuthenticated ?? true)
-        {
-            Logger.LogWarning("User is not authenticated.");
-            Nav.NavigateTo("/Identity/Account/Login");
-            return;
-        }
-
-        var userName = user.FindFirst(ClaimTypes.Name)?.Value;
-        var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userGuid))
-        {
-            Logger.LogWarning("User claims not found.");
-            return;
-        }
-
-
-
+      
     }
+
 }

@@ -140,20 +140,7 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
                     }
 
                     _logger.LogInformation("User logged in.");
-
-                    //InitializeDotNetReferenceObjects();
-
-                    //var chessHub =
-                    //    await _jsRunTime.SafeInvokeAsync<IJSObjectReference>(
-                    //                _logger,
-                    //                "ChessGame",
-                    //                BasePaths.baseUrlHub,
-                    //                Input.Email,
-                    //                user.Id,
-                    //                _dotNetRefInvitation,
-                    //                _dotNetRefGame,
-                    //                _dotNetRefConnection);
-
+                    
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -174,12 +161,6 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-        private void InitializeDotNetReferenceObjects()
-        {
-            _dotNetRefConnection = (_dotNetRefConnection == null) ? _dotNetRefConnection = DotNetObjectReference.Create(new ConnectionHandlerService()) : _dotNetRefConnection;
-            _dotNetRefGame = (_dotNetRefGame == null) ? DotNetObjectReference.Create(new GameHandlerService(_jSRunetimeService)) : _dotNetRefGame;
-            _dotNetRefInvitation = (_dotNetRefInvitation == null) ? DotNetObjectReference.Create(new InvitationHandlerService(_nav, _jSRunetimeService)) : _dotNetRefInvitation;
         }
     }
 }

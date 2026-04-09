@@ -1,10 +1,12 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using BlazorServerSideClient.Models;
-using BlazorServerSideClient.Services;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.JSInterop;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
 
 namespace ChessGameBlazorClient.UI.Services
@@ -16,69 +18,59 @@ namespace ChessGameBlazorClient.UI.Services
         private readonly IConnectionHandlerService _connectionHandlerService;
         private readonly IInvitationHandlerService _invitationHandlerService;
         private readonly IGameHandlerService _gameHandlerService;
-        private readonly IJSRuntime? _jsRuntime;
-        private AuthenticationStateProvider _authenticationStateProvider;
-        private DotNetObjectReference<IConnectionHandlerService> _dotNetObjectConnection;
-        private DotNetObjectReference<IGameHandlerService> _dotNetObjectGame;
-        private DotNetObjectReference<IInvitationHandlerService> _dotNetObjectInvitation;
-        private SignalRConnectionInfoModel _signalRConnectionInfoModel;
-
-        private ClaimsPrincipal _principal =>
-            _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
-
-        private readonly ILogger<SignalRService> _logger;
+        private readonly IHistoryWidgetHandlerService _historyWidgetHandlerService;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        private readonly ClaimsPrincipal _user;
 
         public SignalRService(
-            ILogger<SignalRService> logger,
-            IJSRuntime jsRuntime,
-            JSRunetimeService jsRunetimeService,
-            AuthenticationStateProvider authenticationStateProvider,
             IConnectionHandlerService connectionHandlerService,
             IInvitationHandlerService invitationHandlerService,
-            IGameHandlerService gameHandlerService)
+            IGameHandlerService gameHandlerService,
+            AuthenticationStateProvider authenticationStateProvider)
         {
-            _logger = logger;
-            _jsRuntime = jsRuntime;
-            _authenticationStateProvider = authenticationStateProvider;
             _gameHandlerService = gameHandlerService;
             _invitationHandlerService = invitationHandlerService;
             _connectionHandlerService = connectionHandlerService;
+            _authenticationStateProvider = authenticationStateProvider;
+            _user = _authenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
         }
 
-        public async Task<SignalRConnectionInfoModel> GetHubConnection(bool isCircuitHub = false)
+        public async Task<HubConnection> GetHubConnection()
         {
-            if (!_principal.Identity.IsAuthenticated)
-                return _signalRConnectionInfoModel;
-
             await _semaphore.WaitAsync();
             try
             {
-                if (_signalRConnectionInfoModel == null)
+                if (_hubConnection == null)
                 {
-                    var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+                    _hubConnection = new HubConnectionBuilder()
+                        .WithUrl(BasePaths.baseUrlHub)
+                        .WithAutomaticReconnect()
+                        .Build();
 
-                    var user = authState.User;
-                    var userGuid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                    var userName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
-
-                    await InitializeAsync();
-
-                    var chessHub = await _jsRuntime.InvokeAsync<IJSObjectReference>(
-                        "ChessGame",
-                        BasePaths.baseUrlHub,
-                        userName,
-                        userGuid,
-                        _dotNetObjectInvitation,
-                        _dotNetObjectGame,
-                        _dotNetObjectConnection);
-
-                    _signalRConnectionInfoModel =
-                        await _jsRuntime.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
-
-                    return _signalRConnectionInfoModel;
+                    await _hubConnection.StartAsync();
                 }
 
-                return _signalRConnectionInfoModel;
+                while (string.IsNullOrEmpty(_hubConnection.ConnectionId))
+                {
+                    await Task.Delay(200);
+                }
+
+                var userName = _user?.Claims?.First(claim => claim.Type == ClaimTypes.Name)?.Value;
+                var userId = _user?.Claims?.First(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                var userIdAsGuid = Guid.Parse(userId!);
+
+                await _hubConnection.SendAsync("AddConnectionAsync",
+                  new AddUserConnectionRequestDTO()
+                  {
+                      userConnection = new UserConnectionDTO()
+                      {
+                          ConnectionId = _hubConnection.ConnectionId,
+                          UserName = userName!
+                      },
+                      userGuid = userIdAsGuid
+                  });
+                return _hubConnection;
             }
             finally
             {
@@ -86,89 +78,72 @@ namespace ChessGameBlazorClient.UI.Services
             }
         }
 
-
         public async Task DisconnectAsync()
         {
-            await _hubConnection?.StopAsync()!;
+            await _hubConnection?.StopAsync();
         }
 
-
-        public Task InitializeAsync()
+        public async Task RegisterConnectionHandlers()
         {
-            _dotNetObjectConnection =
-                DotNetObjectReference.Create(_connectionHandlerService);
 
-            _dotNetObjectGame =
-                DotNetObjectReference.Create(_gameHandlerService);
+            await GetHubConnection();
 
-            _dotNetObjectInvitation =
-                DotNetObjectReference.Create(_invitationHandlerService);
+            if (_hubConnection != null)
+            {
+                _hubConnection.On<
+                    KeyValuePair<Guid, UserConnectionDTO>>(
+                    "ReceiveUpdatedUsers",
+                    (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection)
+                );
 
-            return Task.CompletedTask;
+                _hubConnection.On<
+                    UserConnectionDTO,
+                    Guid,
+                    UserConnectionDTO,
+                    Guid>(
+                    "ReceiveInvite",
+                    (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) =>
+                        _invitationHandlerService.ReceiveInvite(inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid));
+
+                _hubConnection.On<
+                    UserConnectionDTO,
+                    Guid,
+                    UserConnectionDTO,
+                    Guid,
+                    Guid>("InviteAcceptedAsync",
+                    (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid) =>
+                        _invitationHandlerService.InviteAcceptedAsync(inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid));
+
+
+                _hubConnection.On<
+                    ResponseDTO<
+                        ReceivePlayersResponseDTO,
+                        ChessGameResponseMessage>>
+                ("ReseivePlayersAsync",
+                async (connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO));
+
+                _hubConnection.On<
+                    ResponseDTO<
+                        BoardStateResponseDTO,
+                        ChessGameResponseMessage>>(
+                    "ReceiveBoardUpdateAsync",
+                    async (BoardStateResponseHandler) =>
+                        await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
+
+                _hubConnection.On<KeyValuePair<Guid,UserConnectionDTO>>("DisconnectedNotification",
+                    async (opponentUserConnection) =>
+                {
+                    await _gameHandlerService.NotifyOpponentUserDisconnected(opponentUserConnection);
+                     _connectionHandlerService.DisconnectedNotification(opponentUserConnection);
+                });
+
+            }
+
+            _hubConnection.Closed += async (error) =>
+            {
+                Console.WriteLine("Disconnected");
+                await Task.CompletedTask;
+            };
         }
-
-
-        //public async Task RegisterConnectionHandlers()
-        //{
-
-        //    await GetHubConnection();
-
-        //    if (_hubConnection != null)
-        //    {
-        //        _hubConnection.On<
-        //            KeyValuePair<Guid, UserConnectionDTO>>(
-        //            "ReceiveUpdatedUsers",
-        //            (userConnection) => _connectionHandlerService.ReceiveUpdatedUsers(userConnection.Key, userConnection.Value)
-        //        );
-
-        //        _hubConnection.On<
-        //            UserConnectionDTO,
-        //            Guid,
-        //            UserConnectionDTO,
-        //            Guid>(
-        //            "ReceiveInvite",
-        //            (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid) =>
-        //                _invitationHandlerService.ReceiveInvite(inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid));
-
-        //        _hubConnection.On<
-        //            UserConnectionDTO,
-        //            Guid,
-        //            UserConnectionDTO,
-        //            Guid,
-        //            Guid>("InviteAcceptedAsync",
-        //            (inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid) =>
-        //                _invitationHandlerService.InviteAcceptedAsync(inviterUserConnection, inviterUserGuid, receiverUserConnection, receiverUserGuid, gameGuid));
-
-
-        //        _hubConnection.On<
-        //            ResponseDTO<
-        //                ReceivePlayersResponseDTO,
-        //                ChessGameResponseMessage>>
-        //        ("ReseivePlayersAsync",
-        //        async (connectionResponseDTO) => await _gameHandlerService.ReseivePlayersAsync(connectionResponseDTO));
-
-        //        _hubConnection.On<
-        //            ResponseDTO<
-        //                BoardStateResponseDTO,
-        //                ChessGameResponseMessage>>(
-        //            "ReceiveBoardUpdateAsync",
-        //            async (BoardStateResponseHandler) =>
-        //                await _gameHandlerService.ReceiveBoardUpdateAsync(BoardStateResponseHandler));
-
-        //        _hubConnection.On<KeyValuePair<Guid, UserConnectionDTO>>("DisconnectedNotification",
-        //            async (opponentUserConnection) =>
-        //        {
-        //            await _gameHandlerService.NotifyOpponentUserDisconnected(opponentUserConnection);
-        //            _connectionHandlerService.DisconnectedNotification(opponentUserConnection);
-        //        });
-
-        //    }
-
-        //    _hubConnection!.Closed += async (error) =>
-        //    {
-        //        Console.WriteLine("Disconnected");
-        //        await Task.CompletedTask;
-        //    };
-        //}
     }
 }

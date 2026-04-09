@@ -89,7 +89,7 @@
 </div>
 
 @code {
-    private string _connectionId = String.Empty;
+    private string? _connectionId = String.Empty;
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
 
@@ -128,7 +128,7 @@
     {
         if (_connectionId is null)
         {
-            var connectionInfo = await JS.InvokeAsync<SignalRConnectionInfoModel>("getSignalRConnectionInfo");
+            var connectionInfo = await HubClient.GetHubConnection();
             _connectionId = connectionInfo.ConnectionId;
         }
 
@@ -156,5 +156,6 @@
     {
         if (user.Identity?.IsAuthenticated == false)
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+        
     }
 }

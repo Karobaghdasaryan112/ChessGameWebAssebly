@@ -1,5 +1,4 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
-using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -16,35 +15,35 @@ namespace BlazorServerSideClient.Services.Handlers
             await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!,
                 connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
         }
-        
-        [JSInvokable]
-        public async Task ReceiveBoardUpdateAsync(BoardStateResponseDTO  gameStateconnectionResponseDto)
+
+        public async Task ReceiveBoardUpdateAsync(
+            ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
         {
 
-            if (gameStateconnectionResponseDto.IsReadyToEvent is IsReady.IsReadyToMove or IsReady.IsReadyToCastle)
+            if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove || gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToCastle)
             {
-                if (gameStateconnectionResponseDto is { From: not null, To: not null })
+                if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
                     await jSRuneTimeService.UpdateBoardAfterMove(
-                        gameStateconnectionResponseDto.From,
-                        gameStateconnectionResponseDto.To,
-                        (int)gameStateconnectionResponseDto.OpponentColor);
+                        gameStateconnectionResponseDto.Data.From,
+                        gameStateconnectionResponseDto.Data.To,
+                        (int)gameStateconnectionResponseDto.Data.OpponentColor);
             }
-            else if (gameStateconnectionResponseDto is { From: not null, To: not null })
+            else if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
                 await jSRuneTimeService.UpdateBoardAfterCut(
-                    gameStateconnectionResponseDto.From,
-                    gameStateconnectionResponseDto.To,
-                    (int)gameStateconnectionResponseDto.OpponentColor);
+                    gameStateconnectionResponseDto.Data.From,
+                    gameStateconnectionResponseDto.Data.To,
+                    (int)gameStateconnectionResponseDto.Data.OpponentColor);
 
-            switch (gameStateconnectionResponseDto)
+            switch (gameStateconnectionResponseDto.Data)
             {
                 case { IsKingMate: true, KingPosition: not null }:
                     await jSRuneTimeService.KingMateNotifier(
-                        gameStateconnectionResponseDto.KingPosition,
-                        gameStateconnectionResponseDto.Player,
-                        gameStateconnectionResponseDto.Win);
+                        gameStateconnectionResponseDto.Data.KingPosition,
+                        gameStateconnectionResponseDto.Data.Player,
+                        gameStateconnectionResponseDto.Data.Win);
                     return;
                 case { IsKingChecked: true, KingPosition: not null }:
-                    await jSRuneTimeService.KingCheckedNotifier(gameStateconnectionResponseDto.KingPosition);
+                    await jSRuneTimeService.KingCheckedNotifier(gameStateconnectionResponseDto.Data.KingPosition);
                     break;
             }
         }
@@ -55,3 +54,4 @@ namespace BlazorServerSideClient.Services.Handlers
         }
     }
 }
+

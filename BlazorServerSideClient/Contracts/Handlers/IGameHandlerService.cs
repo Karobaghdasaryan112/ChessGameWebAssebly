@@ -8,7 +8,9 @@ namespace BlazorServerSideClient.Contracts.Handlers
     public interface IGameHandlerService
     {
         Task ReseivePlayersAsync(ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDTO);
-        Task ReceiveBoardUpdateAsync(BoardStateResponseDTO gameStateconnectionResponseDTO);
+
+        Task ReceiveBoardUpdateAsync(
+            ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto);
         Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection);
     }
 }

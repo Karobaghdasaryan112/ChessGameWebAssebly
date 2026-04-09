@@ -51,7 +51,7 @@ namespace BlazorServerSideClient.Services
             await jsRunTime.SafeInvokeVoidAsync(_logger, "GameDiv.Enable", gameClassName);
         }
 
-        public async ValueTask ReceiveOptimalMoves(Position from, Position to)
+        public async ValueTask ReceiveOptimalMoves(Position? from, Position? to)
         {
             await SafeDelay();
             await jsRunTime.SafeInvokeVoidAsync(_logger, "ReceiveOptimalMoves.Show", from, to);
@@ -139,7 +139,7 @@ namespace BlazorServerSideClient.Services
         {
             await SafeDelay();
 
-            return await jsRunTime.InvokeAsync<TResponse>("invokeSignalR", identifier, request);
+            return await jsRunTime.InvokeAsync<TResponse>(identifier, request);
         }
 
         public async Task InvokeAsync(string identifier, params object[] objects)

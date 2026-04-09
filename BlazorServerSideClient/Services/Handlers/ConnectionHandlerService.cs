@@ -8,22 +8,18 @@ namespace BlazorServerSideClient.Services.Handlers
     public class ConnectionHandlerService : IConnectionHandlerService
     {
         public Action<OnlinePlayerChangeType, KeyValuePair<Guid, UserConnectionDTO>>? OnlinePlayersUpdated { get; set; }
-
-        [JSInvokable]
-        public Task ReceiveUpdatedUsers(Guid userGuid, UserConnectionDTO connection)
+        
+        public void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection)
         {
             OnlinePlayersUpdated?.Invoke(OnlinePlayerChangeType.Added,
-                new KeyValuePair<Guid, UserConnectionDTO>(userGuid, connection));
-            return Task.CompletedTask;
+                new KeyValuePair<Guid, UserConnectionDTO>(userConnection.Key, userConnection.Value));
         }
-
-        [JSInvokable]
+        
         public void DisconnectedNotification(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
         {
             OnlinePlayersUpdated?.Invoke(OnlinePlayerChangeType.Removed, opponentUserConnection);
         }
-
-        [JSInvokable]
+        
         public void RemovedUserChangeNotification(Guid userGuid, UserConnectionDTO connectionn)
         {
             OnlinePlayersUpdated?.Invoke(OnlinePlayerChangeType.Removed,

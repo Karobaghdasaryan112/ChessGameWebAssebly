@@ -59,8 +59,6 @@
             return;
         }
 
-        // var hubConnection = await HubClient.GetHubConnection();
-        var UserGuid = user.Claims.First(Claim => Claim.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 
     private void DashboardClicked(MouseEventArgs e)
