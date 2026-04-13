@@ -1,6 +1,8 @@
-﻿namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
+﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+
+namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 {
-    public class DisconnectedUserNotificationRequestDTO
+    public class DisconnectedUserNotificationRequestDTO : RequestDTO
     {
         public string ConnectionId { get; set; }
     }

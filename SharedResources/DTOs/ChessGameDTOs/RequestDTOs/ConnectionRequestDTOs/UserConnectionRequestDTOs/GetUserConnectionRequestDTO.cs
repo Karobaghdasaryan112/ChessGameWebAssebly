@@ -1,6 +1,8 @@
-﻿namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
+﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+
+namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 {
-    public class GetUserConnectionRequestDTO
+    public class GetUserConnectionRequestDTO : RequestDTO
     {
         public Guid UserGuid {  get; set; }
     }

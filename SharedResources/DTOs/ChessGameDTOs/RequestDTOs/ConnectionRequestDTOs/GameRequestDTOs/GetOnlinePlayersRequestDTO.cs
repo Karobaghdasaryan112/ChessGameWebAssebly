@@ -1,7 +1,10 @@
-﻿namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
+﻿using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+
+namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 {
-    public class GetONlinePlayersRequestDTO
+    public class GetONlinePlayersRequestDTO : RequestDTO
+
     {
-        public Guid UserGuid { get; set; }
+    public Guid UserGuid { get; set; }
     }
 }

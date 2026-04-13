@@ -1,9 +1,10 @@
 ﻿using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 {
-    public class SubmitMoveRequestDTO : IRequestDTO
+    public class SubmitMoveRequestDTO : RequestDTO
     {
         public Guid GameId { get; set; }
         public Position? From { get; set; }

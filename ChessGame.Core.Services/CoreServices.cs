@@ -1,5 +1,8 @@
 ﻿using ChessGame.Core.Services.MediatR.Handlers.Commands;
 using ChessGame.Core.Services.MediatR.Handlers.Queries;
+using ChessGame.Core.Services.PipeLine;
+using ChessGame.Core.Services.PipeLine.Abstractions;
+using ChessGame.Core.Services.PipeLine.PipeLineHelper;
 using ChessGame.Core.Services.Services.HelperService;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +41,13 @@ namespace ChessGame.Core.Services
             services.AddValidatorsFromAssembly(typeof(SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests.RemoveUserConnectionRequestDTOValidation).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(IsKingCheckedRequestDTOValidation).Assembly);
             services.AddValidatorsFromAssembly(typeof(GetAllHistoryWidgetsRequestDTOValidator).Assembly);
+
+            services.AddScoped(typeof(IPipelineBehavior<,,>), typeof(ExceptionHandlingBehavior<,,>));
+            services.AddScoped(typeof(IPipelineBehavior<,,>), typeof(LoggingBehavior<,,>));
+
+
+            services.AddScoped(typeof(IPipelineExecutor<,,>), typeof(PipelineExecutor<,,>));
+            services.AddScoped(typeof(PipeLineExecutionHelper));
 
             services.AddLogging();
         }

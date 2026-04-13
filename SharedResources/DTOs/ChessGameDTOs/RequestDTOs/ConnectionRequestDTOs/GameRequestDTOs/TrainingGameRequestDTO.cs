@@ -1,10 +1,11 @@
 ﻿using SharedResources.ChessGameResource.Enums.Training;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 {
     // DTO for requesting a training game
     //Computer Player Guid is Guid.Empty
-    public class TrainingGameRequestDTO
+    public class TrainingGameRequestDTO : RequestDTO
     {
         public string ClientConnectionId { get; set; }
         public TrainingDifficulty TrainingDifficulty { get; set; }

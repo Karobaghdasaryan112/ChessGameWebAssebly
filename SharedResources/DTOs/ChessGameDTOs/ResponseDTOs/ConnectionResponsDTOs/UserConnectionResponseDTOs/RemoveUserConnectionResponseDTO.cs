@@ -1,6 +1,8 @@
-﻿namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
+﻿using SharedResources.Contracts;
+
+namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
 {
-    public class RemoveUserConnectionResponseDTO
+    public class RemoveUserConnectionResponseDTO : IResponseDTO
     {
         public bool IsRemoved;
     }

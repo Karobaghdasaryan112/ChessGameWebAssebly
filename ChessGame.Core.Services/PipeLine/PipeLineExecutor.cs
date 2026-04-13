@@ -1,45 +1,50 @@
 using ChessGame.Core.Services.PipeLine.Abstractions;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChessGame.Core.Services.PipeLine;
 
-public class PipeLineExecutor<TRequest, TResponse> : IPipelineExecutor<TRequest, TResponse>
+public class PipelineExecutor<TRequest, TResponse, TMessage>(IEnumerable<IPipelineBehavior<TRequest, TResponse, TMessage>> behaviors)
+    : IPipelineExecutor<TRequest, TResponse, TMessage>
+    where TMessage : ChessGameResponseMessage
+    where TRequest : RequestDTO
 {
-    private readonly List<Func<
-        Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>>,
-        Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>>
-    >> _components = new();
-
-
-    private void Use(Func<
-        Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>>,
-        Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>>> middleware)
-    {
-        _components.Add(middleware);
-    }
-
-    
-    
-    public PipeLineExecutor<TRequest, TResponse> UseBehavior(IPipelineBehavior<TRequest, TResponse> behavior)
-    {
-        Use(next => request => behavior.Handle(request, next));
-        return this;
-    }
-
-
-    public async Task<PipeLineResponse<TResponse>> Execute(
+    public async Task<PipeLineResponse<TResponse, TMessage>> Execute(
         PipeLineRequest<TRequest> request,
-        Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>> executionalFunction,
+        Func<Task<PipeLineResponse<TResponse, TMessage>>> handler,
         CancellationToken cancellationToken)
     {
 
-        var chain = executionalFunction;
+        var pipeline = handler;
 
-        for (var i = _components.Count - 1; i >= 0; i--)
+        foreach (var behavior in behaviors.Reverse())
         {
-            var component = _components[i];
-            chain = component(chain);
+            var next = pipeline;
+
+            pipeline = () => behavior.Handle(request, next, cancellationToken);
         }
-        
-        return await chain(request);
+
+        return await pipeline();
     }
+
+    public async Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>
+        Execute<TRequest, TResponse>(
+            TRequest request,
+            Func<Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>> handler, HubCallerContext context)
+        where TRequest : RequestDTO
+    {
+        var executor = context.GetHttpContext()!
+            .RequestServices
+            .GetRequiredService<
+                IPipelineExecutor<TRequest, TResponse, ChessGameResponseMessage>>();
+
+        return await executor.Execute(
+            new PipeLineRequest<TRequest>(request, context.ConnectionId),
+            handler,
+            CancellationToken.None
+        );
+    }
+
 }

@@ -1,8 +1,9 @@
 ﻿using SharedResources.ChessGameResource.Models;
+using SharedResources.Contracts;
 
 namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
 {
-    public class SubmitMoveResponseDTO
+    public class SubmitMoveResponseDTO : IResponseDTO
     {
         public bool IsKingChecked { get; set; }
         public bool IsKingMate { get; set; }

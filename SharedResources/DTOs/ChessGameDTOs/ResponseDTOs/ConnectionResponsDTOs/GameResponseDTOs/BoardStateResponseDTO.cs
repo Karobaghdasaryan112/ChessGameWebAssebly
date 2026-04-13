@@ -1,10 +1,11 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Models;
+using SharedResources.Contracts;
 
 namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
 {
-    public class BoardStateResponseDTO
+    public class BoardStateResponseDTO : IResponseDTO
     {
         public Position? From { get; set; }
         public Guid GameId { get; set; }

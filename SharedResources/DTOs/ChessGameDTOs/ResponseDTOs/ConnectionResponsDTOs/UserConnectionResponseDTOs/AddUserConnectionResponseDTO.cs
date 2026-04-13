@@ -1,7 +1,10 @@
-﻿namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
+﻿using SharedResources.Contracts;
+
+namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
 {
-    public class AddUserConnectionResponseDTO
+    public class AddUserConnectionResponseDTO : IResponseDTO
+
     {
-        public bool IsAdded;
+    public bool IsAdded;
     }
 }

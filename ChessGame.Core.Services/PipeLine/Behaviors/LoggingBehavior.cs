@@ -1,15 +1,30 @@
+using ChessGame.Core.Services.PipeLine;
+using ChessGame.Core.Services.PipeLine.Abstractions;
 using Microsoft.Extensions.Logging;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 
-namespace ChessGame.Core.Services.PipeLine.Behaviors;
-
-public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
-    : Abstractions.IPipelineBehavior<TRequest, TResponse>
+public class LoggingBehavior<TRequest, TResponse, TMessage>(
+    ILogger<LoggingBehavior<TRequest, TResponse, TMessage>> logger)
+    : IPipelineBehavior<TRequest, TResponse, TMessage>
+    where TMessage : ChessGameResponseMessage
+    where TRequest : RequestDTO
 {
-    private readonly ILogger<TRequest> _logger = logger;
-
-    public Task<PipeLineResponse<TResponse>> Handle(PipeLineRequest<TRequest> request, Func<PipeLineRequest<TRequest>, Task<PipeLineResponse<TResponse>>> next)
+    public async Task<PipeLineResponse<TResponse, TMessage>> Handle(
+        PipeLineRequest<TRequest> request,
+        Func<Task<PipeLineResponse<TResponse, TMessage>>> next,
+        CancellationToken cancellationToken)
     {
-        _logger.LogInformation(request.ToString());
-        return next(request);
+        logger.LogInformation("Handling {Request} (ConnectionId: {ConnectionId})",
+            typeof(TRequest).Name,
+            request.ConnectionId);
+
+        var response = await next();
+
+        logger.LogInformation("Handled {Request} (Success: {Success})",
+            typeof(TRequest).Name,
+            response.Response?.IsSuccess);
+
+        return response;
     }
 }

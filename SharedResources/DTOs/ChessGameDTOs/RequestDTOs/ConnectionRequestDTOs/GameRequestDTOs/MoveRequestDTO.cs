@@ -2,10 +2,11 @@
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.DTOs;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 {
-    public class MoveRequestDTO : ICheseGameRequestDTO
+    public class MoveRequestDTO : RequestDTO
     {
         public bool IsAIFirstMove { get; set; }
         public bool IsOpponentComputer { get; set; }

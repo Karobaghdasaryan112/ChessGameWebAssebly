@@ -13,6 +13,9 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Invi
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using ChessGame.Core.Services.PipeLine;
+using SharedResources.Contracts;
+using SharedResources.DTOs.ErrorResponseDTOs;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -167,9 +170,15 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
         {
             await baseHubService.SendInviteAsync(connectionRequestDTO);
+            return new PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>()
+            {
+                Response = ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, []),
+
+            };
         }
     }
 }

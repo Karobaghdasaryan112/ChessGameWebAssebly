@@ -1,4 +1,6 @@
-﻿using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
+﻿using ChessGame.Core.Services.PipeLine;
+using SharedResources.Contracts;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
@@ -12,7 +14,9 @@ namespace ChessGame.Core.Services.Contracts.Hub
 
         Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
                     AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest);
-        Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO);
+
+        Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(
+            SendInvitationRequestDTO connectionRequestDTO);
         Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
     }
 }

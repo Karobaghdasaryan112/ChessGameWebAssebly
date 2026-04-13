@@ -1,8 +1,9 @@
 ﻿using SharedResources.ChessGameResource.Models;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 {
-    public class SameFigureRequest
+    public class SameFigureRequest : RequestDTO
     {
         public Position Selected { get; set; }
         public Position Current { get; set; }

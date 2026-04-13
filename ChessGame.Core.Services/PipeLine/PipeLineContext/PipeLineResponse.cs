@@ -1,10 +1,11 @@
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
+
 namespace ChessGame.Core.Services.PipeLine;
 
-public class PipeLineResponse<TResponse>(TResponse response,bool isSuccess,string errorMessage)
+public class PipeLineResponse<TResponse, TMessage> 
+    where TMessage : ChessGameResponseMessage 
 {
+    public ResponseDTO<TResponse, TMessage> Response { get; set; }
 
-    public TResponse Response { get; } = response;
-    public bool IsSuccess { get; set; } = isSuccess;
-    public string ErrorMessage { get; set; } = errorMessage;
-    
 }

@@ -1,8 +1,10 @@
-﻿using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+﻿using SharedResources.Contracts;
+using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
 {
-    public class SendInvitationRequestDTO
+    public class SendInvitationRequestDTO : RequestDTO
     {
         public UserConnectionDTO InviterUserConnection { get; set; }
         public UserConnectionDTO ReceiverUserConnection { get; set; }
