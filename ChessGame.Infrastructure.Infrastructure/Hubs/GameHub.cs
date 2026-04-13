@@ -23,10 +23,12 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         IConnectionService connectionService)
         : Hub
     {
+        //Private PipeLineBuilder;
+        //Initialize in OnConnectionAsync Method to Set up Builder
+        
+        
         public override async Task OnConnectedAsync()
-        {
-            await base.OnConnectedAsync();
-        }
+            => await base.OnConnectedAsync();
 
         public override async Task OnDisconnectedAsync(Exception? exception)
             => await base.OnDisconnectedAsync(exception);
@@ -83,7 +85,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //connectionService
 
-        public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(
+        public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync( 
             Guid currentUserGuid)
             => await connectionService.RemoveConnectionAsUserGuidAsync(new RemoveUserConnectionRequestDTO()
                 { UserGuid = currentUserGuid });
