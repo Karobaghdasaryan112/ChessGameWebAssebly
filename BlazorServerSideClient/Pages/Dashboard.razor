@@ -97,6 +97,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await HubClient.RegisterConnectionHandlers();
         UnAuthorizedUser();
 
         var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;

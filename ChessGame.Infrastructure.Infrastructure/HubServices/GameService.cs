@@ -46,7 +46,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.UserGuid)
                 .ToDictionary();
 
-            if (!onlinePlayers.Any())
+            if (onlinePlayers.Count == 0)
                 return
                     ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                         .CreateErrorResponse(

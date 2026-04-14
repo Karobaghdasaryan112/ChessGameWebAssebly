@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ChessGame.Infrastructure.Infrastructure.Persistance
+namespace ChessGame.Infrastructure.Persistance
 {
     public static class PersistanceServices
     {

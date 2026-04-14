@@ -1,18 +1,16 @@
-﻿using ChessGame.Core.Services.PipeLine.Abstractions;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Internal;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.Abstractions;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 
-namespace ChessGame.Core.Services.PipeLine.PipeLineHelper
+namespace SharedResources.PipeLine.PipeLineHelper
 {
     public class PipeLineExecutionHelper
     {
         public async Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>
-            Execute<TRequest, TResponse>(
-                TRequest request,
-                HubCallerContext context,
+            Execute<TRequest, TResponse>(TRequest request, HubCallerContext context,
                 Func<Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>> handler)
             where TRequest : RequestDTO
         {

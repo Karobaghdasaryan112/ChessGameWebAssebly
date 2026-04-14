@@ -13,9 +13,9 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Invi
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
-using ChessGame.Core.Services.PipeLine;
 using SharedResources.Contracts;
 using SharedResources.DTOs.ErrorResponseDTOs;
+using SharedResources.PipeLine.PipeLineContext;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -26,24 +26,26 @@ namespace ChessGame.Core.Services.Services.HubServices
         GenericValidationService validationService)
         : IInvitationService
     {
-        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
-            AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest)
+        public async Task<PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(
+            AcceptInvitationRequestDTO acceptInvitationRequest)
         {
+            var pipeLineResponse = new PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>();
             //Validation
             var validationResult = await validationService.ValidateAsync(acceptInvitationRequest);
             if (!validationResult.IsValid)
             {
                 var resultValidation =
                     await validationResult.ReturnValidationResult(default(AcceptInvitationResponseDTO));
-                return resultValidation;
+                pipeLineResponse.Response = resultValidation;
+                return pipeLineResponse;
             }
 
             //Get the connection information of both players using their userGuids from the connection service
             var inviterConnectionInformation = await connectionService.GetUserConnection(
-             new GetUserConnectionRequestDTO()
-             {
-                 UserGuid = acceptInvitationRequest.inviterUserGuid
-             });
+                new GetUserConnectionRequestDTO()
+                {
+                    UserGuid = acceptInvitationRequest.inviterUserGuid
+                });
             var receiverConnectionInformation = await connectionService.GetUserConnection(
                 new GetUserConnectionRequestDTO()
                 {
@@ -54,12 +56,15 @@ namespace ChessGame.Core.Services.Services.HubServices
             if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess)
             {
                 inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
-                return ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    null!,
-                    inviterConnectionInformation.Message,
-                    inviterConnectionInformation.HttpStatusCode,
-                    inviterConnectionInformation.Errors
-                );
+
+                pipeLineResponse.Response = ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>
+                    .CreateErrorResponse(
+                        null!,
+                        inviterConnectionInformation.Message,
+                        inviterConnectionInformation.HttpStatusCode,
+                        inviterConnectionInformation.Errors
+                    );
+                return pipeLineResponse;
             }
 
             //Check if both players exist in the current connections
@@ -72,11 +77,15 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             //If any of the players does not exist in the current connections, return an error response
             if (!isInviterExists || !isReceiverExists)
-                ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    new AcceptInvitationResponseDTO(),
-                    ChessGameResponseMessage.PlayerNotFound,
-                    HttpStatusCode.BadRequest,
-                    []);
+            {
+                pipeLineResponse.Response = ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>
+                    .CreateErrorResponse(
+                        new AcceptInvitationResponseDTO(),
+                        ChessGameResponseMessage.PlayerNotFound,
+                        HttpStatusCode.BadRequest,
+                        []);
+                return pipeLineResponse;
+            }
 
             //Initialize the board and create the game with the gameId and the connection information of both players
             var playersTime = TimeSpan.FromSeconds((int)PlayEvent.Classical);
@@ -84,31 +93,35 @@ namespace ChessGame.Core.Services.Services.HubServices
                 new BoardInitializeCommand<BoardInitializeRequestDTO,
                     ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>>
                 (
-                new BoardInitializeRequestDTO()
-                {
-                    GameEvent = GameEvent.Start,
-                    Player1Time = playersTime,
-                    Player2Time = playersTime,
-                    Player1Name = inviterUser?.UserName!,
-                    Player2Name = receiverUser?.UserName!,
-                    Player1Id = acceptInvitationRequest.inviterUserGuid,
-                    Player2Id = acceptInvitationRequest.receiverUserGuid
-                });
+                    new BoardInitializeRequestDTO()
+                    {
+                        GameEvent = GameEvent.Start,
+                        Player1Time = playersTime,
+                        Player2Time = playersTime,
+                        Player1Name = inviterUser?.UserName!,
+                        Player2Name = receiverUser?.UserName!,
+                        Player1Id = acceptInvitationRequest.inviterUserGuid,
+                        Player2Id = acceptInvitationRequest.receiverUserGuid
+                    });
 
             var result = await mediator.Send(command);
 
             if (!result.IsSuccess)
-                return ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    null!,
-                    result.Message,
-                    result.HttpStatusCode,
-                    result.Errors
-                );
+            {
+                pipeLineResponse.Response =
+                    ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        null!,
+                        result.Message,
+                        result.HttpStatusCode,
+                        result.Errors
+                    );
+                return pipeLineResponse;
+            }
 
             inviterConnectionInformation.Data.UserConnectionDTO.GameId = result.Data.GameId;
             receiverConnectionInformation.Data.UserConnectionDTO.GameId = result.Data.GameId;
 
-            var InvitationResponseDTO = new AcceptInvitationResponseDTO()
+            var invitationResponseDto = new AcceptInvitationResponseDTO()
             {
                 GameId = result.Data.GameId,
                 PlayerOne_UserConnectionResponseDTO = inviterConnectionInformation.Data.UserConnectionDTO,
@@ -116,15 +129,16 @@ namespace ChessGame.Core.Services.Services.HubServices
             };
 
             //Add the userConnectionDtos of both players to the active connections and add the gameId to their connection information
-            ActiveGames._connections[acceptInvitationRequest.receiverUserGuid] = receiverConnectionInformation.Data.UserConnectionDTO;
-            ActiveGames._connections[acceptInvitationRequest.inviterUserGuid] = inviterConnectionInformation.Data.UserConnectionDTO;
+            ActiveGames._connections[acceptInvitationRequest.receiverUserGuid] =
+                receiverConnectionInformation.Data.UserConnectionDTO;
+            ActiveGames._connections[acceptInvitationRequest.inviterUserGuid] =
+                inviterConnectionInformation.Data.UserConnectionDTO;
 
             //Add the gameId and gameinfo to the active connections of both players
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].GameId = result.Data.GameId;
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].Gameinfo =
                 new Gameinfo()
                 {
-
                     Players = new KeyValuePair<Guid, Guid>(
                         acceptInvitationRequest.receiverUserGuid,
                         acceptInvitationRequest.inviterUserGuid)
@@ -158,11 +172,12 @@ namespace ChessGame.Core.Services.Services.HubServices
 
 
             //Send a message to the receiver that the invitation has been accepted and the game has been created with the gameId and the connection information of both players
-            return ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                InvitationResponseDTO,
-                ChessGameResponseMessage.SuccessInvitation,
-                HttpStatusCode.Created);
-
+            pipeLineResponse.Response =
+                ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    invitationResponseDto,
+                    ChessGameResponseMessage.SuccessInvitation,
+                    HttpStatusCode.Created);
+            return pipeLineResponse;
         }
 
         public Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
@@ -170,14 +185,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(
+            SendInvitationRequestDTO connectionRequestDto)
         {
-            await baseHubService.SendInviteAsync(connectionRequestDTO);
+            await baseHubService.SendInviteAsync(connectionRequestDto);
             return new PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>()
             {
-                Response = ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, []),
-
+                Response = ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    null!, ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, new object()),
             };
         }
     }

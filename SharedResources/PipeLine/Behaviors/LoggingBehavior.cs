@@ -1,8 +1,10 @@
-using ChessGame.Core.Services.PipeLine;
-using ChessGame.Core.Services.PipeLine.Abstractions;
 using Microsoft.Extensions.Logging;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.Abstractions;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
+
+namespace SharedResources.PipeLine.Behaviors;
 
 public class LoggingBehavior<TRequest, TResponse, TMessage>(
     ILogger<LoggingBehavior<TRequest, TResponse, TMessage>> logger)

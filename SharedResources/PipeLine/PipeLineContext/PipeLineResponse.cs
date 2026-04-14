@@ -1,7 +1,7 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
-namespace ChessGame.Core.Services.PipeLine;
+namespace SharedResources.PipeLine.PipeLineContext;
 
 public class PipeLineResponse<TResponse, TMessage> 
     where TMessage : ChessGameResponseMessage 

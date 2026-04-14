@@ -1,7 +1,8 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 
-namespace ChessGame.Core.Services.PipeLine.Abstractions;
+namespace SharedResources.PipeLine.Abstractions;
 
 public interface IPipelineExecutor<TRequest, TResponse,TMessage> where TMessage : ChessGameResponseMessage where TRequest : RequestDTO
  {

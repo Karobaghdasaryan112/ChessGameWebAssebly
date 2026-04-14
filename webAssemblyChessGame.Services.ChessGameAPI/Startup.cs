@@ -4,7 +4,7 @@ using ChessGame.Core.Services.MediatR.Handlers.Queries;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
 using ChessGame.Infrastructure.Infrastructure;
 using ChessGame.Infrastructure.Infrastructure.Hubs;
-using ChessGame.Infrastructure.Infrastructure.Persistance;
+using ChessGame.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ChessService.API.ChessGameAPI

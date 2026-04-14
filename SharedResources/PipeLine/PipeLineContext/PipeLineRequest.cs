@@ -1,6 +1,6 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
-namespace ChessGame.Core.Services.PipeLine;
+namespace SharedResources.PipeLine.PipeLineContext;
 
 public class PipeLineRequest<TRequest>(TRequest request, string connectionId) where TRequest : RequestDTO
 {

@@ -32,7 +32,7 @@ namespace BlazorServerSideClient.Services.Requests
                 connectionHandlerService.OnlinePlayersUpdated?.Invoke(OnlinePlayerChangeType.Added,
                     guidAndConnections);
 
-            return null!;
+            return allGamersResult!;
         }
 
 

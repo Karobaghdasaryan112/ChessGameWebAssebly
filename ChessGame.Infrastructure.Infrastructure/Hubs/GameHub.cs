@@ -1,5 +1,4 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
-using ChessGame.Core.Services.PipeLine.PipeLineHelper;
 using ChessGame.Core.Services.Services.HubServices;
 using Microsoft.AspNetCore.SignalR;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
@@ -14,6 +13,8 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.User
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using SharedResources.PipeLine.PipeLineContext;
+using SharedResources.PipeLine.PipeLineHelper;
 
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
@@ -41,22 +42,24 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //InvitationService 
 
-        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDTO)
-
-          => await pipeLineHelper.Execute(
-              connectionRequestDTO,
-              Context,
-            () => invitationService.SendInviteAsync(connectionRequestDTO));
-
+        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDto)
+            => await pipeLineHelper.Execute(
+                connectionRequestDto,
+                Context,
+                async () => await invitationService.SendInviteAsync(connectionRequestDto));
 
 
-        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(
-            AcceptInvitationRequestDTO acceptInvitationRequestDTO)
-            => await invitationService.AcceptInviteAsync(new AcceptInvitationRequestDTO()
-            {
-                inviterUserGuid = acceptInvitationRequestDTO.inviterUserGuid,
-                receiverUserGuid = acceptInvitationRequestDTO.receiverUserGuid
-            });
+        public async Task<PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(
+            AcceptInvitationRequestDTO acceptInvitationRequestDto)
+            => await pipeLineHelper.Execute(
+                acceptInvitationRequestDto,
+                Context, async () =>
+                    await invitationService.AcceptInviteAsync(new AcceptInvitationRequestDTO()
+                    {
+                        inviterUserGuid = acceptInvitationRequestDto.inviterUserGuid,
+                        receiverUserGuid = acceptInvitationRequestDto.receiverUserGuid
+                    }));
+        
 
         public async Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
             => await invitationService.CancelInviteAsync(inviterUserGuid, receiverUserGuid);
@@ -100,7 +103,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(
             Guid currentUserGuid)
             => await connectionService.RemoveConnectionAsUserGuidAsync(new RemoveUserConnectionRequestDTO()
-            { UserGuid = currentUserGuid });
+                { UserGuid = currentUserGuid });
 
         public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(
             AddUserConnectionRequestDTO addUserConnectionRequestDTO)
@@ -130,14 +133,14 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             // Notify the opponent that the user has disconnected
             var disconnectedUserResponse = await connectionService.NotifyDisconnectedUser(
                 new DisconnectedUserNotificationRequestDTO()
-                { ConnectionId = Context.ConnectionId });
+                    { ConnectionId = Context.ConnectionId });
 
             if (!disconnectedUserResponse.IsSuccess)
                 return invalidResponse;
             //Remove the user's connection from the database
             var removedUserResponse = await connectionService.RemoveConnectionAsConnectionIdAsync(
                 new RemoveUserConnectionRequestDTO()
-                { ConnectionId = Context.ConnectionId });
+                    { ConnectionId = Context.ConnectionId });
 
             if (!removedUserResponse.IsSuccess)
                 return invalidResponse;
