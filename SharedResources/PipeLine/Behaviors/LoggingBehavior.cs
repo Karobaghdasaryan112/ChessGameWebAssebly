@@ -2,27 +2,24 @@ using Microsoft.Extensions.Logging;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.Abstractions;
 using SharedResources.PipeLine.PipeLineContext;
-using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.Behaviors;
 
-public class LoggingBehavior<TRequest, TResponse, TMessage>(
-    ILogger<LoggingBehavior<TRequest, TResponse, TMessage>> logger)
-    : IPipelineBehavior<TRequest, TResponse, TMessage>
-    where TMessage : ChessGameResponseMessage
+public class LoggingBehavior<TRequest, TResponse>(
+    ILogger<LoggingBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : RequestDTO
 {
-    public async Task<PipeLineResponse<TResponse, TMessage>> Handle(
+    public async Task<PipeLineResponse<TResponse>> Handle(
         PipeLineRequest<TRequest> request,
-        Func<Task<PipeLineResponse<TResponse, TMessage>>> next,
+        Func<Task<PipeLineResponse<TResponse>>> next,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Handling {Request} (ConnectionId: {ConnectionId})",
-            typeof(TRequest).Name,
-            request.ConnectionId);
+        logger.LogInformation("Handling {Request}",
+            typeof(TRequest).Name);
 
         var response = await next();
-
+        throw new Exception("exception was occured in PipeLine Behavior");
         logger.LogInformation("Handled {Request} (Success: {Success})",
             typeof(TRequest).Name,
             response.Response?.IsSuccess);

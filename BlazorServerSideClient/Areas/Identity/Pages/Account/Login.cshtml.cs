@@ -21,22 +21,16 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private IJSRuntime _jsRunTime;
-        private JSRunetimeService _jSRunetimeService;
         private NavigationManager _nav;
 
-        private DotNetObjectReference<InvitationHandlerService> _dotNetRefInvitation;
-        private DotNetObjectReference<GameHandlerService> _dotNetRefGame;
-        private DotNetObjectReference<ConnectionHandlerService> _dotNetRefConnection;
 
         public LoginModel(
-            JSRunetimeService jSRunetimeService,
             NavigationManager nav,
             SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
             IJSRuntime jsRuntime)
         {
             _nav = nav;
-            _jSRunetimeService = jSRunetimeService;
             _jsRunTime = jsRuntime;
             _signInManager = signInManager;
             _logger = logger;

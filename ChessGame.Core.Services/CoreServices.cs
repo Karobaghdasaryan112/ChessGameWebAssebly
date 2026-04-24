@@ -50,12 +50,12 @@ namespace ChessGame.Core.Services
             services.AddValidatorsFromAssembly(typeof(GetAllHistoryWidgetsRequestDTOValidator).Assembly);
 
             //Hub PipeLine Behaviors
-            services.AddScoped(typeof(IPipelineBehavior<,,>), typeof(ExceptionHandlingBehavior<,,>));
-            services.AddScoped(typeof(IPipelineBehavior<,,>), typeof(LoggingBehavior<,,>));
-            services.AddScoped(typeof(IPipelineBehavior<,,>), typeof(ValidationBehavior<,,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             //Hub PipeLine Execution
-            services.AddScoped(typeof(IPipelineExecutor<,,>), typeof(PipelineExecutor<,,>));
+            services.AddScoped(typeof(IPipelineExecutor<,>), typeof(PipelineExecutor<,>));
 
             services.AddScoped(typeof(PipeLineExecutionHelper));
 

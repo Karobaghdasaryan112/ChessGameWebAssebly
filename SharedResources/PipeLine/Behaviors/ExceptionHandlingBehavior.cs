@@ -6,15 +6,14 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.Behaviors;
 
-public class ExceptionHandlingBehavior<TRequest, TResponse, TMessage>(
-    ILogger<ExceptionHandlingBehavior<TRequest, TResponse, TMessage>> logger)
-    : IPipelineBehavior<TRequest, TResponse, TMessage>
-    where TMessage : ChessGameResponseMessage
+public class ExceptionHandlingBehavior<TRequest, TResponse>(
+    ILogger<ExceptionHandlingBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : RequestDTO
 {
-    public async Task<PipeLineResponse<TResponse, TMessage>> Handle(
+    public async Task<PipeLineResponse<TResponse>> Handle(
         PipeLineRequest<TRequest> request,
-        Func<Task<PipeLineResponse<TResponse, TMessage>>> next,
+        Func<Task<PipeLineResponse<TResponse>>> next,
         CancellationToken cancellationToken)
     {
         try
@@ -25,13 +24,15 @@ public class ExceptionHandlingBehavior<TRequest, TResponse, TMessage>(
         {
             logger.LogError(ex, "Exception in {Request}", typeof(TRequest).Name);
 
-            return new PipeLineResponse<TResponse, TMessage>
+
+
+            return new PipeLineResponse<TResponse>
             {
-                Response = new ResponseDTO<TResponse, TMessage>
+                Response = new ResponseDTO<TResponse,ChessGameResponseMessage>
                 {
                     IsSuccess = false,
                     Errors = [ex.Message],
-                    Message = (TMessage)Activator.CreateInstance(typeof(TMessage))!
+                    Message = ChessGameResponseMessage.InternalServerError
                 }
             };
         }

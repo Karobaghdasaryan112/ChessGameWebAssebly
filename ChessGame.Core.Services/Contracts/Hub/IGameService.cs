@@ -13,10 +13,12 @@ namespace ChessGame.Core.Services.Contracts.Hub
 {
     public interface IGameService
     {
-        Task<PipeLineResponse<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO connectionRequestDTO);
+        Task<PipeLineResponse<GetOnlinePlayersResponseDTO>>
+                    GetOnlinePlayersAsync(PipeLineRequest<GetONlinePlayersRequestDTO> connectionRequestDTO);
         Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDTO);
         Task ClearGameAsync(Guid gameId);
-        Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
+
+        Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
             MoveRequestDTO sendMoveConnectionRequestDTO);
         Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest);
         Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO);

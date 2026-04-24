@@ -15,6 +15,7 @@ using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestD
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGame.Core.Services.Services.HubServices
@@ -27,38 +28,44 @@ namespace ChessGame.Core.Services.Services.HubServices
         GenericValidationService validationService)
         : IGameService
     {
-        private BaseHubService _baseHubService = baseHubService;
-
         public Task ClearGameAsync(Guid gameId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>>
-            GetOnlinePlayersAsync(GetONlinePlayersRequestDTO connectionRequestDTO)
+        public async Task<PipeLineResponse<GetOnlinePlayersResponseDTO>>
+            GetOnlinePlayersAsync(PipeLineRequest<GetONlinePlayersRequestDTO> connectionRequestDTO)
         {
-            var validationResult = (await validationService.ValidateAsync(connectionRequestDTO));
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(GetOnlinePlayersResponseDTO)))!;
+            var pipeLineResponse = new PipeLineResponse<GetOnlinePlayersResponseDTO>();
 
+            var validationResult = await validationService.ValidateAsync(connectionRequestDTO.Request);
+            if (!validationResult.IsValid)
+            {
+                pipeLineResponse.Response = ((await validationResult.ReturnValidationResult(default(GetOnlinePlayersResponseDTO)))!);
+            }
 
             var onlinePlayers = connectionService.CurrentConnectionState
-                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.UserGuid)
+                .Where(connectionKeyValuePair => connectionKeyValuePair.Key != connectionRequestDTO.Request.UserGuid)
                 .ToDictionary();
 
             if (onlinePlayers.Count == 0)
-                return
+            {
+                pipeLineResponse.Response =
                     ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
-                        .CreateErrorResponse(
-                            null!,
-                            ChessGameResponseMessage.UserConnectionNotFound,
-                            System.Net.HttpStatusCode.BadRequest);
-            return
+                    .CreateErrorResponse(
+                        null!,
+                        ChessGameResponseMessage.UserConnectionNotFound,
+                        System.Net.HttpStatusCode.BadRequest);
+                return pipeLineResponse;
+            }
+            pipeLineResponse.Response =
                 ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
                     .CreateSuccessResponse(
                         new GetOnlinePlayersResponseDTO() { OnlinePlayers = onlinePlayers },
                         ChessGameResponseMessage.UserConnectionFoundSuccess,
                         System.Net.HttpStatusCode.OK);
+
+            return pipeLineResponse;
         }
         public async Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
             TrainingGameRequestDTO trainingGameRequestDTO)
@@ -75,6 +82,8 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var playerName = trainingGameRequestDTO.Player1Guid == Guid.Empty ?
                 trainingGameRequestDTO.Player2Name : trainingGameRequestDTO.Player1Name;
+
+
             var boardInitializeRequest = new SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs.BoardInitializeRequestDTO
             {
                 GameEvent = GameEvent.Training,
@@ -107,7 +116,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             connectionService.CurrentConnectionState.TryAdd(
                 playerGuid, new UserConnectionDTO()
                 {
-                    ConnectionId = trainingGameRequestDTO.ClientConnectionId,
+                    ConnectionId = trainingGameRequestDTO.connectionId,
                     GameId = gameState.Data.GameId,
                     UserName = playerName,
                     Gameinfo =
@@ -170,78 +179,89 @@ namespace ChessGame.Core.Services.Services.HubServices
                                          selectedPositionBlock?.Figure?.FigureColor);
         }
 
-        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(
-            MoveRequestDTO sendMoveConnectionRequestDTO)
+        public async Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
+            MoveRequestDTO sendMoveConnectionRequestDto)
         {
-            var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDTO));
+            var pipelineResponse = new PipeLineResponse<MoveResponseDTO>();
+            var validationResult = (await validationService.ValidateAsync(sendMoveConnectionRequestDto));
             if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(MoveResponseDTO)))!;
+            {
+                pipelineResponse.Response = (await validationResult.ReturnValidationResult(default(MoveResponseDTO)))!;
+                return pipelineResponse;
+            }
 
 
             var invalidResponse = ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                 new MoveResponseDTO()
                 {
-                    GameId = sendMoveConnectionRequestDTO.GameId,
-                    Player = sendMoveConnectionRequestDTO.Player
+                    GameId = sendMoveConnectionRequestDto.GameId,
+                    Player = sendMoveConnectionRequestDto.Player
                 },
                 ChessGameResponseMessage.InvalidMove,
                 System.Net.HttpStatusCode.BadRequest);
 
 
-            var gameState = ActiveGames.ActiveGamesAndBoards[sendMoveConnectionRequestDTO.GameId];
-            if (sendMoveConnectionRequestDTO.IsAIFirstMove)
+            var gameState = ActiveGames.ActiveGamesAndBoards[sendMoveConnectionRequestDto.GameId];
+            if (sendMoveConnectionRequestDto.IsAIFirstMove)
             {
-                var boardStateRequestDTOAsAIFirst =
+                var boardStateRequestDtoAsAiFirst =
                 new BoardStateRequestDTO
                 {
-                    GameId = sendMoveConnectionRequestDTO.GameId,
-                    CutableFigure = default,
-                    Player = sendMoveConnectionRequestDTO.Player,
-                    From = sendMoveConnectionRequestDTO.From,
-                    To = sendMoveConnectionRequestDTO.To,
+                    GameId = sendMoveConnectionRequestDto.GameId,
+                    CutableFigure = null,
+                    Player = sendMoveConnectionRequestDto.Player,
+                    From = sendMoveConnectionRequestDto.From,
+                    To = sendMoveConnectionRequestDto.To,
                     GameState = gameState,
                     OpponentColor =
-                        sendMoveConnectionRequestDTO.MyColor == FigureColors.Black
+                        sendMoveConnectionRequestDto.MyColor == FigureColors.Black
                             ? FigureColors.White
                             : FigureColors.Black,
                     IsReadyToEvent = IsReady.IsReadyToMove,
-                    IsOpponentComputer = sendMoveConnectionRequestDTO.IsOpponentComputer,
+                    IsOpponentComputer = sendMoveConnectionRequestDto.IsOpponentComputer,
                 };
 
-                var moveLogicCommandHandlerAsAIFirst =
+                var moveLogicCommandHandlerAsAiFirst =
                     new MoveLogicCommand<BoardStateRequestDTO,
-                        ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(boardStateRequestDTOAsAIFirst);
-                var moveCommandResponse = await mediator.Send(moveLogicCommandHandlerAsAIFirst);
-                return moveCommandResponse.IsSuccess
-                    ? ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                        moveCommandResponse.Data,
-                        moveCommandResponse.Message,
-                        moveCommandResponse.HttpStatusCode)
-                    : ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                        moveCommandResponse.Data,
-                        moveCommandResponse.Message,
-                        moveCommandResponse.HttpStatusCode);
+                        ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(boardStateRequestDtoAsAiFirst);
+                var moveCommandResponse = await mediator.Send(moveLogicCommandHandlerAsAiFirst);
 
+                pipelineResponse.Response = moveCommandResponse.IsSuccess
+                ? ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    moveCommandResponse.Data,
+                    moveCommandResponse.Message,
+                    moveCommandResponse.HttpStatusCode)
+                : ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    moveCommandResponse.Data,
+                    moveCommandResponse.Message,
+                    moveCommandResponse.HttpStatusCode);
+
+                return pipelineResponse;
             }
             ;
 
-            var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDTO.CurrentPosition);
+            var currentPositionBlock = gameState.GetBlockByPosition(sendMoveConnectionRequestDto.CurrentPosition);
 
-            if (currentPositionBlock.EventColor != EventColors.Cut && currentPositionBlock.EventColor != EventColors.Move && currentPositionBlock.EventColor != EventColors.Castle)
-                return invalidResponse;
+            if (currentPositionBlock.EventColor != EventColors.Cut &&
+                currentPositionBlock.EventColor != EventColors.Move &&
+                currentPositionBlock.EventColor != EventColors.Castle)
+            {
+                pipelineResponse.Response = invalidResponse;
+                return pipelineResponse;
+            }
 
-            var boardStateRequestDTO =
+            var boardStateRequestDto =
                 new BoardStateRequestDTO
                 {
 
-                    GameId = sendMoveConnectionRequestDTO.GameId,
-                    CutableFigure = default,
-                    Player = sendMoveConnectionRequestDTO.Player,
-                    From = sendMoveConnectionRequestDTO.From,
-                    To = sendMoveConnectionRequestDTO.To,
+                    GameId = sendMoveConnectionRequestDto.GameId,
+                    CutableFigure = null,
+                    Player = sendMoveConnectionRequestDto.Player,
+                    From = sendMoveConnectionRequestDto.From,
+                    To = sendMoveConnectionRequestDto.To,
                     GameState = gameState,
                     OpponentColor =
-                        sendMoveConnectionRequestDTO.MyColor == FigureColors.Black
+                        sendMoveConnectionRequestDto.MyColor == FigureColors.Black
                             ? FigureColors.White
                             : FigureColors.Black,
                     IsReadyToEvent =
@@ -252,19 +272,22 @@ namespace ChessGame.Core.Services.Services.HubServices
                         currentPositionBlock.EventColor == EventColors.Castle
                             ? IsReady.IsReadyToCastle :
                         IsReady.None,
-                    IsOpponentComputer = sendMoveConnectionRequestDTO.IsOpponentComputer,
+                    IsOpponentComputer = sendMoveConnectionRequestDto.IsOpponentComputer,
                 };
 
             var moveLogicCommandHandler =
                 new MoveLogicCommand<BoardStateRequestDTO,
-                    ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(boardStateRequestDTO);
+                    ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(boardStateRequestDto);
 
-            if (boardStateRequestDTO.IsReadyToEvent == IsReady.None)
-                return invalidResponse;
+            if (boardStateRequestDto.IsReadyToEvent == IsReady.None)
+            {
+                pipelineResponse.Response = invalidResponse;
+            }
             else
             {
                 var moveCommandResponse = await mediator.Send(moveLogicCommandHandler);
-                return moveCommandResponse.IsSuccess
+
+                pipelineResponse.Response = moveCommandResponse.IsSuccess
                     ? ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                         moveCommandResponse.Data,
                         moveCommandResponse.Message,
@@ -274,6 +297,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                         moveCommandResponse.Message,
                         moveCommandResponse.HttpStatusCode);
             }
+
+            return pipelineResponse;
         }
 
         public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(

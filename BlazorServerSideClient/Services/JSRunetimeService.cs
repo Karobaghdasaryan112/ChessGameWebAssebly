@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using BlazorServerSideClient.Pages;
+using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 
@@ -82,6 +83,13 @@ namespace BlazorServerSideClient.Services
             await jsRunTime.SafeInvokeVoidAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
         }
 
+        public async ValueTask ShowErrorModal(string message)
+        {
+            await SafeDelay();
+
+            await jsRunTime.SafeInvokeVoidAsync(_logger, "ErrorModal.Show", message);
+        }
+
         public async ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions,
             List<CastlingInfosDTO> castlingInfosDTOs)
         {
@@ -162,6 +170,10 @@ namespace BlazorServerSideClient.Services
             {
                 try
                 {
+                    if (identifier == "ErrorModal.Show")
+                    {
+                        ;
+                    }
                     await js.InvokeVoidAsync(identifier, args);
                     return;
                 }

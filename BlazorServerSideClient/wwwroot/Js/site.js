@@ -5,6 +5,26 @@
     return null;
 };
 
+window.ErrorModal = {
+    dotNetRef: null,
+
+    Register: function (dotNetHelper) {
+        this.dotNetRef = dotNetHelper;
+    },
+
+    Show: function (message) {
+        if (this.dotNetRef) {
+            this.dotNetRef.invokeMethodAsync("ShowFromJs", message);
+        }
+    },
+
+    Hide: function () {
+        if (this.dotNetRef) {
+            this.dotNetRef.invokeMethodAsync("HideFromJs");
+        }
+    }
+};
+
 window.inviteModal = {
     intervalId: null,
 
@@ -446,7 +466,7 @@ window.ReceiveOptimalMoves = {
             const originalToBg = toCell.style.backgroundColor;
 
 
-            fromCell.style.backgroundColor = "#800000"; 
+            fromCell.style.backgroundColor = "#800000";
             toCell.style.backgroundColor = "#800000";
 
             setTimeout(() => {
@@ -515,7 +535,7 @@ window.OpponentDisconnected = {
 
         setTimeout(() => {
             notification.remove();
-            window.location.href = "/dashboard"; 
+            window.location.href = "/dashboard";
         }, 1000);
     }
 };

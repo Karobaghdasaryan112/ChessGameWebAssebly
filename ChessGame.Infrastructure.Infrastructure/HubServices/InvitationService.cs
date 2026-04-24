@@ -11,11 +11,9 @@ using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
-using SharedResources.Contracts;
-using SharedResources.DTOs.ErrorResponseDTOs;
-using SharedResources.PipeLine.PipeLineContext;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -26,10 +24,10 @@ namespace ChessGame.Core.Services.Services.HubServices
         GenericValidationService validationService)
         : IInvitationService
     {
-        public async Task<PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(
+        public async Task<PipeLineResponse<AcceptInvitationResponseDTO>> AcceptInviteAsync(
             AcceptInvitationRequestDTO acceptInvitationRequest)
         {
-            var pipeLineResponse = new PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>();
+            var pipeLineResponse = new PipeLineResponse<AcceptInvitationResponseDTO>();
             //Validation
             var validationResult = await validationService.ValidateAsync(acceptInvitationRequest);
             if (!validationResult.IsValid)
@@ -185,11 +183,11 @@ namespace ChessGame.Core.Services.Services.HubServices
             throw new NotImplementedException();
         }
 
-        public async Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
             SendInvitationRequestDTO connectionRequestDto)
         {
             await baseHubService.SendInviteAsync(connectionRequestDto);
-            return new PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>()
+            return new PipeLineResponse<SendInvitationsResponseDTO>()
             {
                 Response = ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                     null!, ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, new object()),

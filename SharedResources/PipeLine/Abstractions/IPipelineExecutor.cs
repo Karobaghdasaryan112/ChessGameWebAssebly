@@ -1,13 +1,12 @@
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.PipeLineContext;
-using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.Abstractions;
 
-public interface IPipelineExecutor<TRequest, TResponse,TMessage> where TMessage : ChessGameResponseMessage where TRequest : RequestDTO
- {
-    Task<PipeLineResponse<TResponse,TMessage>> Execute(
+public interface IPipelineExecutor<TRequest, TResponse> where TRequest : RequestDTO
+{
+    Task<PipeLineResponse<TResponse>> Execute(
         PipeLineRequest<TRequest> request,
-        Func<Task<PipeLineResponse<TResponse, TMessage>>> handler,
+        Func<Task<PipeLineResponse<TResponse>>> handler,
         CancellationToken cancellationToken);
 }

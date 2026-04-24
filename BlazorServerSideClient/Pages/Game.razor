@@ -4,7 +4,6 @@
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ApiServices
-@using ChessGameBlazorClient.UI.Services
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Enums.Events
@@ -12,7 +11,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
+@using SharedResources.PipeLine.PipeLineContext
 @inject SignalRService HubClient
 @inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
@@ -21,21 +20,21 @@
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <base href="~/"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="~/Js/site.js"></script>
 </head>
-<MateNotifier/>
+<MateNotifier />
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
     @code
     {
         private async Task ConfirmLeave(LocationChangingContext context)
         {
             var leave = await jsRuneTime.InvokeAsync<bool>(
-                "confirm",
-                "If you leave the game, you will lose. Do you want to leave?"
+            "confirm",
+            "If you leave the game, you will lose. Do you want to leave?"
             );
 
             if (!leave)
@@ -169,17 +168,20 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _hubConnection = await HubClient.GetHubConnectionAsync();
+
         await JS.ShowPlayers(Player1Name, Player2Name);
 
         var thisBoard = await GameRequestService.SendGameStateAsync(
-            new SendGameStateReqeustDTO()
-            {
-                GameId = GameId
-            });
+            new PipeLineRequest<SendGameStateReqeustDTO>(
+                new SendGameStateReqeustDTO()
+                {
+                    GameId = GameId
+                }));
 
-        if (thisBoard.Data?.Board != null)
+        if (thisBoard.Response.Data?.Board != null)
         {
-            var blocks = thisBoard.Data.Board.BoardBlocks;
+            var blocks = thisBoard.Response.Data.Board.BoardBlocks;
             var jsonBoard = JsonSerializer.Serialize(blocks);
 
             var figureColor = currentUserName == Player1Name ? 0 : 1;
@@ -200,7 +202,7 @@
 
     public async Task OnCellClick(int row, int col)
     {
-        await HubClient.GetHubConnection();
+        await HubClient.GetHubConnectionAsync();
 
         await JS.ClearSelectedBlocks((int)MyColor);
 
@@ -210,11 +212,12 @@
 
         if (selectedPosition != null)
         {
-            if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
-            {
-                await SelectFigure(ClickRequestDTO);
-                return;
-            }
+            //TO DO:
+            // if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
+            // {
+            //     await SelectFigure(ClickRequestDTO);
+            //     return;
+            // }
 
             await Move(MoveRequestDTO);
             return;
@@ -225,20 +228,24 @@
 
 
     //private Methods
-
-    private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
-    {
-        return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
-    }
+    //TO DO:
+    // private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
+    // {
+    //     return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
+    // }
 
     private async Task<bool> SelectFigure(ClickRequestDTO requestDTO)
     {
-        var positionsResult = await GameRequestService.SendClickAsync(requestDTO);
+        var pipeLineRequestPositionsResult = await GameRequestService.SendClickAsync(new PipeLineRequest<ClickRequestDTO>(requestDTO));
 
-        if (!positionsResult.IsSuccess)
+        if (!pipeLineRequestPositionsResult.Response.IsSuccess)
             return false;
 
-        await JS.ShowMovableCutableBlocks(positionsResult.Data.CutableBlocks!, positionsResult.Data.MovableBlocks!, positionsResult.Data.CastlingInfosDTOs);
+        await JS.ShowMovableCutableBlocks(
+            pipeLineRequestPositionsResult.Response.Data.CutableBlocks!,
+            pipeLineRequestPositionsResult.Response.Data.MovableBlocks!,
+            pipeLineRequestPositionsResult.Response.Data.CastlingInfosDTOs);
+
         ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
         ClickedBlockInformationDTO.GameId = requestDTO.GameId;
 
@@ -252,12 +259,12 @@
         requestDTO.From = ClickedBlockInformationDTO.ClickedPosition;
         requestDTO.CurrentPlayerId = Guid.Parse(currentUserGuid);
 
-        var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
+        var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
-        if (!positionsResult.IsSuccess)
+        if (!pipeLineResponsePositionsResult.Response.IsSuccess)
             return false;
 
-        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove || positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToCastle)
+        if (pipeLineResponsePositionsResult.Response.Data.IsReadyToEvent is IsReady.IsReadyToMove or IsReady.IsReadyToCastle)
             await JS.UpdateBoardAfterMove(requestDTO.From, requestDTO.To, (int)MyColor);
         else
             await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);
@@ -279,14 +286,15 @@
             CurrentPlayerId = Guid.NewGuid(),
             From = new Position(-1, -1), // Indicate that AI should determine the move
             To = new Position(-1, -1), // Indicate that AI should determine the move
-            CurrentPosition = new Position(-1, -1) // Indicate that AI should determine the move
+            CurrentPosition = new Position(-1, -1), // Indicate that AI should determine the move
+            connectionId = _hubConnection?.ConnectionId!
         };
-        var positionsResult = await GameRequestService.SendMoveAsync(requestDTO);
+        var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
-        if (!positionsResult.IsSuccess)
+        if (!pipeLineResponsePositionsResult.Response.IsSuccess)
             return false;
 
-        if (positionsResult.Data.IsReadyToEvent == IsReady.IsReadyToMove)
+        if (pipeLineResponsePositionsResult.Response.Data.IsReadyToEvent == IsReady.IsReadyToMove)
             await JS.UpdateBoardAfterMove(requestDTO.From, requestDTO.To, (int)MyColor);
         else
             await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);

@@ -1,5 +1,5 @@
-﻿@using ChessGameBlazorClient.UI.Services
-@using System.Security.Claims
+﻿@using System.Security.Claims
+@using BlazorServerSideClient.Services
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs
 @inject NavigationManager NavigationManager
@@ -42,8 +42,14 @@
 </div>
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        user = (await AuthState.GetAuthenticationStateAsync()).User;
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private bool collapseNavMenu = true;
-    private ClaimsPrincipal user => AuthState.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
+    private ClaimsPrincipal user;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()

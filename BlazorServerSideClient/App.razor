@@ -1,4 +1,4 @@
-﻿@using ChessGameBlazorClient.UI.Services
+﻿@using BlazorServerSideClient.Services
 @using ChessGame.Infrastructure.Infrastructure.Hubs
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
@@ -31,7 +31,6 @@
         color: var(--white);
     }
 </style>
-<DashboardInvitationRequest />
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
@@ -46,13 +45,3 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-
-@code {
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-       
-
-    }
-
-}

@@ -1,39 +1,38 @@
 ﻿using BlazorServerSideClient.Contracts.Requests;
-using ChessGameBlazorClient.UI.Services;
+using BlazorServerSideClient.Extensions;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
-using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
-using SharedResources.Responses.ResponseMessages;
+using SharedResources.PipeLine.PipeLineContext;
 
 namespace BlazorServerSideClient.Services.Requests
 {
     public class InvitationRequestService(
-        SignalRService signalRService) : IInivitationReqeustService
+        SignalRService signalRService, JSRunetimeService jsRunetimeService) : IInivitationReqeustService
     {
-        public async Task SendInviteAsync(SendInvitationRequestDTO connectionRequestDto)
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO>?> SendInviteAsync(
+            PipeLineRequest<SendInvitationRequestDTO> connectionRequestDto)
         {
-            var hubConnection = await signalRService.GetHubConnection();
+            var hubConnection = await signalRService.GetHubConnectionAsync();
 
-            await hubConnection.InvokeAsync("SendInviteAsync", connectionRequestDto);
+            return await hubConnection.SafeInvokeAsync<SendInvitationRequestDTO, SendInvitationsResponseDTO>("SendInviteAsync",
+                connectionRequestDto.Request, jsRunetimeService);
         }
 
         public async Task CancelInviteAsync(Guid inviterPlayerGuid, Guid receiverUserGuid)
         {
-            var hubConnection = await signalRService.GetHubConnection();
+            var hubConnection = await signalRService.GetHubConnectionAsync();
 
             await hubConnection.InvokeAsync("CancelInviteAsync", inviterPlayerGuid, receiverUserGuid);
         }
 
-        public async Task<ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>> AcceptInviteAsync(
-            AcceptInvitationRequestDTO acceptInvitationRequest)
+        public async Task<PipeLineResponse<AcceptInvitationResponseDTO>> AcceptInviteAsync(
+            PipeLineRequest<AcceptInvitationRequestDTO> acceptInvitationRequest)
         {
-            var hubConnection = await signalRService.GetHubConnection();
-            return await hubConnection.InvokeAsync<
-                    ResponseDTO<
-                        AcceptInvitationResponseDTO,
-                        ChessGameResponseMessage>>
+            var hubConnection = await signalRService.GetHubConnectionAsync();
+
+            return await hubConnection.InvokeAsync<PipeLineResponse<AcceptInvitationResponseDTO>>
                 ("AcceptInviteAsync", acceptInvitationRequest);
         }
     }

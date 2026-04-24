@@ -1,37 +1,23 @@
 ﻿@page "/Dashboard"
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
-@using BlazorServerSideClient.Models
 @using BlazorServerSideClient.Services
-@using ChessGameBlazorClient.ServiceEndpoints
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
-@using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
 @using SharedResources.ChessGameResource.Enums.Users
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
-@using SharedResources.Responses.ResponseMessages
+@using SharedResources.PipeLine.PipeLineContext
 
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IInivitationReqeustService InvitationRequest
 @inject IConnectionHandlerService ConnectionHandler
 @inject IGameRequestService GameRequest
-@inject IGameHandlerService GameHandler
-@inject IInvitationHandlerService InvitationHandler
-@inject IConnectionReqeustService ConnectionRequest
 @inject NavigationManager Navigation
-@inject SignalRService HubClient
-@inject JSRunetimeService jsRuntime
-@inject ILogger<Dashboard> logger
-@inject IJSRuntime JS
+@attribute [Authorize]
 
-
-
-<DashboardInvitationRequest/>
+<ErrorModal/>
+<DashboardInvitationRequest />
 
 <div class="dashboard-container">
     <h2 class="dashboard-title">🎮 Player Dashboard</h2>
@@ -46,8 +32,7 @@
     {
         <div class="players-list">
             @{
-                var authState = AuthStateProvider.GetAuthenticationStateAsync().Result;
-                var currentUserId = authState.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var currentUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             }
 
             @foreach (var player in activeGamers)
@@ -89,66 +74,61 @@
 </div>
 
 @code {
-    private string? _connectionId = String.Empty;
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
-    private ClaimsPrincipal user => AuthStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User;
+    private ClaimsPrincipal user { get; set; }
+    private string? userGuid { get; set; }
 
-    public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        await HubClient.RegisterConnectionHandlers();
+
+        user ??= (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+
+        ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
         UnAuthorizedUser();
 
-        var userGuid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
-        var userName = user.FindFirst(ClaimTypes.Name)?.Value!;
+        userGuid ??= user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
 
+        var response = await GameRequest.GetOnlinePlayersAsync(
+            new PipeLineRequest<GetONlinePlayersRequestDTO>(
+                new GetONlinePlayersRequestDTO()
+                {
+                    UserGuid = Guid.Parse(userGuid)
+                }));
 
-        ConnectionHandler.OnlinePlayersUpdated += (@event, player) =>
-        {
-            if (@event == OnlinePlayerChangeType.Added)
-                activeGamers[player.Key] = player.Value;
-            else
-                activeGamers.Remove(player.Key);
-            InvokeAsync(StateHasChanged);
-        };
-
-        var allGamers = await GameRequest.GetOnlinePlayersAsync(
-            new GetONlinePlayersRequestDTO()
-            {
-                UserGuid = Guid.Parse(userGuid)
-            });
-
-        if (allGamers.IsSuccess)
-            activeGamers = allGamers.Data.OnlinePlayers!;
-
+        if (response.Response.IsSuccess)
+            activeGamers = response.Response.Data.OnlinePlayers!;
     }
 
 
     private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
     {
-        if (_connectionId is null)
-        {
-            var connectionInfo = await HubClient.GetHubConnection();
-            _connectionId = connectionInfo.ConnectionId;
-        }
-
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
         {
-            var sendInviteRequest = new SendInvitationRequestDTO()
-            {
-                ReceiverUserConnection = receiverPlayer.Value,
-                InviterUserConnection = new UserConnectionDTO()
+            var sendInviteRequest =
+                new PipeLineRequest<SendInvitationRequestDTO>(new SendInvitationRequestDTO()
                 {
-                    ConnectionId = _connectionId,
-                    UserName = userName
-                },
-                InviterPlayerId = inviterUserGuid,
-                ReceiverPlayerId = receiverUserGuid
-            };
+                    ReceiverUserConnection = receiverPlayer.Value,
+                    InviterUserConnection = new UserConnectionDTO()
+                    {
+                        UserName = userName
+                    },
+                    InviterPlayerId = inviterUserGuid,
+                    ReceiverPlayerId = receiverUserGuid
+                });
+
             await InvitationRequest.SendInviteAsync(sendInviteRequest);
         }
     }
@@ -157,6 +137,17 @@
     {
         if (user.Identity?.IsAuthenticated == false)
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
-        
+
     }
+
+    private void HandleOnlinePlayersUpdated(OnlinePlayerChangeType @event, KeyValuePair<Guid, UserConnectionDTO> player)
+    {
+        if (@event == OnlinePlayerChangeType.Added)
+            activeGamers[player.Key] = player.Value;
+        else
+            activeGamers.Remove(player.Key);
+
+        InvokeAsync(StateHasChanged);
+    }
+
 }

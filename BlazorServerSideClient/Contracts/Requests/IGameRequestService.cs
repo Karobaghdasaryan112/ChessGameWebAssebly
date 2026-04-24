@@ -4,18 +4,31 @@ using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameR
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 
 namespace BlazorServerSideClient.Contracts.Requests
 {
     public interface IGameRequestService
     {
-        Task<ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>> GetOnlinePlayersAsync(GetONlinePlayersRequestDTO getOnlinePlayersRequestDto);
-        Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDto);
-        Task ClearGameAsync(Guid gameId);
-        Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(TrainingGameRequestDTO trainingGameRequestDto);
-        Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> SendMoveAsync(MoveRequestDTO sendMoveConnectionRequestDto);
-        Task<bool> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition, Guid gameId);
-        Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDto);
+        Task<PipeLineResponse<GetOnlinePlayersResponseDTO>> GetOnlinePlayersAsync(
+            PipeLineRequest<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDto);
+
+        Task<PipeLineResponse<SendGameStateResponseDTO>> SendGameStateAsync(
+            PipeLineRequest<SendGameStateReqeustDTO> gameStateRequestDto);
+
+        //Task<PipeLineResponse<object>> ClearGameAsync(Guid gameId);
+
+        Task<PipeLineResponse<TrainingGameResponseDTO>> RequestTrainingGameAsync(
+            PipeLineRequest<TrainingGameRequestDTO> trainingGameRequestDto);
+
+        Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
+            PipeLineRequest<MoveRequestDTO> sendMoveConnectionRequestDto);
+
+        Task<PipeLineResponse<object>> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition,
+            Guid gameId);
+
+        Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
+            PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDto);
     }
 }

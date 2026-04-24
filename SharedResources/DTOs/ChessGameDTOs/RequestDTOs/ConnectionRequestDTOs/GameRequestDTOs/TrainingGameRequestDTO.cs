@@ -7,7 +7,6 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
     //Computer Player Guid is Guid.Empty
     public class TrainingGameRequestDTO : RequestDTO
     {
-        public string ClientConnectionId { get; set; }
         public TrainingDifficulty TrainingDifficulty { get; set; }
         public string Player1Name { get; set; }
         public string Player2Name { get; set; }

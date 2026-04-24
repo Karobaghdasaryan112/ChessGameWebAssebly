@@ -5,7 +5,6 @@
 @using BlazorServerSideClient.Services
 @using ChessGame.Core.Services.Extentions
 @using ChessGameBlazorClient.ApiServices
-@using ChessGameBlazorClient.UI.Services
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
@@ -93,7 +92,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await HubClient.GetHubConnection();
+        await HubClient.GetHubConnectionAsync();
 
         // await HubClient.RegisterConnectionHandlers();
 

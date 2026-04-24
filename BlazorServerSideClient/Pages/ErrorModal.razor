@@ -1,0 +1,59 @@
+﻿@inject IJSRuntime JS
+
+<div class="modal-overlay @(isVisible ? "show" : "")" @onclick="Hide">
+    <div class="modal-container" @onclick:stopPropagation>
+        <div class="modal-header">
+            <span class="modal-title">Error</span>
+            <button class="close-btn" @onclick="Hide">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <p>@message</p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="primary-btn" @onclick="Hide">OK</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isVisible;
+    private string message = string.Empty;
+
+    public void Show(string errorMessage)
+    {
+        message = errorMessage;
+        isVisible = true;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        isVisible = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JS.InvokeVoidAsync("ErrorModal.Register",
+            DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public async Task ShowFromJs(string message)
+    {
+        try
+        {
+            Show(message);
+        }
+        catch (Exception exception)
+        {
+            throw exception;
+        }
+    }
+
+    [JSInvokable]
+    public void HideFromJs() => Hide();
+}

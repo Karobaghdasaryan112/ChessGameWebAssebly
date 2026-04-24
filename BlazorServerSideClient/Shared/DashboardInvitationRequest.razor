@@ -2,10 +2,12 @@
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs
+@using SharedResources.PipeLine.PipeLineContext
 @inject IInvitationHandlerService InvitationHandlerService
+@inject SignalRService hubClient;
 @inject IInivitationReqeustService InvitationRequestService
 @inject JSRunetimeService JSRuneTimeService
+@attribute [Authorize]
 
 <div class="invite-backdrop" id="invite-backdrop-Id" hidden>
     <div class="invite-modal bounce-in">
@@ -52,26 +54,32 @@
 @code {
     private static Guid ReceiverUserGuid { get; set; }
     private static Guid InviterUserGuid { get; set; }
+    private string _connectionId { get; set; }
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        JSRuneTimeService.HideInviteModal();
+        _connectionId = (await hubClient.GetHubConnectionAsync()).ConnectionId!;
+
+        await JSRuneTimeService.HideInviteModal();
+
         InvitationHandlerService.OnReceived += async (SendInvitationResponseDTO) =>
         {
             ReceiverUserGuid = SendInvitationResponseDTO.Data.ReceiverUserGuid;
             InviterUserGuid = SendInvitationResponseDTO.Data.InviterUserGuid;
         };
-        return Task.CompletedTask;
+
     }
 
     private async Task AcceptInvite()
     {
+
         await InvitationRequestService.AcceptInviteAsync(
-           new AcceptInvitationRequestDTO()
-               {
-                   inviterUserGuid = InviterUserGuid,
-                   receiverUserGuid = ReceiverUserGuid
-               });
+            new PipeLineRequest<AcceptInvitationRequestDTO>(new AcceptInvitationRequestDTO()
+            {
+                inviterUserGuid = InviterUserGuid,
+                receiverUserGuid = ReceiverUserGuid
+            })
+           );
     }
 
     private async Task DeclineInvite()

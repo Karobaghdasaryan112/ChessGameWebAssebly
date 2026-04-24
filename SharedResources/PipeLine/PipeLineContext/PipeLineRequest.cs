@@ -2,8 +2,15 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
 namespace SharedResources.PipeLine.PipeLineContext;
 
-public class PipeLineRequest<TRequest>(TRequest request, string connectionId) where TRequest : RequestDTO
+public class PipeLineRequest<TRequest> where TRequest : RequestDTO
 {
-    public TRequest Request { get; } = request;
-    public string ConnectionId { get; } = connectionId;
+    public PipeLineRequest()
+    {
+        
+    }
+    public PipeLineRequest(TRequest request)
+    {
+        Request = request;
+    }
+    public TRequest Request { get; set; }
 }

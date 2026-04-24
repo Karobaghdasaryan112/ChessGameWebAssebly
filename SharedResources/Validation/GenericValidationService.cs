@@ -18,6 +18,7 @@ namespace ChessGame.Core.Services.Services.Validations
     public class GenericValidationService(
         //Game
         //Requests
+        IValidator<GetONlinePlayersRequestDTO> onlinePlayersValidator,
         IValidator<TrainingGameRequestDTO> trainingGameRequestValidator,
         IValidator<BoardInitializeRequestDTO> boardInitializeRequestValidator,
         IValidator<BoardStateRequestDTO> boardStateRequestValidator,
@@ -79,7 +80,7 @@ namespace ChessGame.Core.Services.Services.Validations
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
 
-            IValidator<T> validator = dto switch
+            var validator = dto switch
             {
                 //////////////////////////////////////////////////////////////////////////////////////
                 //Game

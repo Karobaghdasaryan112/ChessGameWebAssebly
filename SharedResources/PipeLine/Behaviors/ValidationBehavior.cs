@@ -7,29 +7,28 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse, TMessage>(
+public class ValidationBehavior<TRequest, TResponse>(
     GenericValidationService validation)
-    : IPipelineBehavior<TRequest, TResponse, TMessage>
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : RequestDTO
-    where TMessage : ChessGameResponseMessage
 {
-    public async Task<PipeLineResponse<TResponse, TMessage>> Handle(
-        PipeLineRequest<TRequest> request,
-        Func<Task<PipeLineResponse<TResponse, TMessage>>> next,
-        CancellationToken cancellationToken)
+    public async Task<PipeLineResponse<TResponse>> Handle(PipeLineRequest<TRequest> request,
+        Func<Task<PipeLineResponse<TResponse>>> next, CancellationToken cancellationToken)
     {
         var validationResult = await validation.ValidateAsync(request.Request);
 
         if (validationResult.IsValid)
             return await next();
 
-        return new PipeLineResponse<TResponse, TMessage>
+        return new PipeLineResponse<TResponse>
         {
-            Response = ResponseDTO<TResponse, TMessage>.CreateErrorResponse(
+            Response = ResponseDTO<TResponse,ChessGameResponseMessage>.CreateErrorResponse(
                 default!,
-                (TMessage)ChessGameResponseMessage.InvalidData,
+                (ChessGameResponseMessage.InvalidData),
                 HttpStatusCode.BadRequest,
-                validationResult.Errors.Select(e => e.ErrorMessage).ToList())
+                validationResult.Errors?.Select(e => e.ErrorMessage).ToList())
         };
     }
+
+
 }

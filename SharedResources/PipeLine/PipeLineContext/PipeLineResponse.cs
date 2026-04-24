@@ -3,9 +3,8 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.PipeLineContext;
 
-public class PipeLineResponse<TResponse, TMessage> 
-    where TMessage : ChessGameResponseMessage 
+public class PipeLineResponse<TResponse>
 {
-    public ResponseDTO<TResponse, TMessage> Response { get; set; }
+    public ResponseDTO<TResponse, ChessGameResponseMessage> Response { get; set; }
 
 }

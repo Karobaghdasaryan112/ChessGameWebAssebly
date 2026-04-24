@@ -12,11 +12,11 @@ namespace ChessGame.Core.Services.Contracts.Hub
     public interface IInvitationService
     {
 
-        Task<PipeLineResponse<AcceptInvitationResponseDTO, ChessGameResponseMessage>>
-                    AcceptInviteAsync(AcceptInvitationRequestDTO acceptInvitationRequest);
+        Task<PipeLineResponse<AcceptInvitationResponseDTO>> AcceptInviteAsync(
+            AcceptInvitationRequestDTO acceptInvitationRequest);
 
-        Task<PipeLineResponse<SendInvitationsResponseDTO, ChessGameResponseMessage>> SendInviteAsync(
-            SendInvitationRequestDTO connectionRequestDTO);
+        Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
+            SendInvitationRequestDTO connectionRequestDto);
         Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid);
     }
 }

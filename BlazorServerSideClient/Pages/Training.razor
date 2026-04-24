@@ -2,14 +2,13 @@
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ApiServices
-@using ChessGameBlazorClient.UI.Services
 @using System.Security.Claims
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Enums.Training
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
+@using SharedResources.PipeLine.PipeLineContext
 @inject NavigationManager Navigation
 @inject SignalRService HubClient
-@inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
 @inject JSRunetimeService JS
 @inject AuthenticationStateProvider AuthenticationState
@@ -92,6 +91,7 @@ else
     private string _error = string.Empty;
     private string Player1Name = string.Empty;
     private string Player2Name = string.Empty;
+    private string _connectionId { get; set; }
     private Task<AuthenticationState> AuthState => AuthenticationState.GetAuthenticationStateAsync();
     private FigureColors _selectedColor = FigureColors.None;
     public async void SetPlayerColor(FigureColors color)
@@ -120,14 +120,14 @@ else
                     Player2Guid = player2Guid,
                     Player1Name = Player1Name,
                     Player2Name = Player2Name,
-                    ClientConnectionId = (await HubClient.GetHubConnection())?.ConnectionId!,
                     TrainingDifficulty = trainingDifficulty,
+                    connectionId = _connectionId
 
                 };
-                var response = await GameRequestService.RequestTrainingGameAsync(trainingRequest);
-                if (response.IsSuccess)
+                var pipeLineResponse = await GameRequestService.RequestTrainingGameAsync(new PipeLineRequest<TrainingGameRequestDTO>(trainingRequest));
+                if (pipeLineResponse.Response.IsSuccess)
                 {
-                    Navigation.NavigateTo($"/Game?GameId={response.Data.GameId}&Player1={Player1Name}&Player2={Player2Name}&Computer={true}");
+                    Navigation.NavigateTo($"/Game?GameId={pipeLineResponse.Response.Data.GameId}&Player1={Player1Name}&Player2={Player2Name}&Computer={true}");
                 }
                 else
                 {
@@ -144,4 +144,11 @@ else
             _error = $"An error occurred: {ex.Message}";
         }
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var hubConnectionInfo = await HubClient.GetHubConnectionAsync();
+        _connectionId = hubConnectionInfo?.ConnectionId!;
+    }
+
 }

@@ -18,7 +18,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
         public Position CheckedKingPosition { get; set; }
         public FigureColors OpponentColor { get; set; }
         public IsReady IsReadyToEvent { get; set; }
-        public Block CutableFigure { get; set; }
+        public Block? CutableFigure { get; set; }
         public Board GameState { get; set; }
     }
 }

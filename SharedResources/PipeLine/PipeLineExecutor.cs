@@ -5,15 +5,14 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine;
 
-public class PipelineExecutor<TRequest, TResponse, TMessage>(
-    IEnumerable<IPipelineBehavior<TRequest, TResponse, TMessage>> behaviors)
-    : IPipelineExecutor<TRequest, TResponse, TMessage>
-    where TMessage : ChessGameResponseMessage
+public class PipelineExecutor<TRequest, TResponse>(
+    IEnumerable<IPipelineBehavior<TRequest, TResponse>> behaviors)
+    : IPipelineExecutor<TRequest, TResponse>
     where TRequest : RequestDTO
 {
-    public async Task<PipeLineResponse<TResponse, TMessage>> Execute(
+    public async Task<PipeLineResponse<TResponse>> Execute(
         PipeLineRequest<TRequest> request,
-        Func<Task<PipeLineResponse<TResponse, TMessage>>> handler,
+        Func<Task<PipeLineResponse<TResponse>>> handler,
         CancellationToken cancellationToken)
     {
         var pipeline = handler;

@@ -3,24 +3,23 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.Abstractions;
 using SharedResources.PipeLine.PipeLineContext;
-using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.PipeLine.PipeLineHelper
 {
     public class PipeLineExecutionHelper
     {
-        public async Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>
+        public async Task<PipeLineResponse<TResponse>>
             Execute<TRequest, TResponse>(TRequest request, HubCallerContext context,
-                Func<Task<PipeLineResponse<TResponse, ChessGameResponseMessage>>> handler)
+                Func<Task<PipeLineResponse<TResponse>>> handler)
             where TRequest : RequestDTO
         {
             var executor = context.GetHttpContext()!
                 .RequestServices
                 .GetRequiredService<
-                    IPipelineExecutor<TRequest, TResponse, ChessGameResponseMessage>>();
+                    IPipelineExecutor<TRequest, TResponse>>();
 
             return await executor.Execute(
-                new PipeLineRequest<TRequest>(request, context.ConnectionId),
+                new PipeLineRequest<TRequest>(request),
                 handler,
                 CancellationToken.None
             );
