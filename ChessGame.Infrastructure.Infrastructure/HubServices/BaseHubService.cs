@@ -6,6 +6,7 @@ using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
+using System.Linq;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -47,8 +48,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             => await _hubContext.Groups.AddToGroupAsync(connectionId, groupName);
 
         public async Task RemoveFromGroupAsync(string groupName, List<string> connectionIds) =>
-            connectionIds.ForEach(async connectionId =>
-                await _hubContext.Groups.RemoveFromGroupAsync(connectionId, groupName));
+            await Task.WhenAll(connectionIds.Select(connectionId =>
+                _hubContext.Groups.RemoveFromGroupAsync(connectionId, groupName)));
 
         public async Task RequestTrainingGameAsync(TrainingGameResponseDTO trainingGameResponseDTO)
             => await _hubContext.Clients.Client(trainingGameResponseDTO.ClientConnectionId)
@@ -63,5 +64,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             await _hubContext.Clients.Client(opponentUserConnection.Value.ConnectionId)
                 .SendAsync("DisconnectedNotification", opponentUserConnection);
         }
+
+        public async Task NotifyOpponentLeftWinAsync(string opponentConnectionId, string leavingPlayerName)
+        {
+            await _hubContext.Clients.Client(opponentConnectionId)
+                .SendAsync("OpponentLeftWinNotification", leavingPlayerName);
+        }
+
+        public async Task ForceNavigateToDashboardAsync(string connectionId)
+            => await _hubContext.Clients.Client(connectionId).SendAsync("ForceNavigateToDashboard");
     }
 }

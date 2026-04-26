@@ -175,6 +175,33 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
             SendInvitationRequestDTO connectionRequestDto)
         {
+            var inviterConnectionInfo = await connectionService.GetUserConnection(
+                new GetUserConnectionRequestDTO
+                {
+                    UserGuid = connectionRequestDto.InviterPlayerId
+                });
+
+            var receiverConnectionInfo = await connectionService.GetUserConnection(
+                new GetUserConnectionRequestDTO
+                {
+                    UserGuid = connectionRequestDto.ReceiverPlayerId
+                });
+
+            if (!inviterConnectionInfo.IsSuccess || !receiverConnectionInfo.IsSuccess)
+            {
+                return new PipeLineResponse<SendInvitationsResponseDTO>
+                {
+                    Response = ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        null!,
+                        ChessGameResponseMessage.PlayerNotFound,
+                        HttpStatusCode.NotFound,
+                        [])
+                };
+            }
+
+            connectionRequestDto.InviterUserConnection = inviterConnectionInfo.Data.UserConnectionDTO;
+            connectionRequestDto.ReceiverUserConnection = receiverConnectionInfo.Data.UserConnectionDTO;
+
             await baseHubService.SendInviteAsync(connectionRequestDto);
             return new PipeLineResponse<SendInvitationsResponseDTO>()
             {

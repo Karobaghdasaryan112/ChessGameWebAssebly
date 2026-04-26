@@ -159,9 +159,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             var removeConnection = CurrentConnectionState.FirstOrDefault(connectionKvp =>
                 connectionKvp.Value.ConnectionId == removeUserConnectionRequestDTO.ConnectionId);
 
-            
-            
-            if (removeConnection.Equals(null))
+            if (removeConnection.Equals(default(KeyValuePair<Guid, UserConnectionDTO>)))
                 return errorResponse;
 
             if (!CurrentConnectionState.TryRemove(removeConnection))

@@ -1,6 +1,9 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
+using ChessGame.Core.Services.Contracts.BoardServices;
+using ChessGame.Core.Services.Extentions;
 using ChessGame.Core.Services.Services.HubServices;
 using Microsoft.AspNetCore.SignalR;
+using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
@@ -14,7 +17,11 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.PipeLine.PipeLineHelper;
 using SharedResources.Responses.ResponseMessages;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
+using SharedResources.Validation.ChessGameValidations.RequestValidations.GameRequests;
+using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
 using System.Net;
+using System.Linq;
 
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
@@ -23,6 +30,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         IInvitationService invitationService,
         IGameService gameService,
         IConnectionService connectionService,
+        IBoardService boardService,
         PipeLineExecutionHelper pipeLineHelper)
         : Hub
     {
@@ -166,6 +174,74 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                     },
                     ChessGameResponseMessage.InternalServerError,
                     HttpStatusCode.InternalServerError);
+        }
+
+        public async Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>> LeaveGameAsync(
+            Guid gameId, Guid leavingPlayerGuid)
+        {
+            if (!connectionService.CurrentConnectionState.TryGetValue(leavingPlayerGuid, out var leavingPlayerConnection))
+            {
+                return ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new RemoveUserFromGameResponseDTO { IsRemoved = false },
+                    ChessGameResponseMessage.PlayerNotFound,
+                    HttpStatusCode.NotFound);
+            }
+
+            if (leavingPlayerConnection.Gameinfo == null)
+            {
+                return ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new RemoveUserFromGameResponseDTO { IsRemoved = false },
+                    ChessGameResponseMessage.InvalidData,
+                    HttpStatusCode.BadRequest);
+            }
+
+            var opponentPlayerGuid = leavingPlayerConnection.Gameinfo.Players.Key == leavingPlayerGuid
+                ? leavingPlayerConnection.Gameinfo.Players.Value
+                : leavingPlayerConnection.Gameinfo.Players.Key;
+
+            if (!connectionService.CurrentConnectionState.TryGetValue(opponentPlayerGuid, out var opponentConnection))
+            {
+                opponentConnection = connectionService.CurrentConnectionState
+                    .Where(connection => connection.Key != leavingPlayerGuid && connection.Value.GameId == gameId)
+                    .Select(connection => connection.Value)
+                    .FirstOrDefault();
+
+                if (opponentConnection == null)
+                {
+                    return ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        new RemoveUserFromGameResponseDTO { IsRemoved = false },
+                        ChessGameResponseMessage.PlayerNotFound,
+                        HttpStatusCode.NotFound);
+                }
+            }
+
+            if (ActiveGames.ActiveGamesAndBoards.TryGetValue(gameId, out var boardState))
+            {
+                await boardService.SavePositionsAsync(new SavePositionsRequestDTO
+                {
+                    GameId = gameId,
+                    FEN = boardState.FromBoardToFen()
+                });
+            }
+
+            await boardService.SaveGameEventAndWinnerAsync(new SaveGameEventAndWinnerRequestDTO
+            {
+                GameId = gameId,
+                WinnerPlayerGuid = opponentPlayerGuid
+            });
+
+            await baseHubService.NotifyOpponentUserDisconnected(new KeyValuePair<Guid, UserConnectionDTO>(
+                leavingPlayerGuid,
+                leavingPlayerConnection));
+            await baseHubService.NotifyOpponentLeftWinAsync(opponentConnection.ConnectionId, leavingPlayerConnection.UserName);
+            await baseHubService.ForceNavigateToDashboardAsync(leavingPlayerConnection.ConnectionId);
+
+            ActiveGames.ActiveGamesAndBoards.TryRemove(gameId, out _);
+
+            return await connectionService.RemoveUsersFromGameAsync(new RemoveUserFromGameRequestDTO
+            {
+                GameId = gameId
+            });
         }
 
         //connectionService

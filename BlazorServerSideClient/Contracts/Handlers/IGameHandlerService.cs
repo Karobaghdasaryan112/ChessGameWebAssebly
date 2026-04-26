@@ -12,5 +12,7 @@ namespace BlazorServerSideClient.Contracts.Handlers
         Task ReceiveBoardUpdateAsync(
             ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto);
         Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection);
+        Task NotifyOpponentLeftWinAsync(string leavingPlayerName);
+        Task RedirectToDashboardAsync();
     }
 }

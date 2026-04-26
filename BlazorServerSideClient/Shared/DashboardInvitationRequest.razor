@@ -2,12 +2,16 @@
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 @using SharedResources.PipeLine.PipeLineContext
+@using SharedResources.Responses.ResponseMessages
 @inject IInvitationHandlerService InvitationHandlerService
 @inject SignalRService hubClient;
 @inject IInivitationReqeustService InvitationRequestService
 @inject JSRunetimeService JSRunetimeService
 @attribute [Authorize]
+@implements IDisposable
 
 <div class="invite-backdrop" id="invite-backdrop-Id" hidden>
     <div class="invite-modal bounce-in">
@@ -55,6 +59,7 @@
     private static Guid ReceiverUserGuid { get; set; }
     private static Guid InviterUserGuid { get; set; }
     private string _connectionId { get; set; }
+    private Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>>? _inviteReceivedHandler;
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,11 +67,12 @@
 
         await JSRunetimeService.HideInviteModal();
 
-        InvitationHandlerService.OnReceived += async (SendInvitationResponseDTO) =>
+        _inviteReceivedHandler = (sendInvitationResponseDTO) =>
         {
-            ReceiverUserGuid = SendInvitationResponseDTO.Data.ReceiverUserGuid;
-            InviterUserGuid = SendInvitationResponseDTO.Data.InviterUserGuid;
+            ReceiverUserGuid = sendInvitationResponseDTO.Data.ReceiverUserGuid;
+            InviterUserGuid = sendInvitationResponseDTO.Data.InviterUserGuid;
         };
+        InvitationHandlerService.OnReceived += _inviteReceivedHandler;
 
     }
 
@@ -86,5 +92,13 @@
     {
         await JSRunetimeService.HideInviteModal();
         await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (_inviteReceivedHandler != null)
+        {
+            InvitationHandlerService.OnReceived -= _inviteReceivedHandler;
+        }
     }
 }

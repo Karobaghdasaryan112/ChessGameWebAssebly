@@ -22,12 +22,12 @@ public sealed class SignalRService(
 {
     private HubConnection? _hubConnection;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private CancellationTokenSource? _pingLoopCancellation;
 
 
     public async Task<HubConnection> GetHubConnectionAsync()
     {
-        
-        if (_hubConnection?.State is HubConnectionState.Connected or HubConnectionState.Reconnecting)
+        if (_hubConnection?.State is HubConnectionState.Connected or HubConnectionState.Reconnecting or HubConnectionState.Connecting)
         {
             return _hubConnection;
         }
@@ -35,24 +35,21 @@ public sealed class SignalRService(
         await _semaphore.WaitAsync();
         try
         {
-            if (_hubConnection != null) return _hubConnection;
-            _hubConnection = BuildHubConnection();
-            
-            _ = Task.Run(async () =>
+            if (_hubConnection == null)
             {
-                while (true)
-                {
-                    if (_hubConnection?.State == HubConnectionState.Connected)
-                    {
-                        await _hubConnection.SendAsync("Ping");
-                    }
-                    await Task.Delay(10000);
-                }
-            });
+                _hubConnection = BuildHubConnection();
+                RegisterHandlers(_hubConnection);
+            }
 
-            RegisterHandlers(_hubConnection);
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
 
-            await _hubConnection.StartAsync();
+            _pingLoopCancellation?.Cancel();
+            _pingLoopCancellation = new CancellationTokenSource();
+            _ = StartPingLoopAsync(_pingLoopCancellation.Token);
+
             await NotifyServerOfConnectionAsync(_hubConnection);
 
             return _hubConnection;
@@ -60,6 +57,7 @@ public sealed class SignalRService(
         catch (Exception ex)
         {
             logger.LogError(ex, "Failed to initialize SignalR connection.");
+            _hubConnection = null;
             throw;
         }
         finally
@@ -138,12 +136,48 @@ public sealed class SignalRService(
                 connectionHandler.DisconnectedNotification(data);
             });
 
+        connection.On<string>("OpponentLeftWinNotification", async (leavingPlayerName) =>
+        {
+            await gameHandler.NotifyOpponentLeftWinAsync(leavingPlayerName);
+        });
+
+        connection.On("ForceNavigateToDashboard", async () =>
+        {
+            await Task.Delay(100);
+            await gameHandler.RedirectToDashboardAsync();
+        });
+
         connection.Closed += async (error) =>
         {
             if (error != null) logger.LogError(error, "SignalR connection closed with error.");
+            _pingLoopCancellation?.Cancel();
             await Task.CompletedTask;
         };
         
         connection.Reconnected += async (_) => await NotifyServerOfConnectionAsync(connection);
+    }
+
+    private async Task StartPingLoopAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+
+            while (await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                if (_hubConnection?.State == HubConnectionState.Connected)
+                {
+                    await _hubConnection.SendAsync("Ping", cancellationToken);
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when connection is disposed/recreated.
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "SignalR ping loop stopped unexpectedly.");
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace BlazorServerSideClient.Services.Handlers
 {
     public class GameHandlerService(JSRunetimeService jSRuneTimeService) : IGameHandlerService
     {
+        private DateTime _lastDisconnectNotificationAt = DateTime.MinValue;
         public async Task ReseivePlayersAsync(
             ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
         {
@@ -49,9 +50,29 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         public async Task NotifyOpponentUserDisconnected(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection)
         {
+            if (DateTime.UtcNow - _lastDisconnectNotificationAt < TimeSpan.FromSeconds(2))
+            {
+                return;
+            }
+
+            _lastDisconnectNotificationAt = DateTime.UtcNow;
             var opponentUserName = opponentUserConnection.Value.UserName;
             await jSRuneTimeService.NotifyOpponentUserDisconnected(opponentUserName!);
         }
+
+        public async Task NotifyOpponentLeftWinAsync(string leavingPlayerName)
+        {
+            if (DateTime.UtcNow - _lastDisconnectNotificationAt < TimeSpan.FromSeconds(2))
+            {
+                return;
+            }
+
+            _lastDisconnectNotificationAt = DateTime.UtcNow;
+            await jSRuneTimeService.NotifyOpponentUserDisconnected(leavingPlayerName);
+        }
+
+        public async Task RedirectToDashboardAsync()
+            => await jSRuneTimeService.NavigateTo("/dashboard");
     }
 }
 

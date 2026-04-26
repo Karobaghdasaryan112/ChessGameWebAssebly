@@ -11,6 +11,10 @@
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
+@using SharedResources.Responses.ResponseMessages
+@using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses
 @using SharedResources.PipeLine.PipeLineContext
 @inject SignalRService HubClient
 @inject ChessGameService ChessGameService
@@ -31,8 +35,15 @@
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
     @code
     {
+        private bool _isLeavingGame;
+
         private async Task ConfirmLeave(LocationChangingContext context)
         {
+            if (_isLeavingGame)
+            {
+                return;
+            }
+
             var leave = await jsRuneTime.InvokeAsync<bool>(
                 "confirm",
                 "If you leave the game, you will lose. Do you want to leave?"
@@ -42,6 +53,18 @@
             {
                 context.PreventNavigation();
                 return;
+            }
+
+            context.PreventNavigation();
+            _isLeavingGame = true;
+
+            try
+            {
+                await LeaveGameAsync();
+            }
+            finally
+            {
+                _isLeavingGame = false;
             }
         }
     }
@@ -149,16 +172,12 @@
     private string _optimizeMoveLoadingClassName = "chessboard";
 
     private HubConnection? _hubConnection;
+    private Guid _currentUserGuid;
+    private string _currentUserName = string.Empty;
 
     private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
 
-    private FigureColors MyColor => currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
-
-    private static UserConnectionDTO currentUser => new UserConnectionDTO();
-
-    private string currentUserName => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
-
-    private string currentUserGuid => (AuthenticationState.GetAuthenticationStateAsync().GetAwaiter().GetResult()).User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+    private FigureColors MyColor => _currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
 
     //Properties
 
@@ -171,6 +190,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationState.GetAuthenticationStateAsync();
+        _currentUserName = authState.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+        _currentUserGuid = Guid.Parse(authState.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
+
         _hubConnection = await HubClient.GetHubConnectionAsync();
 
         await JS.ShowPlayers(Player1Name, Player2Name);
@@ -187,13 +210,13 @@
             var blocks = thisBoard.Response.Data.Board.BoardBlocks;
             var jsonBoard = JsonSerializer.Serialize(blocks);
 
-            var figureColor = currentUserName == Player1Name ? 0 : 1;
+            var figureColor = _currentUserName == Player1Name ? 0 : 1;
 
             var dotNetRef = DotNetObjectReference.Create(this);
 
             await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
 
-            InitializeRequests(GameId, currentUserName, MyColor, ClickedBlockInformationDTO);
+            InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
         }
 
         if (IsComputerOpponent && Player1Name == "Computer")
@@ -271,7 +294,7 @@
         //request Data Setup
         requestDTO.To = requestDTO.From;
         requestDTO.From = ClickedBlockInformationDTO.ClickedPosition;
-        requestDTO.CurrentPlayerId = Guid.Parse(currentUserGuid);
+        requestDTO.CurrentPlayerId = _currentUserGuid;
 
         var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
@@ -294,7 +317,7 @@
             IsAIFirstMove = true,
             GameId = GameId,
             IsOpponentComputer = IsComputerOpponent,
-            Player = currentUserName,
+            Player = _currentUserName,
             MyColor = MyColor,
             PreviusBlockInformationDTO = ClickedBlockInformationDTO,
             CurrentPlayerId = Guid.NewGuid(),
@@ -369,6 +392,23 @@
             isBusy = false;
             await JS.EnableAllGameState(_optimizeMoveLoadingClassName);
         }
+    }
+
+    private async Task LeaveGameAsync()
+    {
+        await HubClient.GetHubConnectionAsync();
+
+        var leaveResponse =
+            await _hubConnection!.InvokeAsync<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>>(
+                "LeaveGameAsync", GameId, _currentUserGuid);
+
+        if (!leaveResponse.IsSuccess)
+        {
+            await JS.ShowErrorModal("Unable to leave the game right now. Please try again.");
+            return;
+        }
+
+        await JS.NavigateTo("/dashboard");
     }
 
 }
