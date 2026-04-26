@@ -1,7 +1,6 @@
 ﻿using ChessGame.Core.Services.Contracts.BoardServices;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
 using ChessGame.Core.Services.MediatR.Requests.Queries;
-using ChessGame.Core.Services.Services.Validations;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;

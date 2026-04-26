@@ -34,6 +34,7 @@ namespace ChessGame.Core.Services
             services.AddValidatorsFromAssembly(typeof(SubmitMoveResponseDTOValidator).Assembly, ServiceLifetime.Scoped);
             services.AddValidatorsFromAssembly(typeof(GetAllHistoryWidgetsRequestDTOValidator).Assembly,
                 ServiceLifetime.Scoped);
+            services.AddValidatorsFromAssembly(typeof(SameFigureRequestDTOValidator).Assembly);
             services.AddValidatorsFromAssemblyContaining<GetAllHistoryWidgetsRequestDTOValidator>();
             services.AddValidatorsFromAssemblyContaining<IsKingCheckedRequestDTOValidation>();
             services.AddValidatorsFromAssemblyContaining<IsKingMateRequestDTOValidation>();

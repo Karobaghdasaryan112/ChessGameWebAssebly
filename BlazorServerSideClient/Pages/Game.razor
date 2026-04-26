@@ -20,26 +20,28 @@
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="~/" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="~/"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="~/Js/site.js"></script>
 </head>
-<MateNotifier />
+<MateNotifier/>
+<ErrorModal/>
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
     @code
     {
         private async Task ConfirmLeave(LocationChangingContext context)
         {
             var leave = await jsRuneTime.InvokeAsync<bool>(
-            "confirm",
-            "If you leave the game, you will lose. Do you want to leave?"
+                "confirm",
+                "If you leave the game, you will lose. Do you want to leave?"
             );
 
             if (!leave)
             {
                 context.PreventNavigation();
+                return;
             }
         }
     }
@@ -164,6 +166,7 @@
     private MoveRequestDTO MoveRequestDTO = new MoveRequestDTO();
     private ClickRequestDTO ClickRequestDTO = new ClickRequestDTO();
 
+    private SameFigureRequest SameFigureRequest = new SameFigureRequest();
     //Lifecycle Methods
 
     protected override async Task OnInitializedAsync()
@@ -199,7 +202,7 @@
         }
     }
 
-
+    [JSInvokable]
     public async Task OnCellClick(int row, int col)
     {
         await HubClient.GetHubConnectionAsync();
@@ -213,11 +216,11 @@
         if (selectedPosition != null)
         {
             //TO DO:
-            // if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
-            // {
-            //     await SelectFigure(ClickRequestDTO);
-            //     return;
-            // }
+            if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
+            {
+                await SelectFigure(ClickRequestDTO);
+                return;
+            }
 
             await Move(MoveRequestDTO);
             return;
@@ -229,10 +232,21 @@
 
     //private Methods
     //TO DO:
-    // private Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
-    // {
-    //     return GameRequestService.SendIsSameFigureClickedAsync(selectedPosition, currentPosition, gameId);
-    // }
+    private async Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
+    {
+        SameFigureRequest.Current = currentPosition;
+        SameFigureRequest.Selected = selectedPosition;
+        SameFigureRequest.GameId = gameId;
+
+        var pipeLineRequest = new PipeLineRequest<SameFigureRequest>
+        {
+            Request = SameFigureRequest
+        };
+
+        var result = await GameRequestService.SendIsSameFigureClickedAsync(pipeLineRequest);
+
+        return result.Response.Data.IsSameFigure;
+    }
 
     private async Task<bool> SelectFigure(ClickRequestDTO requestDTO)
     {
@@ -356,4 +370,5 @@
             await JS.EnableAllGameState(_optimizeMoveLoadingClassName);
         }
     }
+
 }

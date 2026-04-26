@@ -9,16 +9,21 @@ namespace BlazorServerSideClient.Services.Handlers
 {
     public class InvitationHandlerService : IInvitationHandlerService
     {
-        JSRunetimeService _jSRunetimeService { get; set; }
+        JSRunetimeService _JSRunetimeService { get; set; }
         public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
         public SendInvitationsResponseDTO? lastInvite { get; set; }
         private NavigationManager _navigationManager { get; set; }
-        Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived { get => OnReceived; set => OnReceived = value; }
+
+        Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived
+        {
+            get => OnReceived;
+            set => OnReceived = value;
+        }
 
         public InvitationHandlerService(JSRunetimeService JSRunetimeService, NavigationManager NavigationManager)
         {
             _navigationManager = NavigationManager;
-            _jSRunetimeService = JSRunetimeService;
+            _JSRunetimeService = JSRunetimeService;
         }
 
         public async Task ReceiveInvite(
@@ -45,8 +50,9 @@ namespace BlazorServerSideClient.Services.Handlers
                     Message = ChessGameResponseMessage.SuccessInvitation,
                 });
 
-            await _jSRunetimeService.ShowInviteModal(inviterUserConnection.UserName);
+            await _JSRunetimeService.ShowInviteModal(inviterUserConnection.UserName);
         }
+
         public void InviteAcceptedAsync(
             UserConnectionDTO inviterUserConnection,
             Guid inviterUserGuid,
@@ -54,9 +60,11 @@ namespace BlazorServerSideClient.Services.Handlers
             Guid receiverUserGuid,
             Guid gameGuid)
         {
-            _navigationManager.NavigateTo($"/game?GameId={gameGuid}&Player1={inviterUserConnection.UserName}&Player2={receiverUserConnection.UserName}", true);
-        }
+            var url = $"/game?GameId={gameGuid}" +
+                      $"&Player1={inviterUserConnection.UserName}" +
+                      $"&Player2={receiverUserConnection.UserName}";
 
+             _ = _JSRunetimeService.NavigateTo(url);
+        }
     }
 }
-

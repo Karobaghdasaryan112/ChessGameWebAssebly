@@ -19,7 +19,7 @@ public class LoggingBehavior<TRequest, TResponse>(
             typeof(TRequest).Name);
 
         var response = await next();
-        throw new Exception("exception was occured in PipeLine Behavior");
+
         logger.LogInformation("Handled {Request} (Success: {Success})",
             typeof(TRequest).Name,
             response.Response?.IsSuccess);

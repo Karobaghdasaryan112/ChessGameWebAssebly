@@ -5,7 +5,7 @@ namespace SharedResources.Responses.ResponseMessages
 {
     public class ChessGameResponseMessage : IMessage
     {
-        public string MessageOutput { get; }
+        public string MessageOutput { get; set; }
         public ChessGameResponseMessage(string messageOutput)
         {
             MessageOutput = messageOutput;

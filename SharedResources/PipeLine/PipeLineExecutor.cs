@@ -20,7 +20,6 @@ public class PipelineExecutor<TRequest, TResponse>(
         foreach (var behavior in behaviors.Reverse())
         {
             var next = pipeline;
-            
             pipeline = () => behavior.Handle(request, next, cancellationToken);
         }
 

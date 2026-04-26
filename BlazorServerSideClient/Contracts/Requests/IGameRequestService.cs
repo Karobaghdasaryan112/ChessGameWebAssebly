@@ -25,8 +25,7 @@ namespace BlazorServerSideClient.Contracts.Requests
         Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
             PipeLineRequest<MoveRequestDTO> sendMoveConnectionRequestDto);
 
-        Task<PipeLineResponse<object>> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition,
-            Guid gameId);
+        Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(PipeLineRequest<SameFigureRequest> requestDto);
 
         Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
             PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDto);

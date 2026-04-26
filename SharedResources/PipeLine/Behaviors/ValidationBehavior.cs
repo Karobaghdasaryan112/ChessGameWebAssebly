@@ -1,5 +1,4 @@
 using System.Net;
-using ChessGame.Core.Services.Services.Validations;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.Abstractions;
 using SharedResources.PipeLine.PipeLineContext;
@@ -22,13 +21,11 @@ public class ValidationBehavior<TRequest, TResponse>(
 
         return new PipeLineResponse<TResponse>
         {
-            Response = ResponseDTO<TResponse,ChessGameResponseMessage>.CreateErrorResponse(
+            Response = ResponseDTO<TResponse, ChessGameResponseMessage>.CreateErrorResponse(
                 default!,
                 (ChessGameResponseMessage.InvalidData),
                 HttpStatusCode.BadRequest,
-                validationResult.Errors?.Select(e => e.ErrorMessage).ToList())
+                validationResult.Errors?.Select(e => e.ErrorMessage).ToList()!)
         };
     }
-
-
 }

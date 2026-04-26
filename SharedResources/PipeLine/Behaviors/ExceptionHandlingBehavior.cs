@@ -24,8 +24,7 @@ public class ExceptionHandlingBehavior<TRequest, TResponse>(
         {
             logger.LogError(ex, "Exception in {Request}", typeof(TRequest).Name);
 
-
-
+            
             return new PipeLineResponse<TResponse>
             {
                 Response = new ResponseDTO<TResponse,ChessGameResponseMessage>

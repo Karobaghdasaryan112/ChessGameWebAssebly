@@ -9,9 +9,9 @@ namespace BlazorServerSideClient.Services.Handlers
     {
         public Action<OnlinePlayerChangeType, KeyValuePair<Guid, UserConnectionDTO>>? OnlinePlayersUpdated { get; set; }
         
-        public void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection)
+        public void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection,OnlinePlayerChangeType onlinePlayerChangeType)
         {
-            OnlinePlayersUpdated?.Invoke(OnlinePlayerChangeType.Added,
+            OnlinePlayersUpdated?.Invoke(onlinePlayerChangeType,
                 new KeyValuePair<Guid, UserConnectionDTO>(userConnection.Key, userConnection.Value));
         }
         

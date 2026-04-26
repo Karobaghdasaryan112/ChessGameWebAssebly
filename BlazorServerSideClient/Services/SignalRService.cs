@@ -8,6 +8,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
+using SharedResources.ChessGameResource.Enums.Users;
 
 namespace BlazorServerSideClient.Services;
 
@@ -17,7 +18,7 @@ public sealed class SignalRService(
     IGameHandlerService gameHandler,
     AuthenticationStateProvider authStateProvider,
     ILogger<SignalRService> logger)
-    
+
 {
     private HubConnection? _hubConnection;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
@@ -25,6 +26,7 @@ public sealed class SignalRService(
 
     public async Task<HubConnection> GetHubConnectionAsync()
     {
+        
         if (_hubConnection?.State is HubConnectionState.Connected or HubConnectionState.Reconnecting)
         {
             return _hubConnection;
@@ -35,6 +37,18 @@ public sealed class SignalRService(
         {
             if (_hubConnection != null) return _hubConnection;
             _hubConnection = BuildHubConnection();
+            
+            _ = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (_hubConnection?.State == HubConnectionState.Connected)
+                    {
+                        await _hubConnection.SendAsync("Ping");
+                    }
+                    await Task.Delay(10000);
+                }
+            });
 
             RegisterHandlers(_hubConnection);
 
@@ -54,19 +68,16 @@ public sealed class SignalRService(
         }
     }
 
-    
-
-
-
 
     private HubConnection BuildHubConnection()
     {
         return new HubConnectionBuilder()
             .WithUrl(BasePaths.baseUrlHub)
             .WithAutomaticReconnect()
+            .WithKeepAliveInterval(TimeSpan.FromSeconds(60))
+            .WithServerTimeout(TimeSpan.FromSeconds(60))
             .Build();
     }
-
 
 
     private async Task NotifyServerOfConnectionAsync(HubConnection connection)
@@ -97,10 +108,9 @@ public sealed class SignalRService(
     }
 
 
-
     private void RegisterHandlers(HubConnection connection)
     {
-        connection.On<KeyValuePair<Guid, UserConnectionDTO>>(
+        connection.On<KeyValuePair<Guid, UserConnectionDTO>, OnlinePlayerChangeType>(
             "ReceiveUpdatedUsers",
             connectionHandler.ReceiveUpdatedUsers);
 
@@ -133,21 +143,7 @@ public sealed class SignalRService(
             if (error != null) logger.LogError(error, "SignalR connection closed with error.");
             await Task.CompletedTask;
         };
+        
+        connection.Reconnected += async (_) => await NotifyServerOfConnectionAsync(connection);
     }
-
-
-
-    //public async ValueTask DisposeAsync()
-    //{
-    //    if (_hubConnection != null)
-    //    {
-    //        await _hubConnection.StopAsync();
-    //        await _hubConnection.DisposeAsync();
-    //    }
-
-    //    _semaphore.Dispose();
-    //}
-
-
-
 }

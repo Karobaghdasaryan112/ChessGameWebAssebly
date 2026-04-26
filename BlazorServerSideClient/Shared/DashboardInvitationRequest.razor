@@ -6,7 +6,7 @@
 @inject IInvitationHandlerService InvitationHandlerService
 @inject SignalRService hubClient;
 @inject IInivitationReqeustService InvitationRequestService
-@inject JSRunetimeService JSRuneTimeService
+@inject JSRunetimeService JSRunetimeService
 @attribute [Authorize]
 
 <div class="invite-backdrop" id="invite-backdrop-Id" hidden>
@@ -60,7 +60,7 @@
     {
         _connectionId = (await hubClient.GetHubConnectionAsync()).ConnectionId!;
 
-        await JSRuneTimeService.HideInviteModal();
+        await JSRunetimeService.HideInviteModal();
 
         InvitationHandlerService.OnReceived += async (SendInvitationResponseDTO) =>
         {
@@ -84,9 +84,7 @@
 
     private async Task DeclineInvite()
     {
-        await JSRuneTimeService.HideInviteModal();
+        await JSRunetimeService.HideInviteModal();
         await InvokeAsync(StateHasChanged);
     }
-
-
 }

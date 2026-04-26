@@ -6,7 +6,7 @@ namespace BlazorServerSideClient.Contracts.Handlers
     public interface IConnectionHandlerService
     {
         Action<OnlinePlayerChangeType, KeyValuePair<Guid, UserConnectionDTO>>? OnlinePlayersUpdated { get; set; }
-        void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection);
+        void ReceiveUpdatedUsers(KeyValuePair<Guid, UserConnectionDTO> userConnection,OnlinePlayerChangeType onlinePlayerChangeType);
         void DisconnectedNotification(KeyValuePair<Guid, UserConnectionDTO> opponentUserConnection);
     }
 }

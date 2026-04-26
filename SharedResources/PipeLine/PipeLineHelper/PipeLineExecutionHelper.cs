@@ -18,6 +18,7 @@ namespace SharedResources.PipeLine.PipeLineHelper
                 .GetRequiredService<
                     IPipelineExecutor<TRequest, TResponse>>();
 
+            request.connectionId = context.ConnectionId;
             return await executor.Execute(
                 new PipeLineRequest<TRequest>(request),
                 handler,

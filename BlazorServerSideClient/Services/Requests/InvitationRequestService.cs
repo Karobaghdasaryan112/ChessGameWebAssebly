@@ -9,14 +9,15 @@ using SharedResources.PipeLine.PipeLineContext;
 namespace BlazorServerSideClient.Services.Requests
 {
     public class InvitationRequestService(
-        SignalRService signalRService, JSRunetimeService jsRunetimeService) : IInivitationReqeustService
+        SignalRService signalRService,
+        JSRunetimeService jsRunetimeService) : IInivitationReqeustService
     {
         public async Task<PipeLineResponse<SendInvitationsResponseDTO>?> SendInviteAsync(
             PipeLineRequest<SendInvitationRequestDTO> connectionRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
-
-            return await hubConnection.SafeInvokeAsync<SendInvitationRequestDTO, SendInvitationsResponseDTO>("SendInviteAsync",
+            return await hubConnection.SafeInvokeAsync<SendInvitationRequestDTO, SendInvitationsResponseDTO>(
+                "SendInviteAsync",
                 connectionRequestDto.Request, jsRunetimeService);
         }
 
@@ -32,8 +33,9 @@ namespace BlazorServerSideClient.Services.Requests
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
 
-            return await hubConnection.InvokeAsync<PipeLineResponse<AcceptInvitationResponseDTO>>
-                ("AcceptInviteAsync", acceptInvitationRequest);
+            return await hubConnection.SafeInvokeAsync<AcceptInvitationRequestDTO, AcceptInvitationResponseDTO>(
+                       "AcceptInviteAsync", acceptInvitationRequest.Request, jsRunetimeService) ??
+                   PipeLineResponse<AcceptInvitationResponseDTO>.Emoty;
         }
     }
 }

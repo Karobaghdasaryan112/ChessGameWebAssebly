@@ -1,6 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.MediatR.Requests.Commands;
-using ChessGame.Core.Services.Services.Validations;
 using MediatR;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.StaticResources;
@@ -28,15 +27,6 @@ namespace ChessGame.Core.Services.Services.HubServices
             AcceptInvitationRequestDTO acceptInvitationRequest)
         {
             var pipeLineResponse = new PipeLineResponse<AcceptInvitationResponseDTO>();
-            //Validation
-            var validationResult = await validationService.ValidateAsync(acceptInvitationRequest);
-            if (!validationResult.IsValid)
-            {
-                var resultValidation =
-                    await validationResult.ReturnValidationResult(default(AcceptInvitationResponseDTO));
-                pipeLineResponse.Response = resultValidation;
-                return pipeLineResponse;
-            }
 
             //Get the connection information of both players using their userGuids from the connection service
             var inviterConnectionInformation = await connectionService.GetUserConnection(
@@ -51,7 +41,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 });
 
             //If any of the connection information retrieval is not successful, return an error response with the errors from both retrievals
-            if (!inviterConnectionInformation.IsSuccess || !inviterConnectionInformation.IsSuccess)
+            if (!inviterConnectionInformation.IsSuccess || !receiverConnectionInformation.IsSuccess)
             {
                 inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
 
@@ -129,11 +119,13 @@ namespace ChessGame.Core.Services.Services.HubServices
             //Add the userConnectionDtos of both players to the active connections and add the gameId to their connection information
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid] =
                 receiverConnectionInformation.Data.UserConnectionDTO;
+
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid] =
                 inviterConnectionInformation.Data.UserConnectionDTO;
 
             //Add the gameId and gameinfo to the active connections of both players
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].GameId = result.Data.GameId;
+
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].Gameinfo =
                 new Gameinfo()
                 {
@@ -144,6 +136,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             //Add the gameId and gameinfo to the active connections of both players
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid].GameId = result.Data.GameId;
+
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid].Gameinfo =
                 new Gameinfo()
                 {
@@ -153,28 +146,24 @@ namespace ChessGame.Core.Services.Services.HubServices
                 };
 
             //Add both players to the group of the gameId
-            await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
-                inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
+            // await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
+            //     inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
+            //
+            // await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
+            //     receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
 
-            await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
-                receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
-
-            //Send a message to the inviter that the invitation has been accepted and the game has been created with the gameId and the connection information of both players
-            await baseHubService.SendAcceptedInviteAsync(
-                inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!,
-                inviterConnectionInformation.Data.UserConnectionDTO,
-                acceptInvitationRequest.inviterUserGuid,
-                receiverConnectionInformation.Data.UserConnectionDTO,
-                acceptInvitationRequest.receiverUserGuid,
-                result.Data.GameId);
-
-
-            //Send a message to the receiver that the invitation has been accepted and the game has been created with the gameId and the connection information of both players
             pipeLineResponse.Response =
                 ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                     invitationResponseDto,
                     ChessGameResponseMessage.SuccessInvitation,
                     HttpStatusCode.Created);
+
+            await baseHubService.SendAcceptedInviteAsync(
+                inviterConnectionInformation.Data.UserConnectionDTO,
+                acceptInvitationRequest.inviterUserGuid,
+                receiverConnectionInformation.Data.UserConnectionDTO,
+                acceptInvitationRequest.receiverUserGuid,
+                result.Data.GameId);
             return pipeLineResponse;
         }
 

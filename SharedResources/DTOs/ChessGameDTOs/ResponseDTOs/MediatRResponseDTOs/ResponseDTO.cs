@@ -1,9 +1,10 @@
 ﻿using SharedResources.Contracts.RequestsAndResponses;
 using System.Net;
+using SharedResources.Responses.ResponseMessages;
 
 namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 {
-    public class ResponseDTO<TDto, TMessage> where TMessage : IMessage
+    public class ResponseDTO<TDto, TMessage> where TMessage : ChessGameResponseMessage
     {
         public TDto Data { get; set; }
         public List<TDto> Datas { get; set; }

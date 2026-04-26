@@ -4,5 +4,6 @@ public enum OnlinePlayerChangeType
 {
     Added,
     Disconnected,
-    Removed
+    Removed,
+    Reconnected
 }

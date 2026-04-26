@@ -2,7 +2,6 @@
 using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Services.BoardService;
 using ChessGame.Core.Services.Services.HubServices;
-using ChessGame.Core.Services.Services.Validations;
 using ChessGame.Infrastructure.Infrastructure.Hubs;
 using ChessGame.Infrastructure.Infrastructure.HubServices;
 using Microsoft.Extensions.Configuration;

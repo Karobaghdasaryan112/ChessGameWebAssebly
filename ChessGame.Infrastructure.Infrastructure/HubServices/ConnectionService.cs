@@ -1,6 +1,5 @@
 ﻿using ChessGame.Core.Services.Contracts.Hub;
 using ChessGame.Core.Services.Services.HubServices;
-using ChessGame.Core.Services.Services.Validations;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SharedResources.ChessGameResource.StaticResources;
@@ -15,6 +14,7 @@ using SharedResources.Validation.ChessGameValidations.RequestValidations.Connect
 using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
 using System.Collections.Concurrent;
 using System.Net;
+using SharedResources.ChessGameResource.Enums.Users;
 
 namespace ChessGame.Infrastructure.Infrastructure.HubServices
 {
@@ -31,10 +31,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
         public async Task<ResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>>
             GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO)
         {
-            var validationResult = await validationService.ValidateAsync(getUserConnectionRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(GetUserConnectionResponseDTO)))!;
-
             if (!CurrentConnectionState.TryGetValue(getUserConnectionRequestDTO.UserGuid,
                     out var currentUserConnection))
                 return await Task.FromResult(
@@ -61,10 +57,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
         public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>>
             AddConnectionAsync(AddUserConnectionRequestDTO addUserConnectionRequestDTO)
         {
-            //Validation
-            var validationResult = await validationService.ValidateAsync(addUserConnectionRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(AddUserConnectionResponseDTO)))!;
 
             var successResponse =
                 ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
@@ -88,9 +80,14 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                     addUserConnectionRequestDTO.userConnection.UserName &&
                     existUserResult.Data.UserConnectionDTO.ConnectionId !=
                     addUserConnectionRequestDTO.userConnection.ConnectionId)
+                {
+                    await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(
+                        addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection),OnlinePlayerChangeType.Reconnected);
                     CurrentConnectionState[addUserConnectionRequestDTO.userGuid].ConnectionId =
                         addUserConnectionRequestDTO.userConnection.ConnectionId;
+                }
 
+                
                 return successResponse;
             }
 
@@ -107,7 +104,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                         [$"cannot Added the UserConnection for User {addUserConnectionRequestDTO.userGuid}"]);
 
             await _baseHubService.SendUsersChange(new KeyValuePair<Guid, UserConnectionDTO>(
-                addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection));
+                addUserConnectionRequestDTO.userGuid, addUserConnectionRequestDTO.userConnection),OnlinePlayerChangeType.Added);
 
             return successResponse;
         }
@@ -116,9 +113,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             RemoveConnectionAsUserGuidAsync(
                 RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
-            var validationResult = await validationService.ValidateAsync(removeUserConnectionRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(RemoveUserConnectionResponseDTO)))!;
 
             if (!CurrentConnectionState.TryRemove(removeUserConnectionRequestDTO.UserGuid,
                     out var removedConnection))
@@ -149,10 +143,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>>
             RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO)
         {
-            var validationResult = await validationService.ValidateAsync(removeUserConnectionRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(RemoveUserConnectionResponseDTO)))!;
-
             var errorResponse =
                 ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new RemoveUserConnectionResponseDTO()
@@ -195,15 +185,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
         public async Task<ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>>
             NotifyDisconnectedUser(DisconnectedUserNotificationRequestDTO disconnectedUserNotificationRequestDTO)
         {
-            var validationResult = await validationService.ValidateAsync(disconnectedUserNotificationRequestDTO);
-            if (!validationResult.IsValid)
-            {
-                logger.LogWarning(
-                    $"Validation failed for DisconnectedUserNotificationRequestDTO with ConnectionId: {disconnectedUserNotificationRequestDTO.ConnectionId}. Errors: {string.Join(", ", validationResult.Errors)}");
-                return (await validationResult.ReturnValidationResult(default(DisconnectedUserNotificationResponseDTO)))
-                    !;
-            }
-
             try
             {
                 await _baseHubService._hubContext.Clients.Client(disconnectedUserNotificationRequestDTO.ConnectionId)
@@ -278,10 +259,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
         public async Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>>
             RemoveUsersFromGameAsync(RemoveUserFromGameRequestDTO removeUserFromGameRequestDTO)
         {
-            var validationResult = await validationService.ValidateAsync(removeUserFromGameRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(RemoveUserFromGameResponseDTO)))!;
-
             var activeConnections = CurrentConnectionState.Where(connection =>
                 connection.Value.GameId == removeUserFromGameRequestDTO.GameId).ToList();
 
@@ -312,12 +289,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             SendBoardStateToClient(BoardStateRequestDTO boardStateConnectionRequestDTO,
                 string player, bool isMyConnection, bool win = false)
         {
-            //Validation
-            var validationResult = await validationService.ValidateAsync(boardStateConnectionRequestDTO);
-            if (!validationResult.IsValid)
-                return (await validationResult.ReturnValidationResult(default(BoardStateResponseDTO)))!;
-
-
             string selectedGameOpponentConnectionId = string.Empty;
             if (boardStateConnectionRequestDTO.IsOpponentComputer)
             {
@@ -370,7 +341,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                     boardStateResposneDTO, ChessGameResponseMessage.Draw);
 
-            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO.Data);
+            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO);
 
             return ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new BoardStateResponseDTO()

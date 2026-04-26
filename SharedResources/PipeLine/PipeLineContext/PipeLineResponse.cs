@@ -6,5 +6,5 @@ namespace SharedResources.PipeLine.PipeLineContext;
 public class PipeLineResponse<TResponse>
 {
     public ResponseDTO<TResponse, ChessGameResponseMessage> Response { get; set; }
-
+    public static PipeLineResponse<TResponse> Emoty => new PipeLineResponse<TResponse>();
 }

@@ -26,7 +26,7 @@ namespace ChessGameBlazorClient.ApiServices
             return await PostAsync<LoginDTO,
                                    IdentityResponse<UserDTO>,
                                    UserDTO,
-                                   IdentityResponseMesage>
+                                   ChessGameResponseMessage>
                                    (requestUri, loginRequest);  
         }
 
@@ -46,7 +46,7 @@ namespace ChessGameBlazorClient.ApiServices
                 await PostAsync<RegistrationDTO,
                                    IdentityResponse<RegistrationResponseDTO>,
                                    RegistrationResponseDTO,
-                                   IdentityResponseMesage>
+                                   ChessGameResponseMessage>
                                    (requestUri, registerRequest);
         }
 
@@ -58,7 +58,7 @@ namespace ChessGameBlazorClient.ApiServices
                 await PostAsync<List<string>,
                                    IdentityResponse<UserDTO>,
                                    UserDTO,
-                                   IdentityResponseMesage>
+                                   ChessGameResponseMessage>
                                    (requestUri, Ids);
         }
 
@@ -70,7 +70,7 @@ namespace ChessGameBlazorClient.ApiServices
                 = await PostAsync<LoginDTO,
                                    IdentityResponse<SignInDTO>,
                                    SignInDTO,
-                                   IdentityResponseMesage>
+                                   ChessGameResponseMessage>
                                    (requestUri, registerRequest);
 
             return result;

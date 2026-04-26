@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static ChessGameBlazorClient.ServiceEndpoints.Actions;
 using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
+using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGameBlazorClient.UI.ClientService
 {
@@ -44,7 +45,7 @@ namespace ChessGameBlazorClient.UI.ClientService
         protected async Task<TResponse?> PostAsync<TRequest, TResponse, TData, TMessage>(Uri uri, TRequest data)
             where TResponse : ResponseDTO<TData, TMessage>
             where TData : IResponseDTO
-            where TMessage : IMessage
+            where TMessage : ChessGameResponseMessage
         {
             var response = await _httpClient.PostAsJsonAsync(uri, data);
 
@@ -69,7 +70,7 @@ namespace ChessGameBlazorClient.UI.ClientService
         protected async Task<TResponse?> GetAsync<TResponse, TData, TMessage>(string url)
             where TResponse : ResponseDTO<TData, TMessage>
             where TData : IResponseDTO
-            where TMessage : IMessage
+            where TMessage : ChessGameResponseMessage
         {
 
             var response = await _httpClient.GetAsync(url);

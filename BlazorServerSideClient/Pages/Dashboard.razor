@@ -14,10 +14,11 @@
 @inject IConnectionHandlerService ConnectionHandler
 @inject IGameRequestService GameRequest
 @inject NavigationManager Navigation
+@inject SignalRService signalRService
 @attribute [Authorize]
 
 <ErrorModal/>
-<DashboardInvitationRequest />
+<DashboardInvitationRequest/>
 
 <div class="dashboard-container">
     <h2 class="dashboard-title">🎮 Player Dashboard</h2>
@@ -79,10 +80,8 @@
     private string? userGuid { get; set; }
 
 
-
     protected override async Task OnInitializedAsync()
     {
-
         user ??= (await AuthStateProvider.GetAuthenticationStateAsync()).User;
 
         ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
@@ -112,21 +111,24 @@
 
     private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
     {
+        var connection = await signalRService.GetHubConnectionAsync();
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
         {
             var sendInviteRequest =
-                new PipeLineRequest<SendInvitationRequestDTO>(new SendInvitationRequestDTO()
+                new PipeLineRequest<SendInvitationRequestDTO>(new SendInvitationRequestDTO
                 {
                     ReceiverUserConnection = receiverPlayer.Value,
-                    InviterUserConnection = new UserConnectionDTO()
+                    GameId = default,
+                    InviterUserConnection = new UserConnectionDTO
                     {
-                        UserName = userName
+                        ConnectionId = connection?.ConnectionId!,
+                        UserName = userName,
                     },
                     InviterPlayerId = inviterUserGuid,
-                    ReceiverPlayerId = receiverUserGuid
+                    ReceiverPlayerId = receiverUserGuid,
                 });
 
             await InvitationRequest.SendInviteAsync(sendInviteRequest);
@@ -137,15 +139,21 @@
     {
         if (user.Identity?.IsAuthenticated == false)
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
-
     }
 
     private void HandleOnlinePlayersUpdated(OnlinePlayerChangeType @event, KeyValuePair<Guid, UserConnectionDTO> player)
     {
         if (@event == OnlinePlayerChangeType.Added)
             activeGamers[player.Key] = player.Value;
-        else
+        else if (@event == OnlinePlayerChangeType.Removed)
             activeGamers.Remove(player.Key);
+        else if (@event == OnlinePlayerChangeType.Reconnected)
+        {
+            if (activeGamers.TryGetValue(player.Key, out _))
+                activeGamers[player.Key].ConnectionId = player.Value.ConnectionId;
+            else
+                activeGamers[player.Key] = player.Value;
+        }
 
         InvokeAsync(StateHasChanged);
     }

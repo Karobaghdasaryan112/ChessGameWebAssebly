@@ -4,6 +4,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using BlazorServerSideClient.Helpers;
 
 
 namespace BlazorServerSideClient.Extensions
@@ -15,25 +16,19 @@ namespace BlazorServerSideClient.Extensions
             string identifier,
             TRequest request,
             JSRunetimeService runeTimeService)
+            where TRequest : RequestDTO
         {
             var pipeLineResponse = new PipeLineResponse<TResponse>();
+            var pipeLineRequest = new PipeLineRequest<TRequest> { Request = request };
             try
             {
                 var response = await hubConnection
-                    .InvokeAsync<PipeLineResponse<TResponse>>(identifier, request);
+                    .InvokeAsync<PipeLineResponse<TResponse>>(identifier, pipeLineRequest);
 
                 if (response.Response?.IsSuccess == true)
                     return response;
 
-                var errorMessage =
-                    response.Response?.Errors?.Any() == true
-                        ? string.Join(" ", response.Response.Errors)
-                        : !string.IsNullOrWhiteSpace(response.Response?.CustomError)
-                            ? response.Response.CustomError
-                            : response.Response?.Message?.MessageOutput
-                              ?? "Unknown error";
-
-                await runeTimeService.ShowErrorModal(errorMessage);
+                await runeTimeService.ShowErrorModal(ErrorMessageBuilder.BuildErrorMessage(response));
 
                 return response;
             }

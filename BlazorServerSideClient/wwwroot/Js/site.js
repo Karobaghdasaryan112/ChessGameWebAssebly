@@ -64,7 +64,7 @@ window.inviteModal = {
 
                 this.hide();
             }
-        }, 1000);
+        }, 4000);
     }
 };
 
@@ -158,6 +158,7 @@ function createCell(i, j, block, dotNetRef) {
 
     return cell;
 }
+
 function createPiece(figure) {
     const piece = document.createElement("img");
     const colorFolder = figure.FigureColor === 1 ? "black" : "white";
@@ -177,6 +178,9 @@ function createPiece(figure) {
     return piece;
 }
 
+window.NavigateTo = function (path) {
+    window.location.href = path;
+}
 window.ShowMovableAndCutableBlocks = {
     Paint: function (cutableBlocks, movableBlocks, castlingInfosDTOs) {
 
@@ -195,6 +199,7 @@ window.ShowMovableAndCutableBlocks = {
                 cell.style.transform = "scale(1)";
             }, 300);
         }
+
         castlingInfosDTOs.forEach(castling => {
             if (castling.isCastling) {
                 const vertical = castling.castlingPosition.verticalOrientation;
@@ -332,7 +337,7 @@ window.KingCheckedNotification = {
 
         cell.addEventListener("animationend", () => {
             cell.classList.remove("king-blink-flash");
-        }, { once: true });
+        }, {once: true});
     }
 };
 
@@ -357,7 +362,7 @@ window.KingMateNotification = {
             cell.classList.add("king-blink-flash");
             cell.addEventListener("animationend", () => {
                 cell.classList.remove("king-blink-flash");
-            }, { once: true });
+            }, {once: true});
         }
     }
 };
@@ -371,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.add("pulse");
         setTimeout(() => btn.classList.remove("pulse"), 200);
     }
+
     if (prevBtn)
         prevBtn.addEventListener("click", () => {
             pulse(prevBtn);
@@ -380,7 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
             pulse(nextBtn);
         });
 });
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -404,10 +409,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const smallNext = document.querySelectorAll('.small-next');
     smallNext.forEach(btn => {
-        btn.addEventListener('mouseenter', () => btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 }));
+        btn.addEventListener('mouseenter', () => btn.animate([{transform: 'scale(1)'}, {transform: 'scale(1.06)'}, {transform: 'scale(1)'}], {duration: 420}));
     });
 });
-
 
 
 window.ReceiveBlockChangesHistory = {

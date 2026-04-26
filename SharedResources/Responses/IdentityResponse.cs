@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace SharedResources.Responses
 {
-    public class IdentityResponse<TDto> : ResponseDTO<TDto, IdentityResponseMesage>
+    public class IdentityResponse<TDto> : ResponseDTO<TDto,ChessGameResponseMessage>
        where TDto : class, IIdentityResponseDTO
     {
         [JsonConstructor]
@@ -25,7 +25,7 @@ namespace SharedResources.Responses
         public IdentityResponseMesage message { get; set; } = IdentityResponseMesage.Initialize;
         public IdentityErrorDTO? IdentityErrorDTO { get; set; }
 
-        public static ResponseDTO<TDto, IdentityResponseMesage> CreateSuccessResponse(
+        public static ResponseDTO<TDto, ChessGameResponseMessage> CreateSuccessResponse(
         TDto data, IdentityResponseMesage message, HttpStatusCode statusCode)
         {
             return new IdentityResponse<TDto>
@@ -38,7 +38,7 @@ namespace SharedResources.Responses
             };
         }
 
-        public static ResponseDTO<TDto, IdentityResponseMesage> CreateErrorResponse(
+        public static ResponseDTO<TDto, ChessGameResponseMessage> CreateErrorResponse(
             IdentityResponseMesage responseMessage, HttpStatusCode statusCode, List<string> errors)
         {
             return new IdentityResponse<TDto>

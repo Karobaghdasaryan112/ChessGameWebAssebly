@@ -1,9 +1,7 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Extensions;
-using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.ChessGameResource.Enums.Users;
-using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -12,19 +10,19 @@ using SharedResources.PipeLine.PipeLineContext;
 namespace BlazorServerSideClient.Services.Requests
 {
     public class GameRequestService(
-        JSRunetimeService jsRuneTimeService,
+        JSRunetimeService JSRunetimeService,
         SignalRService signalRService,
         IConnectionHandlerService connectionHandlerService)
         : IGameRequestService
     {
-        public async Task<PipeLineResponse<GetOnlinePlayersResponseDTO>> GetOnlinePlayersAsync(PipeLineRequest<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDto)
+        public async Task<PipeLineResponse<GetOnlinePlayersResponseDTO>> GetOnlinePlayersAsync(
+            PipeLineRequest<GetONlinePlayersRequestDTO> getOnlinePlayersRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
 
             var allGamersResult =
                 await hubConnection.SafeInvokeAsync<GetONlinePlayersRequestDTO, GetOnlinePlayersResponseDTO>(
-                    "GetOnlinePlayersAsync", getOnlinePlayersRequestDto.Request, jsRuneTimeService);
-
+                    "GetOnlinePlayersAsync", getOnlinePlayersRequestDto.Request, JSRunetimeService);
 
 
             if (!allGamersResult.Response.IsSuccess) return allGamersResult;
@@ -40,16 +38,20 @@ namespace BlazorServerSideClient.Services.Requests
             PipeLineRequest<TrainingGameRequestDTO> trainingGameRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
-            return await hubConnection.InvokeAsync<PipeLineResponse<TrainingGameResponseDTO>>(
-                "RequestTrainingGameAsync", trainingGameRequestDto);
+
+            return await hubConnection.SafeInvokeAsync<TrainingGameRequestDTO, TrainingGameResponseDTO>
+                       ("RequestTrainingGameAsync", trainingGameRequestDto.Request, JSRunetimeService) ??
+                   PipeLineResponse<TrainingGameResponseDTO>.Emoty;
         }
 
         public async Task<PipeLineResponse<SendGameStateResponseDTO>> SendGameStateAsync(
             PipeLineRequest<SendGameStateReqeustDTO> gameStateRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
-            return await hubConnection.InvokeAsync<PipeLineResponse<SendGameStateResponseDTO>>(
-                "SendGameStateAsync", gameStateRequestDto);
+
+            return await hubConnection.SafeInvokeAsync<SendGameStateReqeustDTO, SendGameStateResponseDTO>(
+                       "SendGameStateAsync", gameStateRequestDto.Request, JSRunetimeService) ??
+                   PipeLineResponse<SendGameStateResponseDTO>.Emoty;
         }
 
 
@@ -67,8 +69,8 @@ namespace BlazorServerSideClient.Services.Requests
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
 
-            return await hubConnection.InvokeAsync<PipeLineResponse<MoveResponseDTO>>(
-                "SendMoveAsync", sendMoveConnectionRequestDto);
+            return await hubConnection.SafeInvokeAsync<MoveRequestDTO, MoveResponseDTO>("SendMoveAsync",
+                sendMoveConnectionRequestDto.Request, JSRunetimeService) ?? PipeLineResponse<MoveResponseDTO>.Emoty;
         }
 
         public async Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
@@ -76,19 +78,20 @@ namespace BlazorServerSideClient.Services.Requests
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
 
-            return await hubConnection.InvokeAsync<PipeLineResponse<ClickResponseDTO>>(
-                "SendClickAsync", sendClickConnectionRequestDto);
+            return await hubConnection.SafeInvokeAsync<ClickRequestDTO, ClickResponseDTO>("SendClickAsync",
+                sendClickConnectionRequestDto.Request, JSRunetimeService) ?? PipeLineResponse<ClickResponseDTO>.Emoty;
         }
 
-
         //TO DO:
-        public async Task<PipeLineResponse<object>> SendIsSameFigureClickedAsync(Position selectedPosition, Position currentPosition,
-            Guid gameId)
+        public async Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(
+            PipeLineRequest<SameFigureRequest> sendIsSameFigureClickedConnectionRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
 
-            return await hubConnection.InvokeAsync<PipeLineResponse<object>>("SendIsSameFigureClickedAsync", selectedPosition,
-                currentPosition, gameId);
+            return await hubConnection.SafeInvokeAsync<SameFigureRequest, SameFigureResposneDTO>(
+                       "SendIsSameFigureClickedAsync",
+                       sendIsSameFigureClickedConnectionRequestDto.Request, JSRunetimeService) ??
+                   PipeLineResponse<SameFigureResposneDTO>.Emoty;
         }
     }
 }

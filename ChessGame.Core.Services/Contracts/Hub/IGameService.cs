@@ -14,15 +14,23 @@ namespace ChessGame.Core.Services.Contracts.Hub
     public interface IGameService
     {
         Task<PipeLineResponse<GetOnlinePlayersResponseDTO>>
-                    GetOnlinePlayersAsync(PipeLineRequest<GetONlinePlayersRequestDTO> connectionRequestDTO);
-        Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(SendGameStateReqeustDTO gameStateReqeustDTO);
+            GetOnlinePlayersAsync(PipeLineRequest<GetONlinePlayersRequestDTO> connectionRequestDTO);
+
+        Task<PipeLineResponse<SendGameStateResponseDTO>> SendGameStateAsync(
+            PipeLineRequest<SendGameStateReqeustDTO> gameStateReqeustDTO);
+
         Task ClearGameAsync(Guid gameId);
 
         Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
-            MoveRequestDTO sendMoveConnectionRequestDTO);
-        Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest);
-        Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(ClickRequestDTO sendClickConnectionRequestDTO);
+            PipeLineRequest<MoveRequestDTO> sendMoveConnectionRequestDTO);
+
+        Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(
+            PipeLineRequest<SameFigureRequest> sameFigureRequest);
+
+        Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
+            PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDTO);
+
         Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
-           TrainingGameRequestDTO trainingGameRequestDTO);
+            TrainingGameRequestDTO trainingGameRequestDTO);
     }
 }

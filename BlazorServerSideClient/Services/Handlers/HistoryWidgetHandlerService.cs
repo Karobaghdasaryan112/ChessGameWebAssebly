@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorServerSideClient.Services.Handlers
 {
-    public class HistoryWidgetHandlerService(JSRunetimeService jsRunetimeService,NavigationManager navigationManager) : IHistoryWidgetHandlerService
+    public class HistoryWidgetHandlerService(JSRunetimeService JSRunetimeService,NavigationManager navigationManager) : IHistoryWidgetHandlerService
     {
 
     }

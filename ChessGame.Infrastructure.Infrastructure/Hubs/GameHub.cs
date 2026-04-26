@@ -26,35 +26,35 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         PipeLineExecutionHelper pipeLineHelper)
         : Hub
     {
-
         public override async Task OnConnectedAsync()
-        {
-            await base.OnConnectedAsync();
-        }
+            => await base.OnConnectedAsync();
 
         public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            await base.OnDisconnectedAsync(exception);
-        }
+            => await base.OnDisconnectedAsync(exception);
 
         //InvitationService 
 
-        public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(PipeLineRequest<SendInvitationRequestDTO> connectionRequestDto)
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
+            PipeLineRequest<SendInvitationRequestDTO> connectionRequestDto)
             => await pipeLineHelper.Execute(
                 connectionRequestDto.Request,
                 Context,
                 async () => await invitationService.SendInviteAsync(connectionRequestDto.Request));
 
-
+        //To keep the connection alive
+        //Send ping into server
+        //receive and return Completed Task
+        public Task Ping() => Task.CompletedTask;
+        
         public async Task<PipeLineResponse<AcceptInvitationResponseDTO>> AcceptInviteAsync(
-            AcceptInvitationRequestDTO acceptInvitationRequestDto)
+            PipeLineRequest<AcceptInvitationRequestDTO> acceptInvitationRequestDto)
             => await pipeLineHelper.Execute<AcceptInvitationRequestDTO, AcceptInvitationResponseDTO>(
-                acceptInvitationRequestDto,
+                acceptInvitationRequestDto.Request,
                 Context, async () =>
                     await invitationService.AcceptInviteAsync(new AcceptInvitationRequestDTO()
                     {
-                        inviterUserGuid = acceptInvitationRequestDto.inviterUserGuid,
-                        receiverUserGuid = acceptInvitationRequestDto.receiverUserGuid
+                        inviterUserGuid = acceptInvitationRequestDto.Request.inviterUserGuid,
+                        receiverUserGuid = acceptInvitationRequestDto.Request.receiverUserGuid
                     }));
 
 
@@ -69,32 +69,40 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task ClearGameAsync(Guid gameId)
             => await gameService.ClearGameAsync(gameId);
 
-        public async Task<ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>> SendGameStateAsync(
-            SendGameStateReqeustDTO gameStateReqeustDTO)
-            => await gameService.SendGameStateAsync(gameStateReqeustDTO);
+        public async Task<PipeLineResponse<SendGameStateResponseDTO>> SendGameStateAsync(
+            PipeLineRequest<SendGameStateReqeustDTO> gameStateReqeustDTO)
+            => await pipeLineHelper.Execute(gameStateReqeustDTO.Request, Context, async () =>
+                await gameService.SendGameStateAsync(gameStateReqeustDTO));
 
         public async Task<PipeLineResponse<GetOnlinePlayersResponseDTO>> GetOnlinePlayersAsync(
             PipeLineRequest<GetONlinePlayersRequestDTO> connectionRequestDTO)
         {
-           var result = await pipeLineHelper.Execute<GetONlinePlayersRequestDTO, GetOnlinePlayersResponseDTO>(
+            var result = await pipeLineHelper.Execute<GetONlinePlayersRequestDTO, GetOnlinePlayersResponseDTO>(
                 connectionRequestDTO.Request,
                 Context, async () =>
                     await gameService.GetOnlinePlayersAsync(connectionRequestDTO));
 
-           return result;
+            return result;
         }
 
         public async Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
-            MoveRequestDTO sendMoveConnectionRequestDTO)
+            PipeLineRequest<MoveRequestDTO> sendMoveConnectionRequestDTO)
+            => await pipeLineHelper.Execute<MoveRequestDTO, MoveResponseDTO>(sendMoveConnectionRequestDTO.Request,
+                Context,
+                async () => await gameService.SendMoveAsync(sendMoveConnectionRequestDTO));
 
-            => await pipeLineHelper.Execute<MoveRequestDTO, MoveResponseDTO>(sendMoveConnectionRequestDTO, Context, async () => await gameService.SendMoveAsync(sendMoveConnectionRequestDTO));
+        public async Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(
+            PipeLineRequest<SameFigureRequest> sameFigureRequest)
+            => await pipeLineHelper.Execute(
+                sameFigureRequest.Request,
+                Context,
+                async () => await gameService.SendIsSameFigureClickedAsync(sameFigureRequest));
 
-        public async Task<bool> SendIsSameFigureClickedAsync(SameFigureRequest sameFigureRequest)
-            => await gameService.SendIsSameFigureClickedAsync(sameFigureRequest);
 
-        public async Task<ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>> SendClickAsync(
-            ClickRequestDTO sendClickConnectionRequestDTO)
-            => await gameService.SendClickAsync(sendClickConnectionRequestDTO);
+        public async Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
+            PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDTO)
+            => await pipeLineHelper.Execute(sendClickConnectionRequestDTO.Request, Context,
+                async () => await gameService.SendClickAsync(sendClickConnectionRequestDTO));
 
         public async Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
             TrainingGameRequestDTO trainingGameRequestDTO) =>
@@ -102,13 +110,12 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //GameService
 
-
         //connectionService
 
         public async Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsync(
             Guid currentUserGuid)
             => await connectionService.RemoveConnectionAsUserGuidAsync(new RemoveUserConnectionRequestDTO()
-            { UserGuid = currentUserGuid });
+                { UserGuid = currentUserGuid });
 
         public async Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(
             AddUserConnectionRequestDTO addUserConnectionRequestDTO)
@@ -138,14 +145,14 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
             // Notify the opponent that the user has disconnected
             var disconnectedUserResponse = await connectionService.NotifyDisconnectedUser(
                 new DisconnectedUserNotificationRequestDTO()
-                { ConnectionId = Context.ConnectionId });
+                    { ConnectionId = Context.ConnectionId });
 
             if (!disconnectedUserResponse.IsSuccess)
                 return invalidResponse;
             //Remove the user's connection from the database
             var removedUserResponse = await connectionService.RemoveConnectionAsConnectionIdAsync(
                 new RemoveUserConnectionRequestDTO()
-                { ConnectionId = Context.ConnectionId });
+                    { ConnectionId = Context.ConnectionId });
 
             if (!removedUserResponse.IsSuccess)
                 return invalidResponse;
