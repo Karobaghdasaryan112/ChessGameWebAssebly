@@ -173,8 +173,9 @@ public sealed class SignalRService(
         }
         catch (OperationCanceledException)
         {
-            // Expected when connection is disposed/recreated.
-        }
+            logger.LogWarning("SignalR connection closed.");
+            throw;
+            }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "SignalR ping loop stopped unexpectedly.");

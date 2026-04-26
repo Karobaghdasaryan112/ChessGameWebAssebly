@@ -1,0 +1,58 @@
+.container main[role="main"] h1,
+.container main[role="main"] h2,
+.container main[role="main"] h3 {
+    color: #e2e8f0;
+}
+
+.container main[role="main"] .row {
+    justify-content: center;
+    gap: 28px;
+}
+
+.container main[role="main"] .col-md-4,
+.container main[role="main"] .col-md-6,
+.container main[role="main"] .col-md-6.col-md-offset-2 {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 16px;
+    box-shadow: 0 18px 34px rgba(2, 6, 23, 0.45);
+    padding: 24px;
+}
+
+.container main[role="main"] hr {
+    border-color: rgba(148, 163, 184, 0.25);
+}
+
+.container main[role="main"] .form-floating > .form-control {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #f8fafc;
+}
+
+.container main[role="main"] .form-floating > label,
+.container main[role="main"] .form-label,
+.container main[role="main"] p,
+.container main[role="main"] .checkbox label {
+    color: #cbd5e1;
+}
+
+.container main[role="main"] a {
+    color: #93c5fd;
+}
+
+.container main[role="main"] a:hover {
+    color: #bfdbfe;
+}
+
+.container main[role="main"] .btn.btn-primary,
+.container main[role="main"] .btn.btn-lg.btn-primary {
+    border: none;
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    box-shadow: 0 10px 24px rgba(14, 116, 144, 0.35);
+    font-weight: 700;
+}
+
+.container main[role="main"] .btn.btn-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}

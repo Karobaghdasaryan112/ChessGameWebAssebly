@@ -4,11 +4,14 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.75));
+    border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
 .navbar-brand {
-    font-size: 1.1rem;
+    font-size: 1.06rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
 .oi {
@@ -19,7 +22,7 @@
 }
 
 .nav-item {
-    font-size: 0.9rem;
+    font-size: 0.93rem;
     padding-bottom: 0.5rem;
 }
 
@@ -32,21 +35,23 @@
     }
 
     .nav-item ::deep a {
-        color: #d7d7d7;
-        border-radius: 4px;
+        color: #cbd5e1;
+        border-radius: 10px;
         height: 3rem;
         display: flex;
         align-items: center;
         line-height: 3rem;
+        transition: all 0.15s ease;
     }
 
 .nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
+    background: linear-gradient(90deg, rgba(99,102,241,0.24), rgba(14,116,144,0.24));
+    border: 1px solid rgba(129,140,248,0.35);
+    color: #fff;
 }
 
 .nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255,255,255,0.12);
     color: white;
 }
 
@@ -65,27 +70,4 @@
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
     }
-}
-:root {
-    --bg: #0f1724;
-    --card: #0f1724aa;
-    --glass: rgba(255,255,255,0.06);
-    --accent: linear-gradient(135deg,#7f5af0,#4cc9f0);
-    --muted: #9aa4b2;
-    --white: #f8fafc;
-    --cell-light: #f3efe9;
-    --cell-dark: #2e3440;
-    --board-radius: 18px;
-    --gap: 18px;
-    --board-size: min(72vmin,720px);
-    --cell-radius: 8px;
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-}
-html, body {
-    height: 100%;
-    margin: 0;
-    background: radial-gradient(1000px 400px at 10% 10%, rgba(124,58,237,0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76,201,240,0.06), transparent 10%), var(--bg);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: var(--white);
 }

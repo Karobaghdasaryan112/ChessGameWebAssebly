@@ -23,13 +23,7 @@
 @inject IJSRuntime jsRuneTime
 @inject AuthenticationStateProvider AuthenticationState
 @attribute [Authorize]
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <base href="~/"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="~/Js/site.js"></script>
-</head>
+@implements IAsyncDisposable
 <MateNotifier/>
 <ErrorModal/>
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
@@ -74,22 +68,22 @@
     <div class="leftCard">
         <div class="playersInfo">
             <div class="player">
-                <div class="avatar" id="avatar1">P1</div>
+                <div class="avatar" id="avatar1">@GetInitial(Player1Name)</div>
                 <div class="playerInfo">
-                    <span class="name" id="player1Name">Player 1: —</span>
-                    <span class="meta" id="player1Meta">Rating: — · Online</span>
+                    <span class="name" id="player1Name">@Player1Name</span>
+                    <span class="meta" id="player1Meta">White · @FormatClock(_whiteClock)</span>
                 </div>
             </div>
 
-            <div style="text-align:center">
-                <div style="font-weight:800">Game Page</div>
-                <div style="color:var(--muted);font-size:13px;margin-top:4px">Friendly match · Blitz 5+0</div>
+            <div class="game-center-meta">
+                <div class="game-center-title">Live Game</div>
+                <div class="game-center-subtitle">Turn: @_turnLabel · Match state: @_matchState</div>
             </div>
 
             <div class="controls">
-                <button class="btn" id="btnUndo" title="Undo last">↶ Undo</button>
-                <button class="btn" id="btnOffer" title="Offer draw">🤝 Offer</button>
-                <button class="btn primary" id="btnNew" title="New game">✳ New Game</button>
+                <button class="btn" id="btnUndo" title="Undo is not available in live mode" disabled>↶ Undo</button>
+                <button class="btn" id="btnOffer" title="Offer draw" @onclick="OfferDraw">🤝 Offer</button>
+                <button class="btn primary" id="btnNew" title="Leave and start new game" @onclick="StartNewGame">✳ New Game</button>
                 <button class="btn helper"
                         @onclick="GetOptimizedMove"
                         disabled="@isBusy">
@@ -106,15 +100,51 @@
     <aside class="rightCard">
         <div class="panelTitle">
             <h4>Move Log</h4>
-            <div style="color:var(--muted);font-size:13px">Live</div>
-            <div id="Logger-Div">
+            <div style="color:var(--muted);font-size:13px">Live timeline</div>
+        </div>
+
+        <div class="game-stats-grid">
+            <div class="game-stat-card">
+                <div class="game-stat-label">Elapsed</div>
+                <div class="game-stat-value">@FormatElapsed(_gameStartedAtUtc)</div>
+            </div>
+            <div class="game-stat-card">
+                <div class="game-stat-label">Turn</div>
+                <div class="game-stat-value">@_turnLabel</div>
+            </div>
+            <div class="game-stat-card">
+                <div class="game-stat-label">Total notes</div>
+                <div class="game-stat-value">@_gameNotes.Count</div>
+            </div>
+            <div class="game-stat-card">
+                <div class="game-stat-label">@Player1Name points</div>
+                <div class="game-stat-value">@_player1Points</div>
+            </div>
+            <div class="game-stat-card">
+                <div class="game-stat-label">@Player2Name points</div>
+                <div class="game-stat-value">@_player2Points</div>
             </div>
         </div>
 
         <div class="movesLog" id="movesLog">
+            @if (_gameNotes.Count == 0)
+            {
+                <div class="move-note-empty">No notes yet. Moves and events will appear here.</div>
+            }
+            else
+            {
+                @foreach (var note in _gameNotes.OrderByDescending(item => item.AtUtc))
+                {
+                    <div class="move-note-item @note.KindClass">
+                        <div>
+                            <div class="move-note-title">@note.Title</div>
+                            <div class="move-note-meta">@note.ByPlayer · @note.AtUtc.ToLocalTime().ToString("HH:mm:ss")</div>
+                        </div>
+                        <div class="move-note-badge">@note.NoteBadge</div>
+                    </div>
+                }
+            }
         </div>
-
-        <div style="height:12px"></div>
 
         <div class="panelTitle">
             <h4>Players</h4>
@@ -123,21 +153,21 @@
 
         <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar" style="width:44px;height:44px;border-radius:10px">W</div>
+                <div class="avatar" style="width:44px;height:44px;border-radius:10px">@GetInitial(Player1Name)</div>
                 <div>
                     <div style="font-weight:700">White — @Player1Name </div>
-                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                    <div style="font-size:13px;color:var(--muted)">Score: @_player1Points · @FormatClock(_whiteClock)</div>
                 </div>
             </div>
 
             <div style="display:flex;align-items:center;gap:10px;">
                 <div class="avatar"
                      style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">
-                    B
+                    @GetInitial(Player2Name)
                 </div>
                 <div>
                     <div style="font-weight:700">Black — @Player2Name</div>
-                    <div style="font-size:13px;color:var(--muted)">Time: 4:58</div>
+                    <div style="font-size:13px;color:var(--muted)">Score: @_player2Points · @FormatClock(_blackClock)</div>
                 </div>
             </div>
         </div>
@@ -174,6 +204,16 @@
     private HubConnection? _hubConnection;
     private Guid _currentUserGuid;
     private string _currentUserName = string.Empty;
+    private DotNetObjectReference<Game>? _dotNetRef;
+    private readonly List<GameNoteItem> _gameNotes = [];
+    private int _player1Points;
+    private int _player2Points;
+    private DateTime _gameStartedAtUtc = DateTime.UtcNow;
+    private TimeSpan _whiteClock = TimeSpan.FromMinutes(5);
+    private TimeSpan _blackClock = TimeSpan.FromMinutes(5);
+    private string _turnLabel = "White";
+    private string _matchState = "Running";
+    private CancellationTokenSource? _clockLoopCts;
 
     private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
 
@@ -212,9 +252,9 @@
 
             var figureColor = _currentUserName == Player1Name ? 0 : 1;
 
-            var dotNetRef = DotNetObjectReference.Create(this);
-
-            await JS.ShowBoardState(jsonBoard, figureColor, dotNetRef);
+            _dotNetRef?.Dispose();
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await JS.ShowBoardState(jsonBoard, figureColor, _dotNetRef);
 
             InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
         }
@@ -223,6 +263,67 @@
         {
             await AIMoveAtFirst();
         }
+        
+        StartClockLoop();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _dotNetRef is null)
+            return;
+
+        await jsRuneTime.InvokeVoidAsync("GameNotesTracker.register", _dotNetRef);
+    }
+
+    [JSInvokable]
+    public Task OnBoardEvent(string eventType, string from, string to, bool isCapture)
+    {
+        var byPlayer = _currentUserName;
+        var title = eventType switch
+        {
+            "move" => $"{from} -> {to}",
+            "capture" => $"{from} x {to}",
+            "check" => "King is checked",
+            "mate" => "Checkmate",
+            "helper" => $"Helper: {from} -> {to}",
+            _ => eventType
+        };
+
+        _gameNotes.Add(new GameNoteItem
+        {
+            Title = title,
+            ByPlayer = byPlayer,
+            KindClass = eventType switch
+            {
+                "capture" => "note-capture",
+                "check" => "note-check",
+                "mate" => "note-mate",
+                "helper" => "note-helper",
+                _ => "note-move"
+            },
+            NoteBadge = eventType.ToUpperInvariant(),
+            AtUtc = DateTime.UtcNow
+        });
+
+        if (isCapture)
+        {
+            if (_currentUserName == Player1Name)
+                _player1Points++;
+            else
+                _player2Points++;
+        }
+        
+        if (eventType is "move" or "capture")
+        {
+            _turnLabel = _turnLabel == "White" ? "Black" : "White";
+        }
+        else if (eventType == "mate")
+        {
+            _matchState = "Finished";
+        }
+
+        InvokeAsync(StateHasChanged);
+        return Task.CompletedTask;
     }
 
     [JSInvokable]
@@ -411,4 +512,114 @@
         await JS.NavigateTo("/dashboard");
     }
 
+    private async Task OfferDraw()
+    {
+        _gameNotes.Add(new GameNoteItem
+        {
+            Title = "Draw offered",
+            ByPlayer = _currentUserName,
+            KindClass = "note-helper",
+            NoteBadge = "DRAW",
+            AtUtc = DateTime.UtcNow
+        });
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task StartNewGame()
+    {
+        await LeaveGameAsync();
+    }
+
+    private static string ToBoardNotation(Position? position)
+    {
+        if (position is null || 
+        ((int)position.HorizontalOrientation  < 0 || (int)position.HorizontalOrientation > 7) || 
+        ((int)position.VerticalOrientation  < 0 || (int)position.VerticalOrientation  > 7))
+            return "--";
+
+        var file = (char)('a' + position.HorizontalOrientation);
+        var rank = 8 - position.VerticalOrientation;
+        return $"{file}{rank}";
+    }
+
+    private static string FormatElapsed(DateTime startedAtUtc)
+    {
+        var elapsed = DateTime.UtcNow - startedAtUtc;
+        return $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
+    }
+    
+    private static string FormatClock(TimeSpan clock)
+        => $"{(int)clock.TotalMinutes:D2}:{clock.Seconds:D2}";
+
+    private static string GetInitial(string? name)
+        => string.IsNullOrWhiteSpace(name) ? "?" : name.Trim()[0].ToString().ToUpperInvariant();
+
+    private void StartClockLoop()
+    {
+        _clockLoopCts?.Cancel();
+        _clockLoopCts = new CancellationTokenSource();
+        var token = _clockLoopCts.Token;
+        
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+                while (await timer.WaitForNextTickAsync(token))
+                {
+                    if (_matchState != "Running")
+                        continue;
+                    
+                    if (_turnLabel == "White")
+                        _whiteClock = _whiteClock > TimeSpan.Zero ? _whiteClock.Subtract(TimeSpan.FromSeconds(1)) : TimeSpan.Zero;
+                    else
+                        _blackClock = _blackClock > TimeSpan.Zero ? _blackClock.Subtract(TimeSpan.FromSeconds(1)) : TimeSpan.Zero;
+
+                    if (_whiteClock == TimeSpan.Zero || _blackClock == TimeSpan.Zero)
+                    {
+                        _matchState = "Finished";
+                        _gameNotes.Add(new GameNoteItem
+                        {
+                            Title = "Time over",
+                            ByPlayer = "System",
+                            KindClass = "note-check",
+                            NoteBadge = "TIME",
+                            AtUtc = DateTime.UtcNow
+                        });
+                    }
+                    
+                    await InvokeAsync(StateHasChanged);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // no-op
+            }
+        }, token);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _clockLoopCts?.Cancel();
+        _clockLoopCts?.Dispose();
+        try
+        {
+            await jsRuneTime.InvokeVoidAsync("GameNotesTracker.unregister");
+        }
+        catch
+        {
+            // No-op: safe cleanup for navigation/dispose race.
+        }
+        
+        _dotNetRef?.Dispose();
+    }
+
+    private sealed class GameNoteItem
+    {
+        public string Title { get; set; } = string.Empty;
+        public string ByPlayer { get; set; } = string.Empty;
+        public string KindClass { get; set; } = "note-move";
+        public string NoteBadge { get; set; } = "MOVE";
+        public DateTime AtUtc { get; set; } = DateTime.UtcNow;
+    }
 }

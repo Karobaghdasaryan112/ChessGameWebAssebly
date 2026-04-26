@@ -15,34 +15,22 @@
 @attribute [Authorize]
 
 <DashboardInvitationRequest />
-<h3>Training Page</h3>
-
-<p>
-    Welcome to the Training Page! Here you can practice your chess skills against various
-    AI opponents and improve your strategies.
-</p>
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="~/" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="~/Js/site.js"></script>
-</head>
 @if (string.IsNullOrEmpty(_error))
 {
     <div class="training-container">
         <div class="training-card">
+            <h1 class="training-title">Training Arena</h1>
+            <p class="training-subtitle">Choose side and AI level to practice tactical decisions.</p>
 
             <h2 class="section-title">Choose Your Color</h2>
 
             <div class="button-group">
-                <button class="color-btn"
+                <button class="@GetColorButtonClass(FigureColors.White)"
                         @onclick="() => SetPlayerColor(FigureColors.White)">
                     ♔ Play as White
                 </button>
 
-                <button class="color-btn"
+                <button class="@GetColorButtonClass(FigureColors.Black)"
                         @onclick="() => SetPlayerColor(FigureColors.Black)">
                     ♚ Play as Black
                 </button>
@@ -150,5 +138,8 @@ else
         var hubConnectionInfo = await HubClient.GetHubConnectionAsync();
         _connectionId = hubConnectionInfo?.ConnectionId!;
     }
+    
+    private string GetColorButtonClass(FigureColors color)
+        => _selectedColor == color ? "color-btn selected" : "color-btn";
 
 }

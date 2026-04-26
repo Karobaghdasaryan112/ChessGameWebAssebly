@@ -1,0 +1,128 @@
+.hw-wrap {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,249,250,0.98));
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(16,24,40,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: #0f172a;
+}
+
+.hw-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.hw-title h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.hw-sub {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.hw-controls { display: flex; align-items: center; gap: 12px; }
+
+.opp-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(180deg,#111827,#0b1220);
+    color: #fff;
+    cursor: pointer;
+}
+
+.opp-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: linear-gradient(180deg,#ffffff,#fbfdff);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.game-card {
+    padding: 14px;
+    border-radius: 14px;
+    min-height: 120px;
+    background: linear-gradient(180deg,#ffffff,#fbfcff);
+    border: 1px solid rgba(2,6,23,0.04);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.05);
+}
+
+.game-card.res-win { border-left: 6px solid #10b981; }
+.game-card.res-lose { border-left: 6px solid #f59e0b; }
+.game-card.res-draw { border-left: 6px solid #3b82f6; }
+
+.card-top, .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.view-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(180deg,#111827,#0b1220);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.hw-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.pager {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pg-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+}
+
+.primary {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: linear-gradient(90deg,#06b6d4,#3b82f6);
+    border: none;
+    color: white;
+    font-weight: 700;
+}
+
+.pulse {
+    box-shadow: 0 0 10px rgba(255,255,255,0.25);
+}

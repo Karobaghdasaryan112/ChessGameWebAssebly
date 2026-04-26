@@ -1,3 +1,10 @@
+@import url("./core/base.css");
+@import url("./components/dashboard.css");
+@import url("./components/training.css");
+@import url("./components/game.css");
+@import url("./components/history.css");
+@import url("./components/modals.css");
+@import url("./components/auth.css");
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
@@ -1117,4 +1124,120 @@ html, body {
     color: #94a3b8;
     font-size: 16px;
     cursor: pointer;
+}
+
+.dashboard-subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-top: -8px;
+    margin-bottom: 10px;
+}
+
+.dashboard-pill {
+    width: fit-content;
+    margin: 0 auto 14px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e0e7ff;
+    color: #3730a3;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.training-title {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.training-subtitle {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.color-btn.selected {
+    outline: 2px solid #818cf8;
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.18);
+}
+
+.game-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.game-stat-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.game-stat-label {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.game-stat-value {
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.move-note-empty {
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 6px;
+}
+
+.move-note-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.move-note-title {
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.move-note-meta {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.move-note-badge {
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: rgba(148,163,184,0.25);
+}
+
+.note-move {
+    background: rgba(59,130,246,0.12);
+}
+
+.note-capture {
+    background: rgba(245,158,11,0.15);
+}
+
+.note-check {
+    background: rgba(239,68,68,0.18);
+}
+
+.note-mate {
+    background: rgba(168,85,247,0.18);
+}
+
+.note-helper {
+    background: rgba(45,212,191,0.14);
 }

@@ -53,7 +53,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         //Send ping into server
         //receive and return Completed Task
         public Task Ping() => Task.CompletedTask;
-        
+
         public async Task<PipeLineResponse<AcceptInvitationResponseDTO>> AcceptInviteAsync(
             PipeLineRequest<AcceptInvitationRequestDTO> acceptInvitationRequestDto)
             => await pipeLineHelper.Execute<AcceptInvitationRequestDTO, AcceptInvitationResponseDTO>(
@@ -179,7 +179,8 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
         public async Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>> LeaveGameAsync(
             Guid gameId, Guid leavingPlayerGuid)
         {
-            if (!connectionService.CurrentConnectionState.TryGetValue(leavingPlayerGuid, out var leavingPlayerConnection))
+            if (!connectionService.CurrentConnectionState.TryGetValue(leavingPlayerGuid,
+                    out var leavingPlayerConnection))
             {
                 return ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
                     new RemoveUserFromGameResponseDTO { IsRemoved = false },
@@ -230,10 +231,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 WinnerPlayerGuid = opponentPlayerGuid
             });
 
-            await baseHubService.NotifyOpponentUserDisconnected(new KeyValuePair<Guid, UserConnectionDTO>(
-                leavingPlayerGuid,
-                leavingPlayerConnection));
-            await baseHubService.NotifyOpponentLeftWinAsync(opponentConnection.ConnectionId, leavingPlayerConnection.UserName);
+
+            await baseHubService.NotifyOpponentLeftWinAsync(opponentConnection.ConnectionId,
+                leavingPlayerConnection.UserName);
             await baseHubService.ForceNavigateToDashboardAsync(leavingPlayerConnection.ConnectionId);
 
             ActiveGames.ActiveGamesAndBoards.TryRemove(gameId, out _);

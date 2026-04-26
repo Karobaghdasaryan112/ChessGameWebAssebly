@@ -21,7 +21,9 @@
 <DashboardInvitationRequest/>
 
 <div class="dashboard-container">
-    <h2 class="dashboard-title">🎮 Player Dashboard</h2>
+    <h2 class="dashboard-title">Live Lobby</h2>
+    <p class="dashboard-subtitle">Invite online players and start a new game instantly.</p>
+    <div class="dashboard-pill">Online players: @Math.Max(activeGamers.Count - 1, 0)</div>
     @if (activeGamers.Count == 0)
     {
         <div class="empty-state">
