@@ -29,12 +29,6 @@ window.BuildBoard = {
         if (!board) return;
 
         board.innerHTML = "";
-        board.style.cssText = `
-            display: grid;
-            grid-template: repeat(8, 1fr) / repeat(8, 1fr);
-            width: min(72vmin, 720px);
-            height: min(72vmin, 720px);
-        `;
 
         const start = figureColor === 1 ? 7 : 0;
         const step = figureColor === 1 ? -1 : 1;
@@ -56,14 +50,14 @@ function createCell(i, j, block, dotNetRef) {
     const cell = document.createElement("div");
     cell.id = `${i}${j}`;
     cell.style.cssText = `
-        position: relative;
-        width: 100px;
-        height: 100px;
-        box-sizing: border-box;
-        border: 0;
-        transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
-        background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
-    `;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 0;
+    transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
+    background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
+`;
 
     cell.addEventListener("click", () => dotNetRef.invokeMethodAsync("OnCellClick", i, j));
 
