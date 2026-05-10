@@ -20,7 +20,7 @@
     ports:
       - "7124:8081"
         
-  migration-helper-ChessAPI:
+  migration-helper-chessgameapi:
     build:
       context: .
       dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile 
@@ -31,7 +31,7 @@
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
         
-  migration-helper-BlazorClient:
+  migration-helper-blazorclient:
     build:
       context: .
       dockerfile: BlazorServerSideClient/Dockerfile
