@@ -13,7 +13,6 @@ namespace ChessService.API.ChessGameAPI
     {
         public void ConfigureServices(IServiceCollection services)
         {
-    
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -22,7 +21,7 @@ namespace ChessService.API.ChessGameAPI
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()
-                        .WithOrigins("https://localhost:5191","https://localhost:7124");
+                        .WithOrigins("http://localhost:5191", "http://localhost:7124");
                 });
             });
 
@@ -31,7 +30,6 @@ namespace ChessService.API.ChessGameAPI
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             });
-
 
 
             services.AddCoreServices(configuration);
@@ -48,8 +46,11 @@ namespace ChessService.API.ChessGameAPI
 
             services.AddLogging();
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var migrationApplier = new MigrationApplierService();
+            migrationApplier.ApplyMigrations(app.ApplicationServices);
 
             if (env.IsDevelopment())
             {
@@ -57,6 +58,7 @@ namespace ChessService.API.ChessGameAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseCors();
             app.UseRouting();
 
@@ -70,7 +72,6 @@ namespace ChessService.API.ChessGameAPI
                 endpoint.MapControllers();
                 endpoint.MapHub<GameHub>("/gameHub");
             });
-
         }
     }
 }

@@ -3,6 +3,7 @@ using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Data;
 using BlazorServerSideClient.Data.IdentityModels;
+using BlazorServerSideClient.Helpers;
 using BlazorServerSideClient.Models;
 using BlazorServerSideClient.Services;
 using BlazorServerSideClient.Services.Handlers;
@@ -81,6 +82,13 @@ builder.Services.AddHttpClient("ChessGameBlazorClient.Api",
 
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();
 var app = builder.Build();
+
+
+//use MigrationApplierService to apply not existing migration in the database
+var migrationService = new MigrationApplierService();
+migrationService.ApplyMigrations(app.Services);
+//
+
 
 if (app.Environment.IsDevelopment())
 {
