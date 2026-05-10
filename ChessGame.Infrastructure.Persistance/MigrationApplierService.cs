@@ -15,8 +15,9 @@ public class MigrationApplierService
         var dbContext = services.GetRequiredService<ChessGameDbContext>();
         try
         {
-            if (!dbContext.Database.GetPendingMigrations().Any())
+            if (dbContext.Database.GetPendingMigrations().Any())
             {
+                dbContext.Database.EnsureCreated();
                 dbContext.Database.Migrate();
             }
         }
