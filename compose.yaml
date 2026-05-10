@@ -18,7 +18,7 @@
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "7124:8081"
+      - "7124:8080"
 
 
   chessgame.api:
@@ -30,7 +30,7 @@
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5203:8081"
+      - "5203:8080"
 
   blazor.client:
     image: blazorserversideclient
@@ -41,6 +41,6 @@
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5191:8081"
+      - "5191:8080"
     depends_on:
       - sqlserver
