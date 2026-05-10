@@ -63,7 +63,7 @@ builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestSer
 builder.Services.AddCors(options => options.AddPolicy("Default",
     policy =>
         policy
-            .WithOrigins("http://localhost:5191")
+            .WithOrigins("http://167.86.89.234:5191")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()));
