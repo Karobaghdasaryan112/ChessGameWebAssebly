@@ -17,7 +17,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image (CI check)
-        run: docker build -t chess-app -f Dockerfile .
+        run: docker build -t chess-app -f Gateway.API/Dockerfile .
+        run: docker build -t chess-app -f webAssemblyChessGame.Services.ChessGameAPI/Dockerfile .
+        run: docker build -t chess-app -f BlazorServerSideClient/Dockerfile .
 
   deploy:
     needs: build
