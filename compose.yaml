@@ -37,7 +37,7 @@
         condition: service_healthy
     command: dotnet ef database update
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
         
   migration-helper-blazorclient:
     build:
@@ -48,7 +48,7 @@
         condition: service_healthy
     command: dotnet ef database update
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
   
   cheessgame.api:
     image: chessgame.api
