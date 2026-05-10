@@ -31,13 +31,13 @@
   migration-helper-chessgameapi:
     build:
       context: .
-      dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile 
+      dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
+      target: build # Targets the stage where we installed dotnet-ef
     depends_on:
       sqlserver:
         condition: service_healthy
-    command: dotnet ef database update
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+    # Make sure to use the full command path if needed
+    command: dotnet ef database update --connection "Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;"
         
   migration-helper-blazorclient:
     build:
@@ -46,9 +46,7 @@
     depends_on:
       sqlserver:
         condition: service_healthy
-    command: dotnet ef database update
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+    command: dotnet ef database update --connection "Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;"
   
   cheessgame.api:
     image: chessgame.api
