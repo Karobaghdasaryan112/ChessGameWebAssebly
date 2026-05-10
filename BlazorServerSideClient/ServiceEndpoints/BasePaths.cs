@@ -9,7 +9,7 @@ namespace ChessGameBlazorClient.ServiceEndpoints
         /// <summary>
         /// GameHub mapping Url for ChessGame Service
         /// </summary>
-        public static readonly string baseUrlHub = "http://167.86.89.234:5203/gameHub";
+        public static readonly string baseUrlHub = "http://chessgame.api:8080/gameHub";
 
         /// <summary>
         /// Builds the URI for the specified identity controller and identity action.
