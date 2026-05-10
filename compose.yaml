@@ -20,14 +20,27 @@
     ports:
       - "7124:8081"
         
-  migration-helper:
-    build: .
+  migration-helper-ChessAPI:
+    build:
+      context: .
+      dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile 
     depends_on:
       sqlserver:
         condition: service_healthy
     command: dotnet ef database update
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
+        
+  migration-helper-BlazorClient:
+    build:
+      context: .
+      dockerfile: BlazorServerSideClient/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: dotnet ef database update
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
   
   cheessgame.api:
     image: chessgame.api
