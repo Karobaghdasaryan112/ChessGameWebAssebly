@@ -16,15 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Gateway API
-        run: docker build -t gateway.api -f Gateway.API/Dockerfile .
-
-      - name: Build Chess Game API
-        run: docker build -t chessgame.api -f webAssemblyChessGame.Services.ChessGameAPI/Dockerfile .
-
-      - name: Build Blazor Client
-        run: docker build -t blazor.client -f BlazorServerSideClient/Dockerfile .
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
