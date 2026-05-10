@@ -19,6 +19,15 @@
       dockerfile: Gateway.API/Dockerfile
     ports:
       - "7124:8081"
+        
+  migration-helper:
+    build: .
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: dotnet ef database update
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
   
   cheessgame.api:
     image: chessgame.api
