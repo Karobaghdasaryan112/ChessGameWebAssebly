@@ -15,7 +15,7 @@
       context: .
       dockerfile: Gateway.API/Dockerfile
     environment:
-      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
@@ -30,7 +30,7 @@
       context: .
       dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
     environment:
-      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
@@ -45,7 +45,7 @@
       context: .
       dockerfile: BlazorServerSideClient/Dockerfile
     environment:
-      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
