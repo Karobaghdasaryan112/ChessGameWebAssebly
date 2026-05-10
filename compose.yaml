@@ -6,6 +6,11 @@
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Karokar3.
       - MSSQL_PID=Developer
+    healthcheck:
+      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "Karokar3.", "-Q", "SELECT 1" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
     ports:
       - "1433:1433"
   
