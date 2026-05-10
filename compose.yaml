@@ -1,0 +1,45 @@
+﻿services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver_db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Karokar3.
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+  
+  gateway.api:
+    image: gatway.api
+    environment:
+      - ASPNETCORE_URLS=http://+:8081
+      - ASPNETCODE_ENVOIREMENT=Development
+    build:
+      context: .
+      dockerfile: Gateway.API/Dockerfile
+    ports:
+      - "7124:8081"
+  
+  cheessgame.api:
+    image: chessgame.api
+    environment:
+      - ASPNETCORE_URLS=http://+:8081
+      - ASPNETCORE_ENVOIREMENT=Development
+    build:
+      context: .
+      dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
+    ports:
+      - "5203:8081"
+  
+  blazor.clinet:
+    image: blazorserversideclient
+    environment:
+      - ASPNETCORE_URLS=http://+:8081
+      - ASPNETCORE_ENVOIREMENT=Development
+    build:
+      context: .
+      dockerfile: BlazorServerSideClient/Dockerfile
+    ports:
+      - "5191:8081" 
+    depends_on:
+        - sqlserver
