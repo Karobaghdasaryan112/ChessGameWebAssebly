@@ -49,16 +49,10 @@ namespace SharedResources.ChessGameResource.Figures
             var startCol = (int)position.HorizontalOrientation;
 
             var currentBlock = kingBlockForCheckCondition ?? board.GetBlockByPosition(startRow, startCol);
-
-
             currentBlock.ExploreDirection(result, startRow, startCol, +1, +1, board);
-
             currentBlock.ExploreDirection(result, startRow, startCol, +1, -1, board);
-
             currentBlock.ExploreDirection(result, startRow, startCol, -1, +1, board);
-
             currentBlock.ExploreDirection(result, startRow, startCol, -1, -1, board);
-
             return result;
         }
 

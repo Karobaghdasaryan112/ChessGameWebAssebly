@@ -1,5 +1,6 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using Microsoft.AspNetCore.Components;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -27,6 +28,7 @@ namespace BlazorServerSideClient.Services.Handlers
         }
 
         public async Task ReceiveInvite(
+            PlayEvent playEvent,
             UserConnectionDTO inviterUserConnection,
             Guid inviterUserGuid,
             UserConnectionDTO receiverUserConnection,
@@ -42,6 +44,7 @@ namespace BlazorServerSideClient.Services.Handlers
                 {
                     Data = new SendInvitationsResponseDTO()
                     {
+                        PlayEvent =  playEvent,
                         InviterUserConnection = inviterUserConnection,
                         InviterUserGuid = inviterUserGuid,
                         ReceiverUserConnection = receiverUserConnection,

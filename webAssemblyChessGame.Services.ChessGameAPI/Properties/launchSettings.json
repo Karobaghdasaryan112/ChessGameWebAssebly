@@ -36,5 +36,16 @@
       "applicationUrl": "http://localhost:5612",
       "sslPort": 44341
     }
+  },
+  "Docker": {
+    "commandName": "Docker",
+    "launchBrowser": true,
+    "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+    "environmentVariables": {
+      "ASPNETCORE_URLS": "http://+:8080",
+      "ASPNETCORE_HTTP_PORTS": "8080"
+    },
+    "publishAllPorts": true,
+    "useSSL": false
   }
 }

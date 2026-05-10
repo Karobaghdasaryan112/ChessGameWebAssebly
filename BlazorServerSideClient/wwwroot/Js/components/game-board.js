@@ -122,35 +122,38 @@ window.ShowMovableAndCutableBlocks = {
                 cell.style.transform = "scale(1)";
             }, 300);
         }
-
-        castlingInfosDTOs.forEach(castling => {
-            if (castling.isCastling) {
-                const vertical = castling.castlingPosition.verticalOrientation;
-                const horizontal = castling.castlingPosition.horizontalOrientation;
+        if(castlingInfosDTOs) {
+            castlingInfosDTOs.forEach(castling => {
+                if (castling.isCastling) {
+                    const vertical = castling.castlingPosition.verticalOrientation;
+                    const horizontal = castling.castlingPosition.horizontalOrientation;
+                    const cell = document.getElementById(`${vertical}${horizontal}`);
+                    if (!cell) return;
+                    cell.className = "castable";
+                    highlightCell(cell, "rgba(148, 199, 145, 0.45)");
+                }
+            });
+        }
+        if(cutableBlocks) {
+            cutableBlocks.forEach(block => {
+                const vertical = block.position.verticalOrientation;
+                const horizontal = block.position.horizontalOrientation;
                 const cell = document.getElementById(`${vertical}${horizontal}`);
                 if (!cell) return;
-                cell.className = "castable";
-                highlightCell(cell, "rgba(148, 199, 145, 0.45)");
-            }
-        });
-
-        cutableBlocks.forEach(block => {
-            const vertical = block.position.verticalOrientation;
-            const horizontal = block.position.horizontalOrientation;
-            const cell = document.getElementById(`${vertical}${horizontal}`);
-            if (!cell) return;
-            cell.className = "cutable";
-            highlightCell(cell, "rgba(255, 0, 0, 0.45)");
-        });
-
-        movableBlocks.forEach(block => {
-            const vertical = block.position.verticalOrientation;
-            const horizontal = block.position.horizontalOrientation;
-            const cell = document.getElementById(`${vertical}${horizontal}`);
-            if (!cell) return;
-            cell.className = "movable";
-            highlightCell(cell, "rgba(0, 255, 0, 0.45)");
-        });
+                cell.className = "cutable";
+                highlightCell(cell, "rgba(255, 0, 0, 0.45)");
+            });
+        }
+        if(movableBlocks) {
+            movableBlocks.forEach(block => {
+                const vertical = block.position.verticalOrientation;
+                const horizontal = block.position.horizontalOrientation;
+                const cell = document.getElementById(`${vertical}${horizontal}`);
+                if (!cell) return;
+                cell.className = "movable";
+                highlightCell(cell, "rgba(0, 255, 0, 0.45)");
+            });
+        }
     },
     Clear: function (figureColor) {
         const allCells = document.querySelectorAll("[class^='cutable'], [class^='movable'], [class^='castable']");

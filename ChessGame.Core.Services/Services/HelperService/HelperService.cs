@@ -10,16 +10,12 @@ namespace ChessGame.Core.Services.Services.HelperService
     public class HelperService
     {
         public bool IsKingMateStateByHelper(Board board, FigureColors chosenColor)
-        {
-            if (IsKingMateByAsync<FigureType>(FigureType.King, (Turn)chosenColor, board) &&
-                IsKingMateByAsync<FigureType>(FigureType.Queen, (Turn)chosenColor, board) &&
-                IsKingMateByAsync<FigureType>(FigureType.Rook, (Turn)chosenColor, board) &&
-                IsKingMateByAsync<FigureType>(FigureType.Knight, (Turn)chosenColor, board) &&
-                IsKingMateByAsync<FigureType>(FigureType.Bishop, (Turn)chosenColor, board) &&
-                IsKingMateByAsync<FigureType>(FigureType.Pawn, (Turn)chosenColor, board))
-                return true;
-            return false;
-        }
+            => IsKingMateByAsync<FigureType>(FigureType.King, (Turn)chosenColor, board) &&
+               IsKingMateByAsync<FigureType>(FigureType.Queen, (Turn)chosenColor, board) &&
+               IsKingMateByAsync<FigureType>(FigureType.Rook, (Turn)chosenColor, board) &&
+               IsKingMateByAsync<FigureType>(FigureType.Knight, (Turn)chosenColor, board) &&
+               IsKingMateByAsync<FigureType>(FigureType.Bishop, (Turn)chosenColor, board) &&
+               IsKingMateByAsync<FigureType>(FigureType.Pawn, (Turn)chosenColor, board);
 
         private bool IsKingMateByAsync<TFigureType>(TFigureType figureType, Turn myColor,
             Board? currentBoard) where TFigureType : Enum
@@ -53,7 +49,6 @@ namespace ChessGame.Core.Services.Services.HelperService
                 if (enumerableOfExecutable.Any(executable =>
                         executable.EventColor is not EventColors.Cut and not EventColors.Move))
                     return false;
-
 
 
                 foreach (var executable in enumerableOfExecutable)
@@ -170,11 +165,13 @@ namespace ChessGame.Core.Services.Services.HelperService
                 response.IsMoveSuccess = false;
                 return response;
             }
+
             if (toBlock?.Figure?.FigureType == FigureType.King)
             {
                 response.IsMoveSuccess = false;
                 return response;
             }
+
             var toBlockTemp = toBlock.Figure;
 
             toBlock.Figure = fromBlock.Figure;
@@ -229,5 +226,4 @@ namespace ChessGame.Core.Services.Services.HelperService
         public bool IsKingMate { get; set; }
         public bool IsMoveSuccess { get; set; }
     }
-
 }

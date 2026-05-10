@@ -9,18 +9,34 @@ using SharedResources.Responses.ResponseMessages;
 using SharedResources.Validation.ChessGameValidations.RequestValidations.ConnectionRequests;
 using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses;
 using System.Collections.Concurrent;
+using SharedResources.PipeLine.PipeLineContext;
 
 namespace ChessGame.Core.Services.Contracts.Hub
 {
     public interface IConnectionService
     {
         ConcurrentDictionary<Guid, UserConnectionDTO> CurrentConnectionState { get; }
-        Task<ResponseDTO<GetUserConnectionResponseDTO, ChessGameResponseMessage>> GetUserConnection(GetUserConnectionRequestDTO getUserConnectionRequestDTO);
-        Task<ResponseDTO<AddUserConnectionResponseDTO, ChessGameResponseMessage>> AddConnectionAsync(AddUserConnectionRequestDTO AddUserConnectionRequestDTO);
-        Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsUserGuidAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO);
-        Task<ResponseDTO<RemoveUserConnectionResponseDTO, ChessGameResponseMessage>> RemoveConnectionAsConnectionIdAsync(RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO);
-        Task<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>> RemoveUsersFromGameAsync(RemoveUserFromGameRequestDTO removeUserFromGameRequestDTO);
-        Task<ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>> SendBoardStateToClient(BoardStateRequestDTO boardStateConnectionRequestDTO, string player,bool isMyConnection, bool win = false);
-        Task<ResponseDTO<DisconnectedUserNotificationResponseDTO, ChessGameResponseMessage>> NotifyDisconnectedUser(DisconnectedUserNotificationRequestDTO disconnectedUserNotificationRequestDTO);
+
+        Task<PipeLineResponse<GetUserConnectionResponseDTO>> GetUserConnection(
+            GetUserConnectionRequestDTO getUserConnectionRequestDTO);
+
+        Task<PipeLineResponse<AddUserConnectionResponseDTO>> AddConnectionAsync(
+            AddUserConnectionRequestDTO AddUserConnectionRequestDTO);
+
+        Task<PipeLineResponse<RemoveUserConnectionResponseDTO>>
+            RemoveConnectionAsUserGuidAsync(
+                RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO);
+
+        Task<PipeLineResponse<RemoveUserConnectionResponseDTO>> RemoveConnectionAsConnectionIdAsync(
+            RemoveUserConnectionRequestDTO removeUserConnectionRequestDTO);
+
+        Task<PipeLineResponse<RemoveUserFromGameResponseDTO>> RemoveUsersFromGameAsync(
+            RemoveUserFromGameRequestDTO removeUserFromGameRequestDTO);
+
+        Task<PipeLineResponse<BoardStateSenderResponseDTO>>
+            SendBoardStateToClient(BoardStateSenderRequestDTO sendBoardStateReqeust);
+
+        Task<PipeLineResponse<DisconnectedUserNotificationResponseDTO>> NotifyDisconnectedUser(
+            DisconnectedUserNotificationRequestDTO disconnectedUserNotificationRequestDTO);
     }
 }

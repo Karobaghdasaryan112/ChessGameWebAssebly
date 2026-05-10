@@ -61,6 +61,13 @@ namespace BlazorServerSideClient.Services
             await jsRunTime.SafeInvokeVoidAsync(logger, "inviteModal.hide");
         }
 
+        public async ValueTask NotesTrackerNotify(string eventType,
+            string from, string to, bool isCapture)
+        {
+            await SafeDelay();
+            await jsRunTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.notify", eventType, from, to, isCapture);
+        }
+
         public async ValueTask ShowPlayers(string player1_Name, string player2_Name)
         {
             await SafeDelay();

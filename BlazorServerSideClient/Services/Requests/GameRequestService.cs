@@ -38,9 +38,9 @@ namespace BlazorServerSideClient.Services.Requests
             PipeLineRequest<TrainingGameRequestDTO> trainingGameRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
-
+            TrainingGameRequestDTO gameRequestDto = trainingGameRequestDto.Request;
             return await hubConnection.SafeInvokeAsync<TrainingGameRequestDTO, TrainingGameResponseDTO>
-                       ("RequestTrainingGameAsync", trainingGameRequestDto.Request, JSRunetimeService) ??
+                       ("RequestTrainingGameAsync", gameRequestDto, JSRunetimeService) ??
                    PipeLineResponse<TrainingGameResponseDTO>.Emoty;
         }
 

@@ -45,13 +45,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             GetGamesByCurrentAndOpponentIdsPagination(
                 GetGamesByCurrentAndOpponentIdsPaginationRequestDTO requestDto)
         {
-            var validationResult = await genericValidationService.ValidateAsync(requestDto);
-            if (!validationResult.IsValid)
-                return ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    null,
-                    ChessGameResponseMessage.InvalidData,
-                    HttpStatusCode.BadRequest,
-                    validationResult.Errors.Select(error => error.ErrorMessage).ToList());
+      
 
             var currentPage = requestDto.CurrentPage;
             var pageSize = requestDto.PageSize;

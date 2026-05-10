@@ -5,11 +5,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BlazorServerSideClient-ce5752b2-7ff6-46d6-b33b-249fe7b0ed83</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Contracts\ChessGameContracts\**" />
     <Content Remove="Contracts\ChessGameContracts\**" />
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
     <EmbeddedResource Remove="Contracts\ChessGameContracts\**" />
     <None Remove="Contracts\ChessGameContracts\**" />
   </ItemGroup>
@@ -35,6 +39,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="OpenIddict" Version="5.3.0" />
+    <PackageReference Include="OpenIddict.Client" Version="5.3.0" />
+    <PackageReference Include="OpenIddict.Client.AspNetCore" Version="5.3.0" />
   </ItemGroup>
 
   <ItemGroup>

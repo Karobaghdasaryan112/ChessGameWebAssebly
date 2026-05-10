@@ -36,7 +36,6 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
         await JS.InvokeVoidAsync("ErrorModal.Register",
             DotNetObjectReference.Create(this));
     }
@@ -56,4 +55,5 @@
 
     [JSInvokable]
     public void HideFromJs() => Hide();
+
 }

@@ -1,4 +1,4 @@
-﻿using SharedResources.Contracts;
+﻿using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 
@@ -12,5 +12,6 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
         public Guid GameId { get; set; }
         public Guid InviterPlayerId { get; set; }
         public Guid ReceiverPlayerId { get; set; }
+        public PlayEvent PlayEvent { get; set; }
     }
 }

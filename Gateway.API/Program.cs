@@ -4,15 +4,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowUI_CORS", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowUI_CORS", policy =>
+//     {
+//         policy.AllowAnyOrigin()
+//               .AllowAnyMethod()
+//               .AllowAnyHeader();
+//     });
+// });
 
 var proxySection = builder.Configuration.GetSection("ReverseProxy");
 
@@ -33,7 +33,7 @@ app.UseMiddleware<LoggingMiddleware>();
 
 
 app.UseRouting();
-app.UseCors("AllowUI_CORS");
+// app.UseCors("AllowUI_CORS");
 app.MapControllers();
 app.UseHttpsRedirection();
 app.UseEndpoints(endpoints => { endpoints.MapReverseProxy(); });

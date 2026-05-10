@@ -22,36 +22,44 @@ namespace ChessGame.Core.Services.Services.BoardService
         public async Task<ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>>
             InitializeBoardAsync(BoardInitializeRequestDTO connectionRequestDto)
         {
-
-            chessGameRepository.CreateGame(
-             connectionRequestDto.Player1Id,
-             connectionRequestDto.Player2Id,
-             
-             connectionRequestDto.GameEvent,
-
-             connectionRequestDto.Player1Name,
-             connectionRequestDto.Player2Name,
-
-             (int)connectionRequestDto.Player1Time.TotalSeconds,
-             (int)connectionRequestDto.Player2Time.TotalSeconds);
-
-
-            var isCreated = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);
-
-            if (!isCreated)
+            try
             {
-                logger.LogError("Failed to create a new game between {Player1} and {Player2}",
-                    connectionRequestDto.Player1Id, connectionRequestDto.Player2Id);
-                return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    new BoardInitializeResponseDTO()
-                    {
-                        GameId = Guid.Empty
-                    }, ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest,
-                    [
-                        "Failed to create a new game between {Player1} and {Player2}",
-                        connectionRequestDto.Player1Id.ToString(), connectionRequestDto.Player2Id.ToString()
-                    ]);
+                chessGameRepository.CreateGame(
+                    connectionRequestDto.Player1Id,
+                    connectionRequestDto.Player2Id,
+             
+                    connectionRequestDto.GameEvent,
+
+                    connectionRequestDto.Player1Name,
+                    connectionRequestDto.Player2Name,
+
+                    (int)connectionRequestDto.Player1Time.TotalSeconds,
+                    (int)connectionRequestDto.Player2Time.TotalSeconds);
+
+
+                var isCreated = await unitOfWork.SaveChangesAsync(cancellationToken: CancellationToken.None);
+
+                if (!isCreated)
+                {
+                    logger.LogError("Failed to create a new game between {Player1} and {Player2}",
+                        connectionRequestDto.Player1Id, connectionRequestDto.Player2Id);
+                    return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        new BoardInitializeResponseDTO()
+                        {
+                            GameId = Guid.Empty
+                        }, ChessGameResponseMessage.GameCreationFailed, HttpStatusCode.BadRequest,
+                        [
+                            "Failed to create a new game between {Player1} and {Player2}",
+                            connectionRequestDto.Player1Id.ToString(), connectionRequestDto.Player2Id.ToString()
+                        ]);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
 
             var gameId = await chessGameRepository.GetGameIdByPlayers(connectionRequestDto.Player1Id,
                 connectionRequestDto.Player2Id);

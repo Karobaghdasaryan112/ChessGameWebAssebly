@@ -7,6 +7,7 @@
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
 @using System.Security.Claims
 @using SharedResources.ChessGameResource.Enums.Users
+@using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.PipeLine.PipeLineContext
 
 @inject AuthenticationStateProvider AuthStateProvider
@@ -24,10 +25,10 @@
     <h2 class="dashboard-title">Live Lobby</h2>
     <p class="dashboard-subtitle">Invite online players and start a new game instantly.</p>
     <div class="dashboard-pill">Online players: @Math.Max(activeGamers.Count - 1, 0)</div>
+
     @if (activeGamers.Count == 0)
     {
         <div class="empty-state">
-            <i class="bi bi-emoji-frown"></i>
             <p>No players online right now</p>
         </div>
     }
@@ -49,6 +50,7 @@
                                 <div class="avatar">@player.Value.UserName.Substring(0, 1).ToUpper()</div>
                                 <div>
                                     <strong>@player.Value.UserName</strong>
+
                                     @if (player.Value.Gameinfo == null)
                                     {
                                         <p class="status-online">🟢 Online</p>
@@ -62,7 +64,10 @@
 
                             @if (player.Value.Gameinfo == null)
                             {
-                                <button class="invite-btn" @onclick="() => SendInviteAsync(player)">Invite</button>
+                                <button class="invite-btn"
+                                        @onclick="() => OpenEventSelector(player)">
+                                    Invite
+                                </button>
                             }
                             else
                             {
@@ -76,19 +81,42 @@
     }
 </div>
 
+@if (showEventSelector && selectedPlayer != null)
+{
+    <div class="event-modal">
+        <div class="event-content">
+            <h3>Select Game Type</h3>
+
+            @foreach (PlayEvent evt in Enum.GetValues(typeof(PlayEvent)))
+            {
+                if (evt != PlayEvent.None)
+                {
+                    <button class="event-btn"
+                            @onclick="() => SelectEvent(evt)">
+                        @evt (@((int)evt / 60) min)
+                    </button>
+                }
+            }
+
+            <button class="cancel-btn" @onclick="CloseSelector">Cancel</button>
+        </div>
+    </div>
+}
+
 @code {
     private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
     private ClaimsPrincipal user { get; set; }
     private string? userGuid { get; set; }
 
 
+    private bool showEventSelector = false;
+    private KeyValuePair<Guid, UserConnectionDTO>? selectedPlayer;
+
     protected override async Task OnInitializedAsync()
     {
         user ??= (await AuthStateProvider.GetAuthenticationStateAsync()).User;
-
         ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
     }
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -111,27 +139,55 @@
     }
 
 
-    private async Task SendInviteAsync(KeyValuePair<Guid, UserConnectionDTO> receiverPlayer)
+    private void OpenEventSelector(KeyValuePair<Guid, UserConnectionDTO> player)
+    {
+        selectedPlayer = player;
+        showEventSelector = true;
+    }
+
+    private void CloseSelector()
+    {
+        showEventSelector = false;
+        selectedPlayer = null;
+    }
+
+
+    private async Task SelectEvent(PlayEvent playEvent)
+    {
+        if (selectedPlayer != null)
+        {
+            await SendInviteAsync(selectedPlayer.Value, playEvent);
+        }
+
+        CloseSelector();
+    }
+
+    private async Task SendInviteAsync(
+        KeyValuePair<Guid, UserConnectionDTO> receiverPlayer,
+        PlayEvent playEvent)
     {
         var connection = await signalRService.GetHubConnectionAsync();
         var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
         var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         var receiverUserGuid = receiverPlayer.Key;
+
         if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
         {
             var sendInviteRequest =
-                new PipeLineRequest<SendInvitationRequestDTO>(new SendInvitationRequestDTO
-                {
-                    ReceiverUserConnection = receiverPlayer.Value,
-                    GameId = default,
-                    InviterUserConnection = new UserConnectionDTO
+                new PipeLineRequest<SendInvitationRequestDTO>(
+                    new SendInvitationRequestDTO
                     {
-                        ConnectionId = connection?.ConnectionId!,
-                        UserName = userName,
-                    },
-                    InviterPlayerId = inviterUserGuid,
-                    ReceiverPlayerId = receiverUserGuid,
-                });
+                        ReceiverUserConnection = receiverPlayer.Value,
+                        GameId = default,
+                        PlayEvent = playEvent,
+                        InviterUserConnection = new UserConnectionDTO
+                        {
+                            ConnectionId = connection?.ConnectionId!,
+                            UserName = userName,
+                        },
+                        InviterPlayerId = inviterUserGuid,
+                        ReceiverPlayerId = receiverUserGuid,
+                    });
 
             await InvitationRequest.SendInviteAsync(sendInviteRequest);
         }
@@ -143,7 +199,9 @@
             Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
     }
 
-    private void HandleOnlinePlayersUpdated(OnlinePlayerChangeType @event, KeyValuePair<Guid, UserConnectionDTO> player)
+    private void HandleOnlinePlayersUpdated(
+        OnlinePlayerChangeType @event,
+        KeyValuePair<Guid, UserConnectionDTO> player)
     {
         if (@event == OnlinePlayerChangeType.Added)
             activeGamers[player.Key] = player.Value;
@@ -159,5 +217,4 @@
 
         InvokeAsync(StateHasChanged);
     }
-
 }

@@ -1,7 +1,10 @@
 ﻿@page "/game"
+@using System.Diagnostics
 @using System.Security.Claims
 @using System.Text.Json
+@using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Extensions
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ApiServices
 @using Microsoft.AspNetCore.SignalR.Client
@@ -11,19 +14,17 @@
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.UserConnectionResponseDTOs
-@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
-@using SharedResources.Responses.ResponseMessages
-@using SharedResources.Validation.ChessGameValidations.ResponseValidations.ConnectionResponses
+@using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
 @using SharedResources.PipeLine.PipeLineContext
 @inject SignalRService HubClient
 @inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
+@inject IGameHandlerService GameHandlerService
 @inject JSRunetimeService JS
 @inject IJSRuntime jsRuneTime
 @inject AuthenticationStateProvider AuthenticationState
+@inject ILogger<Game> logger
 @attribute [Authorize]
-@implements IAsyncDisposable
 <MateNotifier/>
 <ErrorModal/>
 <NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
@@ -34,9 +35,7 @@
         private async Task ConfirmLeave(LocationChangingContext context)
         {
             if (_isLeavingGame)
-            {
                 return;
-            }
 
             var leave = await jsRuneTime.InvokeAsync<bool>(
                 "confirm",
@@ -71,7 +70,7 @@
                 <div class="avatar" id="avatar1">@GetInitial(Player1Name)</div>
                 <div class="playerInfo">
                     <span class="name" id="player1Name">@Player1Name</span>
-                    <span class="meta" id="player1Meta">White · @FormatClock(_whiteClock)</span>
+                    <span class="meta" id="player1Meta">White · @_whiteClock.ToString(@"mm\:ss")</span>
                 </div>
             </div>
 
@@ -83,7 +82,9 @@
             <div class="controls">
                 <button class="btn" id="btnUndo" title="Undo is not available in live mode" disabled>↶ Undo</button>
                 <button class="btn" id="btnOffer" title="Offer draw" @onclick="OfferDraw">🤝 Offer</button>
-                <button class="btn primary" id="btnNew" title="Leave and start new game" @onclick="StartNewGame">✳ New Game</button>
+                <button class="btn primary" id="btnNew" title="Leave and start new game" @onclick="StartNewGame">✳ New
+                    Game
+                </button>
                 <button class="btn helper"
                         @onclick="GetOptimizedMove"
                         disabled="@isBusy">
@@ -138,7 +139,8 @@
                     <div class="move-note-item @note.KindClass">
                         <div>
                             <div class="move-note-title">@note.Title</div>
-                            <div class="move-note-meta">@note.ByPlayer · @note.AtUtc.ToLocalTime().ToString("HH:mm:ss")</div>
+                            <div
+                                class="move-note-meta">@note.ByPlayer · @note.AtUtc.ToLocalTime().ToString("HH:mm:ss")</div>
                         </div>
                         <div class="move-note-badge">@note.NoteBadge</div>
                     </div>
@@ -156,7 +158,8 @@
                 <div class="avatar" style="width:44px;height:44px;border-radius:10px">@GetInitial(Player1Name)</div>
                 <div>
                     <div style="font-weight:700">White — @Player1Name </div>
-                    <div style="font-size:13px;color:var(--muted)">Score: @_player1Points · @FormatClock(_whiteClock)</div>
+                    <div style="font-size:13px;color:var(--muted)">
+                        Score: @_player1Points · @_whiteClock.ToString(@"mm\:ss"))</div>
                 </div>
             </div>
 
@@ -167,7 +170,8 @@
                 </div>
                 <div>
                     <div style="font-weight:700">Black — @Player2Name</div>
-                    <div style="font-size:13px;color:var(--muted)">Score: @_player2Points · @FormatClock(_blackClock)</div>
+                    <div style="font-size:13px;color:var(--muted)">
+                        Score: @_player2Points · @_blackClock.ToString(@"mm\:ss")</div>
                 </div>
             </div>
         </div>
@@ -209,8 +213,8 @@
     private int _player1Points;
     private int _player2Points;
     private DateTime _gameStartedAtUtc = DateTime.UtcNow;
-    private TimeSpan _whiteClock = TimeSpan.FromMinutes(5);
-    private TimeSpan _blackClock = TimeSpan.FromMinutes(5);
+    private TimeSpan _whiteClock = TimeSpan.Zero;
+    private TimeSpan _blackClock = TimeSpan.Zero;
     private string _turnLabel = "White";
     private string _matchState = "Running";
     private CancellationTokenSource? _clockLoopCts;
@@ -231,6 +235,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationState.GetAuthenticationStateAsync();
+
         _currentUserName = authState.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
         _currentUserGuid = Guid.Parse(authState.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
 
@@ -238,6 +243,9 @@
 
         await JS.ShowPlayers(Player1Name, Player2Name);
 
+        Services.Handlers.GameHandlerService.OnTickReceived += StartClockLoop;
+
+        
         var thisBoard = await GameRequestService.SendGameStateAsync(
             new PipeLineRequest<SendGameStateReqeustDTO>(
                 new SendGameStateReqeustDTO()
@@ -249,7 +257,6 @@
         {
             var blocks = thisBoard.Response.Data.Board.BoardBlocks;
             var jsonBoard = JsonSerializer.Serialize(blocks);
-
             var figureColor = _currentUserName == Player1Name ? 0 : 1;
 
             _dotNetRef?.Dispose();
@@ -263,19 +270,16 @@
         {
             await AIMoveAtFirst();
         }
-        
-        StartClockLoop();
+
+
     }
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || _dotNetRef is null)
-            return;
-
-        await jsRuneTime.InvokeVoidAsync("GameNotesTracker.register", _dotNetRef);
+        await jsRuneTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.register", _dotNetRef);
     }
 
-    [JSInvokable]
+
     public Task OnBoardEvent(string eventType, string from, string to, bool isCapture)
     {
         var byPlayer = _currentUserName;
@@ -312,7 +316,7 @@
             else
                 _player2Points++;
         }
-        
+
         if (eventType is "move" or "capture")
         {
             _turnLabel = _turnLabel == "White" ? "Black" : "White";
@@ -397,15 +401,31 @@
         requestDTO.From = ClickedBlockInformationDTO.ClickedPosition;
         requestDTO.CurrentPlayerId = _currentUserGuid;
 
+
         var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
         if (!pipeLineResponsePositionsResult.Response.IsSuccess)
             return false;
 
+        var eventType = string.Empty;
+        var isCapture = false;
         if (pipeLineResponsePositionsResult.Response.Data.IsReadyToEvent is IsReady.IsReadyToMove or IsReady.IsReadyToCastle)
+        {
+            eventType = "move";
             await JS.UpdateBoardAfterMove(requestDTO.From, requestDTO.To, (int)MyColor);
+        }
         else
+        {
+            isCapture = true;
+            eventType = "capture";
             await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);
+        }
+
+        await OnBoardEvent(eventType,
+            requestDTO.From.ToString(),
+            requestDTO.To.ToString(),
+            isCapture);
+
 
         ClickedBlockInformationDTO.ClickedPosition = default;
         return true;
@@ -499,11 +519,16 @@
     {
         await HubClient.GetHubConnectionAsync();
 
+        var leaveGameRequestDTO = new RemoveUsersFromGameReqeustDTO
+        {
+            CurerntPlayerGuid = _currentUserGuid,
+            GameId = GameId
+        };
         var leaveResponse =
-            await _hubConnection!.InvokeAsync<ResponseDTO<RemoveUserFromGameResponseDTO, ChessGameResponseMessage>>(
-                "LeaveGameAsync", GameId, _currentUserGuid);
+            await _hubConnection!.SafeInvokeAsync<RemoveUsersFromGameReqeustDTO, RemoveUserFromGameResponseDTO>(
+                "LeaveGameAsync", leaveGameRequestDTO, JS);
 
-        if (!leaveResponse.IsSuccess)
+        if (!leaveResponse.Response.IsSuccess)
         {
             await JS.ShowErrorModal("Unable to leave the game right now. Please try again.");
             return;
@@ -530,89 +555,45 @@
         await LeaveGameAsync();
     }
 
-    private static string ToBoardNotation(Position? position)
-    {
-        if (position is null || 
-        ((int)position.HorizontalOrientation  < 0 || (int)position.HorizontalOrientation > 7) || 
-        ((int)position.VerticalOrientation  < 0 || (int)position.VerticalOrientation  > 7))
-            return "--";
-
-        var file = (char)('a' + position.HorizontalOrientation);
-        var rank = 8 - position.VerticalOrientation;
-        return $"{file}{rank}";
-    }
-
     private static string FormatElapsed(DateTime startedAtUtc)
     {
         var elapsed = DateTime.UtcNow - startedAtUtc;
         return $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
     }
-    
-    private static string FormatClock(TimeSpan clock)
-        => $"{(int)clock.TotalMinutes:D2}:{clock.Seconds:D2}";
+
+    // private static string FormatClock(TimeSpan clock)
+    //     => $"{(int)clock.TotalMinutes:D2}:{clock.Seconds:D2}";
 
     private static string GetInitial(string? name)
         => string.IsNullOrWhiteSpace(name) ? "?" : name.Trim()[0].ToString().ToUpperInvariant();
 
-    private void StartClockLoop()
+    private void StartClockLoop(FigureColors playerColor, TimeSpan whiteSpan, TimeSpan blackSpan)
     {
-        _clockLoopCts?.Cancel();
-        _clockLoopCts = new CancellationTokenSource();
-        var token = _clockLoopCts.Token;
-        
-        _ = Task.Run(async () =>
+        Console.WriteLine("tick change");
+        _ = InvokeAsync(() =>
         {
-            try
+            Console.WriteLine($"Starting clock loop for {playerColor}:blackTick{blackSpan.Ticks}:whiteTick{whiteSpan.Ticks}");
+            _whiteClock = whiteSpan;
+            _blackClock = blackSpan;
+
+            if (_whiteClock == TimeSpan.Zero || _blackClock == TimeSpan.Zero)
             {
-                using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-                while (await timer.WaitForNextTickAsync(token))
+                _matchState = "Finished";
+                _gameNotes.Add(new GameNoteItem
                 {
-                    if (_matchState != "Running")
-                        continue;
-                    
-                    if (_turnLabel == "White")
-                        _whiteClock = _whiteClock > TimeSpan.Zero ? _whiteClock.Subtract(TimeSpan.FromSeconds(1)) : TimeSpan.Zero;
-                    else
-                        _blackClock = _blackClock > TimeSpan.Zero ? _blackClock.Subtract(TimeSpan.FromSeconds(1)) : TimeSpan.Zero;
+                    Title = "Time over",
+                    ByPlayer = "System",
+                    KindClass = "note-check",
+                    NoteBadge = "TIME",
+                    AtUtc = DateTime.UtcNow
+                });
+                Task.Run(async () => { await LeaveGameAsync(); });
+            }
 
-                    if (_whiteClock == TimeSpan.Zero || _blackClock == TimeSpan.Zero)
-                    {
-                        _matchState = "Finished";
-                        _gameNotes.Add(new GameNoteItem
-                        {
-                            Title = "Time over",
-                            ByPlayer = "System",
-                            KindClass = "note-check",
-                            NoteBadge = "TIME",
-                            AtUtc = DateTime.UtcNow
-                        });
-                    }
-                    
-                    await InvokeAsync(StateHasChanged);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // no-op
-            }
-        }, token);
+            this.StateHasChanged();
+        });
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        _clockLoopCts?.Cancel();
-        _clockLoopCts?.Dispose();
-        try
-        {
-            await jsRuneTime.InvokeVoidAsync("GameNotesTracker.unregister");
-        }
-        catch
-        {
-            // No-op: safe cleanup for navigation/dispose race.
-        }
-        
-        _dotNetRef?.Dispose();
-    }
 
     private sealed class GameNoteItem
     {
@@ -621,5 +602,9 @@
         public string KindClass { get; set; } = "note-move";
         public string NoteBadge { get; set; } = "MOVE";
         public DateTime AtUtc { get; set; } = DateTime.UtcNow;
+    }
+    public void Dispose()
+    {
+        Services.Handlers.GameHandlerService.OnTickReceived -= StartClockLoop;
     }
 }

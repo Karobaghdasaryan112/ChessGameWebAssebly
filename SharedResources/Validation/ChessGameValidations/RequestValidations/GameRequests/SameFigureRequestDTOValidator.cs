@@ -15,9 +15,5 @@ public class SameFigureRequestDTOValidator : AbstractValidator<SameFigureRequest
 
         RuleFor(x => x.Current)
             .NotNull().WithMessage("Current position is required.");
-
-        RuleFor(x => x)
-            .Must(x => !x.Selected.Equals(x.Current))
-            .WithMessage("Selected and Current positions must be different.");
     }
 }

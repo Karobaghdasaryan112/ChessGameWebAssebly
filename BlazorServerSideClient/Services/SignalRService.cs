@@ -8,7 +8,10 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Security.Claims;
+using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Enums.Users;
+using SharedResources.PipeLine.PipeLineContext;
 
 namespace BlazorServerSideClient.Services;
 
@@ -27,10 +30,9 @@ public sealed class SignalRService(
 
     public async Task<HubConnection> GetHubConnectionAsync()
     {
-        if (_hubConnection?.State is HubConnectionState.Connected or HubConnectionState.Reconnecting or HubConnectionState.Connecting)
-        {
+        if (_hubConnection?.State is HubConnectionState.Connected or HubConnectionState.Reconnecting
+            or HubConnectionState.Connecting)
             return _hubConnection;
-        }
 
         await _semaphore.WaitAsync();
         try
@@ -92,14 +94,18 @@ public sealed class SignalRService(
             return;
         }
 
-        var request = new AddUserConnectionRequestDTO
+        var request = new PipeLineRequest<AddUserConnectionRequestDTO>()
         {
-            userGuid = userGuid,
-            userConnection = new UserConnectionDTO
-            {
-                ConnectionId = connection.ConnectionId ?? string.Empty,
-                UserName = userName ?? "Unknown"
-            }
+            Request =
+                new AddUserConnectionRequestDTO
+                {
+                    userGuid = userGuid,
+                    userConnection = new UserConnectionDTO
+                    {
+                        ConnectionId = connection.ConnectionId ?? string.Empty,
+                        UserName = userName ?? "Unknown"
+                    }
+                }
         };
 
         await connection.SendAsync("AddConnectionAsync", request);
@@ -112,7 +118,7 @@ public sealed class SignalRService(
             "ReceiveUpdatedUsers",
             connectionHandler.ReceiveUpdatedUsers);
 
-        connection.On<UserConnectionDTO, Guid, UserConnectionDTO, Guid>(
+        connection.On<PlayEvent, UserConnectionDTO, Guid, UserConnectionDTO, Guid>(
             "ReceiveInvite",
             invitationHandler.ReceiveInvite);
 
@@ -136,10 +142,14 @@ public sealed class SignalRService(
                 connectionHandler.DisconnectedNotification(data);
             });
 
-        connection.On<string>("OpponentLeftWinNotification", async (leavingPlayerName) =>
+        connection.On<FigureColors, TimeSpan, TimeSpan>("ReceiveTick", (color, white, black) => 
         {
-            await gameHandler.NotifyOpponentLeftWinAsync(leavingPlayerName);
+            // Manually trigger the service method to ensure it's hit
+            gameHandler.ReceiveTick(color, white, black);
         });
+
+        connection.On<string>("OpponentLeftWinNotification",
+            async (leavingPlayerName) => { await gameHandler.NotifyOpponentLeftWinAsync(leavingPlayerName); });
 
         connection.On("ForceNavigateToDashboard", async () =>
         {
@@ -153,7 +163,7 @@ public sealed class SignalRService(
             _pingLoopCancellation?.Cancel();
             await Task.CompletedTask;
         };
-        
+
         connection.Reconnected += async (_) => await NotifyServerOfConnectionAsync(connection);
     }
 
@@ -175,7 +185,7 @@ public sealed class SignalRService(
         {
             logger.LogWarning("SignalR connection closed.");
             throw;
-            }
+        }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "SignalR ping loop stopped unexpectedly.");

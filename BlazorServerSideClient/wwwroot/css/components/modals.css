@@ -163,3 +163,30 @@
     font-size: 16px;
     cursor: pointer;
 }
+
+
+
+.invite-event {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+
+    background: linear-gradient(180deg, rgba(80,80,140,0.25), rgba(50,50,90,0.25));
+    border: 1px solid rgba(255,255,255,0.05);
+
+    text-align: center;
+    color: #dcdcf5;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+
+.invite-event strong {
+    font-weight: 600;
+}
+
+
+.invite-event.bullet strong { color: #ffd166; }
+.invite-event.blitz strong { color: #00d4ff; }
+.invite-event.rapid strong { color: #00ffa6; }
+.invite-event.classical strong { color: #c77dff; }

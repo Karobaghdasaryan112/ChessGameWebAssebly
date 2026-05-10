@@ -63,30 +63,30 @@ namespace ChessGame.Core.Services.Services.HubServices
             return pipeLineResponse;
         }
 
-        public async Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
-            TrainingGameRequestDTO trainingGameRequestDTO)
+        public async Task<PipeLineResponse<TrainingGameResponseDTO>> RequestTrainingGameAsync(
+            PipeLineRequest<TrainingGameRequestDTO> trainingGameRequestDTO)
         {
             var GameId = Guid.NewGuid();
 
-            HelperConstants.MAX_DEPTH = (int)trainingGameRequestDTO.TrainingDifficulty;
+            HelperConstants.MAX_DEPTH = (int)trainingGameRequestDTO.Request.TrainingDifficulty;
 
-            var playerGuid = trainingGameRequestDTO.Player1Guid == Guid.Empty
-                ? trainingGameRequestDTO.Player2Guid
-                : trainingGameRequestDTO.Player1Guid;
+            var playerGuid = trainingGameRequestDTO.Request.Player1Guid == Guid.Empty
+                ? trainingGameRequestDTO.Request.Player2Guid
+                : trainingGameRequestDTO.Request.Player1Guid;
 
-            var playerName = trainingGameRequestDTO.Player1Guid == Guid.Empty
-                ? trainingGameRequestDTO.Player2Name
-                : trainingGameRequestDTO.Player1Name;
+            var playerName = trainingGameRequestDTO.Request.Player1Guid == Guid.Empty
+                ? trainingGameRequestDTO.Request.Player2Name
+                : trainingGameRequestDTO.Request.Player1Name;
 
 
             var boardInitializeRequest =
                 new SharedResources.DTOs.ChessGameDTOs.RequestDTOs.MediatRRequestDTOs.BoardInitializeRequestDTO
                 {
                     GameEvent = GameEvent.Training,
-                    Player1Name = trainingGameRequestDTO.Player1Name,
-                    Player2Name = trainingGameRequestDTO.Player2Name,
-                    Player1Id = trainingGameRequestDTO.Player1Guid,
-                    Player2Id = trainingGameRequestDTO.Player2Guid,
+                    Player1Name = trainingGameRequestDTO.Request.Player1Name,
+                    Player2Name = trainingGameRequestDTO.Request.Player2Name,
+                    Player1Id = trainingGameRequestDTO.Request.Player1Guid,
+                    Player2Id = trainingGameRequestDTO.Request.Player2Guid,
                     Player1Time = TimeSpan.FromMinutes((int)PlayEvent.Classical),
                     Player2Time = TimeSpan.FromMinutes((int)PlayEvent.Classical),
                 };
@@ -97,13 +97,17 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             if (!gameState.IsSuccess)
             {
-                return ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
-                    new TrainingGameResponseDTO()
+                return
+                    new PipeLineResponse<TrainingGameResponseDTO>()
                     {
-                        GameId = gameState.Data.GameId,
-                    },
-                    ChessGameResponseMessage.GameCreationFailed,
-                    System.Net.HttpStatusCode.InternalServerError);
+                        Response = ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                            new TrainingGameResponseDTO()
+                            {
+                                GameId = gameState.Data.GameId,
+                            },
+                            ChessGameResponseMessage.GameCreationFailed,
+                            System.Net.HttpStatusCode.InternalServerError)
+                    };
             }
 
             gameState.Data.board = new Board(default(FigureColors));
@@ -111,14 +115,14 @@ namespace ChessGame.Core.Services.Services.HubServices
             connectionService.CurrentConnectionState.TryAdd(
                 playerGuid, new UserConnectionDTO()
                 {
-                    ConnectionId = trainingGameRequestDTO.connectionId,
+                    ConnectionId = trainingGameRequestDTO.Request.connectionId,
                     GameId = gameState.Data.GameId,
                     UserName = playerName,
                     Gameinfo =
                         new Gameinfo()
                         {
-                            Players = new KeyValuePair<Guid, Guid>(trainingGameRequestDTO.Player1Guid,
-                                trainingGameRequestDTO.Player2Guid)
+                            Players = new KeyValuePair<Guid, Guid>(trainingGameRequestDTO.Request.Player1Guid,
+                                trainingGameRequestDTO.Request.Player2Guid)
                         }
                 });
 
@@ -129,20 +133,32 @@ namespace ChessGame.Core.Services.Services.HubServices
                     GameId = gameState.Data.GameId,
                     GameState = gameState.Data.board,
                 };
-            await connectionService.SendBoardStateToClient(boardStateResponseDTO,
-                trainingGameRequestDTO.Player1Guid == Guid.Empty
-                    ? trainingGameRequestDTO.Player2Name
-                    : trainingGameRequestDTO.Player1Name, true);
+            boardStateResponseDTO.IsOpponentComputer = true;
+
+            var boardStateSenderRequest = new BoardStateSenderRequestDTO
+            {
+                connectionId = null!,
+                BoardStateRequestDTO = boardStateResponseDTO,
+                Player = trainingGameRequestDTO.Request.Player1Guid == Guid.Empty
+                    ? trainingGameRequestDTO.Request.Player2Name
+                    : trainingGameRequestDTO.Request.Player1Name,
+                IsMyConnection = true,
+            };
+
+            await connectionService.SendBoardStateToClient(boardStateSenderRequest);
 
             return await Task.FromResult(
-                ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                    new TrainingGameResponseDTO()
-                    {
-                        GameId = gameState.Data.GameId,
-                        Board = gameState.Data.board
-                    },
-                    ChessGameResponseMessage.GameCreated,
-                    System.Net.HttpStatusCode.OK));
+                new PipeLineResponse<TrainingGameResponseDTO>()
+                {
+                    Response = ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                        new TrainingGameResponseDTO()
+                        {
+                            GameId = gameState.Data.GameId,
+                            Board = gameState.Data.board
+                        },
+                        ChessGameResponseMessage.GameCreated,
+                        System.Net.HttpStatusCode.OK)
+                });
         }
 
 
@@ -150,7 +166,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             PipeLineRequest<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
             ActiveGames.ActiveGamesAndBoards.TryGetValue(gameStateReqeustDTO.Request.GameId, out var gameState);
-
+            
             return await Task.FromResult(new PipeLineResponse<SendGameStateResponseDTO>()
             {
                 Response = ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
@@ -314,6 +330,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 CurrentBoardBoardState = gameState,
                 FigureColor = data.MyColor
             };
+            
             var sendClickQuery = new SendClickQuery<
                 CanClickRequestDTO,
                 ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
@@ -326,7 +343,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return
                     new PipeLineResponse<ClickResponseDTO>()
                     {
-                        Response = ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                        Response = ResponseDTO<ClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                             new ClickResponseDTO()
                             {
                                 GameId = data.GameId,

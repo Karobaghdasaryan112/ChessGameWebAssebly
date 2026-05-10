@@ -12,16 +12,25 @@ namespace SharedResources.ChessGameResource.Models
     /// </summary>
     public class Board : ICusotomComparable, ICloneable
     {
-        public Board(FigureColors figureColor)
+        public Board(FigureColors figureColor, TimeSpan playTime = default)
         {
             if (BoardBlocks != default)
                 return;
+            
+            if (playTime != default)
+            {
+                WhiteTimeSpan = playTime;
+                BlackTimeSpan = playTime;
+            }
 
             CreateBoard(figureColor);
             FigureColor =
-                figureColor == default ?
-                FigureColors.White :
-                figureColor;
+                figureColor == default ? FigureColors.White : figureColor;
+        }
+        
+        [System.Text.Json.Serialization.JsonConstructor]
+        public Board()
+        {
         }
 
         public Block[][] GetBlocks { get; set; }
@@ -31,15 +40,17 @@ namespace SharedResources.ChessGameResource.Models
         /// </summary>
         public Block[][]? BoardBlocks { get; set; }
 
+        public TimeSpan WhiteTimeSpan { get; set; } = TimeSpan.Zero;
+        public TimeSpan BlackTimeSpan { get; set; } = TimeSpan.Zero;
+
         public FigureColors FigureColor { get; set; }
 
         public Turn Turn = Turn.White;
+
         public void SwitchTurn()
         {
             Turn =
-                Turn == Turn.White ?
-                Turn.Black :
-                Turn.White;
+                Turn == Turn.White ? Turn.Black : Turn.White;
         }
 
         public void CreateBoard(FigureColors figureColor = default)
@@ -56,7 +67,6 @@ namespace SharedResources.ChessGameResource.Models
         /// <param name="figureColor">The player's chosen figure color</param>
         public void CreateBlocks(FigureColors figureColor = default)
         {
-
             BoardBlocks = new Block[8][];
 
             var opponentFigureColor = FigureColors.Black;
@@ -75,19 +85,24 @@ namespace SharedResources.ChessGameResource.Models
                     if (i == 0 || i == 7)
                     {
                         if (j == 0 || j == 7)
-                            BoardBlocks[i][j] = Block.InitializeBlock(new Rook() { FigureColor = realFigureColor }, i, j);
+                            BoardBlocks[i][j] =
+                                Block.InitializeBlock(new Rook() { FigureColor = realFigureColor }, i, j);
 
                         if (j == 1 || j == 6)
-                            BoardBlocks[i][j] = Block.InitializeBlock(new Knight() { FigureColor = realFigureColor }, i, j);
+                            BoardBlocks[i][j] =
+                                Block.InitializeBlock(new Knight() { FigureColor = realFigureColor }, i, j);
 
                         if (j == 2 || j == 5)
-                            BoardBlocks[i][j] = Block.InitializeBlock(new Bishop() { FigureColor = realFigureColor }, i, j);
+                            BoardBlocks[i][j] =
+                                Block.InitializeBlock(new Bishop() { FigureColor = realFigureColor }, i, j);
 
                         if (j == 3)
-                            BoardBlocks[i][j] = Block.InitializeBlock(new Queen() { FigureColor = realFigureColor }, i, j);
+                            BoardBlocks[i][j] =
+                                Block.InitializeBlock(new Queen() { FigureColor = realFigureColor }, i, j);
 
                         if (j == 4)
-                            BoardBlocks[i][j] = Block.InitializeBlock(new King() { FigureColor = realFigureColor }, i, j);
+                            BoardBlocks[i][j] =
+                                Block.InitializeBlock(new King() { FigureColor = realFigureColor }, i, j);
                     }
                     else if (i == 1 || i == 6)
                         BoardBlocks[i][j] = Block.InitializeBlock(new Pawn() { FigureColor = realFigureColor }, i, j);
@@ -95,12 +110,13 @@ namespace SharedResources.ChessGameResource.Models
                         BoardBlocks[i][j] = Block.InitializeBlock(default, i, j);
                 }
             }
-
         }
+
         /// <summary>
         /// Retrieves a block using vertical and horizontal enum coordinates.
         /// </summary>
-        public Block GetBlockByPosition(VerticalOrientation verticalOrientation, HorizontalOrientation horizontalOrientation)
+        public Block GetBlockByPosition(VerticalOrientation verticalOrientation,
+            HorizontalOrientation horizontalOrientation)
         {
             CreateBoard();
             return BoardBlocks[(int)verticalOrientation][(int)horizontalOrientation];
@@ -133,7 +149,6 @@ namespace SharedResources.ChessGameResource.Models
         /// <returns>A list of blocks containing a figure with the specified type and color. The list is empty if no such blocks
         /// are found.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the board blocks have not been initialized.</exception>
-
         public List<Block> GetBlockByFigureTypeAndColor(FigureType figureType, FigureColors figureColor)
         {
             if (BoardBlocks is null)
@@ -145,7 +160,8 @@ namespace SharedResources.ChessGameResource.Models
             var selectedKing = selectedBlocks.ToList();
 
             if (selectedKing == null)
-                throw new InvalidOperationException($"No block found with figure type {figureType} and color {figureColor}.");
+                throw new InvalidOperationException(
+                    $"No block found with figure type {figureType} and color {figureColor}.");
 
             return selectedKing;
         }
@@ -202,4 +218,4 @@ namespace SharedResources.ChessGameResource.Models
             return clonedBoard;
         }
     }
-} 
+}

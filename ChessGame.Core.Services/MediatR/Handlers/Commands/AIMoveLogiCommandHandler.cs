@@ -174,8 +174,14 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 clientBoardStateAfterAiMove.IsKingChecked = true;
             }
 
-            await connectionService.SendBoardStateToClient(clientBoardStateAfterAiMove,
-                request.RequestDTO.BoardRequestDTO.Player, false);
+            var boardStateSenderReqeust = new BoardStateSenderRequestDTO
+            {
+                BoardStateRequestDTO = clientBoardStateAfterAiMove,
+                Player = request.RequestDTO.BoardRequestDTO.Player,
+                IsMyConnection = false,
+            };
+
+            await connectionService.SendBoardStateToClient(boardStateSenderReqeust);
 
             return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new AIMoveLogicResponseDTO()

@@ -7,6 +7,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Game
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 using System.Linq;
+using SharedResources.ChessGameResource.Enums.Colors;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -29,6 +30,12 @@ namespace ChessGame.Core.Services.Services.HubServices
         }
 
 
+        public async Task ReceiveTick(FigureColors figureColor,TimeSpan whiteSpan,TimeSpan BlackSpan,string groupName)
+         => await _hubContext.Clients.Group(groupName).SendAsync("ReceiveTick",figureColor,whiteSpan,BlackSpan);          
+        
+        public async Task ReceiveTickConnection(FigureColors figureColor,TimeSpan whiteSpan,TimeSpan BlackSpan,string connectionId)
+            => await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveTick",figureColor,whiteSpan,BlackSpan); 
+
         public async Task SendPalyersInformationAsync(
             ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> receivePlayersResponseDTO) =>
             await _hubContext.Clients.Group(receivePlayersResponseDTO.Data.Player1_UserConnectionDTO.GameId.ToString())
@@ -38,6 +45,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             await _hubContext.Clients.Client(connectionRequestDTO.ReceiverUserConnection.ConnectionId)
                 .SendAsync(
                     "ReceiveInvite",
+                    connectionRequestDTO.PlayEvent,
                     connectionRequestDTO.InviterUserConnection,
                     connectionRequestDTO.InviterPlayerId,
                     connectionRequestDTO.ReceiverUserConnection,

@@ -36,18 +36,27 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         {
             request.RequestDTO.boardStateRequestDTO.IsKingMate = true;
 
+            var boardStateSenderRequestDTO = new BoardStateSenderRequestDTO
+            {
+                BoardStateRequestDTO = request.RequestDTO.boardStateRequestDTO,
+                Player = request.RequestDTO.boardStateRequestDTO.Player,
+                IsMyConnection = false,
+                Win = !request.RequestDTO.isComputerWin
+            };
+
             if (request.RequestDTO.IsTrainingGame)
             {
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
-                    request.RequestDTO.boardStateRequestDTO.Player, false, !request.RequestDTO.isComputerWin);
+                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
             }
             else
             {
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
-                    request.RequestDTO.boardStateRequestDTO.Player,isMyConnection: false,win: false);
+                boardStateSenderRequestDTO.Win = false;
+                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
 
-                await connectionService.SendBoardStateToClient(request.RequestDTO.boardStateRequestDTO,
-                    request.RequestDTO.boardStateRequestDTO.Player,isMyConnection: true,win: true);
+                
+                boardStateSenderRequestDTO.Win = true;
+                boardStateSenderRequestDTO.IsMyConnection = true;
+                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
             }
 
             var removeUsersFromGameRequest =

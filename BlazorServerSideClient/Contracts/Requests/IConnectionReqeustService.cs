@@ -12,7 +12,7 @@ namespace BlazorServerSideClient.Contracts.Requests
         Task<PipeLineResponse<AddUserConnectionResponseDTO>>
             AddConnectionAsync(PipeLineRequest<AddUserConnectionRequestDTO> addUserConnectionRequestDTO);
 
-        Task<PipeLineResponse<RemoveUserConnectionResponseDTO>>
-            RemoveConnectionAsync(PipeLineResponse<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO);
+        Task<PipeLineResponse<RemoveUserConnectionResponseDTO>?> RemoveConnectionAsync(
+            PipeLineRequest<RemoveUserConnectionRequestDTO> removeUserConnectionRequestDTO);
     }
 }

@@ -64,7 +64,7 @@ window.inviteModal = {
                 this.intervalId = null;
                 this.hide();
             }
-        }, 1000);
+        }, 4000);
     }
 };
 

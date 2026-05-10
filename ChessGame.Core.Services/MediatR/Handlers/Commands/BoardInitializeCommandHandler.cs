@@ -60,8 +60,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 return ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>.
                     CreateErrorResponse(initializeGameResponseDTO.Message, initializeGameResponseDTO.HttpStatusCode, initializeGameResponseDTO.Errors);
 
-            var BoardInitialize = new Board(default(FigureColors));
-
+            var BoardInitialize = new Board(default(FigureColors),request.RequestDTO.Player1Time);
+            
             var addingResult = ActiveGames.AddGame(initializeGameResponseDTO.Data.GameId, BoardInitialize);
 
             if (!addingResult)

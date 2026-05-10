@@ -13,7 +13,7 @@ namespace ChessService.API.ChessGameAPI
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
+    
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>

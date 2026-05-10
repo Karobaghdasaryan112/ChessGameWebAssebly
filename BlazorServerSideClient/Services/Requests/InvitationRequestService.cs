@@ -12,19 +12,20 @@ namespace BlazorServerSideClient.Services.Requests
         SignalRService signalRService,
         JSRunetimeService jsRunetimeService) : IInivitationReqeustService
     {
-        public async Task<PipeLineResponse<SendInvitationsResponseDTO>?> SendInviteAsync(
+        public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
             PipeLineRequest<SendInvitationRequestDTO> connectionRequestDto)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
             return await hubConnection.SafeInvokeAsync<SendInvitationRequestDTO, SendInvitationsResponseDTO>(
                 "SendInviteAsync",
-                connectionRequestDto.Request, jsRunetimeService);
+                connectionRequestDto.Request, jsRunetimeService) ?? PipeLineResponse<SendInvitationsResponseDTO>.Emoty;
         }
 
         public async Task CancelInviteAsync(Guid inviterPlayerGuid, Guid receiverUserGuid)
         {
             var hubConnection = await signalRService.GetHubConnectionAsync();
-
+            //TO DO: Implement SafeInvoke Async and (Request - Response)
+            
             await hubConnection.InvokeAsync("CancelInviteAsync", inviterPlayerGuid, receiverUserGuid);
         }
 

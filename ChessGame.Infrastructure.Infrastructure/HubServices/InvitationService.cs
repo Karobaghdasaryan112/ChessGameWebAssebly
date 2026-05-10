@@ -13,6 +13,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.PipeLine.PipeLineContext;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using SharedResources.ChessGameResource.Enums.Colors;
 
 namespace ChessGame.Core.Services.Services.HubServices
 {
@@ -28,19 +29,22 @@ namespace ChessGame.Core.Services.Services.HubServices
         {
             var pipeLineResponse = new PipeLineResponse<AcceptInvitationResponseDTO>();
 
-            //Get the connection information of both players using their userGuids from the connection service
-            var inviterConnectionInformation = await connectionService.GetUserConnection(
+            var inviterResponse = await connectionService.GetUserConnection(
                 new GetUserConnectionRequestDTO()
                 {
                     UserGuid = acceptInvitationRequest.inviterUserGuid
                 });
-            var receiverConnectionInformation = await connectionService.GetUserConnection(
+            var receiverResponse = await connectionService.GetUserConnection(
                 new GetUserConnectionRequestDTO()
                 {
                     UserGuid = acceptInvitationRequest.receiverUserGuid
                 });
 
-            //If any of the connection information retrieval is not successful, return an error response with the errors from both retrievals
+
+            var receiverConnectionInformation = receiverResponse.Response;
+            var inviterConnectionInformation = inviterResponse.Response;
+
+
             if (!inviterConnectionInformation.IsSuccess || !receiverConnectionInformation.IsSuccess)
             {
                 inviterConnectionInformation.Errors.AddRange(receiverConnectionInformation.Errors);
@@ -55,15 +59,14 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return pipeLineResponse;
             }
 
-            //Check if both players exist in the current connections
             var isInviterExists =
                 connectionService.CurrentConnectionState.TryGetValue(acceptInvitationRequest.inviterUserGuid,
                     out var inviterUser);
+
             var isReceiverExists =
                 connectionService.CurrentConnectionState.TryGetValue(acceptInvitationRequest.receiverUserGuid,
                     out var receiverUser);
 
-            //If any of the players does not exist in the current connections, return an error response
             if (!isInviterExists || !isReceiverExists)
             {
                 pipeLineResponse.Response = ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>
@@ -75,8 +78,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return pipeLineResponse;
             }
 
-            //Initialize the board and create the game with the gameId and the connection information of both players
-            var playersTime = TimeSpan.FromSeconds((int)PlayEvent.Classical);
+            var playersTime = TimeSpan.FromSeconds((int)acceptInvitationRequest.PlayEvent);
+
             var command =
                 new BoardInitializeCommand<BoardInitializeRequestDTO,
                     ResponseDTO<BoardInitializeResponseDTO, ChessGameResponseMessage>>
@@ -116,14 +119,12 @@ namespace ChessGame.Core.Services.Services.HubServices
                 PlayerTwo_UserConnectionResponseDTO = receiverConnectionInformation.Data.UserConnectionDTO
             };
 
-            //Add the userConnectionDtos of both players to the active connections and add the gameId to their connection information
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid] =
                 receiverConnectionInformation.Data.UserConnectionDTO;
 
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid] =
                 inviterConnectionInformation.Data.UserConnectionDTO;
 
-            //Add the gameId and gameinfo to the active connections of both players
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].GameId = result.Data.GameId;
 
             ActiveGames._connections[acceptInvitationRequest.receiverUserGuid].Gameinfo =
@@ -134,7 +135,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                         acceptInvitationRequest.inviterUserGuid)
                 };
 
-            //Add the gameId and gameinfo to the active connections of both players
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid].GameId = result.Data.GameId;
 
             ActiveGames._connections[acceptInvitationRequest.inviterUserGuid].Gameinfo =
@@ -145,12 +145,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                         acceptInvitationRequest.inviterUserGuid)
                 };
 
-            //Add both players to the group of the gameId
-            // await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
-            //     inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
-            //
-            // await baseHubService.AddToGroupAsync(result.Data!.GameId.ToString(),
-            //     receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId!);
 
             pipeLineResponse.Response =
                 ResponseDTO<AcceptInvitationResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
@@ -158,12 +152,23 @@ namespace ChessGame.Core.Services.Services.HubServices
                     ChessGameResponseMessage.SuccessInvitation,
                     HttpStatusCode.Created);
 
+            await baseHubService.AddToGroupAsync(
+                result.Data.GameId.ToString(),
+                inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId);
+
+            await baseHubService.AddToGroupAsync(
+                result.Data.GameId.ToString(),
+                receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId);
+
             await baseHubService.SendAcceptedInviteAsync(
                 inviterConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.inviterUserGuid,
                 receiverConnectionInformation.Data.UserConnectionDTO,
                 acceptInvitationRequest.receiverUserGuid,
                 result.Data.GameId);
+
+            StartTick(result.Data.GameId,inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId,receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId);
+
             return pipeLineResponse;
         }
 
@@ -175,17 +180,22 @@ namespace ChessGame.Core.Services.Services.HubServices
         public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
             SendInvitationRequestDTO connectionRequestDto)
         {
-            var inviterConnectionInfo = await connectionService.GetUserConnection(
+            var inviterResponse = await connectionService.GetUserConnection(
                 new GetUserConnectionRequestDTO
                 {
                     UserGuid = connectionRequestDto.InviterPlayerId
                 });
 
-            var receiverConnectionInfo = await connectionService.GetUserConnection(
+            var receiverResponse = await connectionService.GetUserConnection(
                 new GetUserConnectionRequestDTO
                 {
                     UserGuid = connectionRequestDto.ReceiverPlayerId
                 });
+
+
+            var inviterConnectionInfo = inviterResponse.Response;
+            var receiverConnectionInfo = receiverResponse.Response;
+
 
             if (!inviterConnectionInfo.IsSuccess || !receiverConnectionInfo.IsSuccess)
             {
@@ -202,6 +212,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             connectionRequestDto.InviterUserConnection = inviterConnectionInfo.Data.UserConnectionDTO;
             connectionRequestDto.ReceiverUserConnection = receiverConnectionInfo.Data.UserConnectionDTO;
 
+
             await baseHubService.SendInviteAsync(connectionRequestDto);
             return new PipeLineResponse<SendInvitationsResponseDTO>()
             {
@@ -209,5 +220,49 @@ namespace ChessGame.Core.Services.Services.HubServices
                     null!, ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, new object()),
             };
         }
+        
+        
+        
+        //Private Methods
+        private void StartTick(Guid gameId,string inviterUserConnection,string receiverUserConnection)
+        {
+            _ = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(900);
+
+                    if (!ActiveGames.ActiveGamesAndBoards.ContainsKey(gameId)) break;
+                    
+                    var board = ActiveGames.GetBoard(gameId);
+                    
+                    var figureColor = board.Turn;
+                    
+                    
+                    if (figureColor == Turn.White)
+                        board.WhiteTimeSpan -= TimeSpan.FromSeconds(1); 
+                    else
+                        board.BlackTimeSpan -= TimeSpan.FromSeconds(1);
+
+                    
+                    await baseHubService.ReceiveTickConnection(
+                        board.FigureColor,
+                        board.WhiteTimeSpan,
+                        board.BlackTimeSpan,
+                        inviterUserConnection
+                    );
+                    
+                    
+                    await baseHubService.ReceiveTickConnection(
+                        board.FigureColor,
+                        board.WhiteTimeSpan,
+                        board.BlackTimeSpan,
+                        receiverUserConnection
+                    );
+                }
+            });
+        }
+        
+        
     }
 }

@@ -49,7 +49,7 @@
     }
 
     private bool collapseNavMenu = true;
-    private ClaimsPrincipal user;
+    private ClaimsPrincipal user = null!;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()

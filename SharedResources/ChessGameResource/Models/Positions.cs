@@ -32,6 +32,6 @@ public class Position
     }
     public override string ToString()
     {
-        return $"{(int)VerticalOrientation}{(int)HorizontalOrientation}";
+        return PrintPositions.ToChessPosition((int)VerticalOrientation, (int)HorizontalOrientation);
     }
 }

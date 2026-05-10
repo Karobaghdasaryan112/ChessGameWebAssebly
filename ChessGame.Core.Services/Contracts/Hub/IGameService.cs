@@ -30,7 +30,7 @@ namespace ChessGame.Core.Services.Contracts.Hub
         Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
             PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDTO);
 
-        Task<ResponseDTO<TrainingGameResponseDTO, ChessGameResponseMessage>> RequestTrainingGameAsync(
-            TrainingGameRequestDTO trainingGameRequestDTO);
+        Task<PipeLineResponse<TrainingGameResponseDTO>> RequestTrainingGameAsync(
+            PipeLineRequest<TrainingGameRequestDTO> trainingGameRequestDTO);
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
+@using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.InvitationRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.InvitationResponseDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
@@ -20,6 +21,9 @@
         <p class="invite-message">
             <strong id="Inviter-Name"></strong> invited you to a chess match.
         </p>
+        <div class="invite-event">
+            Mode: <strong>@currentPlayEvent (@GetMinutes(currentPlayEvent) min)</strong>
+        </div>
         <div class="invite-timer">
             Auto-decline in <strong id="Inviter-Time-Value">30</strong> sec
         </div>
@@ -30,6 +34,7 @@
     </div>
 </div>
 @code {
+    private PlayEvent currentPlayEvent;
     private static Guid ReceiverUserGuid { get; set; }
     private static Guid InviterUserGuid { get; set; }
     private string? _connectionId { get; set; }
@@ -45,6 +50,10 @@
         {
             ReceiverUserGuid = sendInvitationResponseDTO.Data.ReceiverUserGuid;
             InviterUserGuid = sendInvitationResponseDTO.Data.InviterUserGuid;
+
+            currentPlayEvent = sendInvitationResponseDTO.Data.PlayEvent;
+
+            InvokeAsync(StateHasChanged); 
         };
         InvitationHandlerService.OnReceived += _inviteReceivedHandler;
 
@@ -56,12 +65,18 @@
         await InvitationRequestService.AcceptInviteAsync(
             new PipeLineRequest<AcceptInvitationRequestDTO>(new AcceptInvitationRequestDTO()
             {
+                PlayEvent = currentPlayEvent,
                 inviterUserGuid = InviterUserGuid,
                 receiverUserGuid = ReceiverUserGuid
             })
            );
     }
-
+    
+    private int GetMinutes(PlayEvent evt)
+    {
+        return (int)evt / 60;
+    }
+    
     private async Task DeclineInvite()
     {
         await JSRunetimeService.HideInviteModal();
@@ -75,4 +90,5 @@
             InvitationHandlerService.OnReceived -= _inviteReceivedHandler;
         }
     }
+
 }
