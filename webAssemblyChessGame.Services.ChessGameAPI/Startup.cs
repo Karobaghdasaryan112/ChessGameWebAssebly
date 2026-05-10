@@ -21,7 +21,7 @@ namespace ChessService.API.ChessGameAPI
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()
-                        .WithOrigins("http://localhost:5191", "http://localhost:7124");
+                        .WithOrigins("https://localhost:5191", "https://localhost:7124");
                 });
             });
 
