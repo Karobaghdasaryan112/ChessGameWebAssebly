@@ -6,69 +6,52 @@
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Karokar3.
       - MSSQL_PID=Developer
-      
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Karokar3. -Q 'SELECT 1' || exit 1"]
-      interval: 10s
-      timeout: 10s
-      retries: 10 
-      start_period: 20s 
-        
     ports:
       - "1433:1433"
-  
+
   gateway.api:
-    image: gatway.api
-    environment:
-      - ASPNETCORE_URLS=http://+:8081
-      - ASPNETCODE_ENVOIREMENT=Development
+    image: gateway.api
     build:
       context: .
       dockerfile: Gateway.API/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     ports:
       - "7124:8081"
-        
-  migration-helper-chessgameapi:
-    build:
-      context: .
-      dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
-      target: build 
-    depends_on:
-      - sqlserver 
-    command: dotnet ef database update
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
-        
-  migration-helper-blazorclient:
-    build:
-      context: .
-      dockerfile: BlazorServerSideClient/Dockerfile
-    depends_on:
-      - sqlserver 
-    command: dotnet ef database update
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;
-  
-  cheessgame.api:
+    volumes:
+      - ./certs:/https:ro
+
+  chessgame.api:
     image: chessgame.api
-    environment:
-      - ASPNETCORE_URLS=http://+:8081
-      - ASPNETCORE_ENVOIREMENT=Development
     build:
       context: .
       dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     ports:
       - "5203:8081"
-  
-  blazor.clinet:
+    volumes:
+      - ./certs:/https:ro
+
+  blazor.client:
     image: blazorserversideclient
-    environment:
-      - ASPNETCORE_URLS=http://+:8081
-      - ASPNETCORE_ENVOIREMENT=Development
     build:
       context: .
       dockerfile: BlazorServerSideClient/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Karokar3.
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     ports:
-      - "5191:8081" 
+      - "5191:8081"
+    volumes:
+      - ./certs:/https:ro
     depends_on:
-        - sqlserver
+      - sqlserver
