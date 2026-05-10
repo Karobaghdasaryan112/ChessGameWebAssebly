@@ -63,7 +63,7 @@ builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestSer
 builder.Services.AddCors(options => options.AddPolicy("Default",
     policy =>
         policy
-            .WithOrigins("https://localhost:5191")
+            .WithOrigins("http://localhost:5191")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()));
@@ -114,7 +114,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseCors();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
