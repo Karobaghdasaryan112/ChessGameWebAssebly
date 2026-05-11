@@ -62,10 +62,17 @@ builder.Services.AddScoped<IGameRequestService, GameRequestService>();
 builder.Services.AddScoped<IInivitationReqeustService, InvitationRequestService>();
 builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestService>();
 
+var chessOrigin = builder.Configuration["ServiceUrls:ChessGameApi"];
+
+if (string.IsNullOrEmpty(chessOrigin))
+{
+    throw new Exception("CORS Origin 'ServiceUrls:ChessGameApi' is missing from configuration!");
+}
+
 builder.Services.AddCors(options => options.AddPolicy("Default",
     policy =>
         policy
-            .WithOrigins(builder.Configuration.GetSection("ServiceUrls")["ChessGameApi"]!)
+            .WithOrigins(chessOrigin)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()));
