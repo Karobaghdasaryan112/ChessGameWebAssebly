@@ -13,18 +13,27 @@ namespace ChessService.API.ChessGameAPI
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            var serviceUrls = configuration.GetSection("ServiceUrls");
+            var chessOrigin = serviceUrls["ChessGameApi"];
+            var gatewayOrigin = serviceUrls["GatewayApi"];
+
+            if (string.IsNullOrEmpty(chessOrigin) || string.IsNullOrEmpty(gatewayOrigin))
+            {
+                var missing = string.IsNullOrEmpty(chessOrigin) ? "ChessGameApi" : "GatewayApi";
+                throw new Exception(
+                    $"CRITICAL: Configuration key 'ServiceUrls:{missing}' is null. Check appsettings.Production.json inside the container.");
+            }
+
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(policy =>
+                options.AddPolicy("Default", policy =>
                 {
-                    policy
+                    policy.WithOrigins(chessOrigin, gatewayOrigin) 
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials()
-                        .WithOrigins(configuration.GetSection("ServiceUrls")["ChessGameApi"]!, configuration.GetSection("ServiceUrls")["GatewayApi"]!);
+                        .AllowCredentials();
                 });
             });
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -19,6 +19,8 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -94,6 +96,17 @@ builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
 
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    var envName = app.Environment.EnvironmentName;
+
+    // 3. Log the environment info
+    logger.LogInformation("========================================");
+    logger.LogInformation("Application Starting Up");
+    logger.LogInformation("Environment: {EnvironmentName}", envName);
+    logger.LogInformation("========================================");
+}
 
 
 //use MigrationApplierService to apply not existing migration in the database

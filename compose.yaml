@@ -16,7 +16,7 @@
       dockerfile: Gateway.API/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:8080
-      - ASPNETCORE_ENVIRONMENT=PRODUCTION
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "7124:8080"
 
@@ -28,7 +28,7 @@
       dockerfile: webAssemblyChessGame.Services.ChessGameAPI/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:8080
-      - ASPNETCORE_ENVIRONMENT=PRODUCTION
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5203:8080"
 
@@ -39,7 +39,7 @@
       dockerfile: BlazorServerSideClient/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:8080
-      - ASPNETCORE_ENVIRONMENT=PRODUCTION
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5191:8080"
     depends_on:
