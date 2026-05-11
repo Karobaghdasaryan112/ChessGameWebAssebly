@@ -1,15 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChessGame.Infrastructure.Persistance.Data
 {
-    public class ChessGameDbContextFactory : IDesignTimeDbContextFactory<ChessGameDbContext>
+    public class ChessGameDbContextFactory(IConfiguration configuration)
+        : IDesignTimeDbContextFactory<ChessGameDbContext>
     {
         public ChessGameDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ChessGameDbContext>();
 
-            optionsBuilder.UseSqlServer("Server=sqlserver,1433;Database=master;User Id=sa;Password=Karokar3.;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             return new ChessGameDbContext(optionsBuilder.Options);
         }
     }

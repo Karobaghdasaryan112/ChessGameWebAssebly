@@ -8,8 +8,8 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGameBlazorClient.ApiServices
 {
-    public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder)
-        : BaseHttpClient(httpClient, queryBuilder)
+    public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder,BasePaths basePaths)
+        : BaseHttpClient(httpClient, queryBuilder,basePaths)
     {
 
 

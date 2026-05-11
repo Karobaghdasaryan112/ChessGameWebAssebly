@@ -17,10 +17,12 @@ namespace ChessGameBlazorClient.UI.ClientService
     {
         protected IQueryBuilder _queryBuilder;
         protected readonly HttpClient _httpClient;
-        public BaseHttpClient(HttpClient httpClient, IQueryBuilder queryBuilder)
+        protected readonly BasePaths _basePaths;
+        public BaseHttpClient(HttpClient httpClient, IQueryBuilder queryBuilder,BasePaths basePaths)
         {
             _queryBuilder = queryBuilder;
             _httpClient = httpClient;
+            _basePaths = basePaths;
 
             //_httpClient.Timeout = TimeSpan.FromSeconds(30);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -92,7 +94,7 @@ namespace ChessGameBlazorClient.UI.ClientService
             List<KeyValuePair<string, string>> queryParamAndValues)
         {
 
-            var identityBasePath = BasePaths.GetPath(endpoint, action);
+            var identityBasePath = _basePaths.GetPath(endpoint, action);
             var requestQuery =
                 queryParamAndValues.Count > 0
                     ? identityBasePath
@@ -113,7 +115,7 @@ namespace ChessGameBlazorClient.UI.ClientService
         protected Uri BuildRequestUri(ChatEndpoints endpoint, ChatAction action, List<KeyValuePair<string, string>> queryParamAndValues)
         {
 
-            var identityBasePath = BasePaths.GetPath(endpoint, action);
+            var identityBasePath = _basePaths.GetPath(endpoint, action);
             var requestQuery =
                  queryParamAndValues.Count > 0 ?
                  identityBasePath :
@@ -133,7 +135,7 @@ namespace ChessGameBlazorClient.UI.ClientService
         protected Uri BuildRequestUri(ChessGameEndpoints endpoint, ChessGameAction action, List<KeyValuePair<string, string>> queryParamAndValues)
         {
 
-            var identityBasePath = BasePaths.GetPath(endpoint, action);
+            var identityBasePath = _basePaths.GetPath(endpoint, action);
             var requestQuery =
                  queryParamAndValues.Count == 0 ?
                  identityBasePath :

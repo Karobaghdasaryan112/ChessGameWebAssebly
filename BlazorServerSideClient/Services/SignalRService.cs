@@ -20,7 +20,8 @@ public sealed class SignalRService(
     IInvitationHandlerService invitationHandler,
     IGameHandlerService gameHandler,
     AuthenticationStateProvider authStateProvider,
-    ILogger<SignalRService> logger)
+    ILogger<SignalRService> logger,
+    BasePaths basePaths)
 
 {
     private HubConnection? _hubConnection;
@@ -72,7 +73,7 @@ public sealed class SignalRService(
     private HubConnection BuildHubConnection()
     {
         return new HubConnectionBuilder()
-            .WithUrl(BasePaths.baseUrlHub)
+            .WithUrl(basePaths.BaseUrlHub)
             .WithAutomaticReconnect()
             .WithKeepAliveInterval(TimeSpan.FromSeconds(60))
             .WithServerTimeout(TimeSpan.FromSeconds(60))

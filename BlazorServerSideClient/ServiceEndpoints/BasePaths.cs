@@ -3,49 +3,29 @@ using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
 
 namespace ChessGameBlazorClient.ServiceEndpoints
 {
-    public static class BasePaths
+    public class BasePaths(IConfiguration config)
     {
-        internal static readonly string baseUrl = "http://gateway.api:7124/";
-        /// <summary>
-        /// GameHub mapping Url for ChessGame Service
-        /// </summary>
-        public static readonly string baseUrlHub = "http://chessgame.api:8080/gameHub";
+        // Use a property or field that ensures a trailing slash
+        private readonly string _baseUrl = config["ServiceUrls:GatewayApi"]?.TrimEnd('/') + "/" 
+                                           ?? "http://gateway.api:8080/";
 
-        /// <summary>
-        /// Builds the URI for the specified identity controller and identity action.
-        /// </summary>
-        /// <param name="controller">The identity controller (e.g., Identity, Auth).</param>
-        /// <param name="action">The action to perform (e.g., Login, 
-        /// ).</param>
-        /// <returns>A complete URI for the API endpoint.</returns>
-        public static Uri GetPath(IdentityEndpoints controller, IdentityAction action) =>
-           new Uri($"{baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+        private readonly string _hubUrl = config["ServiceUrls:ChessGameApi-socket"] 
+                                          ?? "http://chessgame.api:8080/gameHub";
 
-        /// <summary>
-        /// Builds the URI for the specified identity controller and user-related action.
-        /// </summary>
-        /// <param name="controller">The identity controller (e.g., Identity, User).</param>
-        /// <param name="action">The user action to perform (e.g., GetProfile, UpdateUser).</param>
-        /// <returns>A complete URI for the API endpoint.</returns>
-        public static Uri GetPath(IdentityEndpoints controller, UserAction action) =>
-           new Uri($"{baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+        // Removed 'static' so it can access the injected config values
+        public string BaseUrlHub => _hubUrl;
+        internal string BaseUrl => _baseUrl;
 
-        /// <summary>
-        /// Builds the URI for the specified chess game controller and game-related action.
-        /// </summary>
-        /// <param name="controller">The chess game controller (e.g., Game, Matchmaking).</param>
-        /// <param name="action">The game action to perform (e.g., Start, Move).</param>
-        /// <returns>A complete URI for the API endpoint.</returns>
-        public static Uri GetPath(ChessGameEndpoints controller, ChessGameAction action) =>
-            new Uri($"{baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+        public Uri GetPath(IdentityEndpoints controller, IdentityAction action) =>
+            new Uri($"{_baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
 
-        /// <summary>
-        /// Builds the URI for the specified chat controller and chat-related action.
-        /// </summary>
-        /// <param name="controller">The chat controller (e.g., Chat, Message).</param>
-        /// <param name="action">The chat action to perform (e.g., SendMessage, GetMessages).</param>
-        /// <returns>A complete URI for the API endpoint.</returns>
-        public static Uri GetPath(ChatEndpoints controller, ChatAction action) =>
-            new Uri($"{baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+        public Uri GetPath(IdentityEndpoints controller, UserAction action) =>
+            new Uri($"{_baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+
+        public Uri GetPath(ChessGameEndpoints controller, ChessGameAction action) =>
+            new Uri($"{_baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
+
+        public Uri GetPath(ChatEndpoints controller, ChatAction action) =>
+            new Uri($"{_baseUrl}api/{controller}/{action.ToString().ToLower().Replace("_", "-")}");
     }
 }

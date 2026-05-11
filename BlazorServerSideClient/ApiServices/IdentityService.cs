@@ -1,4 +1,5 @@
 ﻿using ChessGameBlazorClient.Contracts;
+using ChessGameBlazorClient.ServiceEndpoints;
 using ChessGameBlazorClient.UI.ClientService;
 using SharedResources.DTOs.IdentityDTOs.RequestDTOs;
 using SharedResources.DTOs.IdentityDTOs.ResponseDTOs;
@@ -9,8 +10,8 @@ using static ChessGameBlazorClient.ServiceEndpoints.Endpoints;
 
 namespace ChessGameBlazorClient.ApiServices
 {
-    public class IdentityService(HttpClient httpClient, IQueryBuilder queryBuilder)
-        : BaseHttpClient(httpClient, queryBuilder)
+    public class IdentityService(HttpClient httpClient, IQueryBuilder queryBuilder,BasePaths basePaths)
+        : BaseHttpClient(httpClient, queryBuilder,basePaths)
     {
         /// <summary>
         /// Sends a login request to the identity API and returns a token response.

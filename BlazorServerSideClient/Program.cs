@@ -78,7 +78,7 @@ builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api",
-    client => { client.BaseAddress = new Uri($"{BasePaths.baseUrl}"); });
+    client => { client.BaseAddress = new Uri($"{new BasePaths(builder.Configuration).BaseUrl}"); });
 
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();
 var app = builder.Build();
