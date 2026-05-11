@@ -32,5 +32,6 @@ jobs:
           script: |
             cd /root/ChessGameApplication
             git pull origin main
+            export DB_CONNECTION=$DB_CONNECTION
             docker compose down
             docker compose up --build -d
