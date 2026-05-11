@@ -179,21 +179,11 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     return await mediator.Send(kingMateLogicCommand, cancellationToken);
                 }
 
-
-                await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
-
-                request.Request.IsKingChecked = false;
-
-                boardSTateSenderRequest.IsMyConnection = true;
                 await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
             }
 
             if (mediatRIsKingCheckAfterMove is { IsSuccess: true, Data.IsKingChecked: false })
             {
-                boardSTateSenderRequest.IsMyConnection = true;
-                await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
-
-                boardSTateSenderRequest.IsMyConnection = false;
                 await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
 
 
@@ -204,10 +194,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     castlingRequest.From = mediatRSubmitMoveResponse.Data.CastlingRookPositions.RookFrom;
                     castlingRequest.To = mediatRSubmitMoveResponse.Data.CastlingRookPositions.RookTo;
 
-                    boardSTateSenderRequest.IsMyConnection = true;
-                    await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
-
-                    boardSTateSenderRequest.IsMyConnection = false;
                     await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
                 }
             }

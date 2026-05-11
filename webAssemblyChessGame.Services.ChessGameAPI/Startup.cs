@@ -70,7 +70,12 @@ namespace ChessService.API.ChessGameAPI
 
             app.UseCors();
             app.UseRouting();
-
+            
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(15)
+            });
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

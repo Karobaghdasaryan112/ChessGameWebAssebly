@@ -317,87 +317,92 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
 
 
         //---------------------------------------------------------------------------------------------------------
-        public async Task<PipeLineResponse<BoardStateSenderResponseDTO>>
-            SendBoardStateToClient(BoardStateSenderRequestDTO sendBoardStateReqeust)
+        public async Task<PipeLineResponse<BoardStateSenderResponseDTO>> SendBoardStateToClient(
+            BoardStateSenderRequestDTO request)
         {
-            string selectedGameOpponentConnectionId = string.Empty;
-            if (sendBoardStateReqeust.BoardStateRequestDTO.IsOpponentComputer)
+            var gameId = request.BoardStateRequestDTO.GameId;
+            var currentPlayer = request.Player;
+
+            // 1. Fetch all connections associated with this game
+            var participants = ActiveGames._connections.Values
+                .Where(c => c.GameId == gameId)
+                .ToList();
+
+            if (!participants.Any())
             {
-                selectedGameOpponentConnectionId = CurrentConnectionState
-                    .FirstOrDefault(connection => connection.Value.UserName == sendBoardStateReqeust.Player).Value
-                    .ConnectionId!;
-            }
-            else
-            {
-                var selectedGameKeyValue = CurrentConnectionState.Where(gameIdUserConnection =>
-                        gameIdUserConnection.Value?.GameId ==
-                        sendBoardStateReqeust.BoardStateRequestDTO.GameId)
-                    .Select(selectedGameUserConnection => selectedGameUserConnection.Value).ToList();
-
-
-                selectedGameKeyValue = sendBoardStateReqeust.IsMyConnection
-                    ? selectedGameKeyValue.Where(keyValue => keyValue.UserName == sendBoardStateReqeust.Player).ToList()
-                    : selectedGameKeyValue.Where(keyValue => keyValue.UserName != sendBoardStateReqeust.Player)
-                        .ToList();
-
-
-                if (selectedGameKeyValue == null)
-                    return new PipeLineResponse<BoardStateSenderResponseDTO>()
-                    {
-                        Response = ResponseDTO<BoardStateSenderResponseDTO, ChessGameResponseMessage>
-                            .CreateErrorResponse(
-                                new BoardStateSenderResponseDTO()
-                                {
-                                    BoardStateResponse = new BoardStateResponseDTO()
-                                    {
-                                        GameId = sendBoardStateReqeust.BoardStateRequestDTO.GameId,
-                                        Player = sendBoardStateReqeust.BoardStateRequestDTO.Player
-                                    }
-                                },
-                                ChessGameResponseMessage.InvalidMove,
-                                System.Net.HttpStatusCode.BadRequest)
-                    };
-
-                selectedGameOpponentConnectionId = selectedGameKeyValue.First().ConnectionId;
+                return CreateErrorPipeLineResponse(gameId, currentPlayer);
             }
 
-            var boardStateResposneDTO = new BoardStateResponseDTO()
+            // 2. Identify logic context
+            bool isAgainstComputer = request.BoardStateRequestDTO.IsOpponentComputer;
+
+            // 3. Broadcast to relevant parties
+            foreach (var participant in participants)
             {
-                GameId = sendBoardStateReqeust.BoardStateRequestDTO.GameId,
-                CutableFigure = null!,
-                IsReadyToEvent = sendBoardStateReqeust.BoardStateRequestDTO.IsReadyToEvent,
-                From = sendBoardStateReqeust.BoardStateRequestDTO.From,
-                To = sendBoardStateReqeust.BoardStateRequestDTO.To,
-                OpponentConnectionId = selectedGameOpponentConnectionId,
-                KingPosition = sendBoardStateReqeust.BoardStateRequestDTO.CheckedKingPosition,
-                IsKingChecked = sendBoardStateReqeust.BoardStateRequestDTO.IsKingChecked,
-                IsKingMate = sendBoardStateReqeust.BoardStateRequestDTO.IsKingMate,
-                OpponentColor = sendBoardStateReqeust.BoardStateRequestDTO.OpponentColor,
-                IsMyConnection = sendBoardStateReqeust.IsMyConnection,
-                Win = sendBoardStateReqeust.Win
+                bool isMe = participant.UserName == currentPlayer;
+
+                // If it's an AI game, we usually only care about the Human connection
+                // If it's PvP, we send updates to both
+                var boardStateDto = MapToResponseDTO(request, participant.ConnectionId, isMe);
+
+                var hubResponse = ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>
+                    .CreateSuccessResponse(boardStateDto, ChessGameResponseMessage.MoveSuccessful);
+
+                await _baseHubService.ReceiveBoardUpdateAsync(hubResponse);
+            }
+
+            // 4. Return the standardized Pipeline Response
+            return CreateSuccessPipeLineResponse(gameId, currentPlayer);
+        }
+
+// --- Helper Methods for Professional Cleanliness ---
+
+        private BoardStateResponseDTO MapToResponseDTO(BoardStateSenderRequestDTO req, string connectionId,
+            bool isMyConnection)
+        {
+            return new BoardStateResponseDTO
+            {
+                GameId = req.BoardStateRequestDTO.GameId,
+                From = req.BoardStateRequestDTO.From,
+                To = req.BoardStateRequestDTO.To,
+                OpponentConnectionId = connectionId,
+                KingPosition = req.BoardStateRequestDTO.CheckedKingPosition,
+                IsKingChecked = req.BoardStateRequestDTO.IsKingChecked,
+                IsKingMate = req.BoardStateRequestDTO.IsKingMate,
+                OpponentColor = req.BoardStateRequestDTO.OpponentColor,
+                IsReadyToEvent = req.BoardStateRequestDTO.IsReadyToEvent,
+                IsMyConnection = isMyConnection,
+                Win = req.Win,
+                CutableFigure = null!
             };
+        }
 
-            var sendBoardResposneDTO =
-                ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                    boardStateResposneDTO, ChessGameResponseMessage.Draw);
+        private PipeLineResponse<BoardStateSenderResponseDTO> CreateSuccessPipeLineResponse(Guid gameId, string player)
+        {
+            return new PipeLineResponse<BoardStateSenderResponseDTO>
+            {
+                Response = ResponseDTO<BoardStateSenderResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                    new BoardStateSenderResponseDTO
+                    {
+                        BoardStateResponse = new BoardStateResponseDTO { GameId = gameId, Player = player }
+                    },
+                    ChessGameResponseMessage.MoveSuccessful,
+                    System.Net.HttpStatusCode.OK)
+            };
+        }
 
-            await _baseHubService.ReceiveBoardUpdateAsync(sendBoardResposneDTO);
-
-            return
-                new PipeLineResponse<BoardStateSenderResponseDTO>()
-                {
-                    Response = ResponseDTO<BoardStateSenderResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                        new BoardStateSenderResponseDTO()
-                        {
-                            BoardStateResponse = new BoardStateResponseDTO()
-                            {
-                                GameId = sendBoardStateReqeust.BoardStateRequestDTO.GameId,
-                                Player = sendBoardStateReqeust.Player
-                            }
-                        },
-                        ChessGameResponseMessage.MoveSuccessful,
-                        System.Net.HttpStatusCode.OK)
-                };
+        private PipeLineResponse<BoardStateSenderResponseDTO> CreateErrorPipeLineResponse(Guid gameId, string player)
+        {
+            return new PipeLineResponse<BoardStateSenderResponseDTO>
+            {
+                Response = ResponseDTO<BoardStateSenderResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                    new BoardStateSenderResponseDTO
+                    {
+                        BoardStateResponse = new BoardStateResponseDTO { GameId = gameId, Player = player }
+                    },
+                    ChessGameResponseMessage.InvalidMove,
+                    System.Net.HttpStatusCode.BadRequest)
+            };
         }
         //---------------------------------------------------------------------------------------------------------
     }

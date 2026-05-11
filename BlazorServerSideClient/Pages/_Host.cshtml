@@ -37,8 +37,8 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="BlazorServerSideClient.styles.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="favicon.png"/>
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    <link rel="icon" type="image/png" href="css/favicon.png"/>
+    <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
 <body>
     <component type="typeof(App)" render-mode="Server" />
@@ -53,7 +53,7 @@
         <a class="dismiss">🗙</a>
     </div>
     @* <script src="_content/Microsoft.AspNetCore.SignalR.Client.JS/signalr.min.js"></script> *@
-    <script src="Js/lib/signalr.min.js"></script>
+    <script src="Js/Lib/signalr.min.js"></script>
     <script src="Js/components/common.js"></script>
     <script src="Js/components/game-board.js"></script>
     <script src="Js/components/history-effects.js"></script>

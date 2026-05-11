@@ -22,68 +22,69 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         IBoardService boardService) :
         MediatR_Base<KingMateLogicRequestDTO, KingMateLogicCommandHandler, IBoardService>(validator, logger,
             boardService),
-        IRequestHandler< 
+        IRequestHandler<
             KingMateLogicCommand<
                 KingMateLogicRequestDTO,
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>,
             ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
     {
-        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
-            Handle(
-                KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
-                    request,
-                CancellationToken cancellationToken)
+        public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> Handle(
+            KingMateLogicCommand<KingMateLogicRequestDTO, ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>
+                request,
+            CancellationToken cancellationToken)
         {
-            request.RequestDTO.boardStateRequestDTO.IsKingMate = true;
+            // 1. Extract and Prepare State
+            var requestData = request.RequestDTO;
+            var boardReq = requestData.boardStateRequestDTO;
+            var gameId = boardReq.GameId;
 
-            var boardStateSenderRequestDTO = new BoardStateSenderRequestDTO
+            // Explicitly set Mate state as per business logic
+            boardReq.IsKingMate = true;
+
+            // 2. Broadcast Game State
+            // We pass the "Winning" status for the current player. 
+            // The SendBoardStateToClient service handles flipping this for the opponent.
+            var boardSenderRequest = new BoardStateSenderRequestDTO
             {
-                BoardStateRequestDTO = request.RequestDTO.boardStateRequestDTO,
-                Player = request.RequestDTO.boardStateRequestDTO.Player,
-                IsMyConnection = false,
-                Win = !request.RequestDTO.isComputerWin
+                BoardStateRequestDTO = boardReq,
+                Player = boardReq.Player,
+                IsMyConnection = true,
+                Win = !requestData.isComputerWin
             };
 
-            if (request.RequestDTO.IsTrainingGame)
+            // This replaces the old if(IsTrainingGame) block by delegating 
+            // the "who gets what" logic to the specialized broadcast service.
+            await connectionService.SendBoardStateToClient(boardSenderRequest);
+
+            // 3. Persist Winner Information
+            // Replaces .First() with a safe lookup to prevent runtime crashes
+            var winnerConnection = connectionService.CurrentConnectionState
+                .FirstOrDefault(c => c.Value.UserName == boardReq.Player);
+
+            if (winnerConnection.Value != null)
             {
-                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
-            }
-            else
-            {
-                boardStateSenderRequestDTO.Win = false;
-                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
-
-                
-                boardStateSenderRequestDTO.Win = true;
-                boardStateSenderRequestDTO.IsMyConnection = true;
-                await connectionService.SendBoardStateToClient(boardStateSenderRequestDTO);
-            }
-
-            var removeUsersFromGameRequest =
-                new RemoveUserFromGameRequestDTO()
+                await boardService.SaveGameEventAndWinnerAsync(new SaveGameEventAndWinnerRequestDTO
                 {
-                    GameId = (request.RequestDTO.boardStateRequestDTO.GameId),
-                };
-
-            var winnerPlayerGuid = connectionService.CurrentConnectionState.Where(connection =>
-            connection.Value.UserName == request.RequestDTO.boardStateRequestDTO.Player)?.First();
-
-            await boardService.SaveGameEventAndWinnerAsync(
-                new SaveGameEventAndWinnerRequestDTO()
-                {
-                    GameId = request.RequestDTO.boardStateRequestDTO.GameId,
-                    WinnerPlayerGuid = winnerPlayerGuid!.Value.Key!
+                    GameId = gameId,
+                    WinnerPlayerGuid = winnerConnection.Key // The Connection Key is the User Guid
                 });
+            }
 
-            await connectionService.RemoveUsersFromGameAsync(removeUsersFromGameRequest);
+            // 4. Resource Cleanup (Ordered to ensure data integrity)
+            var cleanupRequest = new RemoveUserFromGameRequestDTO { GameId = gameId };
 
-            ActiveGames.RemoveGame(request.RequestDTO.boardStateRequestDTO.GameId);
+            // Remove from SignalR Groups/Connections
+            await connectionService.RemoveUsersFromGameAsync(cleanupRequest);
 
+            // Remove from Server Memory
+            ActiveGames.RemoveGame(gameId);
+
+            // 5. Build and Return Success Response
             return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                new MoveResponseDTO()
+                new MoveResponseDTO
                 {
-                    GameId = request.RequestDTO.boardStateRequestDTO.GameId,
-                    Player = request.RequestDTO.boardStateRequestDTO.Player,
+                    GameId = gameId,
+                    Player = boardReq.Player,
                     IsReadyToEvent = IsReady.IsReadyToCut
                 },
                 ChessGameResponseMessage.MoveSuccessful,

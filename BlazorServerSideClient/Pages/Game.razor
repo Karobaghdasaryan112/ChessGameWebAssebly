@@ -247,14 +247,12 @@
     {
         if (firstRender)
         {
-            // 2. Start the Hub Connection now that we have a real circuit
+
             _hubConnection = await HubClient.GetHubConnectionAsync();
 
-            // 3. JS Interop is now safe
             await JS.ShowPlayers(Player1Name, Player2Name);
             await jsRuneTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.register", _dotNetRef);
 
-            // 4. Fetch Game State
             var thisBoard = await GameRequestService.SendGameStateAsync(
                 new PipeLineRequest<SendGameStateReqeustDTO>(new SendGameStateReqeustDTO { GameId = GameId }));
 
@@ -271,15 +269,11 @@
                 InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
             }
 
-            // 5. Setup Events
-            Services.Handlers.GameHandlerService.OnTickReceived += StartClockLoop;
-
             if (IsComputerOpponent && Player1Name == "Computer")
             {
                 await AIMoveAtFirst();
             }
-
-            // 6. Refresh UI
+            
             StateHasChanged();
         }
     }
@@ -566,39 +560,10 @@
         return $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
     }
 
-    // private static string FormatClock(TimeSpan clock)
-    //     => $"{(int)clock.TotalMinutes:D2}:{clock.Seconds:D2}";
+
 
     private static string GetInitial(string? name)
         => string.IsNullOrWhiteSpace(name) ? "?" : name.Trim()[0].ToString().ToUpperInvariant();
-
-    private void StartClockLoop(FigureColors playerColor, TimeSpan whiteSpan, TimeSpan blackSpan)
-    {
-        Console.WriteLine("tick change");
-        _ = InvokeAsync(() =>
-        {
-            Console.WriteLine($"Starting clock loop for {playerColor}:blackTick{blackSpan.Ticks}:whiteTick{whiteSpan.Ticks}");
-            _whiteClock = whiteSpan;
-            _blackClock = blackSpan;
-
-            if (_whiteClock == TimeSpan.Zero || _blackClock == TimeSpan.Zero)
-            {
-                _matchState = "Finished";
-                _gameNotes.Add(new GameNoteItem
-                {
-                    Title = "Time over",
-                    ByPlayer = "System",
-                    KindClass = "note-check",
-                    NoteBadge = "TIME",
-                    AtUtc = DateTime.UtcNow
-                });
-                Task.Run(async () => { await LeaveGameAsync(); });
-            }
-
-            this.StateHasChanged();
-        });
-    }
-
 
     private sealed class GameNoteItem
     {
@@ -607,11 +572,6 @@
         public string KindClass { get; set; } = "note-move";
         public string NoteBadge { get; set; } = "MOVE";
         public DateTime AtUtc { get; set; } = DateTime.UtcNow;
-    }
-
-    public void Dispose()
-    {
-        Services.Handlers.GameHandlerService.OnTickReceived -= StartClockLoop;
     }
 
 }

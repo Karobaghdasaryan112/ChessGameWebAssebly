@@ -47,13 +47,14 @@ public sealed class SignalRService(
             if (_hubConnection.State == HubConnectionState.Disconnected)
             {
                 await _hubConnection.StartAsync();
+                await NotifyServerOfConnectionAsync(_hubConnection);
             }
 
             _pingLoopCancellation?.Cancel();
             _pingLoopCancellation = new CancellationTokenSource();
             _ = StartPingLoopAsync(_pingLoopCancellation.Token);
 
-            await NotifyServerOfConnectionAsync(_hubConnection);
+            // await NotifyServerOfConnectionAsync(_hubConnection);
 
             return _hubConnection;
         }
@@ -75,8 +76,8 @@ public sealed class SignalRService(
         return new HubConnectionBuilder()
             .WithUrl(basePaths.BaseUrlHub)
             .WithAutomaticReconnect()
-            .WithKeepAliveInterval(TimeSpan.FromSeconds(60))
-            .WithServerTimeout(TimeSpan.FromSeconds(60))
+            .WithKeepAliveInterval(TimeSpan.FromSeconds(15)) // Ping every 15s
+            .WithServerTimeout(TimeSpan.FromSeconds(30))    // Timeout if no pong in 30s
             .Build();
     }
 

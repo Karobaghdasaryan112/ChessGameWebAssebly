@@ -70,7 +70,12 @@ if (string.IsNullOrEmpty(chessOrigin))
 {
     throw new Exception("CORS Origin 'ServiceUrls:ChessGameApi' is missing from configuration!");
 }
-
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
+    // How long the server holds the circuit in memory after a disconnect
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromSeconds(30);
+});
 builder.Services.AddCors(options => options.AddPolicy("Default",
     policy =>
         policy
@@ -85,8 +90,15 @@ builder.Services.AddSignalR()
         options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
     });
 
-builder.Services.AddServerSideBlazor()
-    .AddCircuitOptions(options => { options.DetailedErrors = true; });
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
+    
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromSeconds(30);
+}).AddCircuitOptions(options => 
+{ 
+    options.DetailedErrors = true; 
+});
 
 builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client => 
 { 
