@@ -45,11 +45,10 @@ namespace ChessGame.Core.Services.Services.HubServices
             if (onlinePlayers.Count == 0)
             {
                 pipeLineResponse.Response =
-                    ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>
-                        .CreateErrorResponse(
-                            null!,
-                            ChessGameResponseMessage.UserConnectionNotFound,
-                            System.Net.HttpStatusCode.BadRequest);
+                    ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                        null!,
+                        ChessGameResponseMessage.UserConnectionNotFound,
+                        System.Net.HttpStatusCode.BadRequest, null!);
                 return pipeLineResponse;
             }
 
@@ -166,7 +165,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             PipeLineRequest<SendGameStateReqeustDTO> gameStateReqeustDTO)
         {
             ActiveGames.ActiveGamesAndBoards.TryGetValue(gameStateReqeustDTO.Request.GameId, out var gameState);
-            
+
             return await Task.FromResult(new PipeLineResponse<SendGameStateResponseDTO>()
             {
                 Response = ResponseDTO<SendGameStateResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
@@ -330,7 +329,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                 CurrentBoardBoardState = gameState,
                 FigureColor = data.MyColor
             };
-            
+
             var sendClickQuery = new SendClickQuery<
                 CanClickRequestDTO,
                 ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>>(requestDTO);
