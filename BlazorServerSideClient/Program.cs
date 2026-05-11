@@ -65,7 +65,7 @@ builder.Services.AddScoped<IHistoryWidgetRequestService, HistoryWidgetRequestSer
 builder.Services.AddCors(options => options.AddPolicy("Default",
     policy =>
         policy
-            .WithOrigins("http://167.86.89.234:5191")
+            .WithOrigins(builder.Configuration.GetSection("ServiceUrls")["ChessGameApi"]!)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()));
@@ -79,8 +79,11 @@ builder.Services.AddSignalR()
 builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
-builder.Services.AddHttpClient("ChessGameBlazorClient.Api",
-    client => { client.BaseAddress = new Uri($"{new BasePaths(builder.Configuration).BaseUrl}"); });
+builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client => 
+{ 
+    client.BaseAddress = new Uri($"{new BasePaths(builder.Configuration).BaseUrl}");
+    client.Timeout = TimeSpan.FromMinutes(5); 
+});
 
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();
 var app = builder.Build();

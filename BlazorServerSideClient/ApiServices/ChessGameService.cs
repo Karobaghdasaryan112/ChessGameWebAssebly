@@ -8,13 +8,12 @@ using SharedResources.Responses.ResponseMessages;
 
 namespace ChessGameBlazorClient.ApiServices
 {
-    public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder,BasePaths basePaths)
-        : BaseHttpClient(httpClient, queryBuilder,basePaths)
+    public class ChessGameService(HttpClient httpClient, IQueryBuilder queryBuilder, BasePaths basePaths)
+        : BaseHttpClient(httpClient, queryBuilder, basePaths)
     {
-
-
-        public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>?> GetAllHistoryWidgetsAsync(
-            GetAllHistoryWidgetRequestDTO allHistoryWidgetRequestDto)
+        public async Task<ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>?>
+            GetAllHistoryWidgetsAsync(
+                GetAllHistoryWidgetRequestDTO allHistoryWidgetRequestDto)
         {
             var requestUri = this.BuildRequestUri(
                 Endpoints.ChessGameEndpoints.ChessGame,
@@ -24,22 +23,25 @@ namespace ChessGameBlazorClient.ApiServices
                 ]);
 
             return await GetAsync<
-                ResponseDTO<GetAllHistoryWidgetsResponseDTO,ChessGameResponseMessage>,
+                ResponseDTO<GetAllHistoryWidgetsResponseDTO, ChessGameResponseMessage>,
                 GetAllHistoryWidgetsResponseDTO,
                 ChessGameResponseMessage>(requestUri.ToString());
         }
 
 
-
-        public async Task<ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>?> GetGamesPaginationPerOpponentAsync(
+        public async Task<ResponseDTO<GetGamesByCurrentAndOpponentIdsPaginationResponseDTO, ChessGameResponseMessage>?>
+            GetGamesPaginationPerOpponentAsync(
                 GetGamesByCurrentAndOpponentIdsPaginationRequestDTO andOpponentIdsPaginationRequestDto)
         {
             var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame,
                 Actions.ChessGameAction.HistoryPagination, [
-                    new KeyValuePair<string, string>("currentPlayerId",$"{andOpponentIdsPaginationRequestDto.CurrentPlayerGuid}"),
-                    new KeyValuePair<string, string>("opponentPlayerId",$"{andOpponentIdsPaginationRequestDto.OpponentPlayerGuid}"),
-                    new KeyValuePair<string, string>("currentPage",$"{andOpponentIdsPaginationRequestDto.CurrentPage}"),
-                    new KeyValuePair<string, string>("pageSize",$"{andOpponentIdsPaginationRequestDto.PageSize}"),
+                    new KeyValuePair<string, string>("currentPlayerId",
+                        $"{andOpponentIdsPaginationRequestDto.CurrentPlayerGuid}"),
+                    new KeyValuePair<string, string>("opponentPlayerId",
+                        $"{andOpponentIdsPaginationRequestDto.OpponentPlayerGuid}"),
+                    new KeyValuePair<string, string>("currentPage",
+                        $"{andOpponentIdsPaginationRequestDto.CurrentPage}"),
+                    new KeyValuePair<string, string>("pageSize", $"{andOpponentIdsPaginationRequestDto.PageSize}"),
                 ]);
 
             return await
@@ -48,33 +50,38 @@ namespace ChessGameBlazorClient.ApiServices
                     ChessGameResponseMessage>(
                     requestUri.ToString());
         }
-            
-        public async Task<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>?> GetGameHistoryAsync(GetGameHistoryRequestDTO getGameHistoryRequestDTO)
+
+        public async Task<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>?> GetGameHistoryAsync(
+            GetGameHistoryRequestDTO getGameHistoryRequestDTO)
         {
-            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame, Actions.ChessGameAction.GameHistory, [
-                new KeyValuePair<string,string>("gameId",$"{getGameHistoryRequestDTO.GameId}"),
+            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame,
+                Actions.ChessGameAction.GameHistory, [
+                    new KeyValuePair<string, string>("gameId", $"{getGameHistoryRequestDTO.GameId}"),
                 ]);
 
             return await
-                    GetAsync<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>,
-                        GetGameHistoryResponseDTO,
-                        ChessGameResponseMessage>(
-                        requestUri.ToString());
+                GetAsync<ResponseDTO<GetGameHistoryResponseDTO, ChessGameResponseMessage>,
+                    GetGameHistoryResponseDTO,
+                    ChessGameResponseMessage>(
+                    requestUri.ToString());
         }
 
-        public async Task<ResponseDTO<GetOptimizedMoveResponseDTO,ChessGameResponseMessage>?> GetOptimizedMoveAsync(GetOptimizedMoveRequestDTO getOptimizedMoveRequestDTO)
+        public async Task<ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>?> GetOptimizedMoveAsync(
+            GetOptimizedMoveRequestDTO getOptimizedMoveRequestDTO)
         {
-            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame, Actions.ChessGameAction.GetOptimizedMove,
+            var requestUri = this.BuildRequestUri(Endpoints.ChessGameEndpoints.ChessGame,
+                Actions.ChessGameAction.GetOptimizedMove,
                 [
-                    new KeyValuePair<string,string>("gameId",$"{getOptimizedMoveRequestDTO.GameId}"),
-                    new KeyValuePair<string,string>("myColor",$"{getOptimizedMoveRequestDTO.ChosenColor}"),
-                    new KeyValuePair<string,string>("isMaximizingPlayer",$"{getOptimizedMoveRequestDTO.IsMaximizingPlayer}")
+                    new KeyValuePair<string, string>("gameId", $"{getOptimizedMoveRequestDTO.GameId}"),
+                    new KeyValuePair<string, string>("myColor", $"{getOptimizedMoveRequestDTO.ChosenColor}"),
+                    new KeyValuePair<string, string>("isMaximizingPlayer",
+                        $"{getOptimizedMoveRequestDTO.IsMaximizingPlayer}")
                 ]);
 
             return await
-                GetAsync<ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>, 
-                GetOptimizedMoveResponseDTO,
-                ChessGameResponseMessage>(requestUri.ToString());
+                GetAsync<ResponseDTO<GetOptimizedMoveResponseDTO, ChessGameResponseMessage>,
+                    GetOptimizedMoveResponseDTO,
+                    ChessGameResponseMessage>(requestUri.ToString());
         }
     }
 }

@@ -159,7 +159,8 @@
                 <div>
                     <div style="font-weight:700">White — @Player1Name </div>
                     <div style="font-size:13px;color:var(--muted)">
-                        Score: @_player1Points · @_whiteClock.ToString(@"mm\:ss"))</div>
+                        Score: @_player1Points · @_whiteClock.ToString(@"mm\:ss"))
+                    </div>
                 </div>
             </div>
 
@@ -234,49 +235,53 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // 1. Only grab the user info here
         var authState = await AuthenticationState.GetAuthenticationStateAsync();
+        _currentUserName = authState.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+        _currentUserGuid = Guid.Parse(authState.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-        _currentUserName = authState.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
-        _currentUserGuid = Guid.Parse(authState.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
-
-        _hubConnection = await HubClient.GetHubConnectionAsync();
-
-        await JS.ShowPlayers(Player1Name, Player2Name);
-
-        Services.Handlers.GameHandlerService.OnTickReceived += StartClockLoop;
-
-        
-        var thisBoard = await GameRequestService.SendGameStateAsync(
-            new PipeLineRequest<SendGameStateReqeustDTO>(
-                new SendGameStateReqeustDTO()
-                {
-                    GameId = GameId
-                }));
-
-        if (thisBoard.Response.Data?.Board != null)
-        {
-            var blocks = thisBoard.Response.Data.Board.BoardBlocks;
-            var jsonBoard = JsonSerializer.Serialize(blocks);
-            var figureColor = _currentUserName == Player1Name ? 0 : 1;
-
-            _dotNetRef?.Dispose();
-            _dotNetRef = DotNetObjectReference.Create(this);
-            await JS.ShowBoardState(jsonBoard, figureColor, _dotNetRef);
-
-            InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
-        }
-
-        if (IsComputerOpponent && Player1Name == "Computer")
-        {
-            await AIMoveAtFirst();
-        }
-
-
+        // Note: Do NOT call JS or Hub here.
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await jsRuneTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.register", _dotNetRef);
+        if (firstRender)
+        {
+            // 2. Start the Hub Connection now that we have a real circuit
+            _hubConnection = await HubClient.GetHubConnectionAsync();
+
+            // 3. JS Interop is now safe
+            await JS.ShowPlayers(Player1Name, Player2Name);
+            await jsRuneTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.register", _dotNetRef);
+
+            // 4. Fetch Game State
+            var thisBoard = await GameRequestService.SendGameStateAsync(
+                new PipeLineRequest<SendGameStateReqeustDTO>(new SendGameStateReqeustDTO { GameId = GameId }));
+
+            if (thisBoard.Response.Data?.Board != null)
+            {
+                var blocks = thisBoard.Response.Data.Board.BoardBlocks;
+                var jsonBoard = JsonSerializer.Serialize(blocks);
+                var figureColor = _currentUserName == Player1Name ? 0 : 1;
+
+                _dotNetRef?.Dispose();
+                _dotNetRef = DotNetObjectReference.Create(this);
+                await JS.ShowBoardState(jsonBoard, figureColor, _dotNetRef);
+
+                InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
+            }
+
+            // 5. Setup Events
+            Services.Handlers.GameHandlerService.OnTickReceived += StartClockLoop;
+
+            if (IsComputerOpponent && Player1Name == "Computer")
+            {
+                await AIMoveAtFirst();
+            }
+
+            // 6. Refresh UI
+            StateHasChanged();
+        }
     }
 
 
@@ -603,8 +608,10 @@
         public string NoteBadge { get; set; } = "MOVE";
         public DateTime AtUtc { get; set; } = DateTime.UtcNow;
     }
+
     public void Dispose()
     {
         Services.Handlers.GameHandlerService.OnTickReceived -= StartClockLoop;
     }
+
 }

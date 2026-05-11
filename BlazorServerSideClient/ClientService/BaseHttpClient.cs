@@ -74,11 +74,26 @@ namespace ChessGameBlazorClient.UI.ClientService
             where TData : IResponseDTO
             where TMessage : ChessGameResponseMessage
         {
+            try 
+            {
+                var response = await _httpClient.GetAsync(url);
+        
+                // This will throw a clear HttpRequestException if the status is 400, 500, etc.
+                response.EnsureSuccessStatusCode(); 
 
-            var response = await _httpClient.GetAsync(url);
-
-            return await response.Content.ReadFromJsonAsync<TResponse>();
-
+                return await response.Content.ReadFromJsonAsync<TResponse>();
+            }
+            catch (HttpRequestException e)
+            {
+                // Log the status code and the URL to your console/output
+                Console.WriteLine($"Request failed for {url}: {e.StatusCode}");
+                throw; // Re-throw so your UI catch block can see it
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Critical error in GetAsync: {e.Message}");
+                throw;
+            }
         }
 
 
@@ -134,14 +149,22 @@ namespace ChessGameBlazorClient.UI.ClientService
 
         protected Uri BuildRequestUri(ChessGameEndpoints endpoint, ChessGameAction action, List<KeyValuePair<string, string>> queryParamAndValues)
         {
+            try
+            {
+                var identityBasePath = _basePaths.GetPath(endpoint, action);
+                var requestQuery =
+                    queryParamAndValues.Count == 0
+                        ? identityBasePath
+                        : _queryBuilder.BuildPath(identityBasePath, queryParamAndValues);
 
-            var identityBasePath = _basePaths.GetPath(endpoint, action);
-            var requestQuery =
-                 queryParamAndValues.Count == 0 ?
-                 identityBasePath :
-                 _queryBuilder.BuildPath(identityBasePath, queryParamAndValues);
+                return requestQuery;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            return requestQuery;
+            return default;
         }
 
     }

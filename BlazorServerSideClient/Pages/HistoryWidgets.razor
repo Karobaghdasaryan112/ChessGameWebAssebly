@@ -29,8 +29,10 @@
 
     private Dictionary<string, List<HistoryGameDTO>> GamesByOpponent = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
 
         _user = (await AuthState.GetAuthenticationStateAsync()).User;
         UnAuthorizedUser();
@@ -41,13 +43,15 @@
             {
                 await InitializeAllGames();
                 _isLoading = false;
+                await InvokeAsync(StateHasChanged);
             }
             catch (Exception ex)
             {
                 _error = ex.Message;
             }
     }
-    private void UnAuthorizedUser()
+
+    void UnAuthorizedUser()
     {
         if (_user.Identity?.IsAuthenticated == false)
             NavigationManager.NavigateTo("/Identity/Account/Login?returnUrl=/HistoryWidgets", true);
@@ -70,12 +74,14 @@
         if (opponentAndGamesCountPair.Equals(default(KeyValuePair<string, int>)) || opponentAndGamesCountPair.Value == 0) return 1;
         return Math.Max(1, (int)Math.Ceiling(opponentAndGamesCountPair.Value / (double)CardsPerPage));
     }
+
     //per current Opponent Pages
     private async Task PrevPage()
     {
         if (CurrentPage > 0) CurrentPage--;
         await GroupGames();
     }
+
     private async Task NextPage()
     {
         var x = TotalPagesForCurrentOpponent();
@@ -95,6 +101,7 @@
 
         await GroupGames();
     }
+
     private async Task NextOpponent()
     {
         if (CurrentOpponentIndex < Opponents.Count - 1) CurrentOpponentIndex++;
@@ -136,8 +143,8 @@
                 groupGame.OpponentGuid) ?? []);
 
         OpponentsAndToalGamesCount.AddRange(allGameHistories?.Data.OpponentHistories.ToDictionary(groupGame =>
-                groupGame.Opponent, groupGame =>
-                groupGame.TotalCount) ?? []);
+            groupGame.Opponent, groupGame =>
+            groupGame.TotalCount) ?? []);
 
         Opponents.ForEach(opponent => GamesByOpponent[opponent.Key] = []);
 
@@ -165,7 +172,6 @@
 
 
         CurrentOpponentIndex = Math.Min(CurrentOpponentIndex, Opponents.Count - 1);
-
     }
 
     private string ResultClass(string result) => result?.ToLower() switch
@@ -178,7 +184,8 @@
 
     private string ResultLabel(string result) => result;
 }
-<DashboardInvitationRequest />
+
+@* <DashboardInvitationRequest/> *@
 @if (_isLoading)
 {
     <div class="hw-loading">
@@ -192,7 +199,7 @@ else if (!string.IsNullOrEmpty(_error))
         @_error
     </div>
 }
-else if(Opponents.Any())
+else if (Opponents.Any())
 {
     <div class="hw-wrap">
         <header class="hw-header">
@@ -222,8 +229,8 @@ else if(Opponents.Any())
             <div class="cards-grid">
                 @foreach (var g in PagedGamesForCurrentOpponent())
                 {
-
-                    <article class="game-card @ResultClass(g.GameEvent == GameEvent.Over ? g.WinnerPlayerGuid == _currentUserGuid ? "win" : "lose" : g.GameEvent.ToString())">
+                    <article
+                        class="game-card @ResultClass(g.GameEvent == GameEvent.Over ? g.WinnerPlayerGuid == _currentUserGuid ? "win" : "lose" : g.GameEvent.ToString())">
                         <div class="card-top">
                             <div class="card-opponent">@g.Opponent</div>
                             <div class="card-result">@ResultLabel(g.GameEvent.ToString())</div>
@@ -232,7 +239,8 @@ else if(Opponents.Any())
                         <div class="card-body">
                             <div class="meta-row">
                                 <div class="meta-item">
-                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                         stroke="currentColor" stroke-width="1.5">
                                         <path d="M12 8v4l3 3"></path>
                                         <circle cx="12" cy="12" r="9"></circle>
                                     </svg>
@@ -240,7 +248,8 @@ else if(Opponents.Any())
                                 </div>
 
                                 <div class="meta-item">
-                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                         stroke="currentColor" stroke-width="1.5">
                                         <rect x="3" y="4" width="18" height="18" rx="2"></rect>
                                         <path d="M16 2v4"></path>
                                         <path d="M8 2v4"></path>
@@ -251,7 +260,9 @@ else if(Opponents.Any())
                         </div>
 
                         <div class="card-footer">
-                            <button class="view-btn" @onclick="() => GoToGameHistory(g.player1Name, g.player2Name, g.GameId)">View</button>
+                            <button class="view-btn"
+                                    @onclick="() => GoToGameHistory(g.player1Name, g.player2Name, g.GameId)">View
+                            </button>
                             <div class="badge">@g.Date.ToLocalTime().ToString("HH:mm")</div>
                         </div>
                     </article>
@@ -262,7 +273,7 @@ else if(Opponents.Any())
             {
                 <div class="empty">No games yet with this opponent.</div>
             }
-    </section>
+        </section>
 
         <footer class="hw-footer">
             <div class="pager">
@@ -289,24 +300,26 @@ else if(Opponents.Any())
             </div>
         </footer>
 
-    @code {
-        private Dictionary<string, object>? PrevDisabled =>
-        CurrentPage == 0
-        ? new() { ["disabled"] = true }
-        : null;
+        @code {
 
-        private Dictionary<string, object>? NextDisabled =>
-        CurrentPage >= TotalPagesForCurrentOpponent() - 1
-        ? new() { ["disabled"] = true }
-        : null;
+            private Dictionary<string, object>? PrevDisabled =>
+                CurrentPage == 0
+                    ? new() { ["disabled"] = true }
+                    : null;
 
-        public async Task GoToGameHistory(string currentPlayerName, string opponentPlayerName, Guid gameId)
-        {
-            var query = $"/GameHistory?Player1Name={currentPlayerName}&Player2Name={opponentPlayerName}&GameId={gameId}";
-            NavigationManager.NavigateTo(query, true);
+            private Dictionary<string, object>? NextDisabled =>
+                CurrentPage >= TotalPagesForCurrentOpponent() - 1
+                    ? new() { ["disabled"] = true }
+                    : null;
+
+            public async Task GoToGameHistory(string currentPlayerName, string opponentPlayerName, Guid gameId)
+            {
+                var query = $"/GameHistory?Player1Name={currentPlayerName}&Player2Name={opponentPlayerName}&GameId={gameId}";
+                NavigationManager.NavigateTo(query, true);
+            }
+
         }
-    }
-</div>
+    </div>
 }
 else
 {

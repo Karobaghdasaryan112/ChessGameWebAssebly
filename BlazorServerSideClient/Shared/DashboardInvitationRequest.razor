@@ -42,23 +42,39 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _connectionId = (await hubClient.GetHubConnectionAsync()).ConnectionId;
-
-        await JSRunetimeService.HideInviteModal();
-
+        // ONLY initialize non-JS, non-SignalR data here if needed.
+        // e.g., setting up the event handler reference (but not subscribing yet)
         _inviteReceivedHandler = (sendInvitationResponseDTO) =>
         {
             ReceiverUserGuid = sendInvitationResponseDTO.Data.ReceiverUserGuid;
             InviterUserGuid = sendInvitationResponseDTO.Data.InviterUserGuid;
-
             currentPlayEvent = sendInvitationResponseDTO.Data.PlayEvent;
-
             InvokeAsync(StateHasChanged); 
         };
-        InvitationHandlerService.OnReceived += _inviteReceivedHandler;
-
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try 
+            {
+                var hub = await hubClient.GetHubConnectionAsync();
+                _connectionId = hub.ConnectionId;
+
+                await JSRunetimeService.HideInviteModal();
+
+                InvitationHandlerService.OnReceived += _inviteReceivedHandler;
+
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during post-render init: {ex.Message}");
+            }
+        }
+    }
+    
     private async Task AcceptInvite()
     {
 

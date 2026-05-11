@@ -8,6 +8,8 @@ using ChessGame.Core.Services.MediatR.Requests.Queries;
 using MediatR;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
+using SharedResources.ChessGameResource.Enums.Orientations;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.ChessGameResource.StaticResources;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
@@ -46,7 +48,10 @@ namespace ChessGame.Core.Services.Services.HubServices
             {
                 pipeLineResponse.Response =
                     ResponseDTO<GetOnlinePlayersResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
-                        null!,
+                        new()
+                        {
+                            OnlinePlayers = new()
+                        }!,
                         ChessGameResponseMessage.UserConnectionNotFound,
                         System.Net.HttpStatusCode.BadRequest, null!);
                 return pipeLineResponse;
@@ -336,7 +341,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             gameState.ResetEventableBlocks();
 
-            var canClickResponse = await mediator.Send(sendClickQuery);
+            var canClickResponse = await CanCLickimpl(requestDTO);
 
             if (!canClickResponse.IsSuccess)
                 return
@@ -372,6 +377,247 @@ namespace ChessGame.Core.Services.Services.HubServices
                         ChessGameResponseMessage.SuccessUserConnections,
                         System.Net.HttpStatusCode.OK)
                 };
+        }
+
+        private async Task<ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>> CanCLickimpl(
+            CanClickRequestDTO request)
+        {
+            var figureColor = request.FigureColor;
+            var currentBlock = request.CurrentBlock;
+            var previusBlockInformationDTO = request.ClickedBlockInformationDto;
+            var currentBoard = request.CurrentBoardBoardState!;
+
+            var successResponse = ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
+                new CanClickResponseDTO() { CastlingInfosDTO = new List<CastlingInfosDTO>() },
+                ChessGameResponseMessage.MoveSuccessful, HttpStatusCode.Accepted);
+
+            var errorResponse = ResponseDTO<CanClickResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(
+                new CanClickResponseDTO()
+                {
+                    ClickedBlock = null!
+                },
+                ChessGameResponseMessage.InvalidMove,
+                HttpStatusCode.BadRequest,
+                ["It's not the turn of the player"]);
+
+            if ((int)figureColor != (int)currentBoard.Turn)
+            {
+                // logger.LogWarning("It's not the turn of player with color {Color}", figureColor);
+
+                return errorResponse;
+            }
+
+            var currentBlockFromServer = currentBoard.GetBlockByPosition(currentBlock!.Position);
+
+            if (currentBlock.Figure != null && currentBlock.Figure.FigureColor == figureColor)
+            {
+                // logger.LogInformation("Player with color {Color} clicked on their own figure at position {Position}", figureColor, currentBlock.Position);
+
+                var castlingResult = await GetCastlingMovesAsync(currentBlockFromServer, figureColor, currentBoard);
+                if (castlingResult.Any(c => c.IsCastling))
+                {
+                    // logger.LogInformation("Player with color {Color} is attempting to castle from {FromPosition} to {ToPosition}", figureColor, previusBlockInformationDTO.ClickedPosition, currentBlock.Position);
+                    successResponse.Data.ClickedBlock = currentBlockFromServer;
+                    successResponse.Data.CastlingInfosDTO = castlingResult;
+                    return successResponse;
+                }
+
+                successResponse.Data.ClickedBlock = currentBlockFromServer;
+
+                return successResponse;
+            }
+
+            if (previusBlockInformationDTO?.ClickedPosition == null ||
+                (currentBlockFromServer.EventColor != EventColors.Cut &&
+                 currentBlockFromServer.EventColor != EventColors.Move))
+                return errorResponse;
+
+
+            // logger.LogInformation("Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}", figureColor, previusBlockInformationDTO.ClickedPosition, currentBlock.Position);
+
+            successResponse.Data.ClickedBlock = currentBlockFromServer;
+
+            return successResponse;
+        }
+
+
+        private const int ShortCastleDistance = 3;
+        private const int LongCastleDistance = 4;
+
+        private async Task<List<CastlingInfosDTO>> GetCastlingMovesAsync(
+            Block kingBlock,
+            FigureColors color,
+            Board board)
+        {
+            var result = new List<CastlingInfosDTO>();
+
+            if (!CanKingCastle(kingBlock))
+                return result;
+
+            var rooks = board.GetBlockByFigureTypeAndColor(FigureType.Rook, color);
+
+            foreach (var rookBlock in rooks)
+            {
+                if (!CanCastleWithRook(kingBlock, rookBlock))
+                    continue;
+
+                if (!IsPathClear(board, kingBlock.Position, rookBlock.Position))
+                    continue;
+
+                var isKingSafe = await IsKingSafeDuringCastlingAsync(
+                    board,
+                    color,
+                    kingBlock.Position,
+                    rookBlock.Position);
+
+                if (!isKingSafe)
+                    continue;
+
+                var isShortCastle =
+                    rookBlock.Position.HorizontalOrientation >
+                    kingBlock.Position.HorizontalOrientation;
+
+                result.Add(CreateCastlingInfo(
+                    kingBlock.Position,
+                    isShortCastle));
+            }
+
+            HighlightCastlingMoves(board, result);
+
+            return result;
+        }
+
+        private static bool CanKingCastle(Block kingBlock)
+        {
+            return kingBlock.Figure?.FigureType == FigureType.King
+                   && !kingBlock.Figure.IsMoves;
+        }
+
+        private static bool CanCastleWithRook(Block kingBlock, Block rookBlock)
+        {
+            if (rookBlock.Figure == null || rookBlock.Figure.IsMoves)
+                return false;
+
+            var distance = Math.Abs(
+                rookBlock.Position.HorizontalOrientation -
+                kingBlock.Position.HorizontalOrientation);
+
+            return distance is ShortCastleDistance or LongCastleDistance;
+        }
+
+        private bool IsPathClear(
+            Board board,
+            Position kingPosition,
+            Position rookPosition)
+        {
+            int step = GetDirection(kingPosition, rookPosition);
+
+            for (int col = (int)kingPosition.HorizontalOrientation + step;
+                 col != (int)rookPosition.HorizontalOrientation;
+                 col += step)
+            {
+                var position = new Position(
+                    kingPosition.VerticalOrientation,
+                    (HorizontalOrientation)col);
+
+                if (board.GetBlockByPosition(position).Figure != null)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> IsKingSafeDuringCastlingAsync(
+            Board board,
+            FigureColors color,
+            Position kingPosition,
+            Position rookPosition)
+        {
+            int step = GetDirection(kingPosition, rookPosition);
+
+            var simulationBoard = (Board)board.Clone();
+
+            for (int col = (int)kingPosition.HorizontalOrientation + step;
+                 col != (int)rookPosition.HorizontalOrientation;
+                 col += step)
+            {
+                var nextPosition = new Position(
+                    kingPosition.VerticalOrientation,
+                    (HorizontalOrientation)col);
+
+                var moveResult = await SimulateKingMoveAsync(
+                    simulationBoard,
+                    kingPosition,
+                    nextPosition);
+
+                if (!moveResult.IsSuccess || moveResult.Data.IsKingChecked)
+                    return false;
+
+                kingPosition = nextPosition;
+            }
+
+            return true;
+        }
+
+        private async Task<ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>
+            SimulateKingMoveAsync(
+                Board board,
+                Position from,
+                Position to)
+        {
+            var command =
+                new SubmitMoveCommand
+                <SubmitMoveRequestDTO,
+                    ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>
+                (
+                    new SubmitMoveRequestDTO
+                    {
+                        From = from,
+                        To = to,
+                        CurrentBoardState = board,
+                        GameId = Guid.Empty
+                    });
+
+            return await mediator.Send(command);
+        }
+
+        private static CastlingInfosDTO CreateCastlingInfo(
+            Position kingPosition,
+            bool isShortCastle)
+        {
+            return new CastlingInfosDTO
+            {
+                IsCastling = true,
+                IsShortCastle = isShortCastle,
+                CastlingPosition = new Position(
+                    kingPosition.VerticalOrientation,
+                    isShortCastle
+                        ? HorizontalOrientation.g
+                        : HorizontalOrientation.c)
+            };
+        }
+
+        private static void HighlightCastlingMoves(
+            Board board,
+            IEnumerable<CastlingInfosDTO> castlings)
+        {
+            foreach (var castling in castlings)
+            {
+                var block = board.GetBlockByPosition(
+                    castling.CastlingPosition);
+
+                block.EventColor = EventColors.Castle;
+            }
+        }
+
+        private static int GetDirection(
+            Position from,
+            Position to)
+        {
+            return to.HorizontalOrientation >
+                   from.HorizontalOrientation
+                ? 1
+                : -1;
         }
     }
 }
