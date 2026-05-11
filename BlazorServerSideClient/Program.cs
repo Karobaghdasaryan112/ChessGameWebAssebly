@@ -48,6 +48,8 @@ builder.Services.AddScoped<IQueryBuilder, QueryBuilder>();
 
 builder.Services.AddScoped<ChessGameService>();
 
+builder.Services.AddScoped<BasePaths>();
+
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
 
