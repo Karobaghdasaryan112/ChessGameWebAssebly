@@ -17,7 +17,6 @@
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=PRODUCTION
-      - ConnectionStrings__DefaultConnection=${secrets.DB_CONNECTION}
     ports:
       - "7124:8080"
 
@@ -30,7 +29,6 @@
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=PRODUCTION
-      - ConnectionStrings__DefaultConnection=${secrets.DB_CONNECTION}
     ports:
       - "5203:8080"
 
