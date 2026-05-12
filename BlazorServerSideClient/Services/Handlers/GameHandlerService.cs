@@ -28,34 +28,39 @@ namespace BlazorServerSideClient.Services.Handlers
         }
 
         public async Task ReceiveBoardUpdateAsync(
-            ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> gameStateconnectionResponseDto)
+            ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage> response)
         {
-            if (gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToMove ||
-                gameStateconnectionResponseDto.Data.IsReadyToEvent == IsReady.IsReadyToCastle)
-            {
-                if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
-                    await jSRuneTimeService.UpdateBoardAfterMove(
-                        gameStateconnectionResponseDto.Data.From,
-                        gameStateconnectionResponseDto.Data.To,
-                        (int)gameStateconnectionResponseDto.Data.OpponentColor);
-            }
-            else if (gameStateconnectionResponseDto.Data is { From: not null, To: not null })
-                await jSRuneTimeService.UpdateBoardAfterCut(
-                    gameStateconnectionResponseDto.Data.From,
-                    gameStateconnectionResponseDto.Data.To,
-                    (int)gameStateconnectionResponseDto.Data.OpponentColor);
+            var data = response.Data;
+            if (data == null) return;
 
-            switch (gameStateconnectionResponseDto.Data)
+            // 1. Handle Game-Ending States First
+            // If the game is over, we notify the user and stop further board animations.
+            if (data is { IsKingMate: true, KingPosition: not null })
             {
-                case { IsKingMate: true, KingPosition: not null }:
-                    await jSRuneTimeService.KingMateNotifier(
-                        gameStateconnectionResponseDto.Data.KingPosition,
-                        gameStateconnectionResponseDto.Data.Player,
-                        gameStateconnectionResponseDto.Data.Win);
-                    return;
-                case { IsKingChecked: true, KingPosition: not null }:
-                    await jSRuneTimeService.KingCheckedNotifier(gameStateconnectionResponseDto.Data.KingPosition);
-                    break;
+                await jSRuneTimeService.KingMateNotifier(data.KingPosition, data.Player, data.Win);
+                return; // Exit early: no need to process checks or moves after a mate
+            }
+
+            // 2. Handle Board Movement (Move, Castle, or Cut)
+            if (data is { From: not null, To: not null })
+            {
+                bool isMoveOrCastle = data.IsReadyToEvent == IsReady.IsReadyToMove || 
+                                      data.IsReadyToEvent == IsReady.IsReadyToCastle;
+
+                if (isMoveOrCastle)
+                {
+                    await jSRuneTimeService.UpdateBoardAfterMove(data.From, data.To, (int)data.OpponentColor);
+                }
+                else // It's a Cut
+                {
+                    await jSRuneTimeService.UpdateBoardAfterCut(data.From, data.To, (int)data.OpponentColor);
+                }
+            }
+
+            // 3. Handle Non-Fatal Alerts (Check)
+            if (data is { IsKingChecked: true, KingPosition: not null })
+            {
+                await jSRuneTimeService.KingCheckedNotifier(data.KingPosition);
             }
         }
 

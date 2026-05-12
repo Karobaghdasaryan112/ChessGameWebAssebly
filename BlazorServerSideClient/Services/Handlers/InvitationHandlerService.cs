@@ -1,4 +1,5 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
+using BlazorServerSideClient.Services;
 using Microsoft.AspNetCore.Components;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
@@ -6,68 +7,65 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.Invi
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
 
-namespace BlazorServerSideClient.Services.Handlers
+public class InvitationHandlerService : IInvitationHandlerService
 {
-    public class InvitationHandlerService : IInvitationHandlerService
+    private readonly JSRunetimeService _jsRuntimeService;
+    private readonly NavigationManager _navigationManager;
+
+    public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
+    public SendInvitationsResponseDTO? lastInvite { get; set; }
+
+    public InvitationHandlerService(JSRunetimeService jsRuntimeService, NavigationManager navigationManager)
     {
-        JSRunetimeService _JSRunetimeService { get; set; }
-        public Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> OnReceived { get; set; }
-        public SendInvitationsResponseDTO? lastInvite { get; set; }
-        private NavigationManager _navigationManager { get; set; }
+        _jsRuntimeService = jsRuntimeService;
+        _navigationManager = navigationManager;
+    }
 
-        Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>> IInvitationHandlerService.OnReceived
+    public async Task ReceiveInvite(
+        PlayEvent playEvent,
+        UserConnectionDTO inviterUserConnection,
+        Guid inviterUserGuid,
+        UserConnectionDTO receiverUserConnection,
+        Guid receiverUserGuid)
+    {
+        lastInvite = new SendInvitationsResponseDTO
         {
-            get => OnReceived;
-            set => OnReceived = value;
-        }
+            InviterUserConnection = inviterUserConnection,
+        };
 
-        public InvitationHandlerService(JSRunetimeService JSRunetimeService, NavigationManager NavigationManager)
+        // Notify the UI first
+        OnReceived?.Invoke(new ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>
         {
-            _navigationManager = NavigationManager;
-            _JSRunetimeService = JSRunetimeService;
-        }
-
-        public async Task ReceiveInvite(
-            PlayEvent playEvent,
-            UserConnectionDTO inviterUserConnection,
-            Guid inviterUserGuid,
-            UserConnectionDTO receiverUserConnection,
-            Guid receiverUserGuid)
-        {
-            lastInvite = new SendInvitationsResponseDTO()
+            Data = new SendInvitationsResponseDTO
             {
+                PlayEvent = playEvent,
                 InviterUserConnection = inviterUserConnection,
-            };
+                InviterUserGuid = inviterUserGuid,
+                ReceiverUserConnection = receiverUserConnection,
+                ReceiverUserGuid = receiverUserGuid
+            },
+            Message = ChessGameResponseMessage.SuccessInvitation,
+        });
 
-            OnReceived?.Invoke(
-                new ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>()
-                {
-                    Data = new SendInvitationsResponseDTO()
-                    {
-                        PlayEvent =  playEvent,
-                        InviterUserConnection = inviterUserConnection,
-                        InviterUserGuid = inviterUserGuid,
-                        ReceiverUserConnection = receiverUserConnection,
-                        ReceiverUserGuid = receiverUserGuid
-                    },
-                    Message = ChessGameResponseMessage.SuccessInvitation,
-                });
+        // Use the safe wrapper you already have in JSRunetimeService
+        await _jsRuntimeService.ShowInviteModal(inviterUserConnection.UserName);
+    }
 
-            await _JSRunetimeService.ShowInviteModal(inviterUserConnection.UserName);
-        }
+    public void InviteAcceptedAsync(
+        UserConnectionDTO inviterUserConnection,
+        Guid inviterUserGuid,
+        UserConnectionDTO receiverUserConnection,
+        Guid receiverUserGuid,
+        Guid gameGuid)
+    {
+        // Construct the URL
+        var url = $"/game?GameId={gameGuid}" +
+                  $"&Player1={Uri.EscapeDataString(inviterUserConnection.UserName)}" +
+                  $"&Player2={Uri.EscapeDataString(receiverUserConnection.UserName)}";
 
-        public void InviteAcceptedAsync(
-            UserConnectionDTO inviterUserConnection,
-            Guid inviterUserGuid,
-            UserConnectionDTO receiverUserConnection,
-            Guid receiverUserGuid,
-            Guid gameGuid)
-        {
-            var url = $"/game?GameId={gameGuid}" +
-                      $"&Player1={inviterUserConnection.UserName}" +
-                      $"&Player2={receiverUserConnection.UserName}";
-
-             _ = _JSRunetimeService.NavigateTo(url);
-        }
+        // PROBLEM FIXED HERE:
+        // Don't use JSRunetime for navigation unless you absolutely must.
+        // Use Blazor's native NavigationManager. It handles the circuit lifecycle correctly.
+        _navigationManager.NavigateTo(url);
     }
 }
