@@ -25,16 +25,11 @@ namespace BlazorServerSideClient.Extensions
                 var response = await hubConnection
                     .InvokeAsync<PipeLineResponse<TResponse>>(identifier, pipeLineRequest);
 
-                if (response.Response?.IsSuccess == true)
-                    return response;
-
-                await runeTimeService.ShowErrorModal(ErrorMessageBuilder.BuildErrorMessage(response));
-
                 return response;
             }
             catch (Exception ex)
             {
-                await runeTimeService.ShowErrorModal(ex.Message);
+                await runeTimeService.InvokeAsync("ErrorModal.Show", ex.Message);
 
                 pipeLineResponse.Response =
                 (

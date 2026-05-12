@@ -5,4 +5,5 @@ namespace SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.
 public class SameFigureResposneDTO : IResponseDTO
 {
     public bool IsSameFigure { get; set; }
+    public bool IsOpponentFigureSelectBeforeMove { get; set; }
 }

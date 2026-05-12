@@ -247,11 +247,10 @@
     {
         if (firstRender)
         {
-
             _hubConnection = await HubClient.GetHubConnectionAsync();
 
             await JS.ShowPlayers(Player1Name, Player2Name);
-            await jsRuneTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.register", _dotNetRef);
+            await jsRuneTime.SafeInvokeWithRetryAsync(logger, "GameNotesTracker.register", _dotNetRef);
 
             var thisBoard = await GameRequestService.SendGameStateAsync(
                 new PipeLineRequest<SendGameStateReqeustDTO>(new SendGameStateReqeustDTO { GameId = GameId }));
@@ -273,7 +272,7 @@
             {
                 await AIMoveAtFirst();
             }
-            
+
             StateHasChanged();
         }
     }
@@ -343,13 +342,16 @@
         if (selectedPosition != null)
         {
             //TO DO:
-            if (await IsSameFigureColor(MoveRequestDTO.CurrentPosition, selectedPosition, this.GameId))
+            if (await IsSameFigureColor(new Position(row, col), selectedPosition, this.GameId))
             {
                 await SelectFigure(ClickRequestDTO);
                 return;
             }
 
-            await Move(MoveRequestDTO);
+            var successMove = await Move(MoveRequestDTO);
+            if (!successMove)
+                await SelectFigure(ClickRequestDTO);
+
             return;
         }
 
@@ -379,6 +381,9 @@
     {
         var pipeLineRequestPositionsResult = await GameRequestService.SendClickAsync(new PipeLineRequest<ClickRequestDTO>(requestDTO));
 
+        ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
+        ClickedBlockInformationDTO.GameId = requestDTO.GameId;
+
         if (!pipeLineRequestPositionsResult.Response.IsSuccess)
             return false;
 
@@ -386,9 +391,6 @@
             pipeLineRequestPositionsResult.Response.Data.CutableBlocks!,
             pipeLineRequestPositionsResult.Response.Data.MovableBlocks!,
             pipeLineRequestPositionsResult.Response.Data.CastlingInfosDTOs);
-
-        ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
-        ClickedBlockInformationDTO.GameId = requestDTO.GameId;
 
         return true;
     }
@@ -532,8 +534,6 @@
             await JS.ShowErrorModal("Unable to leave the game right now. Please try again.");
             return;
         }
-
-        await JS.NavigateTo("/dashboard");
     }
 
     private async Task OfferDraw()
@@ -559,7 +559,6 @@
         var elapsed = DateTime.UtcNow - startedAtUtc;
         return $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
     }
-
 
 
     private static string GetInitial(string? name)

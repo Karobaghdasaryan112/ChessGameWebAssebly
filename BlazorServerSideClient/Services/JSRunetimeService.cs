@@ -1,207 +1,151 @@
 ﻿using Microsoft.JSInterop;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorServerSideClient.Services
 {
     public class JSRunetimeService(ILogger<JSRunetimeService> logger, IJSRuntime jsRunTime)
     {
-        public IJSRuntime jsRunTime = jsRunTime;
+        private readonly IJSRuntime _jsRunTime = jsRunTime;
+        private readonly ILogger<JSRunetimeService> _logger = logger;
 
-        public async ValueTask ShowInviteModal(string userName)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "inviteModal.show", userName);
-        }
+        // --- Invitation & Modals ---
+        public async ValueTask ShowInviteModal(string userName) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "inviteModal.show", userName);
 
-        public async ValueTask<bool> InviteReceiverMessage(string inviterUserName)
-        {
-            return await jsRunTime.SafeInvokeAsync<bool>(logger, "confirm",
-                $"{inviterUserName} invited you to a game!");
-        }
+        public async ValueTask<bool> InviteReceiverMessage(string inviterUserName) =>
+            await _jsRunTime.SafeInvokeAsyncWithRetry<bool>(_logger, "confirm", $"{inviterUserName} invited you to a game!");
 
-        public async ValueTask InviteAcceptedMessage()
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "alert", "Your Invite was accepted!");
-        }
+        public async ValueTask InviteAcceptedMessage() =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "alert", "Your Invite was accepted!");
 
-        public async ValueTask DisableAllGameState(string gameClassName)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "GameDiv.Disable", gameClassName);
-        }
+        public async ValueTask HideInviteModal() =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "inviteModal.hide");
 
-        public async ValueTask EnableAllGameState(string gameClassName)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "GameDiv.Enable", gameClassName);
-        }
+        public async ValueTask ShowErrorModal(string message) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "ErrorModal.Show", message);
 
-        public async ValueTask ReceiveOptimalMoves(Position? from, Position? to)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "ReceiveOptimalMoves.Show", from, to);
-        }
+        // --- Board & Piece Visualization ---
+        public async ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef) where T : class =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
 
-        public async ValueTask WinNotifier_opponentLeft()
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "alert", "The opponent left. You win!");
-        }
+        public async ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions, List<CastlingInfosDTO> castlingInfosDTOs) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions, movablePositions, castlingInfosDTOs);
 
-        public async ValueTask HideInviteModal()
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "inviteModal.hide");
-        }
+        public async ValueTask ClearSelectedBlocks(int figureColor) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "ShowMovableAndCutableBlocks.Clear", figureColor);
 
-        public async ValueTask NotesTrackerNotify(string eventType,
-            string from, string to, bool isCapture)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "GameNotesTracker.notify", eventType, from, to, isCapture);
-        }
+        // --- Movement & History Updates ---
+        public async ValueTask UpdateBoardAfterMove(Position from, Position to, int myColor) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "UpdateBoardAfterMove.Move", from, to, myColor);
 
-        public async ValueTask ShowPlayers(string player1_Name, string player2_Name)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "Players.show", player1_Name, player2_Name);
-        }
+        public async ValueTask UpdateBoardAfterCut(Position from, Position to, int myColor) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "UpdateBoardAfterCut.Cut", from, to, myColor);
 
-        public async ValueTask ShowBoardState<T>(string Blocks, int figureColor, DotNetObjectReference<T> dotNetRef)
-            where T : class
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "BuildBoard.Build", Blocks, figureColor, dotNetRef);
-        }
+        public async ValueTask ReceiveBlockChangesHistory(List<Block> blockChangesHistory) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "ReceiveBlockChangesHistory.Change", blockChangesHistory);
 
-        public async ValueTask ShowErrorModal(string message)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "ErrorModal.Show", message);
-        }
+        // --- Game Logic Notifiers ---
+        public async ValueTask DisableAllGameState(string gameClassName) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "GameDiv.Disable", gameClassName);
 
-        public async ValueTask ShowMovableCutableBlocks(List<Block> cutablePositions, List<Block> movablePositions,
-            List<CastlingInfosDTO> castlingInfosDTOs)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "ShowMovableAndCutableBlocks.Paint", cutablePositions,
-                movablePositions, castlingInfosDTOs);
-        }
+        public async ValueTask EnableAllGameState(string gameClassName) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "GameDiv.Enable", gameClassName);
 
-        public async ValueTask ClearSelectedBlocks(int figureColor)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "ShowMovableAndCutableBlocks.Clear", figureColor);
-        }
+        public async ValueTask KingCheckedNotifier(Position kingPosition) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "KingCheckedNotification.Notify", kingPosition);
 
-        public async ValueTask UpdateBoardAfterMove(Position from, Position to, int myColor)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "UpdateBoardAfterMove.Move", from, to, myColor);
-        }
+        public async ValueTask KingMateNotifier(Position kingPosition, string currentPlayer, bool isWin) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "KingMateNotification.Notify", kingPosition, currentPlayer, isWin);
 
-        public async ValueTask UpdateBoardAfterCut(Position from, Position to, int myColor)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "UpdateBoardAfterCut.Cut", from, to, myColor);
-        }
+        public async ValueTask NotifyOpponentUserDisconnected(string opponentUserName) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "OpponentDisconnected.Notify", $"Your opponent {opponentUserName} has disconnected. You win!");
 
-        public async ValueTask KingCheckedNotifier(Position kingPosition)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "KingCheckedNotification.Notify", kingPosition);
-        }
+        public async ValueTask WinNotifier_opponentLeft() =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "alert", "The opponent left. You win!");
 
-        public async ValueTask KingMateNotifier(Position kingPosition, string currentPlayer, bool isWin)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "KingMateNotification.Notify", kingPosition, currentPlayer,
-                isWin);
-        }
+        // --- Utility ---
+        public async ValueTask NotesTrackerNotify(string eventType, string from, string to, bool isCapture) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "GameNotesTracker.notify", eventType, from, to, isCapture);
 
-        public async ValueTask ReceiveBlockChangesHistory(List<Block> blockChangesHistory)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "ReceiveBlockChangesHistory.Change", blockChangesHistory);
-        }
+        public async ValueTask ShowPlayers(string player1_Name, string player2_Name) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "Players.show", player1_Name, player2_Name);
 
-        public async ValueTask NotifyOpponentUserDisconnected(string opponentUserName)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "OpponentDisconnected.Notify",
-                $"Your opponent {opponentUserName} has disconnected. You win!");
-        }
+        public async ValueTask ReceiveOptimalMoves(Position? from, Position? to) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "ReceiveOptimalMoves.Show", from, to);
 
+        public async Task<TResponse?> SendAsync<TRequest, TResponse>(string identifier, TRequest request) =>
+            await _jsRunTime.SafeInvokeAsyncWithRetry<TResponse>(_logger, identifier, request);
 
-        public async Task<TResponse> SendAsync<TRequest, TResponse>(string identifier, TRequest request)
-        {
-            return await jsRunTime.InvokeAsync<TResponse>(identifier, request);
-        }
+        public async Task InvokeAsync(string identifier, params object[] objects) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, identifier, objects);
 
-        public async Task InvokeAsync(string identifier, params object[] objects)
-        {
-            await jsRunTime.InvokeVoidAsync(identifier, objects);
-        }
-
-        public async Task NavigateTo(string path)
-        {
-            await jsRunTime.SafeInvokeVoidAsync(logger, "NavigateTo", path);
-        }
+        public async Task NavigateTo(string path) =>
+            await _jsRunTime.SafeInvokeWithRetryAsync(_logger, "NavigateTo", path);
     }
 
     public static class JSRuntimeSafeExtensions
     {
-        public const int RetryCount = 5;
+        private const int MaxRetries = 3;
+        private const int DelayBetweenRetriesMs = 500; // Faster retry for better UX
 
-        public static async ValueTask SafeInvokeVoidAsync(
+        public static async ValueTask SafeInvokeWithRetryAsync(
             this IJSRuntime js,
             ILogger logger,
             string identifier,
             params object[] args)
         {
-            try
+            for (int i = 0; i < MaxRetries; i++)
             {
-                await js.InvokeVoidAsync(identifier, args);
-                return;
+                try
+                {
+                    await js.InvokeVoidAsync(identifier, args);
+                    return;
+                }
+                catch (Exception ex) when (IsTransient(ex))
+                {
+                    logger.LogWarning("JS Call '{Id}' failed (Attempt {Attempt}). Circuit may be disconnected. Retrying...", identifier, i + 1);
+                    if (i < MaxRetries - 1) await Task.Delay(DelayBetweenRetriesMs);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Non-recoverable JS error in '{Id}'", identifier);
+                    return;
+                }
             }
-            catch (JSDisconnectedException)
-            {
-                logger.LogWarning($"JS call '{identifier}' skipped (JSDisconnectedException).");
-                return;
-            }
-            catch (ObjectDisposedException)
-            {
-                logger.LogWarning("JS call '{Identifier}' skipped (JSRuntime disposed).", identifier);
-                return;
-            }
-            catch (InvalidOperationException)
-            {
-                logger.LogWarning("JS call '{Identifier}' invalid (component disposed).", identifier);
-                return;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Unexpected JS error while calling '{Identifier}'.", identifier);
-            }
-
-            await Task.Delay(200);
         }
 
-        public static async ValueTask<T?> SafeInvokeAsync<T>(
+        public static async ValueTask<T?> SafeInvokeAsyncWithRetry<T>(
             this IJSRuntime js,
             ILogger logger,
             string identifier,
             params object[] args)
         {
-            try
+            for (int i = 0; i < MaxRetries; i++)
             {
-                return await js.InvokeAsync<T>(identifier, args);
+                try
+                {
+                    return await js.InvokeAsync<T>(identifier, args);
+                }
+                catch (Exception ex) when (IsTransient(ex))
+                {
+                    logger.LogWarning("JS Call '{Id}' failed (Attempt {Attempt}). Retrying...", identifier, i + 1);
+                    if (i < MaxRetries - 1) await Task.Delay(DelayBetweenRetriesMs);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Non-recoverable JS error in '{Id}'", identifier);
+                    break;
+                }
             }
-            catch (JSDisconnectedException)
-            {
-                logger.LogWarning($"JS call '{identifier}' skipped (JSDisconnectedException).");
-                return default;
-            }
-            catch (ObjectDisposedException)
-            {
-                logger.LogWarning($"JS call '{identifier}' skipped (JSRuntime disposed).");
-                return default;
-            }
-            catch (InvalidOperationException)
-            {
-                logger.LogWarning($"JS call '{identifier}' invalid (component disposed).");
-                return default;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Unexpected JS error while calling '{Identifier}'.", identifier);
-            }
-
-            return await Task.FromResult(default(T));
+            return default;
         }
+
+        private static bool IsTransient(Exception ex) =>
+            ex is JSDisconnectedException || 
+            ex is TaskCanceledException || 
+            ex is ObjectDisposedException ||
+            (ex is InvalidOperationException && ex.Message.Contains("interop"));
     }
 }
-

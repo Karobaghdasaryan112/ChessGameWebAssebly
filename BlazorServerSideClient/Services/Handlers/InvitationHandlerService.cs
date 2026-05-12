@@ -63,9 +63,7 @@ public class InvitationHandlerService : IInvitationHandlerService
                   $"&Player1={Uri.EscapeDataString(inviterUserConnection.UserName)}" +
                   $"&Player2={Uri.EscapeDataString(receiverUserConnection.UserName)}";
 
-        // PROBLEM FIXED HERE:
-        // Don't use JSRunetime for navigation unless you absolutely must.
-        // Use Blazor's native NavigationManager. It handles the circuit lifecycle correctly.
+        
         _navigationManager.NavigateTo(url);
     }
 }
