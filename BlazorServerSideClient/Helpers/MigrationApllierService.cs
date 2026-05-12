@@ -12,8 +12,8 @@ public class MigrationApplierService
         var dbContext = services.GetRequiredService<ApplicationDbContext>();
         try
         {
-            if (!dbContext.Database.GetPendingMigrations().Any()) return;
-            
+            // if (!dbContext.Database.GetPendingMigrations().Any()) return;
+            //
             dbContext.Database.EnsureCreated();
             dbContext.Database.Migrate();
         }
