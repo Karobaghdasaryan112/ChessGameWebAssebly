@@ -76,8 +76,8 @@ public sealed class SignalRService(
         return new HubConnectionBuilder()
             .WithUrl(basePaths.BaseUrlHub)
             .WithAutomaticReconnect()
-            .WithKeepAliveInterval(TimeSpan.FromSeconds(15)) // Ping every 15s
-            .WithServerTimeout(TimeSpan.FromSeconds(30))    // Timeout if no pong in 30s
+            .WithKeepAliveInterval(TimeSpan.FromHours(10)) // Ping every 15s
+            .WithServerTimeout(TimeSpan.FromHours(10))    // Timeout if no pong in 30s
             .Build();
     }
 

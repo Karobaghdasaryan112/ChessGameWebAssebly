@@ -259,13 +259,13 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             var currentPositionBlock = gameState.GetBlockByPosition(data.CurrentPosition);
 
-            if (currentPositionBlock.EventColor != EventColors.Cut &&
-                currentPositionBlock.EventColor != EventColors.Move &&
-                currentPositionBlock.EventColor != EventColors.Castle)
-            {
-                pipelineResponse.Response = invalidResponse;
-                return pipelineResponse;
-            }
+            // if (currentPositionBlock.EventColor != EventColors.Cut &&
+            //     currentPositionBlock.EventColor != EventColors.Move &&
+            //     currentPositionBlock.EventColor != EventColors.Castle)
+            // {
+            //     pipelineResponse.Response = invalidResponse;
+            //     return pipelineResponse;
+            // }
 
             var boardStateRequestDto =
                 new BoardStateRequestDTO
