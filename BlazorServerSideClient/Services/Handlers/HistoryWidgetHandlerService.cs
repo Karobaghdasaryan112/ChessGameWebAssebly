@@ -5,6 +5,5 @@ namespace BlazorServerSideClient.Services.Handlers
 {
     public class HistoryWidgetHandlerService(JSRunetimeService JSRunetimeService,NavigationManager navigationManager) : IHistoryWidgetHandlerService
     {
-
     }
 }

@@ -24,13 +24,9 @@ namespace SharedResources.Contracts.ChessGameResourceContracts
                 _ => EndGameTable
             };
 
-            int row = isWhite
-                ? (int)position.VerticalOrientation
-                : 7 - (int)position.VerticalOrientation;
+            int row = isWhite ? (int)position.VerticalOrientation : 7 - (int)position.VerticalOrientation;
             if (row < 0 || row > 7)
-            {
                 throw new ArgumentOutOfRangeException(nameof(position.VerticalOrientation), "VerticalOrientation must be between 0 and 7.");
-            }
             return table[row][(int)position.HorizontalOrientation];
         }
         bool IsMoves { get; set; }

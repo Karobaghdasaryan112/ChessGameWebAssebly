@@ -20,11 +20,18 @@ namespace BlazorServerSideClient.Services.Handlers
         }
         
 
-        public async Task ReceiveTick(FigureColors figureColor, TimeSpan whiteSpan, TimeSpan blackSpan)
+        public Task ReceiveTick(FigureColors figureColor, TimeSpan whiteSpan, TimeSpan blackSpan)
         {
-            Console.WriteLine("Service received tick from SignalR!"); 
-            // Invoke the static event
-            OnTickReceived?.Invoke(figureColor, whiteSpan, blackSpan);
+            try
+            {
+                Console.WriteLine("Service received tick from SignalR!"); 
+                OnTickReceived?.Invoke(figureColor, whiteSpan, blackSpan);
+                return Task.CompletedTask;
+            }
+            catch (Exception exception)
+            {
+                return Task.FromException(exception);
+            }
         }
 
         public async Task ReceiveBoardUpdateAsync(

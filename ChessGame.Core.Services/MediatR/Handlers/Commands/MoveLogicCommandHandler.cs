@@ -56,12 +56,10 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
-            //AI logi At First Move when From and To are null and it's Black Turn
             if (request.Request.From!.ToString() == request.Request.To!.ToString() &&
                 (int)request.Request.To.HorizontalOrientation == -1 &&
                 (int)request.Request.From.HorizontalOrientation == -1)
             {
-                //if this Game Playing with AI, here should be AI Move Logic
                 if (request.Request.IsOpponentComputer)
                 {
                     var aiMoveLogicCommand =
@@ -75,7 +73,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                         aiMoveResponse.Data.MoveResponseDTO!, aiMoveResponse.Message, aiMoveResponse.HttpStatusCode);
                 }
-                //end of AI Move Logic
             }
 
             var submitMoveCommand =
@@ -89,14 +86,12 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                         GameId = request.Request.GameId
                     });
 
-            //Submit Move via MediatR Command
             var mediatRSubmitMoveResponse = await mediator.Send(submitMoveCommand, cancellationToken);
 
             if (!mediatRSubmitMoveResponse.IsSuccess)
                 return ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>.CreateErrorResponse(null!,
                     ChessGameResponseMessage.InvalidMove, HttpStatusCode.BadRequest);
 
-            //If King is Checked after Move, notify Current Client
             if (mediatRSubmitMoveResponse.Data is { IsKingChecked: true })
                 return await KingCheckCurrentClient(request.Request);
 
@@ -178,6 +173,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                             ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>>(kingMateLogicRequestDTO);
                     return await mediator.Send(kingMateLogicCommand, cancellationToken);
                 }
+
 
                 await connectionService.SendBoardStateToClient(boardSTateSenderRequest);
             }

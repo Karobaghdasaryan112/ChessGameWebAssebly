@@ -323,7 +323,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             var gameId = request.BoardStateRequestDTO.GameId;
             var currentPlayer = request.Player;
 
-            // 1. Fetch all connections associated with this game
+
             var participants = ActiveGames._connections.Values
                 .Where(c => c.GameId == gameId)
                 .ToList();
@@ -333,16 +333,12 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 return CreateErrorPipeLineResponse(gameId, currentPlayer);
             }
 
-            // 2. Identify logic context
             bool isAgainstComputer = request.BoardStateRequestDTO.IsOpponentComputer;
 
-            // 3. Broadcast to relevant parties
             foreach (var participant in participants)
             {
                 bool isMe = participant.UserName == currentPlayer;
 
-                // If it's an AI game, we usually only care about the Human connection
-                // If it's PvP, we send updates to both
                 var boardStateDto = MapToResponseDTO(request, participant.ConnectionId, isMe);
 
                 var hubResponse = ResponseDTO<BoardStateResponseDTO, ChessGameResponseMessage>
@@ -351,11 +347,10 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 await _baseHubService.ReceiveBoardUpdateAsync(hubResponse);
             }
 
-            // 4. Return the standardized Pipeline Response
+
             return CreateSuccessPipeLineResponse(gameId, currentPlayer);
         }
 
-// --- Helper Methods for Professional Cleanliness ---
 
         private BoardStateResponseDTO MapToResponseDTO(BoardStateSenderRequestDTO req, string connectionId,
             bool isMyConnection)
@@ -372,7 +367,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
                 OpponentColor = req.BoardStateRequestDTO.OpponentColor,
                 IsReadyToEvent = req.BoardStateRequestDTO.IsReadyToEvent,
                 IsMyConnection = isMyConnection,
-                Win = req.Win,
+                Win = isMyConnection,
                 CutableFigure = null!
             };
         }
