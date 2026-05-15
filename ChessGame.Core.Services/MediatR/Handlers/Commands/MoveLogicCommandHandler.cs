@@ -56,7 +56,8 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> request,
             CancellationToken cancellationToken)
         {
-            if (request.Request.From!.ToString() == request.Request.To!.ToString() &&
+            if (
+                request.Request.From!.ToString() == request.Request.To!.ToString() &&
                 (int)request.Request.To.HorizontalOrientation == -1 &&
                 (int)request.Request.From.HorizontalOrientation == -1)
             {

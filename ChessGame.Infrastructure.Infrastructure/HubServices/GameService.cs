@@ -93,6 +93,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                     Player2Id = trainingGameRequestDTO.Request.Player2Guid,
                     Player1Time = TimeSpan.FromMinutes((int)PlayEvent.Classical),
                     Player2Time = TimeSpan.FromMinutes((int)PlayEvent.Classical),
+                    GameId = GameId,
                 };
 
             var gameState =

@@ -34,9 +34,20 @@
 
         private async Task ConfirmLeave(LocationChangingContext context)
         {
-            if (!_isLeavingGame)
+            if (_isLeavingGame)
                 return;
-            
+
+            var leave = await jsRuneTime.InvokeAsync<bool>(
+                "confirm",
+                "Do you want to leave the Game?"
+            );
+
+            if (!leave)
+            {
+                context.PreventNavigation();
+                return;
+            }
+
             context.PreventNavigation();
             _isLeavingGame = true;
 

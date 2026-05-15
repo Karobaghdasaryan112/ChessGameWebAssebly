@@ -185,7 +185,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new AIMoveLogicResponseDTO()
-                {
+                {   
                     MoveResponseDTO = new MoveResponseDTO()
                     {
                         IsReadyToEvent = IsReady.IsReadyToMove,

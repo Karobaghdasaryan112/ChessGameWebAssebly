@@ -124,14 +124,16 @@ namespace BlazorServerSideClient.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
-                {
+                {   
+
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-                    if (user is default(ApplicationUser))
+                    if (user is null)
                     {
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                         _logger.LogWarning("User not found with email {Email}.", Input.Email);
                         return Page();
                     }
+                    
 
                     _logger.LogInformation("User logged in.");
                     
