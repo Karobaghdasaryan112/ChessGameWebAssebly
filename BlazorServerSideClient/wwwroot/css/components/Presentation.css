@@ -1,0 +1,292 @@
+:root {
+    --bg-deep: #020617;
+    --bg-card: rgba(30, 41, 59, 0.7);
+    --bg-glass: rgba(255, 255, 255, 0.02);
+    --primary: #3b82f6;
+    --accent: #f59e0b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.15);
+    --glow: 0 0 30px rgba(59, 130, 246, 0.25);
+    --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Noto Sans Armenian', sans-serif;
+    background-color: var(--bg-deep);
+    background-image:
+            radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 35%),
+            radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.08) 0%, transparent 35%);
+    color: var(--text-main);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px;
+}
+
+/* Background Grid */
+.bg-grid {
+    position: absolute;
+    inset: 0;
+    background-size: 60px 60px;
+    background-image:
+            linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+    z-index: -1;
+}
+
+/* Presentation Wrapper */
+#presentation {
+    width: 100%;
+    height: 100%;
+    max-width: 5000px;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+/* Advanced 3D Flip Slide Transitions */
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateZ(-100px) rotateX(15deg) scale(0.95);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    padding: 3.5rem 4.5rem;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    overflow-y: auto;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateZ(0) rotateX(0deg) scale(1);
+    z-index: 10;
+}
+
+/* Typography */
+h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
+    letter-spacing: -2px;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 2.4rem;
+    color: var(--accent);
+    margin-bottom: 2.5rem;
+    position: relative;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+    box-shadow: 0 0 15px var(--primary);
+}
+
+h3 {
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+h3::before { content: "✦"; color: var(--accent); font-size: 1.1rem; }
+
+p { font-size: 1.15rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+ul { list-style: none; margin-bottom: 1.5rem; }
+li { position: relative; padding-left: 28px; margin-bottom: 0.75rem; color: #cbd5e1; font-size: 1.05rem; }
+li::before { content: "▹"; color: var(--primary); position: absolute; left: 0; font-weight: bold; font-size: 1.2rem; top: -2px; }
+
+strong { color: #fff; font-weight: 600; }
+code {
+    background: rgba(59, 130, 246, 0.12);
+    color: #60a5fa;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.88em;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* Grid Formats */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+
+/* Component Cards */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-4px);
+    box-shadow: var(--glow);
+}
+
+.card-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* IDE Architecture Map Styles */
+.solution-explorer {
+    background: #090d16;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 2rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    box-shadow: inset 0 4px 30px rgba(0,0,0,0.7);
+}
+
+.folder { margin-bottom: 0.75rem; }
+.folder-title { color: #f59e0b; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.folder-content { padding-left: 22px; border-left: 1px dashed #334155; }
+.file { color: #cbd5e1; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.file.cs::before { content: '⚡'; color: #3b82f6; font-size: 0.8rem; }
+.file.project::before { content: '📦'; font-size: 0.8rem; }
+
+/* Realtime Packet Routing Pipeline */
+.flow-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 2.5rem 1rem;
+    background: #090d16;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
+}
+.flow-track::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 4rem; right: 4rem; height: 2px;
+    background: linear-gradient(90deg, transparent, #334155 20%, #334155 80%, transparent);
+    z-index: 0;
+    transform: translateY(-50%);
+}
+.flow-node {
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 2;
+    width: 175px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: border-color 0.3s;
+}
+.flow-node.active-node {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+.data-packet {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 15px 4px var(--accent);
+    z-index: 3;
+    animation: flowMove 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes flowMove {
+    0% { left: 8%; opacity: 0; }
+    5% { opacity: 1; }
+    20% { left: 8%; }
+    40% { left: 29%; }
+    60% { left: 50%; }
+    80% { left: 71%; }
+    95% { left: 92%; opacity: 1; }
+    100% { left: 92%; opacity: 0; }
+}
+
+/* Clean Fade-In Text Sequencer */
+.anim-item { opacity: 0; transform: translateY(20px); animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+/* Controls Layout */
+.nav-controls {
+    position: absolute; bottom: 2.5rem; right: 4.5rem;
+    display: flex; gap: 1rem; z-index: 100;
+}
+.btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    color: #f8fafc;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+.btn:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); transform: scale(1.02); }
+.btn-primary { background: var(--primary); border-color: var(--primary); }
+.btn-primary:hover { background: #2563eb; box-shadow: var(--glow); }
+
+.progress-container {
+    position: absolute; bottom: 0; left: 0; height: 5px; width: 100%;
+    background: rgba(255,255,255,0.03);
+}
+.progress-bar {
+    height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent));
+    width: 0%; transition: width 0.4s ease;
+}
+.slide-counter {
+    position: absolute; bottom: 2.5rem; left: 4.5rem;
+    color: var(--text-muted); font-family: 'Fira Code', monospace; font-size: 1rem;
+}
