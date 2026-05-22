@@ -116,9 +116,8 @@ namespace ChessGame.Core.Services.Services.HubServices
             }
 
             gameState.Data.board = new Board(default(FigureColors));
-
-            connectionService.CurrentConnectionState.TryAdd(
-                playerGuid, new UserConnectionDTO()
+            var upcommingUserInfo =
+                new UserConnectionDTO()
                 {
                     ConnectionId = trainingGameRequestDTO.Request.connectionId,
                     GameId = gameState.Data.GameId,
@@ -129,7 +128,15 @@ namespace ChessGame.Core.Services.Services.HubServices
                             Players = new KeyValuePair<Guid, Guid>(trainingGameRequestDTO.Request.Player1Guid,
                                 trainingGameRequestDTO.Request.Player2Guid)
                         }
-                });
+                };
+            var isCurrentUserInfoExist =
+                connectionService.CurrentConnectionState.TryGetValue(playerGuid, out var userInfo);
+
+            if (!isCurrentUserInfoExist)
+                connectionService.CurrentConnectionState.TryAdd(playerGuid, upcommingUserInfo);
+            else
+                connectionService.CurrentConnectionState[playerGuid] = upcommingUserInfo;
+
 
             ActiveGames.ActiveGamesAndBoards.TryAdd(gameState.Data.GameId, gameState.Data.board);
             var boardStateResponseDTO =

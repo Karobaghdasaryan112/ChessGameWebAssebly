@@ -321,8 +321,12 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             BoardStateSenderRequestDTO request)
         {
             var gameId = request.BoardStateRequestDTO.GameId;
-            var currentPlayer = request.Player;
-
+            var currentPlayer = request.Player; 
+            
+            if (request.BoardStateRequestDTO.IsOpponentComputer)
+            {
+                
+            }
 
             var participants = ActiveGames._connections.Values
                 .Where(c => c.GameId == gameId)
@@ -332,9 +336,7 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             {
                 return CreateErrorPipeLineResponse(gameId, currentPlayer);
             }
-
-            bool isAgainstComputer = request.BoardStateRequestDTO.IsOpponentComputer;
-
+            
             foreach (var participant in participants)
             {
                 bool isMe = participant.UserName == currentPlayer;

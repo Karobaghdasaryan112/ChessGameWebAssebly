@@ -37,20 +37,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         private CancellationToken cancellationToken;
 
 
-        /// <summary>
-        /// Processes a chess move request, validates the move, updates the game state, and returns the result of the
-        /// move operation.
-        /// </summary>
-        /// <remarks>This method handles the full lifecycle of a chess move, including move validation,
-        /// board state updates, and communication with connected clients. It also manages special game states such as
-        /// check and checkmate, and ensures that the game state is persisted after a successful move. If the move
-        /// results in check or checkmate, appropriate notifications are sent to clients and the game may be
-        /// concluded.</remarks>
-        /// <param name="request">The move logic command containing the details of the move to process, including the current board state and
-        /// move coordinates.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
-        /// <returns>A response object containing the result of the move operation, including move details and a status message.
-        /// Returns an error response if the move is invalid or if an internal error occurs.</returns>
+
         public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> Handle(
             MoveLogicCommand<BoardStateRequestDTO,
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> request,
