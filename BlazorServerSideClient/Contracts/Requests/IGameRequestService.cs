@@ -25,9 +25,13 @@ namespace BlazorServerSideClient.Contracts.Requests
         Task<PipeLineResponse<MoveResponseDTO>> SendMoveAsync(
             PipeLineRequest<MoveRequestDTO> sendMoveConnectionRequestDto);
 
-        Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(PipeLineRequest<SameFigureRequest> requestDto);
+        Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(
+            PipeLineRequest<SameFigureRequest> requestDto);
 
         Task<PipeLineResponse<ClickResponseDTO>> SendClickAsync(
             PipeLineRequest<ClickRequestDTO> sendClickConnectionRequestDto);
+
+        Task<PipeLineResponse<RemoveUserFromGameResponseDTO>> LeaveGameAsync(
+            RemoveUsersFromGameReqeustDTO removeUsersReqeustDTO);
     }
 }

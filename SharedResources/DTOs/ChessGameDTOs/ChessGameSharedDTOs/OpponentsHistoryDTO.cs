@@ -5,5 +5,6 @@
         public string Opponent { get; set; }
         public Guid OpponentGuid { get; set; }
         public int TotalCount { get; set; }
+        public Guid GameId { get; set; }
     }
 }

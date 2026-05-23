@@ -23,6 +23,7 @@ using SharedResources.Validation.ChessGameValidations.ResponseValidations.Connec
 using System.Net;
 using System.Linq;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Enums.Users;
 
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
@@ -71,7 +72,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 async () => await invitationService.AcceptInviteAsync(
                     new AcceptInvitationRequestDTO()
                     {
-                        PlayEvent =  acceptInvitationRequestDto.Request.PlayEvent,
+                        PlayEvent = acceptInvitationRequestDto.Request.PlayEvent,
                         inviterUserGuid = acceptInvitationRequestDto.Request.inviterUserGuid,
                         receiverUserGuid = acceptInvitationRequestDto.Request.receiverUserGuid
                     }));
@@ -250,7 +251,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
         //-------------------------------------------------------------------------
         public async Task<PipeLineResponse<RemoveUserFromGameResponseDTO>> LeaveGameAsync(
-            PipeLineRequest<RemoveUsersFromGameReqeustDTO>  leavingPlayerRequestDTO)
+            PipeLineRequest<RemoveUsersFromGameReqeustDTO> leavingPlayerRequestDTO)
         {
             var invalidResponse = new PipeLineResponse<RemoveUserFromGameResponseDTO>()
             {
@@ -263,7 +264,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
             var leavePlayerGuid = leavingPlayerRequestDTO.Request.CurerntPlayerGuid;
             var gameId = leavingPlayerRequestDTO.Request.GameId;
-            
+
             if (!connectionService.CurrentConnectionState.TryGetValue(leavePlayerGuid,
                     out var leavingPlayerConnection) || leavingPlayerConnection.Gameinfo == null)
                 return
@@ -284,6 +285,12 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                     return invalidResponse;
             }
 
+            if (leavingPlayerRequestDTO.Request.IsLeaveWebSite)
+                connectionService.CurrentConnectionState.TryRemove(leavePlayerGuid, out _);
+            opponentConnection.Gameinfo = null;
+            leavingPlayerConnection.Gameinfo = null;
+            leavingPlayerConnection.GameId = default!;
+
             if (ActiveGames.ActiveGamesAndBoards.TryGetValue(gameId, out var boardState))
             {
                 await boardService.SavePositionsAsync(new SavePositionsRequestDTO
@@ -302,10 +309,14 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
 
             await baseHubService.NotifyOpponentLeftWinAsync(opponentConnection.ConnectionId,
                 leavingPlayerConnection.UserName);
+
             await baseHubService.ForceNavigateToDashboardAsync(leavingPlayerConnection.ConnectionId);
 
             ActiveGames.ActiveGamesAndBoards.TryRemove(gameId, out _);
 
+            await baseHubService.SendUsersChange(
+                new KeyValuePair<Guid, UserConnectionDTO>(opponentPlayerGuid, opponentConnection),
+                OnlinePlayerChangeType.Removed);
 
             return await connectionService.RemoveUsersFromGameAsync(new RemoveUserFromGameRequestDTO
             {

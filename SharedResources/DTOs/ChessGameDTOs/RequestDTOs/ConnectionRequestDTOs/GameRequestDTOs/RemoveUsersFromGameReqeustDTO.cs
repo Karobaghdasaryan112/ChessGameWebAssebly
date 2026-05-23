@@ -7,4 +7,5 @@ public class RemoveUsersFromGameReqeustDTO : RequestDTO
 {
     public Guid CurerntPlayerGuid { get; set; }
     public Guid GameId { get; set; }
+    public bool IsLeaveWebSite { get; set; }
 }

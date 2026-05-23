@@ -2,6 +2,7 @@ using BlazorServerSideClient.Areas.Identity;
 using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Data;
+using BlazorServerSideClient.Data.GameModels;
 using BlazorServerSideClient.Data.IdentityModels;
 using BlazorServerSideClient.Helpers;
 using BlazorServerSideClient.Models;
@@ -12,6 +13,7 @@ using ChessGameBlazorClient.ApiServices;
 using ChessGameBlazorClient.Contracts;
 using ChessGameBlazorClient.ServiceEndpoints;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +56,13 @@ builder.Services.AddScoped<BasePaths>();
 
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
+builder.Services.AddScoped<GameCircuitState>();
+
+builder.Services.AddScoped<GameCircuitHandler>();
+
+builder.Services.AddScoped<CircuitHandler>(sp =>
+    sp.GetRequiredService<GameCircuitHandler>());
+
 
 builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
 builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();
@@ -70,6 +79,7 @@ if (string.IsNullOrEmpty(chessOrigin))
 {
     throw new Exception("CORS Origin 'ServiceUrls:ChessGameApi' is missing from configuration!");
 }
+
 builder.Services.AddServerSideBlazor(options =>
 {
     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
@@ -93,17 +103,14 @@ builder.Services.AddSignalR()
 builder.Services.AddServerSideBlazor(options =>
 {
     options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(5);
-    
-    options.JSInteropDefaultCallTimeout = TimeSpan.FromSeconds(30);
-}).AddCircuitOptions(options => 
-{ 
-    options.DetailedErrors = true; 
-});
 
-builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client => 
-{ 
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromSeconds(30);
+}).AddCircuitOptions(options => { options.DetailedErrors = true; });
+
+builder.Services.AddHttpClient("ChessGameBlazorClient.Api", client =>
+{
     client.BaseAddress = new Uri($"{new BasePaths(builder.Configuration).BaseUrl}");
-    client.Timeout = TimeSpan.FromMinutes(5); 
+    client.Timeout = TimeSpan.FromMinutes(5);
 });
 
 builder.Services.AddScoped<ChessGameBlazorClient.ApiServices.IdentityService>();

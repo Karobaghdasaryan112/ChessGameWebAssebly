@@ -1,13 +1,14 @@
 ﻿@page "/Dashboard"
+
+@using System.Security.Claims
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
 @using BlazorServerSideClient.Services
+@using SharedResources.ChessGameResource.Enums.Events
+@using SharedResources.ChessGameResource.Enums.Users
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.InvitationRequestDTOs
-@using System.Security.Claims
-@using SharedResources.ChessGameResource.Enums.Users
-@using SharedResources.ChessGameResource.Enums.Events
 @using SharedResources.PipeLine.PipeLineContext
 
 @inject AuthenticationStateProvider AuthStateProvider
@@ -15,206 +16,516 @@
 @inject IConnectionHandlerService ConnectionHandler
 @inject IGameRequestService GameRequest
 @inject NavigationManager Navigation
-@inject SignalRService signalRService
+@inject SignalRService SignalRService
+
 @attribute [Authorize]
+@implements IDisposable
+
+<PageTitle>Live Lobby</PageTitle>
 
 <ErrorModal/>
 <DashboardInvitationRequest/>
 
-<div class="dashboard-container">
-    <h2 class="dashboard-title">Live Lobby</h2>
-    <p class="dashboard-subtitle">Invite online players and start a new game instantly.</p>
-    <div class="dashboard-pill">Online players: @Math.Max(activeGamers.Count - 1, 0)</div>
+<section class="lobby-page">
+    <div class="lobby-background-orb orb-one"></div>
+    <div class="lobby-background-orb orb-two"></div>
 
-    @if (activeGamers.Count == 0)
-    {
-        <div class="empty-state">
-            <p>No players online right now</p>
-        </div>
-    }
-    else
-    {
-        <div class="players-list">
-            @{
-                var currentUserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
+    <div class="lobby-shell">
+        <header class="lobby-hero">
+            <div class="lobby-hero-content">
+                <span class="lobby-kicker">♟ Chess Arena</span>
 
-            @foreach (var player in activeGamers)
+                <h1>Live Lobby</h1>
+
+                <p>
+                    Invite online players, choose a game duration, and start a real-time chess match instantly.
+                </p>
+
+                <div class="lobby-hero-actions">
+                    <button class="lobby-primary-action" @onclick="RefreshOnlinePlayersAsync" disabled="@_isLoading">
+                        @if (_isLoading)
+                        {
+                            <span>Refreshing...</span>
+                        }
+                        else
+                        {
+                            <span>Refresh Players</span>
+                        }
+                    </button>
+
+                    <button class="lobby-secondary-action" @onclick="NavigateToTraining">
+                        Train vs AI
+                    </button>
+                </div>
+            </div>
+
+            <div class="lobby-status-panel">
+                <div class="status-card main-status">
+                    <span>Online Players</span>
+                    <strong>@OnlineOpponentCount</strong>
+                    <small>available opponents</small>
+                </div>
+
+                <div class="status-card">
+                    <span>Your Status</span>
+                    <strong>Online</strong>
+                    <small>@CurrentUserName</small>
+                </div>
+
+                <div class="status-card">
+                    <span>Lobby Mode</span>
+                    <strong>Live</strong>
+                    <small>real-time updates</small>
+                </div>
+            </div>
+        </header>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <div class="lobby-alert">
+                <div class="alert-icon">!</div>
+                <div>
+                    <strong>Dashboard error</strong>
+                    <p>@_error</p>
+                </div>
+            </div>
+        }
+
+        <section class="players-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="section-label">Players</span>
+                    <h2>Available Opponents</h2>
+                </div>
+
+                <div class="panel-tools">
+                    <div class="search-box">
+                        <span>⌕</span>
+                        <input placeholder="Search player..."
+                               @bind="_searchText"
+                               @bind:event="oninput"/>
+                    </div>
+
+                    <button class="compact-refresh" @onclick="RefreshOnlinePlayersAsync" disabled="@_isLoading">
+                        ↻
+                    </button>
+                </div>
+            </div>
+
+            @if (_isLoading)
             {
-                if (Guid.TryParse(currentUserId, out var currentUserGuid))
-                {
-                    if (player.Key != currentUserGuid)
+                <div class="loading-grid">
+                    @for (var i = 0; i < 6; i++)
                     {
-                        <div class="player-card">
-                            <div class="player-info">
-                                <div class="avatar">@player.Value.UserName.Substring(0, 1).ToUpper()</div>
-                                <div>
-                                    <strong>@player.Value.UserName</strong>
+                        <div class="player-skeleton">
+                            <div class="skeleton-avatar"></div>
+                            <div class="skeleton-lines">
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else if (!VisiblePlayers.Any())
+            {
+                <div class="empty-lobby">
+                    <div class="empty-icon">♙</div>
 
-                                    @if (player.Value.Gameinfo == null)
+                    @if (OnlineOpponentCount == 0)
+                    {
+                        <h3>No opponents online</h3>
+                        <p>You are currently alone in the lobby. Refresh later or train against AI.</p>
+                    }
+                    else
+                    {
+                        <h3>No players found</h3>
+                        <p>Try changing the search text.</p>
+                    }
+
+                    <div class="empty-actions">
+                        <button class="lobby-primary-action" @onclick="RefreshOnlinePlayersAsync">
+                            Refresh Lobby
+                        </button>
+
+                        <button class="lobby-secondary-action" @onclick="NavigateToTraining">
+                            Training Mode
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="players-grid">
+                    @foreach (var player in VisiblePlayers)
+                    {
+                        var isBusy = player.Value.Gameinfo != null;
+
+                        <article class="player-card @(isBusy ? "busy" : "available")">
+                            <div class="player-card-inner">
+                                <div class="player-avatar">
+                                    @GetInitial(player.Value.UserName)
+                                </div>
+
+                                <div class="player-info-area">
+                                    <h3 title="@DisplayName(player.Value.UserName)">
+                                        @DisplayName(player.Value.UserName)
+                                    </h3>
+
+                                    @if (isBusy)
                                     {
-                                        <p class="status-online">🟢 Online</p>
+                                        <span class="player-status busy-status">
+                                            <span class="pulse-dot busy-dot"></span>
+                                            In Game
+                                        </span>
                                     }
                                     else
                                     {
-                                        <p class="status-ingame">🎯 In Game</p>
+                                        <span class="player-status online-status">
+                                            <span class="pulse-dot online-dot"></span>
+                                            Online
+                                        </span>
+                                    }
+                                </div>
+
+                                <div class="player-action-area">
+                                    @if (isBusy)
+                                    {
+                                        <button class="invite-action disabled" disabled>
+                                            Busy
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="invite-action" @onclick="() => OpenEventSelector(player)">
+                                            Invite
+                                        </button>
                                     }
                                 </div>
                             </div>
-
-                            @if (player.Value.Gameinfo == null)
-                            {
-                                <button class="invite-btn"
-                                        @onclick="() => OpenEventSelector(player)">
-                                    Invite
-                                </button>
-                            }
-                            else
-                            {
-                                <button class="invite-btn disabled" disabled>Busy</button>
-                            }
-                        </div>
+                        </article>
                     }
-                }
+                </div>
             }
-        </div>
-    }
-</div>
+        </section>
+    </div>
+</section>
 
-@if (showEventSelector && selectedPlayer != null)
+@if (_showEventSelector && _selectedPlayer.HasValue)
 {
-    <div class="event-modal">
-        <div class="event-content">
-            <h3>Select Game Type</h3>
+    var selected = _selectedPlayer.Value;
 
-            @foreach (PlayEvent evt in Enum.GetValues(typeof(PlayEvent)))
-            {
-                if (evt != PlayEvent.None)
+    <div class="event-modal-backdrop" @onclick="CloseSelector">
+        <div class="event-modal-card" @onclick:stopPropagation="true">
+            <div class="event-modal-header">
+                <div>
+                    <span class="section-label">Game Setup</span>
+                    <h3>Select Time Control</h3>
+                    <p>Choose match duration for your invitation to
+                        <strong>@DisplayName(selected.Value.UserName)</strong>.</p>
+                </div>
+
+                <button class="modal-close-btn" @onclick="CloseSelector">×</button>
+            </div>
+
+            <div class="selected-player-preview">
+                <div class="player-avatar large-avatar">
+                    @GetInitial(selected.Value.UserName)
+                </div>
+
+                <div>
+                    <strong>@DisplayName(selected.Value.UserName)</strong>
+                    <span>Ready to receive invitation</span>
+                </div>
+            </div>
+
+            <div class="event-options-grid">
+                @foreach (var playEvent in AvailablePlayEvents)
                 {
-                    <button class="event-btn"
-                            @onclick="() => SelectEvent(evt)">
-                        @evt (@((int)evt / 60) min)
+                    <button class="event-option"
+                            disabled="@_isSendingInvite"
+                            @onclick="() => SelectEventAsync(playEvent)">
+                        <span class="event-icon">♞</span>
+                        <strong>@FormatPlayEvent(playEvent)</strong>
+                        <small>@GetMinutes(playEvent) minute match</small>
                     </button>
                 }
-            }
+            </div>
 
-            <button class="cancel-btn" @onclick="CloseSelector">Cancel</button>
+            <div class="event-modal-footer">
+                <button class="cancel-action" disabled="@_isSendingInvite" @onclick="CloseSelector">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
 }
 
 @code {
-    private Dictionary<Guid, UserConnectionDTO> activeGamers = new();
-    private ClaimsPrincipal user { get; set; }
-    private string? userGuid { get; set; }
+    private readonly Dictionary<Guid, UserConnectionDTO> _activeGamers = new();
 
+    private ClaimsPrincipal _user = new(new ClaimsIdentity());
+    private Guid _currentUserGuid;
 
-    private bool showEventSelector = false;
-    private KeyValuePair<Guid, UserConnectionDTO>? selectedPlayer;
+    private bool _isLoading = true;
+    private bool _showEventSelector;
+    private bool _isSendingInvite;
+
+    private string? _error;
+    private string _searchText = string.Empty;
+
+    private KeyValuePair<Guid, UserConnectionDTO>? _selectedPlayer;
+
+    private string CurrentUserName =>
+        _user.FindFirst(ClaimTypes.Name)?.Value
+        ?? _user.Identity?.Name
+        ?? "Player";
+
+    private int OnlineOpponentCount =>
+        VisibleOpponentPlayers.Count();
+
+    private IEnumerable<KeyValuePair<Guid, UserConnectionDTO>> VisibleOpponentPlayers =>
+        _activeGamers
+            .Where(player => player.Key != _currentUserGuid);
+
+    private IEnumerable<KeyValuePair<Guid, UserConnectionDTO>> VisiblePlayers =>
+        VisibleOpponentPlayers
+            .Where(player =>
+                string.IsNullOrWhiteSpace(_searchText)
+                || DisplayName(player.Value.UserName).Contains(_searchText, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(player => player.Value.Gameinfo != null)
+            .ThenBy(player => DisplayName(player.Value.UserName));
+
+    private static IEnumerable<PlayEvent> AvailablePlayEvents =>
+        Enum.GetValues(typeof(PlayEvent))
+            .Cast<PlayEvent>()
+            .Where(playEvent => playEvent != PlayEvent.None)
+            .OrderBy(playEvent => (int)playEvent);
 
     protected override async Task OnInitializedAsync()
     {
-        user ??= (await AuthStateProvider.GetAuthenticationStateAsync()).User;
         ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
+
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            _user = authState.User;
+
+            if (_user.Identity?.IsAuthenticated != true)
+            {
+                Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+                return;
+            }
+
+            var userIdValue = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userIdValue) || !Guid.TryParse(userIdValue, out _currentUserGuid))
+            {
+                _error = "Could not detect the current user.";
+                return;
+            }
+
+            await RefreshOnlinePlayersAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task RefreshOnlinePlayersAsync()
     {
-        if (!firstRender)
+        if (_currentUserGuid == Guid.Empty)
             return;
 
-        UnAuthorizedUser();
+        _isLoading = true;
+        _error = null;
 
-        userGuid ??= user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        try
+        {
+            var response = await GameRequest.GetOnlinePlayersAsync(
+                new PipeLineRequest<GetONlinePlayersRequestDTO>(
+                    new GetONlinePlayersRequestDTO
+                    {
+                        UserGuid = _currentUserGuid
+                    }));
 
-        var response = await GameRequest.GetOnlinePlayersAsync(
-            new PipeLineRequest<GetONlinePlayersRequestDTO>(
-                new GetONlinePlayersRequestDTO()
-                {
-                    UserGuid = Guid.Parse(userGuid)
-                }));
+            if (response.Response.IsSuccess)
+            {
+                var onlinePlayers = response.Response.Data.OnlinePlayers
+                                    ?? new Dictionary<Guid, UserConnectionDTO>();
 
-        if (response.Response.IsSuccess)
-            activeGamers = response.Response.Data.OnlinePlayers!;
+                _activeGamers.Clear();
+
+                foreach (var player in onlinePlayers)
+                    _activeGamers[player.Key] = player.Value;
+            }
+            else
+            {
+                _error = "Could not load online players.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
-
 
     private void OpenEventSelector(KeyValuePair<Guid, UserConnectionDTO> player)
     {
-        selectedPlayer = player;
-        showEventSelector = true;
+        if (player.Value.Gameinfo != null)
+            return;
+
+        _selectedPlayer = player;
+        _showEventSelector = true;
     }
 
     private void CloseSelector()
     {
-        showEventSelector = false;
-        selectedPlayer = null;
+        if (_isSendingInvite)
+            return;
+
+        _showEventSelector = false;
+        _selectedPlayer = null;
     }
 
-
-    private async Task SelectEvent(PlayEvent playEvent)
+    private async Task SelectEventAsync(PlayEvent playEvent)
     {
-        if (selectedPlayer != null)
-        {
-            await SendInviteAsync(selectedPlayer.Value, playEvent);
-        }
+        if (!_selectedPlayer.HasValue || _isSendingInvite)
+            return;
 
-        CloseSelector();
+        _isSendingInvite = true;
+        _error = null;
+
+        try
+        {
+            await SendInviteAsync(_selectedPlayer.Value, playEvent);
+            _showEventSelector = false;
+            _selectedPlayer = null;
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSendingInvite = false;
+        }
     }
 
     private async Task SendInviteAsync(
         KeyValuePair<Guid, UserConnectionDTO> receiverPlayer,
         PlayEvent playEvent)
     {
-        var connection = await signalRService.GetHubConnectionAsync();
-        var userName = user.Claims.First(c => c.Type == ClaimTypes.Name)?.Value!;
-        var inviterUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
-        var receiverUserGuid = receiverPlayer.Key;
+        var connection = await SignalRService.GetHubConnectionAsync();
 
-        if (Guid.TryParse(inviterUserId, out var inviterUserGuid))
+        if (connection?.ConnectionId is null)
         {
-            var sendInviteRequest =
-                new PipeLineRequest<SendInvitationRequestDTO>(
-                    new SendInvitationRequestDTO
-                    {
-                        ReceiverUserConnection = receiverPlayer.Value,
-                        GameId = default,
-                        PlayEvent = playEvent,
-                        InviterUserConnection = new UserConnectionDTO
-                        {
-                            ConnectionId = connection?.ConnectionId!,
-                            UserName = userName,
-                        },
-                        InviterPlayerId = inviterUserGuid,
-                        ReceiverPlayerId = receiverUserGuid,
-                    });
-
-            await InvitationRequest.SendInviteAsync(sendInviteRequest);
+            _error = "SignalR connection is not ready yet. Please try again.";
+            return;
         }
-    }
 
-    private void UnAuthorizedUser()
-    {
-        if (user.Identity?.IsAuthenticated == false)
-            Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+        var sendInviteRequest =
+            new PipeLineRequest<SendInvitationRequestDTO>(
+                new SendInvitationRequestDTO
+                {
+                    ReceiverUserConnection = receiverPlayer.Value,
+                    GameId = default,
+                    PlayEvent = playEvent,
+                    InviterUserConnection = new UserConnectionDTO
+                    {
+                        ConnectionId = connection.ConnectionId,
+                        UserName = CurrentUserName
+                    },
+                    InviterPlayerId = _currentUserGuid,
+                    ReceiverPlayerId = receiverPlayer.Key
+                });
+
+        await InvitationRequest.SendInviteAsync(sendInviteRequest);
     }
 
     private void HandleOnlinePlayersUpdated(
-        OnlinePlayerChangeType @event,
+        OnlinePlayerChangeType changeType,
         KeyValuePair<Guid, UserConnectionDTO> player)
     {
-        if (@event == OnlinePlayerChangeType.Added)
-            activeGamers[player.Key] = player.Value;
-        else if (@event == OnlinePlayerChangeType.Removed)
-            activeGamers.Remove(player.Key);
-        else if (@event == OnlinePlayerChangeType.Reconnected)
+        switch (changeType)
         {
-            if (activeGamers.TryGetValue(player.Key, out _))
-                activeGamers[player.Key].ConnectionId = player.Value.ConnectionId;
-            else
-                activeGamers[player.Key] = player.Value;
+            case OnlinePlayerChangeType.Added:
+                _activeGamers[player.Key] = player.Value;
+                break;
+
+            case OnlinePlayerChangeType.Removed:
+                _activeGamers.Remove(player.Key);
+                break;
+
+            case OnlinePlayerChangeType.Reconnected:
+                if (_activeGamers.ContainsKey(player.Key))
+                {
+                    _activeGamers[player.Key].ConnectionId = player.Value.ConnectionId;
+                }
+                else
+                {
+                    _activeGamers[player.Key] = player.Value;
+                }
+
+                break;
         }
 
         InvokeAsync(StateHasChanged);
     }
+
+    private void NavigateToTraining()
+    {
+        Navigation.NavigateTo("/Training");
+    }
+
+    private static string DisplayName(string? userName)
+    {
+        return string.IsNullOrWhiteSpace(userName)
+            ? "Unknown Player"
+            : userName;
+    }
+
+    private static string GetInitial(string? userName)
+    {
+        var displayName = DisplayName(userName).Trim();
+
+        return displayName.Length == 0
+            ? "?"
+            : displayName[..1].ToUpperInvariant();
+    }
+
+    private static string ConnectionPreview(string? connectionId)
+    {
+        if (string.IsNullOrWhiteSpace(connectionId))
+            return "Unknown";
+
+        return connectionId.Length <= 8
+            ? connectionId
+            : $"{connectionId[..8]}...";
+    }
+
+    private static int GetMinutes(PlayEvent playEvent)
+    {
+        return Math.Max(1, (int)playEvent / 60);
+    }
+
+    private static string FormatPlayEvent(PlayEvent playEvent)
+    {
+        return $"{GetMinutes(playEvent)} Min";
+    }
+
+    public void Dispose()
+    {
+        ConnectionHandler.OnlinePlayersUpdated -= HandleOnlinePlayersUpdated;
+    }
+
 }

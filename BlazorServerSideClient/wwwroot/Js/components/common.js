@@ -43,12 +43,9 @@ window.inviteModal = {
         if (invitationBasePage) invitationBasePage.hidden = false;
 
         const timeValue = document.getElementById("Inviter-Time-Value");
-        const nameValue = document.getElementById("Inviter-Name");
 
-        if (!timeValue || !nameValue) return;
 
         timeValue.innerText = String(time);
-        nameValue.innerText = name;
 
         if (this.intervalId) {
             clearInterval(this.intervalId);
@@ -64,7 +61,7 @@ window.inviteModal = {
                 this.intervalId = null;
                 this.hide();
             }
-        }, 4000);
+        }, 7000);
     }
 };
 

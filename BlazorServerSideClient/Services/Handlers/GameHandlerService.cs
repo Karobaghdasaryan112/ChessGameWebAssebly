@@ -2,6 +2,7 @@
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
+using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.Responses.ResponseMessages;
@@ -94,5 +95,10 @@ namespace BlazorServerSideClient.Services.Handlers
 
         public async Task RedirectToDashboardAsync()
             => await jSRuneTimeService.NavigateTo("/dashboard");
+
+        public Task LeaveGameAsync(RemoveUsersFromGameReqeustDTO removeUsersReqeustDTO)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

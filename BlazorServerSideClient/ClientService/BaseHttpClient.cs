@@ -79,7 +79,7 @@ namespace ChessGameBlazorClient.UI.ClientService
                 var response = await _httpClient.GetAsync(url);
         
                 // This will throw a clear HttpRequestException if the status is 400, 500, etc.
-                response.EnsureSuccessStatusCode(); 
+                // response.EnsureSuccessStatusCode(); 
 
                 return await response.Content.ReadFromJsonAsync<TResponse>();
             }

@@ -7,104 +7,173 @@
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs
 @using SharedResources.PipeLine.PipeLineContext
 @using SharedResources.Responses.ResponseMessages
+
 @inject IInvitationHandlerService InvitationHandlerService
-@inject SignalRService hubClient;
+@inject SignalRService HubClient
 @inject IInivitationReqeustService InvitationRequestService
 @inject JSRunetimeService JSRunetimeService
+
 @attribute [Authorize]
 @implements IDisposable
-
 <div class="invite-backdrop" id="invite-backdrop-Id" hidden>
-    <div class="invite-modal">
-        <div class="invite-pill">Live Request</div>
-        <h3>Game Invitation</h3>
-        <p class="invite-message">
-            <strong id="Inviter-Name"></strong> invited you to a chess match.
-        </p>
-        <div class="invite-event">
-            Mode: <strong>@currentPlayEvent (@GetMinutes(currentPlayEvent) min)</strong>
+    <div class="invite-modal" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+        <div class="invite-modal-top">
+            <div class="invite-chess-icon">♞</div>
+
+            <div class="invite-title-block">
+                <div class="invite-pill">
+                    <span class="invite-live-dot"></span>
+                    Live Request
+                </div>
+
+                <h3 id="invite-title">Game Invitation</h3>
+            </div>
         </div>
-        <div class="invite-timer">
-            Auto-decline in <strong id="Inviter-Time-Value">30</strong> sec
+
+        <div class="invite-content">
+            <div class="invite-player-box">
+                <span class="invite-small-label">Invited by</span>
+
+                <strong id="Inviter-Name" class="invite-player-name">@InviterUserName</strong>
+
+                <p>Wants to play a chess match with you.</p>
+            </div>
+
+            <div class="invite-info-list">
+                <div class="invite-info-row">
+                    <span>Game mode</span>
+                    <strong>@currentPlayEvent</strong>
+                </div>
+
+                <div class="invite-info-row">
+                    <span>Time control</span>
+                    <strong>@GetMinutes(currentPlayEvent) min</strong>
+                </div>
+
+                <div class="invite-info-row">
+                    <span>Auto-decline</span>
+                    <strong><span id="Inviter-Time-Value">30</span> sec</strong>
+                </div>
+            </div>
         </div>
+
         <div class="modal-buttons">
-            <button class="accept-btn" @onclick="AcceptInvite">Accept</button>
-            <button class="decline-btn" @onclick="DeclineInvite">Decline</button>
+            <button class="accept-btn"
+                    disabled="@_isProcessing"
+                    @onclick="AcceptInvite">
+                @if (_isProcessing)
+                {
+                    <span class="invite-spinner"></span>
+                    <span>Accepting</span>
+                }
+                else
+                {
+                    <span>Accept</span>
+                }
+            </button>
+
+            <button class="decline-btn"
+                    disabled="@_isProcessing"
+                    @onclick="DeclineInvite">
+                Decline
+            </button>
         </div>
     </div>
 </div>
+
 @code {
     private PlayEvent currentPlayEvent;
-    private static Guid ReceiverUserGuid { get; set; }
-    private static Guid InviterUserGuid { get; set; }
-    private string? _connectionId { get; set; }
+
+    private Guid ReceiverUserGuid { get; set; }
+
+    private Guid InviterUserGuid { get; set; }
+
+    public string InviterUserName { get; set; }
+
+    private string? _connectionId;
+
+    private bool _isProcessing;
+
     private Action<ResponseDTO<SendInvitationsResponseDTO, ChessGameResponseMessage>>? _inviteReceivedHandler;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        // ONLY initialize non-JS, non-SignalR data here if needed.
-        // e.g., setting up the event handler reference (but not subscribing yet)
-        _inviteReceivedHandler = (sendInvitationResponseDTO) =>
+        _inviteReceivedHandler = sendInvitationResponseDTO =>
         {
+            InviterUserName = sendInvitationResponseDTO.Data.InviterUserConnection.UserName;
             ReceiverUserGuid = sendInvitationResponseDTO.Data.ReceiverUserGuid;
             InviterUserGuid = sendInvitationResponseDTO.Data.InviterUserGuid;
             currentPlayEvent = sendInvitationResponseDTO.Data.PlayEvent;
-            InvokeAsync(StateHasChanged); 
+
+            InvokeAsync(StateHasChanged);
         };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (!firstRender)
+            return;
+
+        try
         {
-            try 
-            {
-                var hub = await hubClient.GetHubConnectionAsync();
-                _connectionId = hub.ConnectionId;
+            var hub = await HubClient.GetHubConnectionAsync();
+            _connectionId = hub.ConnectionId;
 
-                await JSRunetimeService.HideInviteModal();
+            await JSRunetimeService.HideInviteModal();
 
+            if (_inviteReceivedHandler is not null)
                 InvitationHandlerService.OnReceived += _inviteReceivedHandler;
 
-                StateHasChanged();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during post-render init: {ex.Message}");
-            }
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during invitation modal initialization: {ex.Message}");
         }
     }
-    
+
     private async Task AcceptInvite()
     {
+        if (_isProcessing)
+            return;
 
-        await InvitationRequestService.AcceptInviteAsync(
-            new PipeLineRequest<AcceptInvitationRequestDTO>(new AcceptInvitationRequestDTO()
-            {
-                PlayEvent = currentPlayEvent,
-                inviterUserGuid = InviterUserGuid,
-                receiverUserGuid = ReceiverUserGuid
-            })
-           );
+        _isProcessing = true;
+
+        try
+        {
+            await InvitationRequestService.AcceptInviteAsync(
+                new PipeLineRequest<AcceptInvitationRequestDTO>(
+                    new AcceptInvitationRequestDTO
+                    {
+                        PlayEvent = currentPlayEvent,
+                        inviterUserGuid = InviterUserGuid,
+                        receiverUserGuid = ReceiverUserGuid
+                    }));
+        }
+        finally
+        {
+            _isProcessing = false;
+        }
     }
-    
-    private int GetMinutes(PlayEvent evt)
-    {
-        return (int)evt / 60;
-    }
-    
+
     private async Task DeclineInvite()
     {
+        if (_isProcessing)
+            return;
+
         await JSRunetimeService.HideInviteModal();
         await InvokeAsync(StateHasChanged);
     }
 
+    private static int GetMinutes(PlayEvent evt)
+    {
+        return Math.Max(1, (int)evt / 60);
+    }
+
     public void Dispose()
     {
-        if (_inviteReceivedHandler != null)
-        {
+        if (_inviteReceivedHandler is not null)
             InvitationHandlerService.OnReceived -= _inviteReceivedHandler;
-        }
     }
 
 }

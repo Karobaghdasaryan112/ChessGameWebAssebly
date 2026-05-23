@@ -82,6 +82,22 @@ namespace BlazorServerSideClient.Services.Requests
                 sendClickConnectionRequestDto.Request, JSRunetimeService) ?? PipeLineResponse<ClickResponseDTO>.Emoty;
         }
 
+        public async Task<PipeLineResponse<RemoveUserFromGameResponseDTO>> LeaveGameAsync(
+            RemoveUsersFromGameReqeustDTO removeUsersReqeustDTO)
+        {
+            var hubConnection = await signalRService.GetHubConnectionAsync();
+
+            var leaveResult =
+                await hubConnection.SafeInvokeAsync<RemoveUsersFromGameReqeustDTO, RemoveUserFromGameResponseDTO>(
+                    "LeaveGameAsync", removeUsersReqeustDTO, JSRunetimeService) ??
+                PipeLineResponse<RemoveUserFromGameResponseDTO>.Emoty;
+
+            if (!leaveResult.Response.IsSuccess)
+                await JSRunetimeService.ShowErrorModal("Unable to leave the game right now. Please try again.");
+
+            return leaveResult;
+        }
+
         //TO DO:
         public async Task<PipeLineResponse<SameFigureResposneDTO>> SendIsSameFigureClickedAsync(
             PipeLineRequest<SameFigureRequest> sendIsSameFigureClickedConnectionRequestDto)

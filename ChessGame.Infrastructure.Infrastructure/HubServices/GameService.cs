@@ -410,8 +410,6 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             if ((int)figureColor != (int)currentBoard.Turn)
             {
-                // logger.LogWarning("It's not the turn of player with color {Color}", figureColor);
-
                 return errorResponse;
             }
 
@@ -419,12 +417,10 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             if (currentBlock.Figure != null && currentBlock.Figure.FigureColor == figureColor)
             {
-                // logger.LogInformation("Player with color {Color} clicked on their own figure at position {Position}", figureColor, currentBlock.Position);
 
                 var castlingResult = await GetCastlingMovesAsync(currentBlockFromServer, figureColor, currentBoard);
                 if (castlingResult.Any(c => c.IsCastling))
                 {
-                    // logger.LogInformation("Player with color {Color} is attempting to castle from {FromPosition} to {ToPosition}", figureColor, previusBlockInformationDTO.ClickedPosition, currentBlock.Position);
                     successResponse.Data.ClickedBlock = currentBlockFromServer;
                     successResponse.Data.CastlingInfosDTO = castlingResult;
                     return successResponse;
@@ -441,7 +437,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 return errorResponse;
 
 
-            // logger.LogInformation("Player with color {Color} is attempting to move from {FromPosition} to {ToPosition}", figureColor, previusBlockInformationDTO.ClickedPosition, currentBlock.Position);
 
             successResponse.Data.ClickedBlock = currentBlockFromServer;
 

@@ -3,381 +3,15 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 
+
+<HeadContent>
+    <link rel="stylesheet" href="css/components/Presentation.css" />
+</HeadContent>
 <div class="presentation-shell" tabindex="0" @onkeydown="HandleKey">
-    <style>
-        @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Armenian:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap');
-
-        .presentation-shell,
-        .presentation-shell * {
-            box-sizing: border-box;
-        }
-
-        .presentation-shell {
-            --bg-0: #020617;
-            --bg-1: #07111f;
-            --panel: rgba(10, 18, 35, .72);
-            --panel-2: rgba(15, 23, 42, .88);
-            --line: rgba(148, 163, 184, .18);
-            --line-strong: rgba(96, 165, 250, .42);
-            --text: #f8fafc;
-            --muted: #9aa8bf;
-            --soft: #cbd5e1;
-            --blue: #3b82f6;
-            --cyan: #22d3ee;
-            --gold: #f59e0b;
-            --violet: #8b5cf6;
-            --green: #10b981;
-            --danger: #fb7185;
-            --shadow: 0 28px 90px rgba(0, 0, 0, .55);
-            --radius-xl: 32px;
-            --radius-lg: 24px;
-            --ease: cubic-bezier(.2, .8, .2, 1);
-            position: fixed;
-            inset: 0;
-            z-index: 999999;
-            overflow: hidden;
-            isolation: isolate;
-            font-family: 'Inter', 'Noto Sans Armenian', system-ui, sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 8% 18%, rgba(59, 130, 246, .22), transparent 28%),
-                radial-gradient(circle at 88% 16%, rgba(245, 158, 11, .16), transparent 25%),
-                radial-gradient(circle at 68% 84%, rgba(139, 92, 246, .18), transparent 28%),
-                linear-gradient(135deg, #020617 0%, #07111f 42%, #020617 100%);
-        }
-
-        .presentation-shell::before {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            background-image:
-                linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(circle at center, black 0 55%, transparent 78%);
-            animation: deckGrid 24s linear infinite;
-            z-index: -3;
-        }
-
-        .presentation-shell::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background:
-                linear-gradient(120deg, transparent 0%, rgba(255,255,255,.05) 42%, transparent 50%),
-                radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 42%);
-            mix-blend-mode: screen;
-            animation: deckLight 8s var(--ease) infinite alternate;
-            z-index: -2;
-        }
-
-        @@keyframes deckGrid { to { transform: translate3d(-48px, 48px, 0); } }
-        @@keyframes deckLight { from { opacity: .35; transform: translateX(-3%); } to { opacity: .75; transform: translateX(3%); } }
-
-        .aurora {
-            position: absolute;
-            width: 52vmax;
-            height: 52vmax;
-            border-radius: 999px;
-            filter: blur(70px);
-            opacity: .32;
-            pointer-events: none;
-            z-index: -1;
-            animation: floatAurora 11s var(--ease) infinite alternate;
-        }
-        .aurora.one { left: -18vmax; top: -20vmax; background: #2563eb; }
-        .aurora.two { right: -20vmax; bottom: -24vmax; background: #7c3aed; animation-delay: -4s; }
-        .aurora.three { left: 42%; top: 58%; width: 28vmax; height: 28vmax; background: #f59e0b; opacity: .18; animation-delay: -7s; }
-        @@keyframes floatAurora { to { transform: translate3d(7vw, -5vh, 0) scale(1.08); } }
-
-        .deck-frame {
-            position: absolute;
-            inset: clamp(14px, 2vw, 34px);
-            border: 1px solid rgba(148, 163, 184, .18);
-            border-radius: 34px;
-            background: linear-gradient(180deg, rgba(15, 23, 42, .54), rgba(2, 6, 23, .74));
-            box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.08);
-            overflow: hidden;
-        }
-
-        .topbar {
-            position: absolute;
-            left: clamp(22px, 3vw, 52px);
-            right: clamp(22px, 3vw, 52px);
-            top: clamp(18px, 2.4vw, 40px);
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            z-index: 50;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border: 1px solid rgba(148, 163, 184, .16);
-            border-radius: 20px;
-            background: rgba(15, 23, 42, .54);
-            backdrop-filter: blur(18px);
-            box-shadow: 0 18px 42px rgba(0,0,0,.25);
-        }
-        .brand-mark {
-            width: 38px;
-            height: 38px;
-            border-radius: 14px;
-            display: grid;
-            place-items: center;
-            color: white;
-            background: linear-gradient(135deg, var(--blue), var(--violet));
-            box-shadow: 0 0 32px rgba(59,130,246,.45);
-            font-size: 20px;
-        }
-        .brand strong { display:block; font-size: 14px; letter-spacing:.02em; }
-        .brand span { color: var(--muted); font-size: 11px; }
-
-        .top-actions { display:flex; gap: 10px; align-items:center; }
-        .deck-btn {
-            border: 1px solid rgba(148,163,184,.18);
-            background: rgba(15,23,42,.72);
-            color: var(--text);
-            border-radius: 16px;
-            padding: 12px 16px;
-            font-weight: 700;
-            font-size: 13px;
-            letter-spacing: .01em;
-            cursor: pointer;
-            transition: transform .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
-            box-shadow: 0 14px 34px rgba(0,0,0,.2);
-        }
-        .deck-btn:hover { transform: translateY(-2px); border-color: rgba(96,165,250,.45); box-shadow: 0 20px 48px rgba(59,130,246,.18); }
-        .deck-btn.primary { border-color: rgba(59,130,246,.54); background: linear-gradient(135deg, #2563eb, #7c3aed); }
-        .deck-btn:disabled { opacity:.35; cursor:not-allowed; transform:none; }
-
-        .slide-stage {
-            position: absolute;
-            inset: 96px 0 72px 0;
-            perspective: 1600px;
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            padding: clamp(28px, 4vw, 72px) clamp(28px, 5.4vw, 96px);
-            opacity: 0;
-            pointer-events: none;
-            transform: translate3d(58px, 0, 0) rotateY(-8deg) scale(.96);
-            transition: opacity .72s var(--ease), transform .72s var(--ease), filter .72s var(--ease);
-            filter: blur(8px);
-            display: grid;
-            align-content: center;
-        }
-        .slide.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translate3d(0,0,0) rotateY(0) scale(1);
-            filter: blur(0);
-        }
-        .slide.scroll { align-content: start; overflow: auto; padding-top: clamp(22px, 3vw, 52px); }
-
-        .eyebrow {
-            display:inline-flex;
-            align-items:center;
-            gap: 9px;
-            color: #bfdbfe;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: .18em;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-        .eyebrow::before { content:""; width: 38px; height: 2px; border-radius:10px; background: linear-gradient(90deg, var(--blue), var(--gold)); box-shadow:0 0 18px rgba(59,130,246,.5); }
-
-        h1, h2, h3, p, ul { margin-top: 0; }
-        h1 {
-            max-width: 1080px;
-            font-size: clamp(48px, 7vw, 118px);
-            line-height: .92;
-            letter-spacing: -.07em;
-            margin-bottom: 22px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff 0%, #dbeafe 36%, #93c5fd 62%, #fbbf24 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        h2 {
-            font-size: clamp(30px, 4vw, 62px);
-            line-height: 1.02;
-            letter-spacing: -.045em;
-            margin-bottom: 22px;
-            font-weight: 900;
-        }
-        h3 { font-size: clamp(18px, 1.7vw, 26px); margin-bottom: 12px; font-weight: 800; }
-        p { color: var(--muted); font-size: clamp(15px, 1.15vw, 19px); line-height: 1.74; margin-bottom: 18px; }
-        .lead { color: #dbeafe; font-size: clamp(18px, 1.7vw, 26px); line-height: 1.55; max-width: 940px; }
-        strong { color:#fff; font-weight: 800; }
-        code {
-            font-family: 'Fira Code', monospace;
-            color: #bfdbfe;
-            background: rgba(59,130,246,.12);
-            border: 1px solid rgba(59,130,246,.22);
-            border-radius: 9px;
-            padding: .16rem .48rem;
-            font-size: .91em;
-        }
-        ul { list-style:none; padding:0; margin:0; }
-        li {
-            color: #cbd5e1;
-            line-height:1.58;
-            margin: 10px 0;
-            padding-left: 26px;
-            position:relative;
-            font-size: clamp(14px, 1vw, 17px);
-        }
-        li::before {
-            content:"";
-            position:absolute;
-            left:0;
-            top:.72em;
-            width: 8px;
-            height:8px;
-            border-radius:999px;
-            background: linear-gradient(135deg, var(--blue), var(--gold));
-            box-shadow:0 0 18px rgba(59,130,246,.5);
-        }
-
-        .hero-grid { display:grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr); gap: clamp(28px, 5vw, 78px); align-items:center; }
-        .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(18px, 2.2vw, 30px); }
-        .grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 26px); }
-        .stack { display:grid; gap: 18px; }
-
-        .card {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(148, 163, 184, .16);
-            background: linear-gradient(180deg, rgba(15, 23, 42, .72), rgba(15, 23, 42, .46));
-            border-radius: var(--radius-lg);
-            padding: clamp(20px, 2.4vw, 34px);
-            box-shadow: 0 20px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07);
-            backdrop-filter: blur(22px);
-            transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
-        }
-        .card::before {
-            content:"";
-            position:absolute;
-            inset:0;
-            pointer-events:none;
-            background: radial-gradient(circle at var(--mx, 20%) var(--my, 0%), rgba(59,130,246,.18), transparent 38%);
-            opacity:.8;
-        }
-        .card:hover { transform: translateY(-6px); border-color: rgba(96,165,250,.42); box-shadow: 0 28px 86px rgba(0,0,0,.45), 0 0 45px rgba(59,130,246,.12); }
-        .card-label {
-            display:inline-flex;
-            gap:8px;
-            align-items:center;
-            color:#fbbf24;
-            text-transform: uppercase;
-            letter-spacing:.13em;
-            font-size: 11px;
-            font-weight: 900;
-            margin-bottom: 14px;
-        }
-        .card-label::before { content:""; width: 8px; height:8px; border-radius:999px; background: currentColor; box-shadow: 0 0 20px currentColor; }
-
-        .metric-row { display:flex; flex-wrap:wrap; gap: 12px; margin-top: 28px; }
-        .metric { padding: 14px 16px; min-width: 132px; border:1px solid rgba(148,163,184,.16); border-radius: 18px; background: rgba(15,23,42,.5); }
-        .metric b { display:block; font-size: 22px; color:#fff; }
-        .metric span { color:var(--muted); font-size:12px; }
-
-        .chess-orb {
-            width: min(470px, 35vw);
-            aspect-ratio: 1;
-            border-radius: 42px;
-            position: relative;
-            background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
-            border:1px solid rgba(148,163,184,.18);
-            box-shadow: 0 38px 120px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.1);
-            transform: rotateX(8deg) rotateY(-12deg);
-            animation: heroFloat 5s var(--ease) infinite alternate;
-            display:grid;
-            place-items:center;
-            overflow:hidden;
-        }
-        .chess-orb::after { content:"♛"; font-size: clamp(120px, 14vw, 220px); color: rgba(255,255,255,.92); text-shadow: 0 0 80px rgba(59,130,246,.65); animation: queenPulse 3.4s var(--ease) infinite alternate; }
-        .chess-board-ghost { position:absolute; width: 72%; aspect-ratio:1; opacity:.2; background-size: 25% 25%; background-image: linear-gradient(45deg, rgba(255,255,255,.9) 25%, transparent 25%), linear-gradient(-45deg, rgba(255,255,255,.9) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(255,255,255,.9) 75%), linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.9) 75%); background-position: 0 0, 0 50%, 50% -50%, -50% 0; transform: rotate(45deg); filter: blur(.2px); }
-        @@keyframes heroFloat { to { transform: rotateX(4deg) rotateY(12deg) translateY(-14px); } }
-        @@keyframes queenPulse { to { transform: scale(1.05); text-shadow: 0 0 120px rgba(245,158,11,.7); } }
-
-        .arch-map { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items: stretch; }
-        .arch-column { border-radius: 24px; padding: 22px; border:1px solid rgba(148,163,184,.16); background: rgba(2,6,23,.38); min-height: 430px; }
-        .arch-pill { padding: 16px; border-radius: 18px; margin: 12px 0; background: linear-gradient(135deg, rgba(59,130,246,.16), rgba(139,92,246,.1)); border: 1px solid rgba(96,165,250,.22); position:relative; overflow:hidden; }
-        .arch-pill::after { content:""; position:absolute; inset:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent); transform: translateX(-100%); animation: shimmer 5s infinite; }
-        @@keyframes shimmer { 50%,100% { transform: translateX(100%); } }
-
-        .tree { font-family: 'Fira Code', monospace; font-size: clamp(12px, .9vw, 15px); color:#cbd5e1; border-radius: 24px; padding: 24px; background: rgba(2,6,23,.48); border:1px solid rgba(148,163,184,.16); box-shadow: inset 0 0 32px rgba(0,0,0,.25); }
-        .tree .folder { color:#fbbf24; font-weight:800; margin: 9px 0; }
-        .tree .file { margin-left: 20px; color:#93c5fd; padding: 4px 0; }
-        .tree .file.green { color:#86efac; }
-        .tree .file.violet { color:#c4b5fd; }
-
-        .flow { position: relative; padding: 42px 12px; display:flex; align-items:center; justify-content:space-between; gap: 14px; }
-        .flow::before { content:""; position:absolute; left:7%; right:7%; top:50%; height:2px; background: linear-gradient(90deg, rgba(59,130,246,.2), rgba(245,158,11,.75), rgba(34,211,238,.2)); }
-        .flow-packet { position:absolute; top:50%; left:7%; width:16px; height:16px; border-radius:999px; background:#fbbf24; box-shadow: 0 0 28px #fbbf24; transform: translateY(-50%); animation: packetMove 5.5s var(--ease) infinite; z-index:4; }
-        @@keyframes packetMove { 0%{left:7%; opacity:0} 8%{opacity:1} 25%{left:28%} 50%{left:50%} 75%{left:72%} 92%{opacity:1} 100%{left:91%; opacity:0} }
-        .flow-node { position:relative; z-index:2; width: 170px; min-height: 98px; display:grid; place-items:center; text-align:center; padding: 16px; border-radius: 20px; border:1px solid rgba(96,165,250,.34); background: rgba(15,23,42,.88); box-shadow: 0 18px 44px rgba(0,0,0,.32); font-weight: 900; }
-        .flow-node small { color:var(--muted); display:block; font-weight:600; margin-top:4px; }
-
-        .footer {
-            position:absolute;
-            left: clamp(22px, 3vw, 52px);
-            right: clamp(22px, 3vw, 52px);
-            bottom: clamp(18px, 2.4vw, 36px);
-            z-index: 60;
-            display:flex;
-            align-items:end;
-            justify-content:space-between;
-            gap: 18px;
-            pointer-events: none;
-        }
-        .footer > * { pointer-events:auto; }
-        .counter { color: var(--muted); font-family:'Fira Code', monospace; font-size: 13px; letter-spacing:.08em; }
-        .progress-wrap { height: 6px; flex:1; max-width: 520px; border-radius:999px; background: rgba(148,163,184,.16); overflow:hidden; box-shadow: inset 0 0 8px rgba(0,0,0,.45); }
-        .progress { height:100%; width: var(--progress); border-radius:inherit; background: linear-gradient(90deg, var(--blue), var(--violet), var(--gold)); box-shadow: 0 0 28px rgba(59,130,246,.55); transition: width .55s var(--ease); }
-        .nav { display:flex; gap:10px; }
-
-        .reveal { animation: revealUp .75s var(--ease) both; }
-        .d1 { animation-delay: .08s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .30s; } .d4 { animation-delay: .42s; }
-        @@keyframes revealUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
-
-        @@media (max-width: 1100px) {
-            .grid-3, .arch-map, .hero-grid { grid-template-columns: 1fr; }
-            .chess-orb { display:none; }
-            .slide-stage { inset-top: 88px; }
-            .flow { overflow:auto; justify-content:flex-start; }
-            .flow::before { width: 900px; right:auto; }
-            .flow-node { flex:0 0 170px; }
-        }
-        @@media (max-width: 760px) {
-            .topbar { left:14px; right:14px; top:12px; }
-            .brand span { display:none; }
-            .slide { padding: 96px 20px 90px; align-content:start; overflow:auto; }
-            .slide-stage { inset: 0; }
-            .grid-2 { grid-template-columns:1fr; }
-            .footer { left:14px; right:14px; bottom:12px; align-items:center; }
-            .progress-wrap { display:none; }
-            .deck-btn { padding: 10px 12px; }
-            .top-actions .deck-btn:not(.primary) { display:none; }
-        }
-    </style>
 
     <div class="aurora one"></div>
     <div class="aurora two"></div>
     <div class="aurora three"></div>
-
     <div class="deck-frame">
         <header class="topbar">
             <div class="brand">
@@ -386,7 +20,8 @@
             </div>
             <div class="top-actions">
                 <button class="deck-btn" @onclick="ToggleFullScreen">Fullscreen</button>
-                <a class="deck-btn primary" href="https://github.com/Karobaghdasaryan112/ChessGameWebAssebly" target="_blank">GitHub</a>
+                <a class="deck-btn primary" href="https://github.com/Karobaghdasaryan112/ChessGameWebAssebly"
+                   target="_blank">GitHub</a>
             </div>
         </header>
 
@@ -396,25 +31,37 @@
                     <div>
                         <div class="eyebrow reveal">Clean Architecture · Real-time Chess</div>
                         <h1 class="reveal d1">ChessGame Application</h1>
-                        <p class="lead reveal d2">Շախմատային առցանց հարթակ՝ ստեղծված <strong>.NET</strong>, <strong>Blazor Server</strong>, <strong>SignalR</strong>, <strong>MediatR</strong> և <strong>Clean Architecture</strong> սկզբունքների հիման վրա։</p>
+                        <p class="lead reveal d2">Շախմատային առցանց հարթակ՝ ստեղծված <strong>.NET</strong>, <strong>Blazor
+                                Server</strong>, <strong>SignalR</strong>, <strong>MediatR</strong> և <strong>Clean
+                                Architecture</strong> սկզբունքների հիման վրա։</p>
                         <div class="metric-row reveal d3">
                             <div class="metric"><b>Real-time</b><span>SignalR խաղային կապ</span></div>
                             <div class="metric"><b>CQRS</b><span>MediatR command/query</span></div>
                             <div class="metric"><b>AI</b><span>Alpha-Beta search</span></div>
                         </div>
                     </div>
-                    <div class="chess-orb reveal d2"><div class="chess-board-ghost"></div></div>
+                    <div class="chess-orb reveal d2">
+                        <div class="chess-board-ghost"></div>
+                    </div>
                 </div>
             </section>
 
             <section class="slide @(IsActive(1))">
                 <div class="eyebrow reveal">Project overview</div>
                 <h2 class="reveal d1">Համակարգի ընդհանուր գաղափարը</h2>
-                <p class="lead reveal d2">Նախագիծը կառուցված է որպես մոդուլային համակարգ, որտեղ յուրաքանչյուր շերտ ունի հստակ պատասխանատվություն․ UI-ը ցուցադրում է խաղը, Gateway-ը կառավարում է մուտքը, API-ները մշակում են հարցումները, իսկ Core շերտը պահում է հիմնական բիզնես տրամաբանությունը։</p>
+                <p class="lead reveal d2">Նախագիծը կառուցված է որպես մոդուլային համակարգ, որտեղ յուրաքանչյուր շերտ ունի
+                    հստակ պատասխանատվություն․ UI-ը ցուցադրում է խաղը, Gateway-ը կառավարում է մուտքը, API-ները մշակում են
+                    հարցումները, իսկ Core շերտը պահում է հիմնական բիզնես տրամաբանությունը։</p>
                 <div class="grid-3 reveal d3">
-                    <div class="card"><span class="card-label">Frontend</span><h3>BlazorServerSideClient</h3><p>Razor components, խաղատախտակի ինտերֆեյս, lobby և SignalR client կապեր։</p></div>
-                    <div class="card"><span class="card-label">Gateway</span><h3>Gateway.API</h3><p>YARP Reverse Proxy՝ միասնական մուտքի կետ, երթուղավորում և սերվիսների բաժանում։</p></div>
-                    <div class="card"><span class="card-label">Backend</span><h3>Chess / Chat / Identity APIs</h3><p>Խաղի տրամաբանություն, հաղորդագրություններ, authentication և real-time events։</p></div>
+                    <div class="card"><span class="card-label">Frontend</span>
+                        <h3>BlazorServerSideClient</h3>
+                        <p>Razor components, խաղատախտակի ինտերֆեյս, lobby և SignalR client կապեր։</p></div>
+                    <div class="card"><span class="card-label">Gateway</span>
+                        <h3>Gateway.API</h3>
+                        <p>YARP Reverse Proxy՝ միասնական մուտքի կետ, երթուղավորում և սերվիսների բաժանում։</p></div>
+                    <div class="card"><span class="card-label">Backend</span>
+                        <h3>Chess / Chat / Identity APIs</h3>
+                        <p>Խաղի տրամաբանություն, հաղորդագրություններ, authentication և real-time events։</p></div>
                 </div>
             </section>
 
@@ -422,9 +69,24 @@
                 <div class="eyebrow reveal">Architecture map</div>
                 <h2 class="reveal d1">Clean Architecture շերտավորում</h2>
                 <div class="arch-map reveal d2">
-                    <div class="arch-column"><span class="card-label">Presentation</span><div class="arch-pill"><strong>BlazorServerSideClient</strong><br /><span>UI, Razor Components, SignalR Client</span></div><div class="arch-pill"><strong>SharedResources</strong><br /><span>DTO-ներ, Contracts, ընդհանուր մոդելներ</span></div></div>
-                    <div class="arch-column"><span class="card-label">Application / Core</span><div class="arch-pill"><strong>ChessGame.Core.Domain</strong><br /><span>Շախմատի կանոններ և դոմեյնային entities</span></div><div class="arch-pill"><strong>ChessGame.Core.Services</strong><br /><span>MediatR, CQRS, Commands, Queries, AI logic</span></div></div>
-                    <div class="arch-column"><span class="card-label">Infrastructure</span><div class="arch-pill"><strong>Infrastructure</strong><br /><span>SignalR services, external implementations, DI</span></div><div class="arch-pill"><strong>Persistence</strong><br /><span>EF Core, DbContext, repositories, migrations</span></div></div>
+                    <div class="arch-column"><span class="card-label">Presentation</span>
+                        <div class="arch-pill"><strong>BlazorServerSideClient</strong><br/><span>UI, Razor Components, SignalR Client</span>
+                        </div>
+                        <div class="arch-pill"><strong>SharedResources</strong><br/><span>DTO-ներ, Contracts, ընդհանուր մոդելներ</span>
+                        </div>
+                    </div>
+                    <div class="arch-column"><span class="card-label">Application / Core</span>
+                        <div class="arch-pill"><strong>ChessGame.Core.Domain</strong><br/><span>Շախմատի կանոններ և դոմեյնային entities</span>
+                        </div>
+                        <div class="arch-pill"><strong>ChessGame.Core.Services</strong><br/><span>MediatR, CQRS, Commands, Queries, AI logic</span>
+                        </div>
+                    </div>
+                    <div class="arch-column"><span class="card-label">Infrastructure</span>
+                        <div class="arch-pill"><strong>Infrastructure</strong><br/><span>SignalR services, external implementations, DI</span>
+                        </div>
+                        <div class="arch-pill"><strong>Persistence</strong><br/><span>EF Core, DbContext, repositories, migrations</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -459,24 +121,54 @@
                 <div class="eyebrow reveal">Blazor UI</div>
                 <h2 class="reveal d1">Ներկայացման շերտ</h2>
                 <div class="grid-2 reveal d2">
-                    <div class="card"><span class="card-label">UI Experience</span><h3>Խաղատախտակ և Lobby</h3><p>Blazor Server-ը ապահովում է ինտերակտիվ միջավայր՝ խաղացողի քայլերը, հրավերները և ընթացիկ խաղի վիճակը վիզուալացնելու համար։</p><ul><li>Razor Components</li><li>Real-time status updates</li><li>Server-driven validation result</li></ul></div>
-                    <div class="card"><span class="card-label">State Strategy</span><h3>Backend-ը մնում է truth source</h3><p>UI-ը չի որոշում քայլի թույլատրելիությունը․ այն միայն ուղարկում է գործողությունը և ցուցադրում է սերվերի կողմից հաստատված արդյունքը։ Սա բարձրացնում է անվտանգությունն ու տվյալների ամբողջականությունը։</p></div>
+                    <div class="card"><span class="card-label">UI Experience</span>
+                        <h3>Խաղատախտակ և Lobby</h3>
+                        <p>Blazor Server-ը ապահովում է ինտերակտիվ միջավայր՝ խաղացողի քայլերը, հրավերները և ընթացիկ խաղի
+                            վիճակը վիզուալացնելու համար։</p>
+                        <ul>
+                            <li>Razor Components</li>
+                            <li>Real-time status updates</li>
+                            <li>Server-driven validation result</li>
+                        </ul>
+                    </div>
+                    <div class="card"><span class="card-label">State Strategy</span>
+                        <h3>Backend-ը մնում է truth source</h3>
+                        <p>UI-ը չի որոշում քայլի թույլատրելիությունը․ այն միայն ուղարկում է գործողությունը և ցուցադրում
+                            է սերվերի կողմից հաստատված արդյունքը։ Սա բարձրացնում է անվտանգությունն ու տվյալների
+                            ամբողջականությունը։</p></div>
                 </div>
             </section>
 
             <section class="slide @(IsActive(5))">
                 <div class="eyebrow reveal">Gateway.API</div>
                 <h2 class="reveal d1">YARP Reverse Proxy</h2>
-                <div class="card reveal d2"><span class="card-label">Single Entry Point</span><p class="lead">Gateway.API-ն ծառայում է որպես համակարգի կենտրոնական մուտք։ Այն թաքցնում է ներքին սերվիսների տեղակայումը և ապահովում է միավորված երթուղավորում դեպի Chess, Chat և Identity service-ներ։</p><ul><li>Կլիենտը կապվում է մեկ հասցեի հետ։</li><li>Սերվիսները կարելի է անկախ տեղափոխել կամ մասշտաբավորել։</li><li>Ապագայում կարելի է ավելացնել rate limiting, logging և authorization policy-ներ։</li></ul></div>
+                <div class="card reveal d2"><span class="card-label">Single Entry Point</span>
+                    <p class="lead">Gateway.API-ն ծառայում է որպես համակարգի կենտրոնական մուտք։ Այն թաքցնում է ներքին
+                        սերվիսների տեղակայումը և ապահովում է միավորված երթուղավորում դեպի Chess, Chat և Identity
+                        service-ներ։</p>
+                    <ul>
+                        <li>Կլիենտը կապվում է մեկ հասցեի հետ։</li>
+                        <li>Սերվիսները կարելի է անկախ տեղափոխել կամ մասշտաբավորել։</li>
+                        <li>Ապագայում կարելի է ավելացնել rate limiting, logging և authorization policy-ներ։</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="slide @(IsActive(6))">
                 <div class="eyebrow reveal">Backend APIs</div>
                 <h2 class="reveal d1">Սերվերային շերտի պատասխանատվությունը</h2>
                 <div class="grid-3 reveal d2">
-                    <div class="card"><span class="card-label">ChessGameAPI</span><h3>GameHub</h3><p>Կառավարում է խաղային իրադարձությունները, քայլերը, հրավերները և խաղացողների միջև ակնթարթային հաղորդակցությունը։</p></div>
-                    <div class="card"><span class="card-label">ChatAPI</span><h3>Messages</h3><p>Առանձին մոդուլ՝ խաղացողների հաղորդագրությունների և chat սցենարների համար։</p></div>
-                    <div class="card"><span class="card-label">IdentityService</span><h3>Authentication</h3><p>Օգտատերերի գրանցում, մուտք, token/cookie անվտանգության կառավարում և identity տվյալներ։</p></div>
+                    <div class="card"><span class="card-label">ChessGameAPI</span>
+                        <h3>GameHub</h3>
+                        <p>Կառավարում է խաղային իրադարձությունները, քայլերը, հրավերները և խաղացողների միջև ակնթարթային
+                            հաղորդակցությունը։</p></div>
+                    <div class="card"><span class="card-label">ChatAPI</span>
+                        <h3>Messages</h3>
+                        <p>Առանձին մոդուլ՝ խաղացողների հաղորդագրությունների և chat սցենարների համար։</p></div>
+                    <div class="card"><span class="card-label">IdentityService</span>
+                        <h3>Authentication</h3>
+                        <p>Օգտատերերի գրանցում, մուտք, token/cookie անվտանգության կառավարում և identity տվյալներ։</p>
+                    </div>
                 </div>
             </section>
 
@@ -484,8 +176,21 @@
                 <div class="eyebrow reveal">Domain Core</div>
                 <h2 class="reveal d1">Շախմատի կանոնների անկախ միջուկ</h2>
                 <div class="grid-2 reveal d2">
-                    <div class="card"><span class="card-label">Entities</span><ul><li><strong>Board</strong> — 8x8 խաղատախտակի վիճակ։</li><li><strong>Figure</strong> — խաղաքարի տիպ, գույն և դիրք։</li><li><strong>Move</strong> — քայլի սկզբնակետ, վերջնակետ և տեսակը։</li></ul></div>
-                    <div class="card"><span class="card-label">Rules</span><ul><li>Legal move validation</li><li>Check և checkmate detection</li><li>Castling, promotion և հատուկ շախմատային իրավիճակներ</li><li>Խաղի վիճակի վերահսկում սերվերային մակարդակում</li></ul></div>
+                    <div class="card"><span class="card-label">Entities</span>
+                        <ul>
+                            <li><strong>Board</strong> — 8x8 խաղատախտակի վիճակ։</li>
+                            <li><strong>Figure</strong> — խաղաքարի տիպ, գույն և դիրք։</li>
+                            <li><strong>Move</strong> — քայլի սկզբնակետ, վերջնակետ և տեսակը։</li>
+                        </ul>
+                    </div>
+                    <div class="card"><span class="card-label">Rules</span>
+                        <ul>
+                            <li>Legal move validation</li>
+                            <li>Check և checkmate detection</li>
+                            <li>Castling, promotion և հատուկ շախմատային իրավիճակներ</li>
+                            <li>Խաղի վիճակի վերահսկում սերվերային մակարդակում</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -493,8 +198,24 @@
                 <div class="eyebrow reveal">CQRS · MediatR</div>
                 <h2 class="reveal d1">Application Logic</h2>
                 <div class="grid-2 reveal d2">
-                    <div class="card"><span class="card-label">Commands</span><h3>Փոփոխող գործողություններ</h3><p>Քայլի կատարում, խաղի սկսում, վիճակի թարմացում և database persist։</p><ul><li>MoveLogicCommandHandler</li><li>SubmitMoveCommandHandler</li><li>StartGameCommandHandler</li></ul></div>
-                    <div class="card"><span class="card-label">Queries</span><h3>Ընթերցման գործողություններ</h3><p>Խաղերի պատմության, առցանց խաղացողների և AI-ի օպտիմալ քայլի ստացում։</p><ul><li>GetGameHistoryQueryHandler</li><li>GetOnlinePlayersQueryHandler</li><li>GetOptimizedMoveQueryHandler</li></ul></div>
+                    <div class="card"><span class="card-label">Commands</span>
+                        <h3>Փոփոխող գործողություններ</h3>
+                        <p>Քայլի կատարում, խաղի սկսում, վիճակի թարմացում և database persist։</p>
+                        <ul>
+                            <li>MoveLogicCommandHandler</li>
+                            <li>SubmitMoveCommandHandler</li>
+                            <li>StartGameCommandHandler</li>
+                        </ul>
+                    </div>
+                    <div class="card"><span class="card-label">Queries</span>
+                        <h3>Ընթերցման գործողություններ</h3>
+                        <p>Խաղերի պատմության, առցանց խաղացողների և AI-ի օպտիմալ քայլի ստացում։</p>
+                        <ul>
+                            <li>GetGameHistoryQueryHandler</li>
+                            <li>GetOnlinePlayersQueryHandler</li>
+                            <li>GetOptimizedMoveQueryHandler</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -511,15 +232,23 @@
                         <div class="flow-node">Database<small>EF Core</small></div>
                     </div>
                 </div>
-                <p class="lead reveal d3">Քայլը ստացվում է UI-ից, անցնում Gateway-ով, մշակվում GameHub-ում, հաստատվում Core Domain կանոններով, պահպանվում բազայում և SignalR-ի միջոցով անմիջապես վերադարձվում երկու խաղացողներին։</p>
+                <p class="lead reveal d3">Քայլը ստացվում է UI-ից, անցնում Gateway-ով, մշակվում GameHub-ում, հաստատվում
+                    Core Domain կանոններով, պահպանվում բազայում և SignalR-ի միջոցով անմիջապես վերադարձվում երկու
+                    խաղացողներին։</p>
             </section>
 
             <section class="slide @(IsActive(10))">
                 <div class="eyebrow reveal">AI engine</div>
                 <h2 class="reveal d1">Արհեստական բանականության մոդուլ</h2>
                 <div class="grid-2 reveal d2">
-                    <div class="card"><span class="card-label">Search</span><h3>Alpha-Beta Pruning</h3><p>AI-ը որոնում է լավագույն քայլը՝ կրճատելով խաղային ծառի ոչ օգտակար ճյուղերը և պահպանելով հաշվարկի արագությունը։</p></div>
-                    <div class="card"><span class="card-label">Evaluation</span><h3>Board Evaluation</h3><p>Դիրքը գնահատվում է նյութական արժեքի և դիրքային առավելությունների հիման վրա․ օրինակ՝ խաղաքարերի ակտիվություն, կենտրոնի վերահսկում և պաշտպանություն։</p></div>
+                    <div class="card"><span class="card-label">Search</span>
+                        <h3>Alpha-Beta Pruning</h3>
+                        <p>AI-ը որոնում է լավագույն քայլը՝ կրճատելով խաղային ծառի ոչ օգտակար ճյուղերը և պահպանելով
+                            հաշվարկի արագությունը։</p></div>
+                    <div class="card"><span class="card-label">Evaluation</span>
+                        <h3>Board Evaluation</h3>
+                        <p>Դիրքը գնահատվում է նյութական արժեքի և դիրքային առավելությունների հիման վրա․ օրինակ՝
+                            խաղաքարերի ակտիվություն, կենտրոնի վերահսկում և պաշտպանություն։</p></div>
                 </div>
             </section>
 
@@ -527,8 +256,24 @@
                 <div class="eyebrow reveal">Deployment</div>
                 <h2 class="reveal d1">Անվտանգություն և տեղակայում</h2>
                 <div class="grid-2 reveal d2">
-                    <div class="card"><span class="card-label">Security</span><p>IdentityService-ը պատասխանատու է օգտատիրոջ վավերացման համար, իսկ API մակարդակում կարելի է կիրառել authorization policy-ներ և պաշտպանված SignalR կապեր։</p><ul><li>ASP.NET Core Identity</li><li>Secure authentication flow</li><li>Gateway-based boundary</li></ul></div>
-                    <div class="card"><span class="card-label">Docker</span><p>Docker Compose-ը հնարավորություն է տալիս գործարկել բոլոր հիմնական մասերը մեկ միջավայրում՝ frontend, gateway, backend service-ներ և տվյալների բազա։</p><ul><li>Reproducible local environment</li><li>Service isolation</li><li>Production-ready deployment direction</li></ul></div>
+                    <div class="card"><span class="card-label">Security</span>
+                        <p>IdentityService-ը պատասխանատու է օգտատիրոջ վավերացման համար, իսկ API մակարդակում կարելի է
+                            կիրառել authorization policy-ներ և պաշտպանված SignalR կապեր։</p>
+                        <ul>
+                            <li>ASP.NET Core Identity</li>
+                            <li>Secure authentication flow</li>
+                            <li>Gateway-based boundary</li>
+                        </ul>
+                    </div>
+                    <div class="card"><span class="card-label">Docker</span>
+                        <p>Docker Compose-ը հնարավորություն է տալիս գործարկել բոլոր հիմնական մասերը մեկ միջավայրում՝
+                            frontend, gateway, backend service-ներ և տվյալների բազա։</p>
+                        <ul>
+                            <li>Reproducible local environment</li>
+                            <li>Service isolation</li>
+                            <li>Production-ready deployment direction</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -538,18 +283,24 @@
                 <div class="card reveal d2" style="text-align:center; max-width: 980px; margin:auto;">
                     <div style="font-size:72px; margin-bottom:18px;">♚</div>
                     <h3>Շնորհակալություն ուշադրության համար</h3>
-                    <p class="lead" style="margin-left:auto; margin-right:auto;">Ներկայացված լուծումը ցույց է տալիս, որ շախմատային real-time հարթակը կարելի է կառուցել մաքուր, ընդլայնվող և սպասարկելի ճարտարապետությամբ՝ պահպանելով շերտերի պատասխանատվությունը և տեխնիկական ճկունությունը։</p>
-                    <a class="deck-btn primary" href="https://github.com/Karobaghdasaryan112/ChessGameWebAssebly" target="_blank">Դիտել նախագիծը GitHub-ում</a>
+                    <p class="lead" style="margin-left:auto; margin-right:auto;">Ներկայացված լուծումը ցույց է տալիս, որ
+                        շախմատային real-time հարթակը կարելի է կառուցել մաքուր, ընդլայնվող և սպասարկելի
+                        ճարտարապետությամբ՝ պահպանելով շերտերի պատասխանատվությունը և տեխնիկական ճկունությունը։</p>
+                    <a class="deck-btn primary" href="https://github.com/Karobaghdasaryan112/ChessGameWebAssebly"
+                       target="_blank">Դիտել նախագիծը GitHub-ում</a>
                 </div>
             </section>
         </main>
 
         <footer class="footer">
             <div class="counter">SLIDE <strong>@(CurrentSlide + 1)</strong> / @TotalSlides</div>
-            <div class="progress-wrap"><div class="progress" style="--progress:@ProgressPercent%"></div></div>
+            <div class="progress-wrap">
+                <div class="progress" style="--progress:@ProgressPercent%"></div>
+            </div>
             <div class="nav">
                 <button class="deck-btn" @onclick="Prev" disabled="@(CurrentSlide == 0)">Նախորդը</button>
-                <button class="deck-btn primary" @onclick="Next" disabled="@(CurrentSlide == TotalSlides - 1)">Հաջորդը</button>
+                <button class="deck-btn primary" @onclick="Next" disabled="@(CurrentSlide == TotalSlides - 1)">Հաջորդը
+                </button>
             </div>
         </footer>
     </div>
@@ -581,4 +332,5 @@
     {
         await JS.InvokeVoidAsync("eval", "document.fullscreenElement ? document.exitFullscreen() : document.querySelector('.presentation-shell')?.requestFullscreen()");
     }
+
 }

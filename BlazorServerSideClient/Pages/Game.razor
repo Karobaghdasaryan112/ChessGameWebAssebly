@@ -1,12 +1,14 @@
 ﻿@page "/game"
-@using System.Diagnostics
+
 @using System.Security.Claims
 @using System.Text.Json
 @using BlazorServerSideClient.Contracts.Handlers
 @using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Data.GameModels
 @using BlazorServerSideClient.Extensions
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ApiServices
+@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Enums.Events
@@ -16,278 +18,469 @@
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
 @using SharedResources.PipeLine.PipeLineContext
+
 @inject SignalRService HubClient
 @inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
 @inject IGameHandlerService GameHandlerService
 @inject JSRunetimeService JS
-@inject IJSRuntime jsRuneTime
+@inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthenticationState
-@inject ILogger<Game> logger
+@inject ILogger<Game> Logger
+@inject GameCircuitState GameCircuitState
+@inject GameCircuitHandler GameCircuitHandler
+
 @attribute [Authorize]
-<MateNotifier/>
-<ErrorModal/>
-<NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true">
-    @code
-    {
-        private bool _isLeavingGame;
+@implements IAsyncDisposable
 
-        private async Task ConfirmLeave(LocationChangingContext context)
-        {
-            if (_isLeavingGame)
-                return;
+<PageTitle>Live Chess Game</PageTitle>
 
-            var leave = await jsRuneTime.InvokeAsync<bool>(
-                "confirm",
-                "Do you want to leave the Game?"
-            );
+<MateNotifier />
+<ErrorModal />
 
-            if (!leave)
-            {
-                context.PreventNavigation();
-                return;
-            }
+<NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true" />
 
-            context.PreventNavigation();
-            _isLeavingGame = true;
+<section class="game-arena-page @(isBusy ? "game-is-busy" : "")">
+    <div class="game-bg-orb game-bg-orb-one"></div>
+    <div class="game-bg-orb game-bg-orb-two"></div>
+    <div class="game-bg-orb game-bg-orb-three"></div>
 
-            try
-            {
-                await LeaveGameAsync();
-            }
-            finally
-            {
-                _isLeavingGame = false;
-            }
-        }
-    }
-</NavigationLock>
-<div class="wrap"
-     disabled="@isBusy">
-    <div class="leftCard">
-        <div class="playersInfo">
-            <div class="player">
-                <div class="avatar" id="avatar1">@GetInitial(Player1Name)</div>
-                <div class="playerInfo">
-                    <span class="name" id="player1Name">@Player1Name</span>
-                    <span class="meta" id="player1Meta">White · @_whiteClock.ToString(@"mm\:ss")</span>
+    <div class="game-arena-shell">
+        <header class="game-topbar">
+            <div class="game-brand">
+                <div class="game-brand-mark">♞</div>
+                <div>
+                    <strong>Chess Arena</strong>
+                    <span>Live synchronized match</span>
                 </div>
             </div>
 
-            <div class="game-center-meta">
-                <div class="game-center-title">Live Game</div>
-                <div class="game-center-subtitle">Turn: @_turnLabel · Match state: @_matchState</div>
-            </div>
+            <div class="game-top-status">
+                <div class="game-status-pill">
+                    <span class="status-dot"></span>
+                    @_matchState
+                </div>
 
-            <div class="controls">
-                <button class="btn" id="btnUndo" title="Undo is not available in live mode" disabled>↶ Undo</button>
-                <button class="btn" id="btnOffer" title="Offer draw" @onclick="OfferDraw">🤝 Offer</button>
-                <button class="btn primary" id="btnNew" title="Leave and start new game" @onclick="StartNewGame">✳ New
-                    Game
-                </button>
-                <button class="btn helper"
-                        @onclick="GetOptimizedMove"
-                        disabled="@isBusy">
-                    ♟️ Helper
-                </button>
+                <div class="game-status-pill">
+                    Turn: <strong>@_turnLabel</strong>
+                </div>
             </div>
-        </div>
+        </header>
 
-        <div class="boardWrap">
-            <div id="chessboard" class="chessboard" aria-label="Chessboard" role="grid"></div>
-        </div>
-    </div>
-
-    <aside class="rightCard">
-        <div class="panelTitle">
-            <h4>Move Log</h4>
-            <div style="color:var(--muted);font-size:13px">Live timeline</div>
-        </div>
-
-        <div class="game-stats-grid">
-            <div class="game-stat-card">
-                <div class="game-stat-label">Elapsed</div>
-                <div class="game-stat-value">@FormatElapsed(_gameStartedAtUtc)</div>
-            </div>
-            <div class="game-stat-card">
-                <div class="game-stat-label">Turn</div>
-                <div class="game-stat-value">@_turnLabel</div>
-            </div>
-            <div class="game-stat-card">
-                <div class="game-stat-label">Total notes</div>
-                <div class="game-stat-value">@_gameNotes.Count</div>
-            </div>
-            <div class="game-stat-card">
-                <div class="game-stat-label">@Player1Name points</div>
-                <div class="game-stat-value">@_player1Points</div>
-            </div>
-            <div class="game-stat-card">
-                <div class="game-stat-label">@Player2Name points</div>
-                <div class="game-stat-value">@_player2Points</div>
-            </div>
-        </div>
-
-        <div class="movesLog" id="movesLog">
-            @if (_gameNotes.Count == 0)
-            {
-                <div class="move-note-empty">No notes yet. Moves and events will appear here.</div>
-            }
-            else
-            {
-                @foreach (var note in _gameNotes.OrderByDescending(item => item.AtUtc))
-                {
-                    <div class="move-note-item @note.KindClass">
-                        <div>
-                            <div class="move-note-title">@note.Title</div>
-                            <div
-                                class="move-note-meta">@note.ByPlayer · @note.AtUtc.ToLocalTime().ToString("HH:mm:ss")</div>
+        <main class="game-layout">
+            <section class="game-board-panel">
+                <div class="game-players-strip">
+                    <article class="game-player-card white-player @(MyColor == FigureColors.White ? "current-user" : "")">
+                        <div class="game-avatar game-avatar-white">
+                            @GetInitial(Player1Name)
                         </div>
-                        <div class="move-note-badge">@note.NoteBadge</div>
+
+                        <div class="game-player-info">
+                            <span class="game-player-label">White</span>
+                            <strong title="@Player1Name">@DisplayName(Player1Name)</strong>
+                            <small>@_whiteClock.ToString(@"mm\:ss")</small>
+                        </div>
+                    </article>
+
+                    <div class="game-match-card">
+                        <span>Live Game</span>
+                        <strong>@_turnLabel to move</strong>
+                        <small>@FormatElapsed(_gameStartedAtUtc)</small>
                     </div>
-                }
-            }
-        </div>
 
-        <div class="panelTitle">
-            <h4>Players</h4>
-            <div style="color:var(--muted);font-size:13px">Status</div>
-        </div>
+                    <article class="game-player-card black-player @(MyColor == FigureColors.Black ? "current-user" : "")">
+                        <div class="game-avatar game-avatar-black">
+                            @GetInitial(Player2Name)
+                        </div>
 
-        <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar" style="width:44px;height:44px;border-radius:10px">@GetInitial(Player1Name)</div>
-                <div>
-                    <div style="font-weight:700">White — @Player1Name </div>
-                    <div style="font-size:13px;color:var(--muted)">
-                        Score: @_player1Points · @_whiteClock.ToString(@"mm\:ss"))
+                        <div class="game-player-info">
+                            <span class="game-player-label">Black</span>
+                            <strong title="@Player2Name">@DisplayName(Player2Name)</strong>
+                            <small>@_blackClock.ToString(@"mm\:ss")</small>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="game-controls-bar">
+                    <button class="game-btn ghost" title="Undo is not available in live mode" disabled>
+                        <span>↶</span>
+                        Undo
+                    </button>
+
+                    <button class="game-btn ghost" title="Offer draw" @onclick="OfferDraw" disabled="@isBusy">
+                        <span>🤝</span>
+                        Offer Draw
+                    </button>
+
+                    <button class="game-btn primary" title="Leave and start new game" @onclick="StartNewGame" disabled="@isBusy">
+                        <span>✳</span>
+                        New Game
+                    </button>
+
+                    <button class="game-btn helper" @onclick="GetOptimizedMove" disabled="@isBusy">
+                        @if (isBusy)
+                        {
+                            <span class="mini-spinner"></span>
+                            <span>Thinking...</span>
+                        }
+                        else
+                        {
+                            <span>♟</span>
+                            <span>Helper</span>
+                        }
+                    </button>
+                </div>
+
+                <div class="board-stage">
+                    <div class="board-frame">
+                        <div class="board-rank-labels board-rank-left">
+                            @for (var rank = 8; rank >= 1; rank--)
+                            {
+                                <span>@rank</span>
+                            }
+                        </div>
+
+                        <div class="board-file-labels board-file-top">
+                            @foreach (var file in BoardFiles)
+                            {
+                                <span>@file</span>
+                            }
+                        </div>
+
+                        <div id="chessboard" class="chessboard premium-chessboard" aria-label="Chessboard" role="grid"></div>
+
+                        <div class="board-file-labels board-file-bottom">
+                            @foreach (var file in BoardFiles)
+                            {
+                                <span>@file</span>
+                            }
+                        </div>
+
+                        <div class="board-rank-labels board-rank-right">
+                            @for (var rank = 8; rank >= 1; rank--)
+                            {
+                                <span>@rank</span>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="avatar"
-                     style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#111827,#0b1530)">
-                    @GetInitial(Player2Name)
-                </div>
-                <div>
-                    <div style="font-weight:700">Black — @Player2Name</div>
-                    <div style="font-size:13px;color:var(--muted)">
-                        Score: @_player2Points · @_blackClock.ToString(@"mm\:ss")</div>
-                </div>
-            </div>
-        </div>
+            <aside class="game-side-panel">
+                <section class="side-card game-overview-card">
+                    <div class="side-card-header">
+                        <div>
+                            <span class="side-kicker">Overview</span>
+                            <h3>Match Control</h3>
+                        </div>
 
-    </aside>
-</div>
+                        <div class="live-indicator">
+                            <span></span>
+                            Live
+                        </div>
+                    </div>
+
+                    <div class="game-stats-grid">
+                        <article class="game-stat-card">
+                            <span>Elapsed</span>
+                            <strong>@FormatElapsed(_gameStartedAtUtc)</strong>
+                        </article>
+
+                        <article class="game-stat-card">
+                            <span>Turn</span>
+                            <strong>@_turnLabel</strong>
+                        </article>
+
+                        <article class="game-stat-card">
+                            <span>Events</span>
+                            <strong>@_gameNotes.Count</strong>
+                        </article>
+
+                        <article class="game-stat-card">
+                            <span>White Score</span>
+                            <strong>@_player1Points</strong>
+                        </article>
+
+                        <article class="game-stat-card">
+                            <span>Black Score</span>
+                            <strong>@_player2Points</strong>
+                        </article>
+
+                        <article class="game-stat-card">
+                            <span>You Play</span>
+                            <strong>@MyColor</strong>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="side-card">
+                    <div class="side-card-header">
+                        <div>
+                            <span class="side-kicker">Players</span>
+                            <h3>Table Status</h3>
+                        </div>
+                    </div>
+
+                    <div class="side-player-list">
+                        <article class="side-player-row">
+                            <div class="game-avatar game-avatar-white compact-avatar">
+                                @GetInitial(Player1Name)
+                            </div>
+
+                            <div class="side-player-info">
+                                <strong title="@Player1Name">White — @DisplayName(Player1Name)</strong>
+                                <span>Score: @_player1Points · Clock: @_whiteClock.ToString(@"mm\:ss")</span>
+                            </div>
+                        </article>
+
+                        <article class="side-player-row">
+                            <div class="game-avatar game-avatar-black compact-avatar">
+                                @GetInitial(Player2Name)
+                            </div>
+
+                            <div class="side-player-info">
+                                <strong title="@Player2Name">Black — @DisplayName(Player2Name)</strong>
+                                <span>Score: @_player2Points · Clock: @_blackClock.ToString(@"mm\:ss")</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="side-card move-log-card">
+                    <div class="side-card-header">
+                        <div>
+                            <span class="side-kicker">Timeline</span>
+                            <h3>Move Log</h3>
+                        </div>
+
+                        <span class="log-count">@_gameNotes.Count</span>
+                    </div>
+
+                    <div class="movesLog premium-moves-log" id="movesLog">
+                        @if (_gameNotes.Count == 0)
+                        {
+                            <div class="move-note-empty">
+                                <div>♙</div>
+                                <strong>No moves yet</strong>
+                                <span>Moves, captures, helper suggestions, and match events will appear here.</span>
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var note in _gameNotes.OrderByDescending(item => item.AtUtc))
+                            {
+                                <article class="move-note-item @note.KindClass">
+                                    <div class="move-note-main">
+                                        <strong>@note.Title</strong>
+                                        <span>@note.ByPlayer · @note.AtUtc.ToLocalTime().ToString("HH:mm:ss")</span>
+                                    </div>
+
+                                    <div class="move-note-badge">
+                                        @note.NoteBadge
+                                    </div>
+                                </article>
+                            }
+                        }
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+</section>
 
 @code {
-    //Parameters
-
     [Parameter]
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Player1")]
-    public string Player1Name { get; set; }
+    public string Player1Name { get; set; } = string.Empty;
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Player2")]
-    public string Player2Name { get; set; }
+    public string Player2Name { get; set; } = string.Empty;
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "Computer")]
     public bool IsComputerOpponent { get; set; }
 
-    //Parameters
+    private static readonly string[] BoardFiles = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
-    //Properties
+    private bool isBusy;
+    private bool _isLeavingGame;
 
-    private bool isBusy = false;
-    private string _optimizeMoveLoadingClassName = "chessboard";
+    private readonly string _optimizeMoveLoadingClassName = "chessboard";
 
     private HubConnection? _hubConnection;
     private Guid _currentUserGuid;
     private string _currentUserName = string.Empty;
+
     private DotNetObjectReference<Game>? _dotNetRef;
+
     private readonly List<GameNoteItem> _gameNotes = [];
+
     private int _player1Points;
     private int _player2Points;
+
     private DateTime _gameStartedAtUtc = DateTime.UtcNow;
     private TimeSpan _whiteClock = TimeSpan.Zero;
     private TimeSpan _blackClock = TimeSpan.Zero;
+
     private string _turnLabel = "White";
     private string _matchState = "Running";
+
     private CancellationTokenSource? _clockLoopCts;
 
-    private ClickedBlockInformationDTO ClickedBlockInformationDTO = new ClickedBlockInformationDTO();
+    private ClickedBlockInformationDTO ClickedBlockInformationDTO = new();
 
-    private FigureColors MyColor => _currentUserName == Player1Name ? FigureColors.White : FigureColors.Black;
+    private FigureColors MyColor =>
+        string.Equals(_currentUserName, Player1Name, StringComparison.OrdinalIgnoreCase)
+            ? FigureColors.White
+            : FigureColors.Black;
 
-    //Properties
-
-    //Reqeusts
-    private MoveRequestDTO MoveRequestDTO = new MoveRequestDTO();
-    private ClickRequestDTO ClickRequestDTO = new ClickRequestDTO();
-
-    private SameFigureRequest SameFigureRequest = new SameFigureRequest();
-    //Lifecycle Methods
+    private MoveRequestDTO MoveRequestDTO = new();
+    private ClickRequestDTO ClickRequestDTO = new();
+    private SameFigureRequest SameFigureRequest = new();
 
     protected override async Task OnInitializedAsync()
     {
-        // 1. Only grab the user info here
         var authState = await AuthenticationState.GetAuthenticationStateAsync();
+
         _currentUserName = authState.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
         _currentUserGuid = Guid.Parse(authState.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-        // Note: Do NOT call JS or Hub here.
+        _hubConnection = await HubClient.GetHubConnectionAsync();
+
+        var connectionId = _hubConnection.ConnectionId;
+
+        GameCircuitState.UserId = _currentUserGuid;
+        GameCircuitState.GameId = GameId;
+        GameCircuitState.UserConnectionDto = new UserConnectionDTO
+        {
+            ConnectionId = connectionId!,
+            UserName = _currentUserName,
+            GameId = GameId
+        };
+
+        GameCircuitHandler.GameCircuitState = GameCircuitState;
+
+        StartClockLoop();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (!firstRender)
+            return;
+
+        _hubConnection = await HubClient.GetHubConnectionAsync();
+
+        _dotNetRef?.Dispose();
+        _dotNetRef = DotNetObjectReference.Create(this);
+
+        await JS.ShowPlayers(Player1Name, Player2Name);
+        await JsRuntime.SafeInvokeWithRetryAsync(Logger, "GameNotesTracker.register", _dotNetRef);
+
+        var thisBoard = await GameRequestService.SendGameStateAsync(
+            new PipeLineRequest<SendGameStateReqeustDTO>(
+                new SendGameStateReqeustDTO
+                {
+                    GameId = GameId
+                }));
+
+        if (thisBoard.Response.Data?.Board != null)
         {
-            _hubConnection = await HubClient.GetHubConnectionAsync();
+            var blocks = thisBoard.Response.Data.Board.BoardBlocks;
+            var jsonBoard = JsonSerializer.Serialize(blocks);
+            var figureColor = _currentUserName == Player1Name ? 0 : 1;
 
-            await JS.ShowPlayers(Player1Name, Player2Name);
-            await jsRuneTime.SafeInvokeWithRetryAsync(logger, "GameNotesTracker.register", _dotNetRef);
+            await JS.ShowBoardState(jsonBoard, figureColor, _dotNetRef);
 
-            var thisBoard = await GameRequestService.SendGameStateAsync(
-                new PipeLineRequest<SendGameStateReqeustDTO>(new SendGameStateReqeustDTO { GameId = GameId }));
+            InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
+        }
 
-            if (thisBoard.Response.Data?.Board != null)
-            {
-                var blocks = thisBoard.Response.Data.Board.BoardBlocks;
-                var jsonBoard = JsonSerializer.Serialize(blocks);
-                var figureColor = _currentUserName == Player1Name ? 0 : 1;
+        if (IsComputerOpponent && Player1Name == "Computer")
+        {
+            await AIMoveAtFirst();
+        }
 
-                _dotNetRef?.Dispose();
-                _dotNetRef = DotNetObjectReference.Create(this);
-                await JS.ShowBoardState(jsonBoard, figureColor, _dotNetRef);
+        await InvokeAsync(StateHasChanged);
+    }
 
-                InitializeRequests(GameId, _currentUserName, MyColor, ClickedBlockInformationDTO);
-            }
+    private async Task ConfirmLeave(LocationChangingContext context)
+    {
+        if (_isLeavingGame)
+            return;
 
-            if (IsComputerOpponent && Player1Name == "Computer")
-            {
-                await AIMoveAtFirst();
-            }
+        var leave = await JsRuntime.InvokeAsync<bool>(
+            "confirm",
+            "Do you want to leave the game?"
+        );
 
-            StateHasChanged();
+        if (!leave)
+        {
+            context.PreventNavigation();
+            return;
+        }
+
+        context.PreventNavigation();
+        _isLeavingGame = true;
+
+        try
+        {
+            await LeaveGameAsync();
+        }
+        finally
+        {
+            _isLeavingGame = false;
         }
     }
 
+    private void StartClockLoop()
+    {
+        _clockLoopCts?.Cancel();
+        _clockLoopCts?.Dispose();
+
+        _clockLoopCts = new CancellationTokenSource();
+        var token = _clockLoopCts.Token;
+
+        _ = Task.Run(async () =>
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(1000, token);
+
+                    if (_matchState != "Running")
+                        continue;
+
+                    if (_turnLabel == "White")
+                        _whiteClock = _whiteClock.Add(TimeSpan.FromSeconds(1));
+                    else
+                        _blackClock = _blackClock.Add(TimeSpan.FromSeconds(1));
+
+                    await InvokeAsync(StateHasChanged);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+            }
+        }, token);
+    }
 
     public Task OnBoardEvent(string eventType, string from, string to, bool isCapture)
     {
         var byPlayer = _currentUserName;
+
         var title = eventType switch
         {
-            "move" => $"{from} -> {to}",
-            "capture" => $"{from} x {to}",
+            "move" => $"{from} → {to}",
+            "capture" => $"{from} × {to}",
             "check" => "King is checked",
             "mate" => "Checkmate",
-            "helper" => $"Helper: {from} -> {to}",
+            "helper" => $"Helper: {from} → {to}",
             _ => eventType
         };
 
@@ -309,7 +502,7 @@
 
         if (isCapture)
         {
-            if (_currentUserName == Player1Name)
+            if (_turnLabel == "White")
                 _player1Points++;
             else
                 _player2Points++;
@@ -341,14 +534,14 @@
 
         if (selectedPosition != null)
         {
-            //TO DO:
-            if (await IsSameFigureColor(new Position(row, col), selectedPosition, this.GameId))
+            if (await IsSameFigureColor(new Position(row, col), selectedPosition, GameId))
             {
                 await SelectFigure(ClickRequestDTO);
                 return;
             }
 
             var successMove = await Move(MoveRequestDTO);
+
             if (!successMove)
                 await SelectFigure(ClickRequestDTO);
 
@@ -358,9 +551,6 @@
         await SelectFigure(ClickRequestDTO);
     }
 
-
-    //private Methods
-    //TO DO:
     private async Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
     {
         SameFigureRequest.Current = currentPosition;
@@ -379,9 +569,10 @@
 
     private async Task<bool> SelectFigure(ClickRequestDTO requestDTO)
     {
-        var pipeLineRequestPositionsResult = await GameRequestService.SendClickAsync(new PipeLineRequest<ClickRequestDTO>(requestDTO));
+        var pipeLineRequestPositionsResult =
+            await GameRequestService.SendClickAsync(new PipeLineRequest<ClickRequestDTO>(requestDTO));
 
-        ClickedBlockInformationDTO!.ClickedPosition = requestDTO.CurrentPosition;
+        ClickedBlockInformationDTO.ClickedPosition = requestDTO.CurrentPosition;
         ClickedBlockInformationDTO.GameId = requestDTO.GameId;
 
         if (!pipeLineRequestPositionsResult.Response.IsSuccess)
@@ -397,19 +588,19 @@
 
     private async Task<bool> Move(MoveRequestDTO requestDTO)
     {
-        //request Data Setup
         requestDTO.To = requestDTO.From;
         requestDTO.From = ClickedBlockInformationDTO.ClickedPosition;
         requestDTO.CurrentPlayerId = _currentUserGuid;
 
-
-        var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
+        var pipeLineResponsePositionsResult =
+            await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
         if (!pipeLineResponsePositionsResult.Response.IsSuccess)
             return false;
 
-        var eventType = string.Empty;
+        string eventType;
         var isCapture = false;
+
         if (pipeLineResponsePositionsResult.Response.Data.IsReadyToEvent is IsReady.IsReadyToMove or IsReady.IsReadyToCastle)
         {
             eventType = "move";
@@ -422,11 +613,11 @@
             await JS.UpdateBoardAfterCut(requestDTO.From, requestDTO.To, (int)MyColor);
         }
 
-        await OnBoardEvent(eventType,
+        await OnBoardEvent(
+            eventType,
             requestDTO.From.ToString(),
             requestDTO.To.ToString(),
             isCapture);
-
 
         ClickedBlockInformationDTO.ClickedPosition = default;
         return true;
@@ -434,7 +625,7 @@
 
     private async Task<bool> AIMoveAtFirst()
     {
-        var requestDTO = new MoveRequestDTO()
+        var requestDTO = new MoveRequestDTO
         {
             IsAIFirstMove = true,
             GameId = GameId,
@@ -443,12 +634,14 @@
             MyColor = MyColor,
             PreviusBlockInformationDTO = ClickedBlockInformationDTO,
             CurrentPlayerId = Guid.NewGuid(),
-            From = new Position(-1, -1), // Indicate that AI should determine the move
-            To = new Position(-1, -1), // Indicate that AI should determine the move
-            CurrentPosition = new Position(-1, -1), // Indicate that AI should determine the move
+            From = new Position(-1, -1),
+            To = new Position(-1, -1),
+            CurrentPosition = new Position(-1, -1),
             connectionId = _hubConnection?.ConnectionId!
         };
-        var pipeLineResponsePositionsResult = await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
+
+        var pipeLineResponsePositionsResult =
+            await GameRequestService.SendMoveAsync(new PipeLineRequest<MoveRequestDTO>(requestDTO));
 
         if (!pipeLineResponsePositionsResult.Response.IsSuccess)
             return false;
@@ -462,8 +655,11 @@
         return true;
     }
 
-    //Request Methods
-    private void InitializeRequests(Guid gameId, string player, FigureColors myColor, ClickedBlockInformationDTO PreviusBlockInformationDTO)
+    private void InitializeRequests(
+        Guid gameId,
+        string player,
+        FigureColors myColor,
+        ClickedBlockInformationDTO previusBlockInformationDTO)
     {
         MoveRequestDTO.GameId = gameId;
         ClickRequestDTO.GameId = gameId;
@@ -475,38 +671,48 @@
         MoveRequestDTO.MyColor = myColor;
         ClickRequestDTO.MyColor = myColor;
 
-        MoveRequestDTO.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
-        ClickRequestDTO.PreviusBlockInformationDTO = PreviusBlockInformationDTO;
+        MoveRequestDTO.PreviusBlockInformationDTO = previusBlockInformationDTO;
+        ClickRequestDTO.PreviusBlockInformationDTO = previusBlockInformationDTO;
     }
 
     private void SetUpRequestsPositions(Position from)
     {
         MoveRequestDTO.CurrentPosition = from;
         MoveRequestDTO.From = from;
+
         ClickRequestDTO.CurrentPosition = from;
         ClickRequestDTO.From = from;
     }
-
 
     private async Task GetOptimizedMove()
     {
         if (isBusy)
             return;
+
         await JS.DisableAllGameState(_optimizeMoveLoadingClassName);
         isBusy = true;
 
         try
         {
-            var optimizedMoveResponse = await ChessGameService.GetOptimizedMoveAsync(new GetOptimizedMoveRequestDTO()
-            {
-                GameId = GameId,
-                ChosenColor = MyColor,
-                IsMaximizingPlayer = true
-            });
+            var optimizedMoveResponse = await ChessGameService.GetOptimizedMoveAsync(
+                new GetOptimizedMoveRequestDTO
+                {
+                    GameId = GameId,
+                    ChosenColor = MyColor,
+                    IsMaximizingPlayer = true
+                });
 
             if (optimizedMoveResponse is { IsSuccess: true })
             {
-                await JS.ReceiveOptimalMoves(optimizedMoveResponse.Data.FromPosition, optimizedMoveResponse.Data.ToPosition);
+                await JS.ReceiveOptimalMoves(
+                    optimizedMoveResponse.Data.FromPosition,
+                    optimizedMoveResponse.Data.ToPosition);
+
+                await OnBoardEvent(
+                    "helper",
+                    optimizedMoveResponse.Data.FromPosition.ToString(),
+                    optimizedMoveResponse.Data.ToPosition.ToString(),
+                    false);
             }
         }
         finally
@@ -518,16 +724,19 @@
 
     private async Task LeaveGameAsync()
     {
-        await HubClient.GetHubConnectionAsync();
+        _hubConnection = await HubClient.GetHubConnectionAsync();
 
         var leaveGameRequestDTO = new RemoveUsersFromGameReqeustDTO
         {
             CurerntPlayerGuid = _currentUserGuid,
             GameId = GameId
         };
+
         var leaveResponse =
             await _hubConnection!.SafeInvokeAsync<RemoveUsersFromGameReqeustDTO, RemoveUserFromGameResponseDTO>(
-                "LeaveGameAsync", leaveGameRequestDTO, JS);
+                "LeaveGameAsync",
+                leaveGameRequestDTO,
+                JS);
 
         if (!leaveResponse.Response.IsSuccess)
         {
@@ -546,6 +755,7 @@
             NoteBadge = "DRAW",
             AtUtc = DateTime.UtcNow
         });
+
         await InvokeAsync(StateHasChanged);
     }
 
@@ -560,17 +770,40 @@
         return $"{(int)elapsed.TotalMinutes:D2}:{elapsed.Seconds:D2}";
     }
 
-
     private static string GetInitial(string? name)
-        => string.IsNullOrWhiteSpace(name) ? "?" : name.Trim()[0].ToString().ToUpperInvariant();
+    {
+        return string.IsNullOrWhiteSpace(name)
+            ? "?"
+            : name.Trim()[0].ToString().ToUpperInvariant();
+    }
+
+    private static string DisplayName(string? name)
+    {
+        return string.IsNullOrWhiteSpace(name)
+            ? "Unknown Player"
+            : name;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _clockLoopCts?.Cancel();
+        _clockLoopCts?.Dispose();
+
+        _dotNetRef?.Dispose();
+
+        await Task.CompletedTask;
+    }
 
     private sealed class GameNoteItem
     {
         public string Title { get; set; } = string.Empty;
+
         public string ByPlayer { get; set; } = string.Empty;
+
         public string KindClass { get; set; } = "note-move";
+
         public string NoteBadge { get; set; } = "MOVE";
+
         public DateTime AtUtc { get; set; } = DateTime.UtcNow;
     }
-
 }

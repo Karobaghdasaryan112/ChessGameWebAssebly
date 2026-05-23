@@ -77,7 +77,7 @@ public sealed class SignalRService(
             .WithUrl(basePaths.BaseUrlHub)
             .WithAutomaticReconnect()
             .WithKeepAliveInterval(TimeSpan.FromHours(10)) // Ping every 15s
-            .WithServerTimeout(TimeSpan.FromHours(10))    // Timeout if no pong in 30s
+            .WithServerTimeout(TimeSpan.FromHours(10)) // Timeout if no pong in 30s
             .Build();
     }
 
@@ -137,6 +137,10 @@ public sealed class SignalRService(
             gameHandler.ReceiveBoardUpdateAsync);
 
         connection.On<KeyValuePair<Guid, UserConnectionDTO>>(
+            "RemovedUserChangeNotification",
+            gameHandler.NotifyOpponentUserDisconnected);
+
+        connection.On<KeyValuePair<Guid, UserConnectionDTO>>(
             "DisconnectedNotification",
             async (data) =>
             {
@@ -144,7 +148,7 @@ public sealed class SignalRService(
                 connectionHandler.DisconnectedNotification(data);
             });
 
-        connection.On<FigureColors, TimeSpan, TimeSpan>("ReceiveTick", (color, white, black) => 
+        connection.On<FigureColors, TimeSpan, TimeSpan>("ReceiveTick", (color, white, black) =>
         {
             // Manually trigger the service method to ensure it's hit
             gameHandler.ReceiveTick(color, white, black);

@@ -24,15 +24,18 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
                     game.Player1 == currentPlayerId ||
                     game.Player2 == currentPlayerId)
                 .GroupBy(game =>
-                currentPlayerId == game.Player1 ?
-                game.Player2 :
-                game.Player1).Select(grpGame =>
-                new OpponentsHistoryDTO
-                {
-                    Opponent = grpGame.First().Player1 == currentPlayerId ? grpGame.First().Player2Name : grpGame.First().Player1Name,
-                    OpponentGuid = grpGame.First().Player1 == currentPlayerId ? grpGame.First().Player2 : grpGame.First().Player1,
-                    TotalCount = grpGame.Count()
-                }).ToListAsync();
+                    currentPlayerId == game.Player1 ? game.Player2 : game.Player1).Select(grpGame =>
+                    new OpponentsHistoryDTO
+                    {
+                        Opponent = grpGame.First().Player1 == currentPlayerId
+                            ? grpGame.First().Player2Name
+                            : grpGame.First().Player1Name,
+                        OpponentGuid = grpGame.First().Player1 == currentPlayerId
+                            ? grpGame.First().Player2
+                            : grpGame.First().Player1,
+                        TotalCount = grpGame.Count(),
+                        GameId = grpGame.First().Id,
+                    }).ToListAsync();
 
         /// <summary>
         /// Retrieves a paginated list of games between the specified current player and opponent, ordered by the most
@@ -48,16 +51,12 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// size. The list is ordered by update date in descending order.</returns>
         public Task<List<Game>> GetGameStatesByCurrentAndOpponentIdsPagination(
             Guid currentPlayerGuid, Guid opponentPlayerGuid, int currentPage, int pageSize)
-            => chessGameDbContext.ChessGames.
-                 Where(game =>
-                     (game.Player1 == currentPlayerGuid &&
-                      game.Player2 == opponentPlayerGuid) ||
-                     (game.Player1 == opponentPlayerGuid &&
-                      game.Player2 == currentPlayerGuid)).
-                 OrderByDescending(game => game.UpdateDate).
-                 Skip(currentPage * pageSize).
-                 Take(pageSize).
-                 ToListAsync();
+            => chessGameDbContext.ChessGames.Where(game =>
+                    (game.Player1 == currentPlayerGuid &&
+                     game.Player2 == opponentPlayerGuid) ||
+                    (game.Player1 == opponentPlayerGuid &&
+                     game.Player2 == currentPlayerGuid)).OrderByDescending(game => game.UpdateDate)
+                .Skip(currentPage * pageSize).Take(pageSize).ToListAsync();
 
 
         /// <summary>
@@ -72,9 +71,9 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <param name="player2Time">The initial time, in seconds, allocated to the second player. Must be non-negative.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the game was
         /// created successfully; otherwise, <see langword="false"/>.</returns>
-
-        public void CreateGame(Guid player1, Guid player2, GameEvent gameEvent, string player1Name, string player2Name, int player1Time, int player2Time)
-          => chessGameDbContext.ChessGames.Add(
+        public void CreateGame(Guid player1, Guid player2, GameEvent gameEvent, string player1Name, string player2Name,
+            int player1Time, int player2Time)
+            => chessGameDbContext.ChessGames.Add(
                 new Game()
                 {
                     Player1Name = player1Name,
@@ -90,7 +89,6 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
 
                     CreateDate = DateTime.UtcNow,
                     UpdateDate = DateTime.UtcNow
-
                 });
 
 
@@ -105,11 +103,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// <returns>A <see cref="Guid"/> representing the game identifier if a game exists between the specified players;
         /// otherwise, <see cref="Guid.Empty"/>.</returns>
         public Task<Guid> GetGameIdByPlayers(Guid player1, Guid player2)
-        => chessGameDbContext.
-                ChessGames.
-                OrderByDescending(game =>
-                    game.CreateDate).
-                Where(game =>
+            => chessGameDbContext.ChessGames.OrderByDescending(game =>
+                    game.CreateDate).Where(game =>
                     game.Player1 == player1 && game.Player2 == player2)
                 .Select(orderedGame => orderedGame.Id)
                 .FirstOrDefaultAsync();
@@ -125,7 +120,8 @@ namespace ChessGame.Infrastructure.Persistance.Repositories
         /// result was saved successfully; otherwise, <see langword="false"/>.</returns>
         public async Task SaveGameResult(Guid winnerPlayer, Guid gameId)
         {
-            var selectedGame = await chessGameDbContext.ChessGames.Where(game => game.Id == gameId).FirstOrDefaultAsync();
+            var selectedGame =
+                await chessGameDbContext.ChessGames.Where(game => game.Id == gameId).FirstOrDefaultAsync();
 
             selectedGame.GameEvent = GameEvent.Over;
             selectedGame.WinnerPlayer = winnerPlayer;

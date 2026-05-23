@@ -1,9 +1,151 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Chess Arena</PageTitle>
 
-<h1>Hello, world!</h1>
+<section class="home-shell">
+    <div class="home-hero">
+        <div class="hero-content">
+            <span class="hero-badge">
+                ♟ Real-Time Chess Platform
+            </span>
 
-Welcome to your new app.
+            <h1>
+                Play smarter chess.
+                <span>Train, compete, and improve.</span>
+            </h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+            <p class="hero-description">
+                A modern chess experience with live multiplayer, AI training,
+                synchronized game state, move validation, and a clean competitive arena.
+            </p>
+
+            <div class="hero-actions">
+                <a class="primary-action" href="/Dashboard">
+                    Enter Live Lobby
+                </a>
+
+                <a class="secondary-action" href="/Training">
+                    Train vs AI
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div>
+                    <strong>Live</strong>
+                    <span>Multiplayer</span>
+                </div>
+                <div>
+                    <strong>AI</strong>
+                    <span>Training Mode</span>
+                </div>
+                <div>
+                    <strong>FEN</strong>
+                    <span>Game State</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-board-card">
+            <div class="board-header">
+                <div>
+                    <span class="status-dot"></span>
+                    Live board preview
+                </div>
+                <strong>Chess Arena</strong>
+            </div>
+
+            <div class="premium-board" aria-label="Decorative chess board">
+                @for (var row = 0; row < 8; row++)
+                {
+                    for (var col = 0; col < 8; col++)
+                    {
+                        var isDark = (row + col) % 2 == 1;
+                        var piece = GetPiece(row, col);
+
+                        <div class="premium-square @(isDark ? "dark" : "light")">
+                            @if (!string.IsNullOrWhiteSpace(piece.Symbol))
+                            {
+                                <span class="chess-piece @piece.Color">
+                                    @piece.Symbol
+                                </span>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="board-status">
+            <div>
+                <span class="status-dot"></span>
+                Match synchronized
+            </div>
+            <strong>White to move</strong>
+        </div>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Real-time lobby</h3>
+            <p>
+                Invite online players and start matches from your live dashboard.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>AI training</h3>
+            <p>
+                Practice tactical decisions against difficulty-based computer opponents.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">🛡</div>
+            <h3>Legal move engine</h3>
+            <p>
+                Move validation, king safety checks, captures, castling, and board updates.
+            </p>
+        </article>
+    </div>
+
+    <div class="home-bottom-panel">
+        <div>
+            <span class="section-kicker">Built for serious play</span>
+            <h2>From first move to checkmate, every action is handled as a synchronized game event.</h2>
+        </div>
+
+        <a class="panel-action" href="/HistoryWidgets">
+            View Game History
+        </a>
+    </div>
+</section>
+
+@code {
+    private static ChessPreviewPiece GetPiece(int row, int col)
+    {
+        return (row, col) switch
+        {
+            // Black pieces
+            (0, 0) or (0, 7) => new("♜", "black"),
+            (0, 1) or (0, 6) => new("♞", "black"),
+            (0, 2) or (0, 5) => new("♝", "black"),
+            (0, 3) => new("♛", "black"),
+            (0, 4) => new("♚", "black"),
+            (1, _) => new("♟", "black"),
+
+            // White pieces
+            (6, _) => new("♙", "white"),
+            (7, 0) or (7, 7) => new("♖", "white"),
+            (7, 1) or (7, 6) => new("♘", "white"),
+            (7, 2) or (7, 5) => new("♗", "white"),
+            (7, 3) => new("♕", "white"),
+            (7, 4) => new("♔", "white"),
+
+            _ => new(" ", " ")
+        };
+    }
+
+    private sealed record ChessPreviewPiece(string Symbol, string Color);
+}
