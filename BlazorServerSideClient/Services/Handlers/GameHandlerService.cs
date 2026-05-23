@@ -98,7 +98,7 @@ namespace BlazorServerSideClient.Services.Handlers
 
         public Task LeaveGameAsync(RemoveUsersFromGameReqeustDTO removeUsersReqeustDTO)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

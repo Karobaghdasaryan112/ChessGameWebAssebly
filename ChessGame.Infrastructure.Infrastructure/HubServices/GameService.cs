@@ -32,7 +32,7 @@ namespace ChessGame.Core.Services.Services.HubServices
     {
         public Task ClearGameAsync(Guid gameId)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public async Task<PipeLineResponse<GetOnlinePlayersResponseDTO>>

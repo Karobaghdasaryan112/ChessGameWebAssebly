@@ -174,7 +174,7 @@ namespace ChessGame.Core.Services.Services.HubServices
 
         public Task CancelInviteAsync(Guid inviterUserGuid, Guid receiverUserGuid)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public async Task<PipeLineResponse<SendInvitationsResponseDTO>> SendInviteAsync(
