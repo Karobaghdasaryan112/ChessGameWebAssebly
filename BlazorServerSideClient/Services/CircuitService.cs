@@ -20,44 +20,60 @@ sealed class GameCircuitHandler(
     public GameCircuitState GameCircuitState = gameCircuitState;
 
     public override async Task OnConnectionDownAsync(
-        Circuit handler,
+        Circuit circuit,
         CancellationToken cancellationToken)
     {
         try
         {
-            await Task.Delay(3000, cancellationToken);
+            logger.LogInformation("Blazor circuit connection DOWN: {CircuitId}", circuit.Id);
+
+            await Task.Delay(TimeSpan.FromSeconds(6), cancellationToken);
+
+            if (GameCircuitState.UserId is null || GameCircuitState.GameId is null)
+            {
+                logger.LogWarning(
+                    "Skipping disconnect cleanup because UserId or GameId is null. CircuitId: {CircuitId}, UserId: {UserId}, GameId: {GameId}",
+                    circuit.Id,
+                    GameCircuitState.UserId,
+                    GameCircuitState.GameId);
+
+                return;
+            }
 
             var removeUsersFromGameRequestDto = new RemoveUsersFromGameReqeustDTO
             {
                 connectionId = null,
-                CurerntPlayerGuid = GameCircuitState.UserId!,
-                GameId = GameCircuitState.UserId,
+                CurerntPlayerGuid = (Guid)GameCircuitState.UserId,
+                GameId = (Guid)GameCircuitState.GameId,
                 IsLeaveWebSite = true,
-
             };
+
             await gameService.LeaveGameAsync(removeUsersFromGameRequestDto);
 
-            // var removeUserConnectionRequestDto = new RemoveUserConnectionRequestDTO
-            // {
-            //     connectionId = null,
-            //     UserGuid = removeUsersFromGameRequestDto.CurerntPlayerGuid,
-            //     GameId = removeUsersFromGameRequestDto.GameId
-            // };
+            var removeUserConnectionRequestDto = new RemoveUserConnectionRequestDTO
+            {
+                connectionId = null,
+                UserGuid = (Guid)GameCircuitState.UserId,
+                GameId = (Guid)GameCircuitState.GameId
+            };
 
-            // await connectionService.RemoveConnectionAsync(new PipeLineRequest<RemoveUserConnectionRequestDTO>
-            // {
-            //     Request = removeUserConnectionRequestDto
-            // });
-            logger.LogInformation("Blazor circuit connection DOWN: {CircuitId}", handler.Id);
+            await connectionService.RemoveConnectionAsync(
+                new PipeLineRequest<RemoveUserConnectionRequestDTO>
+                {
+                    Request = removeUserConnectionRequestDto
+                });
+
             GameCircuitState.GameId = default;
+
+            logger.LogInformation("Disconnect cleanup completed. CircuitId: {CircuitId}", circuit.Id);
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            logger.LogInformation(ex, "connection down operation was cancelled: {CircuitId}", handler.Id);
+            logger.LogInformation("Connection down cleanup was cancelled: {CircuitId}", circuit.Id);
         }
         catch (Exception ex)
         {
-            logger.LogInformation(ex, "unhandled exception was occured: {CircuitId}", handler.Id);
+            logger.LogError(ex, "Unhandled exception during connection down cleanup: {CircuitId}", circuit.Id);
         }
     }
 
@@ -66,23 +82,55 @@ sealed class GameCircuitHandler(
         Circuit circuit,
         CancellationToken cancellationToken)
     {
-        var connection = await signalRService.GetHubConnectionAsync();
-        var addConnectionRequestDTO = new AddUserConnectionRequestDTO
+        try
         {
-            connectionId = connection.ConnectionId!,
-            userGuid = GameCircuitState.UserId,
-            userConnection = GameCircuitState.UserConnectionDto
-        };
-        await connectionService.AddConnectionAsync(
-            new PipeLineRequest<AddUserConnectionRequestDTO>(addConnectionRequestDTO));
-        logger.LogInformation("Blazor circuit connection UP: {CircuitId}", circuit.Id);
+            var connection = await signalRService.GetHubConnectionAsync();
+
+            if (connection.ConnectionId is null || GameCircuitState.UserId is null)
+            {
+                logger.LogWarning(
+                    "Skipping AddConnection because ConnectionId or UserId is null. CircuitId: {CircuitId}",
+                    circuit.Id);
+
+                return;
+            }
+
+            var addConnectionRequestDTO = new AddUserConnectionRequestDTO
+            {
+                connectionId = connection.ConnectionId,
+                userGuid = (Guid)GameCircuitState.UserId,
+                userConnection = GameCircuitState.UserConnectionDto
+            };
+
+            await connectionService.AddConnectionAsync(
+                new PipeLineRequest<AddUserConnectionRequestDTO>(addConnectionRequestDTO));
+
+            logger.LogInformation("Blazor circuit connection UP: {CircuitId}", circuit.Id);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception during connection up: {CircuitId}", circuit.Id);
+        }
     }
 
-    public override Task OnCircuitClosedAsync(
+    public override async Task OnCircuitClosedAsync(
         Circuit circuit,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Blazor circuit CLOSED: {CircuitId}", circuit.Id);
-        return Task.CompletedTask;
+        logger.LogInformation("Circuit closed: {CircuitId}", circuit.Id);
+
+        if (GameCircuitState.UserId is null)
+            return;
+
+        await connectionService.RemoveConnectionAsync(
+            new PipeLineRequest<RemoveUserConnectionRequestDTO>
+            {
+                Request = new RemoveUserConnectionRequestDTO
+                {
+                    connectionId = null,
+                    UserGuid = (Guid)GameCircuitState.UserId,
+                    GameId = (Guid)GameCircuitState.GameId
+                }
+            });
     }
 }
