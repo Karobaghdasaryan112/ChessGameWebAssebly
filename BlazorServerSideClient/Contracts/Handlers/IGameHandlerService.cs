@@ -1,4 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -9,7 +10,8 @@ namespace BlazorServerSideClient.Contracts.Handlers
 {
     public interface IGameHandlerService
     {
-        public static event Action<FigureColors, TimeSpan, TimeSpan>? OnTickReceived;
+        public event Action<FigureColors, TimeSpan, TimeSpan>? OnTickReceived;
+        
 
         Task ReceiveTick(FigureColors figureColor, TimeSpan whiteSpan, TimeSpan blackSpan);
         Task ReseivePlayersAsync(ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDTO);
@@ -21,5 +23,9 @@ namespace BlazorServerSideClient.Contracts.Handlers
         Task RedirectToDashboardAsync();
         
         Task LeaveGameAsync(RemoveUsersFromGameReqeustDTO  removeUsersReqeustDTO);
+
+
+
+        Task<Board> ReceiveBoardAsync(Board board);
     }
 }

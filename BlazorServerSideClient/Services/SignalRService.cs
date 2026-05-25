@@ -11,6 +11,7 @@ using System.Security.Claims;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Enums.Users;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.PipeLine.PipeLineContext;
 
 namespace BlazorServerSideClient.Services;
@@ -148,15 +149,18 @@ public sealed class SignalRService(
                 connectionHandler.DisconnectedNotification(data);
             });
 
-        connection.On<FigureColors, TimeSpan, TimeSpan>("ReceiveTick", (color, white, black) =>
-        {
-            // Manually trigger the service method to ensure it's hit
-            gameHandler.ReceiveTick(color, white, black);
-        });
+        connection.On<FigureColors, TimeSpan, TimeSpan>(
+            "ReceiveTick",
+            async (color, white, black) =>
+            {
+                await gameHandler.ReceiveTick(color, white, black);
+            });
 
         connection.On<string>("OpponentLeftWinNotification",
             async (leavingPlayerName) => { await gameHandler.NotifyOpponentLeftWinAsync(leavingPlayerName); });
-
+        
+        connection.On<Board>("ReceiveBoardAsync",async board => await gameHandler.ReceiveBoardAsync(board));
+        
         connection.On("ForceNavigateToDashboard", async () =>
         {
             await Task.Delay(100);

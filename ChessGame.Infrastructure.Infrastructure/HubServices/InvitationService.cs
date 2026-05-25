@@ -144,6 +144,7 @@ namespace ChessGame.Core.Services.Services.HubServices
                         acceptInvitationRequest.receiverUserGuid,
                         acceptInvitationRequest.inviterUserGuid)
                 };
+            
 
 
             pipeLineResponse.Response =
@@ -167,7 +168,8 @@ namespace ChessGame.Core.Services.Services.HubServices
                 acceptInvitationRequest.receiverUserGuid,
                 result.Data.GameId);
 
-            StartTick(result.Data.GameId,inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId,receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId);
+            StartTick(result.Data.GameId, inviterConnectionInformation.Data.UserConnectionDTO.ConnectionId,
+                receiverConnectionInformation.Data.UserConnectionDTO.ConnectionId);
 
             return pipeLineResponse;
         }
@@ -220,39 +222,35 @@ namespace ChessGame.Core.Services.Services.HubServices
                     null!, ChessGameResponseMessage.SuccessInvitation, HttpStatusCode.Created, new object()),
             };
         }
-        
-        
-        
+
+
         //Private Methods
-        private void StartTick(Guid gameId,string inviterUserConnection,string receiverUserConnection)
+        private void StartTick(Guid gameId, string inviterUserConnection, string receiverUserConnection)
         {
             _ = Task.Run(async () =>
             {
-                while (true)
+                while (ActiveGames.ActiveGamesAndBoards.TryGetValue(gameId, out var board))
                 {
                     await Task.Delay(900);
 
                     if (!ActiveGames.ActiveGamesAndBoards.ContainsKey(gameId)) break;
-                    
-                    var board = ActiveGames.GetBoard(gameId);
-                    
+
                     var figureColor = board.Turn;
-                    
-                    
+
                     if (figureColor == Turn.White)
-                        board.WhiteTimeSpan -= TimeSpan.FromSeconds(1); 
+                        board.WhiteTimeSpan -= TimeSpan.FromSeconds(1);
                     else
                         board.BlackTimeSpan -= TimeSpan.FromSeconds(1);
 
-                    
+
                     await baseHubService.ReceiveTickConnection(
                         board.FigureColor,
                         board.WhiteTimeSpan,
                         board.BlackTimeSpan,
                         inviterUserConnection
                     );
-                    
-                    
+
+
                     await baseHubService.ReceiveTickConnection(
                         board.FigureColor,
                         board.WhiteTimeSpan,
@@ -262,7 +260,5 @@ namespace ChessGame.Core.Services.Services.HubServices
                 }
             });
         }
-        
-        
     }
 }

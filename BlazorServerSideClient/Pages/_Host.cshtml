@@ -6,15 +6,15 @@
     :root {
         --bg: #0f1724;
         --card: #0f1724aa;
-        --glass: rgba(255,255,255,0.06);
-        --accent: linear-gradient(135deg,#7f5af0,#4cc9f0);
+        --glass: rgba(255, 255, 255, 0.06);
+        --accent: linear-gradient(135deg, #7f5af0, #4cc9f0);
         --muted: #9aa4b2;
         --white: #f8fafc;
         --cell-light: #f3efe9;
         --cell-dark: #2e3440;
         --board-radius: 18px;
         --gap: 18px;
-        --board-size: min(72vmin,720px);
+        --board-size: min(72vmin, 720px);
         --cell-radius: 8px;
         font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
@@ -22,7 +22,7 @@
     html, body {
         height: 100%;
         margin: 0;
-        background: radial-gradient(1000px 400px at 10% 10%, rgba(124,58,237,0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76,201,240,0.06), transparent 10%), var(--bg);
+        background: radial-gradient(1000px 400px at 10% 10%, rgba(124, 58, 237, 0.12), transparent 8%), radial-gradient(800px 300px at 95% 90%, rgba(76, 201, 240, 0.06), transparent 10%), var(--bg);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: var(--white);
@@ -31,15 +31,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="BlazorServerSideClient.styles.css" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="~/"/>
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <link href="BlazorServerSideClient.styles.css" rel="stylesheet"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/components/Presentation.css" />
+    <link rel="stylesheet" href="css/components/Presentation.css"/>
     <link rel="stylesheet" href="css/components/HistoryWidgets.css"/>
     <link rel="stylesheet" href="css/components/training.css"/>
     <link rel="stylesheet" href="css/components/dashboard.css"/>
@@ -47,27 +47,29 @@
     <link rel="stylesheet" href="css/components/game.css"/>
     <link rel="stylesheet" href="css/components/modals.css"/>
     <link rel="stylesheet" href="css/components/InvitationModal.css"/>
+    <link rel="stylesheet" href="css/components/PromotionDialog.css"/>
     <link rel="icon" type="image/png" href="css/favicon.png"/>
-    <component type="typeof(HeadOutlet)" render-mode="Server" />
+    <component type="typeof(HeadOutlet)" render-mode="Server"/>
 </head>
 <body>
-    <component type="typeof(App)" render-mode="Server" />
-    <div id="blazor-error-ui">
-        <environment include="Staging,Production">
-            An error has occurred. This application may no longer respond until reloaded.
-        </environment>
-        <environment include="Development">
-            An unhandled exception has occurred. See browser dev tools for details.
-        </environment>
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    @* <script src="_content/Microsoft.AspNetCore.SignalR.Client.JS/signalr.min.js"></script> *@
-    <script src="Js/Lib/signalr.min.js"></script>
-    <script src="Js/components/common.js"></script>
-    <script src="Js/components/game-board.js"></script>
-    <script src="Js/components/history-effects.js"></script>
-    <script src="_framework/blazor.server.js"></script>
-    <script src="Js/site.js"></script>
+<component type="typeof(App)" render-mode="Server"/>
+<div id="blazor-error-ui">
+    <environment include="Staging,Production">
+        An error has occurred. This application may no longer respond until reloaded.
+    </environment>
+    <environment include="Development">
+        An unhandled exception has occurred. See browser dev tools for details.
+    </environment>
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+@* <script src="_content/Microsoft.AspNetCore.SignalR.Client.JS/signalr.min.js"></script> *@
+<script src="Js/Lib/signalr.min.js"></script>
+<script src="Js/components/common.js"></script>
+<script src="Js/components/game-board.js"></script>
+<script src="Js/components/history-effects.js"></script>
+<script src="_framework/blazor.server.js"></script>
+<script src="js/components/close-tracker.js"></script>
+<script src="Js/site.js"></script>
 </body>
 </html>

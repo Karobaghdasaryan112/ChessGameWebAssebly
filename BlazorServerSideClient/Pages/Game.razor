@@ -8,14 +8,15 @@
 @using BlazorServerSideClient.Extensions
 @using BlazorServerSideClient.Services
 @using ChessGameBlazorClient.ApiServices
-@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.SignalR.Client
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Enums.Events
+@using SharedResources.ChessGameResource.Enums.FigureTypes
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
 @using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs
 @using SharedResources.PipeLine.PipeLineContext
 
@@ -23,22 +24,27 @@
 @inject ChessGameService ChessGameService
 @inject IGameRequestService GameRequestService
 @inject IGameHandlerService GameHandlerService
+@inject IConnectionReqeustService ConnectionSdService
 @inject JSRunetimeService JS
 @inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthenticationState
 @inject ILogger<Game> Logger
 @inject GameCircuitState GameCircuitState
 @inject GameCircuitHandler GameCircuitHandler
+@inject NavigationManager NavigationManager
 
 @attribute [Authorize]
 @implements IAsyncDisposable
 
 <PageTitle>Live Chess Game</PageTitle>
 
-<MateNotifier />
-<ErrorModal />
-
-<NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true" />
+<MateNotifier/>
+<ErrorModal/>
+<WebSiteClosedTracker/>
+<NavigationLock OnBeforeInternalNavigation="ConfirmLeave" ConfirmExternalNavigation="true"/>
+<PromotionDialog
+    IsVisible="_showPromotionDialog"
+    OnPromotionSelected="ChoosePromotion"/>
 
 <section class="game-arena-page @(isBusy ? "game-is-busy" : "")">
     <div class="game-bg-orb game-bg-orb-one"></div>
@@ -70,7 +76,8 @@
         <main class="game-layout">
             <section class="game-board-panel">
                 <div class="game-players-strip">
-                    <article class="game-player-card white-player @(MyColor == FigureColors.White ? "current-user" : "")">
+                    <article
+                        class="game-player-card white-player @(MyColor == FigureColors.White ? "current-user" : "")">
                         <div class="game-avatar game-avatar-white">
                             @GetInitial(Player1Name)
                         </div>
@@ -88,7 +95,8 @@
                         <small>@FormatElapsed(_gameStartedAtUtc)</small>
                     </div>
 
-                    <article class="game-player-card black-player @(MyColor == FigureColors.Black ? "current-user" : "")">
+                    <article
+                        class="game-player-card black-player @(MyColor == FigureColors.Black ? "current-user" : "")">
                         <div class="game-avatar game-avatar-black">
                             @GetInitial(Player2Name)
                         </div>
@@ -112,7 +120,8 @@
                         Offer Draw
                     </button>
 
-                    <button class="game-btn primary" title="Leave and start new game" @onclick="StartNewGame" disabled="@isBusy">
+                    <button class="game-btn primary" title="Leave and start new game" @onclick="StartNewGame"
+                            disabled="@isBusy">
                         <span>✳</span>
                         New Game
                     </button>
@@ -147,7 +156,8 @@
                             }
                         </div>
 
-                        <div id="chessboard" class="chessboard premium-chessboard" aria-label="Chessboard" role="grid"></div>
+                        <div id="chessboard" class="chessboard premium-chessboard" aria-label="Chessboard"
+                             role="grid"></div>
 
                         <div class="board-file-labels board-file-bottom">
                             @foreach (var file in BoardFiles)
@@ -289,6 +299,7 @@
 </section>
 
 @code {
+
     [Parameter]
     [SupplyParameterFromQuery(Name = "GameId")]
     public Guid GameId { get; set; }
@@ -304,6 +315,15 @@
     [Parameter]
     [SupplyParameterFromQuery(Name = "Computer")]
     public bool IsComputerOpponent { get; set; }
+
+
+    private bool _showPromotionDialog = false;
+
+    private int _promotionFromI;
+    private int _promotionFromJ;
+    private int _promotionToI;
+    private int _promotionToJ;
+
 
     private static readonly string[] BoardFiles = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
@@ -343,35 +363,119 @@
     private ClickRequestDTO ClickRequestDTO = new();
     private SameFigureRequest SameFigureRequest = new();
 
+    private bool _browserCloseRegistered;
+
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationState.GetAuthenticationStateAsync();
-
-        _currentUserName = authState.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
-        _currentUserGuid = Guid.Parse(authState.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
-        _hubConnection = await HubClient.GetHubConnectionAsync();
-
-        var connectionId = _hubConnection.ConnectionId;
-
-        GameCircuitState.UserId = _currentUserGuid;
-        GameCircuitState.GameId = GameId;
-        GameCircuitState.UserConnectionDto = new UserConnectionDTO
+        try
         {
-            ConnectionId = connectionId!,
-            UserName = _currentUserName,
-            GameId = GameId
-        };
+            var authState = await AuthenticationState.GetAuthenticationStateAsync();
+            var user = authState.User;
 
-        GameCircuitHandler.GameCircuitState = GameCircuitState;
+            if (user.Identity?.IsAuthenticated != true)
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
 
-        StartClockLoop();
+            var userName = user.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?
+                .Value;
+
+            var userIdValue = user.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?
+                .Value;
+
+            if (string.IsNullOrWhiteSpace(userName) ||
+                string.IsNullOrWhiteSpace(userIdValue) ||
+                !Guid.TryParse(userIdValue, out var userId))
+            {
+                Logger.LogWarning(
+                    "Invalid authenticated user claims. UserName: {UserName}, UserIdValue: {UserIdValue}",
+                    userName,
+                    userIdValue);
+
+                NavigationManager.NavigateTo("/dashboard");
+                return;
+            }
+
+            if (GameId == Guid.Empty)
+            {
+                Logger.LogWarning("GameId is empty. UserId: {UserId}", userId);
+                NavigationManager.NavigateTo("/dashboard");
+                return;
+            }
+
+            var hubConnection = await HubClient.GetHubConnectionAsync();
+
+            if (hubConnection.ConnectionId is null)
+            {
+                Logger.LogWarning(
+                    "Hub connection id is null. UserId: {UserId}, GameId: {GameId}",
+                    userId,
+                    GameId);
+
+                NavigationManager.NavigateTo("/dashboard");
+                return;
+            }
+
+            _currentUserName = userName;
+            _currentUserGuid = userId;
+            _hubConnection = hubConnection;
+
+            var userConnectionDto = new UserConnectionDTO
+            {
+                ConnectionId = hubConnection.ConnectionId,
+                UserName = userName,
+                GameId = GameId
+            };
+
+            GameCircuitHandler.GameCircuitState.UserId = userId;
+            GameCircuitHandler.GameCircuitState.GameId = GameId;
+            GameCircuitHandler.GameCircuitState.UserConnectionDto = userConnectionDto;
+
+            var request = new AddUserConnectionRequestDTO
+            {
+                connectionId = hubConnection.ConnectionId,
+                userGuid = userId,
+                userConnection = userConnectionDto
+            };
+
+            await ConnectionSdService.AddConnectionAsync(
+                new PipeLineRequest<AddUserConnectionRequestDTO>
+                {
+                    Request = request
+                });
+
+            GameHandlerService.OnTickReceived -= HandleTickReceived;
+            GameHandlerService.OnTickReceived += HandleTickReceived;
+
+
+            Logger.LogInformation(
+                "Game page initialized. UserId: {UserId}, GameId: {GameId}, ConnectionId: {ConnectionId}",
+                userId,
+                GameId,
+                hubConnection.ConnectionId);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to initialize game page.");
+            NavigationManager.NavigateTo("/dashboard");
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
             return;
+
+
+        _dotNetRef = DotNetObjectReference.Create(this);
+
+        await JsRuntime.InvokeVoidAsync(
+            "browserCloseHandler.register",
+            _dotNetRef);
+
 
         _hubConnection = await HubClient.GetHubConnectionAsync();
 
@@ -407,9 +511,11 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private bool _allowNavigation;
+
     private async Task ConfirmLeave(LocationChangingContext context)
     {
-        if (_isLeavingGame)
+        if (_allowNavigation)
             return;
 
         var leave = await JsRuntime.InvokeAsync<bool>(
@@ -424,50 +530,23 @@
         }
 
         context.PreventNavigation();
-        _isLeavingGame = true;
 
-        try
-        {
-            await LeaveGameAsync();
-        }
-        finally
-        {
-            _isLeavingGame = false;
-        }
+        _allowNavigation = true;
+
+        await LeaveGameAsync();
+
+        NavigationManager.NavigateTo("/dashboard");
     }
 
-    private void StartClockLoop()
+    private void HandleTickReceived(FigureColors figureColor, TimeSpan whiteSpan, TimeSpan blackSpan)
     {
-        _clockLoopCts?.Cancel();
-        _clockLoopCts?.Dispose();
+        _whiteClock = whiteSpan;
+        _blackClock = blackSpan;
 
-        _clockLoopCts = new CancellationTokenSource();
-        var token = _clockLoopCts.Token;
-
-        _ = Task.Run(async () =>
-        {
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(1000, token);
-
-                    if (_matchState != "Running")
-                        continue;
-
-                    if (_turnLabel == "White")
-                        _whiteClock = _whiteClock.Add(TimeSpan.FromSeconds(1));
-                    else
-                        _blackClock = _blackClock.Add(TimeSpan.FromSeconds(1));
-
-                    await InvokeAsync(StateHasChanged);
-                }
-                catch (TaskCanceledException)
-                {
-                    break;
-                }
-            }
-        }, token);
+        _turnLabel = figureColor == FigureColors.White
+            ? "White"
+            : "Black";
+        InvokeAsync(StateHasChanged);
     }
 
     public Task OnBoardEvent(string eventType, string from, string to, bool isCapture)
@@ -521,6 +600,7 @@
         return Task.CompletedTask;
     }
 
+
     [JSInvokable]
     public async Task OnCellClick(int row, int col)
     {
@@ -549,6 +629,49 @@
         }
 
         await SelectFigure(ClickRequestDTO);
+    }
+
+    [JSInvokable]
+    public async Task OnPromotionMoveClick(
+        int fromI,
+        int fromJ,
+        int toI,
+        int toJ)
+    {
+        _promotionFromI = fromI;
+        _promotionFromJ = fromJ;
+        _promotionToI = toI;
+        _promotionToJ = toJ;
+
+        _showPromotionDialog = true;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+
+    private async Task ChoosePromotion(FigureType promotionFigure)
+    {
+        MoveRequestDTO.PromotionFigureType = promotionFigure;
+
+        var successMove = await Move(MoveRequestDTO);
+
+        if (successMove)
+        {
+            await JS.InvokeAsync(
+                "setPromotedPiece",
+                _promotionToI,
+                _promotionToJ,
+                promotionFigure.ToString(),
+                MyColor.ToString()
+            );
+        }
+
+        MoveRequestDTO.PromotionFigureType = default;
+        _showPromotionDialog = false;
+
+        await JS.ClearSelectedBlocks((int)MyColor);
+
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task<bool> IsSameFigureColor(Position selectedPosition, Position currentPosition, Guid gameId)
@@ -729,20 +852,14 @@
         var leaveGameRequestDTO = new RemoveUsersFromGameReqeustDTO
         {
             CurerntPlayerGuid = _currentUserGuid,
-            GameId = GameId
+            GameId = GameId,
+            IsComputerGame = IsComputerOpponent
         };
 
-        var leaveResponse =
-            await _hubConnection!.SafeInvokeAsync<RemoveUsersFromGameReqeustDTO, RemoveUserFromGameResponseDTO>(
-                "LeaveGameAsync",
-                leaveGameRequestDTO,
-                JS);
-
-        if (!leaveResponse.Response.IsSuccess)
-        {
-            await JS.ShowErrorModal("Unable to leave the game right now. Please try again.");
-            return;
-        }
+        await _hubConnection!.SafeInvokeAsync<RemoveUsersFromGameReqeustDTO, RemoveUserFromGameResponseDTO>(
+            "LeaveGameAsync",
+            leaveGameRequestDTO,
+            JS);
     }
 
     private async Task OfferDraw()
@@ -806,4 +923,7 @@
 
         public DateTime AtUtc { get; set; } = DateTime.UtcNow;
     }
-}gr
+
+
+}
+

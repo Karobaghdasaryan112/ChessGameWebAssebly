@@ -1,0 +1,53 @@
+@using SharedResources.ChessGameResource.Enums.FigureTypes
+<h3>PromotionDialog</h3>
+
+@if (IsVisible)
+{
+    <div class="promotion-backdrop">
+        <div class="promotion-card">
+            <div class="promotion-header">
+                <h2>Choose Promotion</h2>
+                <p>Select the piece your pawn becomes</p>
+            </div>
+
+            <div class="promotion-options">
+                <button class="promotion-piece queen"
+                        @onclick="() => SelectPromotion(FigureType.Queen)">
+                    <span class="piece-icon">♛</span>
+                    <span class="piece-name">Queen</span>
+                </button>
+
+                <button class="promotion-piece rook"
+                        @onclick="() => SelectPromotion(FigureType.Rook)">
+                    <span class="piece-icon">♜</span>
+                    <span class="piece-name">Rook</span>
+                </button>
+
+                <button class="promotion-piece bishop"
+                        @onclick="() => SelectPromotion(FigureType.Bishop)">
+                    <span class="piece-icon">♝</span>
+                    <span class="piece-name">Bishop</span>
+                </button>
+
+                <button class="promotion-piece knight"
+                        @onclick="() => SelectPromotion(FigureType.Knight)">
+                    <span class="piece-icon">♞</span>
+                    <span class="piece-name">Knight</span>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<FigureType> OnPromotionSelected { get; set; }
+
+    private async Task SelectPromotion(FigureType figureName)
+    {
+        await OnPromotionSelected.InvokeAsync(figureName);
+    }
+}

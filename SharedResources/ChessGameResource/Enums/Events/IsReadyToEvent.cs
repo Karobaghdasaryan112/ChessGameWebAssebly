@@ -5,6 +5,7 @@
         None,
         IsReadyToCut,
         IsReadyToMove,
-        IsReadyToCastle
+        IsReadyToCastle,
+        IsReadyToPromote,
     }
 }

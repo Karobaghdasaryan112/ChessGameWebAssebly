@@ -56,13 +56,12 @@ builder.Services.AddScoped<BasePaths>();
 
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddScoped<JSRunetimeService>();
+
 builder.Services.AddScoped<GameCircuitState>();
 
 builder.Services.AddScoped<GameCircuitHandler>();
-
 builder.Services.AddScoped<CircuitHandler>(sp =>
     sp.GetRequiredService<GameCircuitHandler>());
-
 
 builder.Services.AddScoped<IConnectionHandlerService, ConnectionHandlerService>();
 builder.Services.AddScoped<IGameHandlerService, GameHandlerService>();

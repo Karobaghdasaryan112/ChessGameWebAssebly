@@ -49,7 +49,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 BoardStateRequestDTO = boardReq,
                 Player = boardReq.Player,
                 IsMyConnection = true,
-                Win = !requestData.isComputerWin
+                Win = request.RequestDTO.boardStateRequestDTO.IsOpponentComputer ? !requestData.isComputerWin : null
             };
 
             // This replaces the old if(IsTrainingGame) block by delegating 

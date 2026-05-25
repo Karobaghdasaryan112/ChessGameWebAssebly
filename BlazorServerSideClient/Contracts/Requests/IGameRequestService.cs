@@ -33,5 +33,9 @@ namespace BlazorServerSideClient.Contracts.Requests
 
         Task<PipeLineResponse<RemoveUserFromGameResponseDTO>> LeaveGameAsync(
             RemoveUsersFromGameReqeustDTO removeUsersReqeustDTO);
+
+
+
+        Task<Board?> GetBoardByIdAsync(Guid boardId);
     }
 }

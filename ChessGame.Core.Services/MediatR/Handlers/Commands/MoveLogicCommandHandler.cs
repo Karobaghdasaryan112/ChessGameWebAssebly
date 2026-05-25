@@ -37,7 +37,6 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
         private CancellationToken cancellationToken;
 
 
-
         public async Task<ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> Handle(
             MoveLogicCommand<BoardStateRequestDTO,
                 ResponseDTO<MoveResponseDTO, ChessGameResponseMessage>> request,
@@ -68,6 +67,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     ResponseDTO<SubmitMoveResponseDTO, ChessGameResponseMessage>>(
                     new SubmitMoveRequestDTO()
                     {
+                        PromotionFigure = request.Request.PromotionFigure,
                         From = request.Request.From,
                         To = request.Request.To,
                         CurrentBoardState = request.Request.GameState,
@@ -154,7 +154,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     var kingMateLogicRequestDTO = new KingMateLogicRequestDTO()
                     {
                         boardStateRequestDTO = request.Request,
-                        IsTrainingGame = false,
+                        IsTrainingGame = request.Request.IsOpponentComputer,
                     };
                     var kingMateLogicCommand =
                         new KingMateLogicCommand<KingMateLogicRequestDTO,

@@ -16,6 +16,7 @@ using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
 using SharedResources.MediatR;
 using SharedResources.Responses.ResponseMessages;
 using System.Net;
+using SharedResources.ChessGameResource.Figures;
 
 namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 {
@@ -66,6 +67,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             var toPosition = request.RequestDTO.To;
             var gameId = request.RequestDTO.GameId;
             var currentBoardState = request.RequestDTO.CurrentBoardState;
+            var promotionFigure = request.RequestDTO.PromotionFigure;
 
             // Retrieving the blocks corresponding to the from and to positions
             var fromBlock = currentBoardState.GetBlockByPosition(fromPosition!);
@@ -86,7 +88,23 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             // Swapping the figures between the from and to blocks to simulate the move
 
-            var toBlockTemp = SwithFigures(fromBlock!, toBlock!);
+            var toBlockTemp = (Block)toBlock.Clone();
+            if (promotionFigure != default)
+            {
+                var icrement = fromBlock.Figure.FigureColor == FigureColors.Black ? +1 : -1;
+                var realToBlock = currentBoardState.GetBlockByPosition(
+                    toBlockTemp.Position.VerticalOrientation + icrement, toBlock.Position.HorizontalOrientation);
+                toBlock = realToBlock;
+                toBlockTemp = (Block)realToBlock.Clone();
+                toBlock.Figure = CreatePromotionFigure(promotionFigure, fromBlock.Figure.FigureColor);
+            }
+            else
+            {
+                toBlock.Figure = fromBlock.Figure;
+            }
+
+            fromBlock.Figure = null!;
+
 
             WriteSubmitMoveLogger("Submit Move After move", gameId, fromPosition, toPosition, fromBlock, toBlock);
 
@@ -97,7 +115,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 int kingincrement = 0;
                 int rookIncrement = 0;
                 var isShort = (int)toBlock.Position.HorizontalOrientation > 4 ? 7 : 0;
-                
+
                 if (isShort == 7)
                 {
                     kingincrement = 1;
@@ -121,7 +139,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                     RookFrom = rookBlock.Position,
                     RookTo = rookNewPosition
                 };
-                SwithFigures(rookBlock, rookNewBlock!);
+                SwithFigures(rookBlock, rookNewBlock!, default(FigureType));
             }
 
             // Resetting any eventable blocks on the board before processing the move
@@ -183,12 +201,28 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
             return responseDTO;
         }
 
-        private Block SwithFigures(Block fromBlock, Block toBlock)
+        private Block SwithFigures(Block fromBlock, Block toBlock, FigureType promotionFigure)
         {
             var toBlockTemp = (Block)toBlock.Clone();
-            toBlock.Figure = fromBlock.Figure;
+            toBlock.Figure = promotionFigure != default
+                ? CreatePromotionFigure(promotionFigure, toBlockTemp.Figure.FigureColor)
+                : fromBlock.Figure;
+
             fromBlock.Figure = null!;
             return toBlockTemp!;
+        }
+
+        private static IFigure CreatePromotionFigure(FigureType promotionFigure, FigureColors color)
+        {
+            return promotionFigure switch
+            {
+                FigureType.Queen => new Queen { FigureColor = color },
+                FigureType.Rook => new Rook { FigureColor = color },
+                FigureType.Bishop => new Bishop { FigureColor = color },
+                FigureType.Knight => new Knight { FigureColor = color },
+                FigureType.Pawn => new Pawn { FigureColor = color },
+                _ => new Queen { FigureColor = color }
+            };
         }
 
         private void RevertMove(Block fromBlock, Block toBlock, IFigure toBlockTemp)

@@ -12,6 +12,10 @@ window.GameNotesTracker = {
     }
 };
 
+
+
+
+
 function toNotation(position) {
     if (!position || position.verticalOrientation < 0 || position.verticalOrientation > 7 || position.horizontalOrientation < 0 || position.horizontalOrientation > 7) {
         return "--";
@@ -46,25 +50,44 @@ window.BuildBoard = {
     }
 };
 
-function createCell(i, j, block, dotNetRef) {
-    const cell = document.createElement("div");
-    cell.id = `${i}${j}`;
-    cell.style.cssText = `
-    position: relative;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    border: 0;
-    transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
-    background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
-`;
+let selectedPromotionCell = null;
 
-    cell.addEventListener("click", () => dotNetRef.invokeMethodAsync("OnCellClick", i, j));
+function createCell(i, j, block, dotNetRef) {
+    console.log("[createCell] Creating cell:", i, j, {
+        hasFigure: !!block.Figure,
+        highlightColor: block.HighlightColor,
+        blockColor: block.BlockColor
+    });
+
+    const cell = document.createElement("div");
+
+    cell.id = `${i}${j}`;
+    cell.dataset.row = i;
+    cell.dataset.col = j;
+
+    cell.style.cssText = `
+        position: relative;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 0;
+        transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform .2s;
+        background-color: ${block.HighlightColor ?? (block.BlockColor === 0 ? "gray" : "white")};
+    `;
+
+    cell.addEventListener("click", async () => {
+        console.log("[click] Cell clicked:", i, j);
+        await handleCellClickForPromotion(cell, i, j, dotNetRef);
+    });
 
     const realColor = cell.style.backgroundColor;
+
     cell.addEventListener("mouseenter", () => {
         const baseColor = cell.style.backgroundColor;
-        if (baseColor === "rgba(0, 255, 0, 0.45)") return;
+
+        if (baseColor === "rgba(0, 255, 0, 0.45)") {
+            return;
+        }
 
         if (baseColor === "white" || baseColor === "gray") {
             cell.style.backgroundColor = "rgb(240, 216, 107)";
@@ -74,7 +97,10 @@ function createCell(i, j, block, dotNetRef) {
 
     cell.addEventListener("mouseleave", () => {
         const baseColor = cell.style.backgroundColor;
-        if (baseColor === "rgba(0, 255, 0, 0.45)") return;
+
+        if (baseColor === "rgba(0, 255, 0, 0.45)") {
+            return;
+        }
 
         if (baseColor === "rgb(240, 216, 107)") {
             cell.style.backgroundColor = realColor;
@@ -83,6 +109,7 @@ function createCell(i, j, block, dotNetRef) {
     });
 
     if (block.Figure) {
+        console.log("[createCell] Adding piece to cell:", i, j, block.Figure);
         cell.appendChild(createPiece(block.Figure));
     }
 
@@ -91,10 +118,30 @@ function createCell(i, j, block, dotNetRef) {
 
 function createPiece(figure) {
     const piece = document.createElement("img");
+
     const colorFolder = figure.FigureColor === 1 ? "black" : "white";
-    const type = figure.$type.split(".").pop();
+    const type = getFigureTypeName(figure);
+
+    console.log("[createPiece] Creating piece:", {
+        type: type,
+        color: colorFolder,
+        figure: figure
+    });
 
     piece.src = `/PNGs/${colorFolder}/${type}.png`;
+    piece.alt = `${colorFolder} ${type}`;
+
+    piece.dataset.figureType = type.toLowerCase();
+    piece.dataset.figureColor = colorFolder;
+
+    console.log("[createPiece] Piece dataset:", {
+        figureType: piece.dataset.figureType,
+        figureColor: piece.dataset.figureColor,
+        src: piece.src
+    });
+
+    piece.draggable = false;
+
     piece.style.cssText = `
         position: absolute;
         top: 50%;
@@ -103,10 +150,254 @@ function createPiece(figure) {
         width: 80%;
         height: 80%;
         z-index: 10;
+        pointer-events: none;
+        user-select: none;
     `;
 
     return piece;
 }
+
+function getFigureTypeName(figure) {
+    if (!figure || !figure.$type) {
+        console.warn("[getFigureTypeName] Missing figure or $type:", figure);
+        return "";
+    }
+
+    const type = figure.$type.split(".").pop();
+
+    console.log("[getFigureTypeName] Type detected:", type);
+
+    return type;
+}
+
+async function handleCellClickForPromotion(cell, i, j, dotNetRef) {
+    try {
+        const piece = cell.querySelector("img");
+
+        console.log("[handleCellClickForPromotion] Start:", {
+            clickedRow: i,
+            clickedCol: j,
+            hasPiece: !!piece,
+            clickedPieceType: piece?.dataset?.figureType,
+            clickedPieceColor: piece?.dataset?.figureColor,
+            selectedPromotionCell: selectedPromotionCell
+        });
+
+        if (!selectedPromotionCell) {
+            console.log("[handleCellClickForPromotion] No selectedPromotionCell yet.");
+
+            if (piece) {
+                selectedPromotionCell = {
+                    fromI: i,
+                    fromJ: j,
+                    figureType: piece.dataset.figureType,
+                    figureColor: piece.dataset.figureColor
+                };
+
+                console.log("[handleCellClickForPromotion] Selected piece saved:", selectedPromotionCell);
+            } else {
+                console.log("[handleCellClickForPromotion] Clicked empty cell as first click.");
+            }
+
+            console.log("[handleCellClickForPromotion] Calling C# OnCellClick first click:", i, j);
+            await dotNetRef.invokeMethodAsync("OnCellClick", i, j);
+            console.log("[handleCellClickForPromotion] C# OnCellClick first click completed.");
+            return;
+        }
+
+        console.log("[handleCellClickForPromotion] Existing selectedPromotionCell found:", selectedPromotionCell);
+
+        const isPromotion = isPawnPromotionMove(
+            selectedPromotionCell.figureType,
+            selectedPromotionCell.figureColor,
+            i
+        );
+
+        console.log("[handleCellClickForPromotion] Promotion check result:", {
+            isPromotion: isPromotion,
+            fromI: selectedPromotionCell.fromI,
+            fromJ: selectedPromotionCell.fromJ,
+            toI: i,
+            toJ: j
+        });
+
+        if (isPromotion) {
+            console.log("[handleCellClickForPromotion] Calling C# OnPromotionMoveClick:", {
+                fromI: selectedPromotionCell.fromI,
+                fromJ: selectedPromotionCell.fromJ,
+                toI: i,
+                toJ: j
+            });
+
+            await dotNetRef.invokeMethodAsync(
+                "OnPromotionMoveClick",
+                selectedPromotionCell.fromI,
+                selectedPromotionCell.fromJ,
+                i,
+                j
+            );
+
+            console.log("[handleCellClickForPromotion] C# OnPromotionMoveClick completed.");
+
+            selectedPromotionCell = null;
+            console.log("[handleCellClickForPromotion] selectedPromotionCell cleared after promotion.");
+            return;
+        }
+
+        console.log("[handleCellClickForPromotion] Not promotion. Calling C# OnCellClick normal click:", i, j);
+        await dotNetRef.invokeMethodAsync("OnCellClick", i, j);
+        console.log("[handleCellClickForPromotion] C# OnCellClick normal click completed.");
+
+        if (piece) {
+            selectedPromotionCell = {
+                fromI: i,
+                fromJ: j,
+                figureType: piece.dataset.figureType,
+                figureColor: piece.dataset.figureColor
+            };
+
+            console.log("[handleCellClickForPromotion] New selectedPromotionCell saved after normal click:", selectedPromotionCell);
+        } else {
+            selectedPromotionCell = null;
+            console.log("[handleCellClickForPromotion] selectedPromotionCell cleared after normal empty click.");
+        }
+    } catch (error) {
+        console.error("[handleCellClickForPromotion] Failed:", error);
+
+        selectedPromotionCell = null;
+        console.log("[handleCellClickForPromotion] selectedPromotionCell cleared because of error.");
+
+        try {
+            console.log("[handleCellClickForPromotion] Calling fallback C# OnCellClick:", i, j);
+            await dotNetRef.invokeMethodAsync("OnCellClick", i, j);
+            console.log("[handleCellClickForPromotion] Fallback C# OnCellClick completed.");
+        } catch (fallbackError) {
+            console.error("[handleCellClickForPromotion] Fallback OnCellClick failed:", fallbackError);
+        }
+    }
+}
+
+
+
+function setPromotedPiece(row, col, figureType, figureColor) {
+    const cell = document.getElementById(`${row}${col}`);
+
+    if (!cell) {
+        console.error("[setPromotedPiece] Cell not found:", row, col);
+        return;
+    }
+
+    const oldPiece = cell.querySelector("img");
+
+    if (oldPiece) {
+        oldPiece.remove();
+    }
+
+    const colorFolder = normalizeFigureColor(figureColor);
+    const typeName = normalizeFigureType(figureType);
+
+    const piece = document.createElement("img");
+
+    piece.src = `/PNGs/${colorFolder}/${typeName}.png`;
+    piece.alt = `${colorFolder} ${typeName}`;
+
+    piece.dataset.figureType = typeName.toLowerCase();
+    piece.dataset.figureColor = colorFolder;
+
+    piece.draggable = false;
+
+    piece.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        z-index: 10;
+        pointer-events: none;
+        user-select: none;
+    `;
+
+    cell.appendChild(piece);
+
+    console.log("[setPromotedPiece] Promoted piece rendered:", {
+        row,
+        col,
+        figureType: typeName,
+        figureColor: colorFolder,
+        src: piece.src
+    });
+}
+
+function normalizeFigureType(figureType) {
+    if (typeof figureType === "string") {
+        return capitalizeFirstLetter(figureType);
+    }
+
+    switch (figureType) {
+        case 1:
+            return "Queen";
+        case 2:
+            return "Rook";
+        case 3:
+            return "Bishop";
+        case 4:
+            return "Knight";
+        default:
+            return "Queen";
+    }
+}
+
+function normalizeFigureColor(figureColor) {
+    if (typeof figureColor === "string") {
+        return figureColor.toLowerCase();
+    }
+
+    return figureColor === 1 ? "black" : "white";
+}
+
+function capitalizeFirstLetter(value) {
+    if (!value) {
+        return "";
+    }
+
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
+
+function isPawnPromotionMove(figureType, figureColor, toRow) {
+    const type = figureType?.toLowerCase();
+    const color = figureColor?.toLowerCase();
+
+    console.log("[isPawnPromotionMove] Checking:", {
+        figureType: type,
+        figureColor: color,
+        toRow: toRow
+    });
+
+    if (type !== "pawn") {
+        console.log("[isPawnPromotionMove] Not pawn.");
+        return false;
+    }
+
+    if (color === "white" && toRow === 0) {
+        console.log("[isPawnPromotionMove] White pawn promotion detected.");
+        return true;
+    }
+
+    if (color === "black" && toRow === 7) {
+        console.log("[isPawnPromotionMove] Black pawn promotion detected.");
+        return true;
+    }
+
+    console.log("[isPawnPromotionMove] Pawn, but not promotion row.");
+    return false;
+}
+
+function resetPromotionSelection() {
+    selectedPromotionCell = null;
+    console.log("[resetPromotionSelection] selectedPromotionCell cleared.");
+}
+
 
 window.ShowMovableAndCutableBlocks = {
     Paint: function (cutableBlocks, movableBlocks, castlingInfosDTOs) {

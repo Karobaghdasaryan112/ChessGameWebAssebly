@@ -24,6 +24,7 @@ using System.Net;
 using System.Linq;
 using SharedResources.ChessGameResource.Enums.Events;
 using SharedResources.ChessGameResource.Enums.Users;
+using SharedResources.ChessGameResource.Models;
 
 namespace ChessGame.Infrastructure.Infrastructure.Hubs
 {
@@ -168,6 +169,9 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                     }));
         //-------------------------------------------------------------------------
 
+        
+        public Task<Board?> SendBoardByIdAsync(Guid boardId)
+            => Task.FromResult(ActiveGames.GetBoard(boardId));
 
         //-------------------------------------------------------------------------
         public async Task<PipeLineResponse<AddUserConnectionResponseDTO>> AddConnectionAsync(
@@ -262,6 +266,32 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                         HttpStatusCode.BadRequest)
             };
 
+            if (leavingPlayerRequestDTO.Request.IsComputerGame)
+            {
+                connectionService.CurrentConnectionState.TryGetValue(leavingPlayerRequestDTO.Request.CurerntPlayerGuid,
+                    out var leavingPlayerConnectionForComputer);
+
+                if (ActiveGames.ActiveGamesAndBoards.TryGetValue(leavingPlayerRequestDTO.Request.GameId,
+                        out var boardStateForComputer))
+                {
+                    await boardService.SavePositionsAsync(new SavePositionsRequestDTO
+                    {
+                        GameId = leavingPlayerRequestDTO.Request.GameId,
+                        FEN = boardStateForComputer.FromBoardToFen()
+                    });
+                }
+
+                await baseHubService.ForceNavigateToDashboardAsync(leavingPlayerConnectionForComputer.ConnectionId);
+
+                ActiveGames.ActiveGamesAndBoards.TryRemove(leavingPlayerRequestDTO.Request.GameId, out _);
+
+                return await connectionService.RemoveUsersFromGameAsync(new RemoveUserFromGameRequestDTO
+                {
+                    GameId = leavingPlayerRequestDTO.Request.GameId
+                });
+            }
+
+
             var leavePlayerGuid = leavingPlayerRequestDTO.Request.CurerntPlayerGuid;
             var gameId = leavingPlayerRequestDTO.Request.GameId;
 
@@ -274,7 +304,7 @@ namespace ChessGame.Infrastructure.Infrastructure.Hubs
                 ? leavingPlayerConnection.Gameinfo.Players.Value
                 : leavingPlayerConnection.Gameinfo.Players.Key;
 
-            if (!connectionService.CurrentConnectionState.TryGetValue(opponentPlayerGuid, out var opponentConnection))
+            if (!connectionService.CurrentConnectionState.TryGetValue(opponentPlayerGuid, out var opponentConnection) && !leavingPlayerRequestDTO.Request.IsComputerGame)
             {
                 opponentConnection = connectionService.CurrentConnectionState
                     .Where(connection => connection.Key != leavePlayerGuid && connection.Value.GameId == gameId)

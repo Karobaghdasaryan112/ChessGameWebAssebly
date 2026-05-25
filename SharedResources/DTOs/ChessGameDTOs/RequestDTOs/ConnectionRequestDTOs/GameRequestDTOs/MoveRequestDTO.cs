@@ -1,4 +1,5 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts.DTOs;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
@@ -8,6 +9,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequ
 {
     public class MoveRequestDTO : RequestDTO
     {
+        public FigureType PromotionFigureType { get; set; }
         public bool IsAIFirstMove { get; set; }
         public bool IsOpponentComputer { get; set; }
         public string Player { get; set; }

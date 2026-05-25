@@ -1,6 +1,7 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.ChessGameSharedDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -12,20 +13,22 @@ namespace BlazorServerSideClient.Services.Handlers
     public class GameHandlerService(JSRunetimeService jSRuneTimeService) : IGameHandlerService
     {
         private DateTime _lastDisconnectNotificationAt = DateTime.MinValue;
-        public static event Action<FigureColors, TimeSpan, TimeSpan>? OnTickReceived;
+        public event Action<FigureColors, TimeSpan, TimeSpan>? OnTickReceived;
+
         public async Task ReseivePlayersAsync(
             ResponseDTO<ReceivePlayersResponseDTO, ChessGameResponseMessage> connectionResponseDto)
         {
             await jSRuneTimeService.ShowPlayers(connectionResponseDto.Data.Player1_UserConnectionDTO.UserName!,
                 connectionResponseDto.Data.Player2_UserConnectionDTO?.UserName!);
         }
-        
+
+        public Task<Board> ReceiveBoardAsync(Board board) => Task.FromResult(board);
 
         public Task ReceiveTick(FigureColors figureColor, TimeSpan whiteSpan, TimeSpan blackSpan)
         {
             try
             {
-                Console.WriteLine("Service received tick from SignalR!"); 
+                Console.WriteLine("Service received tick from SignalR!");
                 OnTickReceived?.Invoke(figureColor, whiteSpan, blackSpan);
                 return Task.CompletedTask;
             }
@@ -52,8 +55,8 @@ namespace BlazorServerSideClient.Services.Handlers
             // 2. Handle Board Movement (Move, Castle, or Cut)
             if (data is { From: not null, To: not null })
             {
-                bool isMoveOrCastle = data.IsReadyToEvent == IsReady.IsReadyToMove || 
-                                      data.IsReadyToEvent == IsReady.IsReadyToCastle;
+                bool isMoveOrCastle = data.IsReadyToEvent == IsReady.IsReadyToMove ||
+                                      data.IsReadyToEvent == IsReady.IsReadyToCastle || data.IsReadyToEvent == IsReady.IsReadyToCastle;
 
                 if (isMoveOrCastle)
                 {

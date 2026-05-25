@@ -5,6 +5,7 @@
 @using BlazorServerSideClient.Services
 @using ChessGame.Core.Services.Extentions
 @using ChessGameBlazorClient.ApiServices
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using SharedResources.ChessGameResource.Enums.Colors
 @using SharedResources.ChessGameResource.Models
 @using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs
@@ -12,7 +13,8 @@
 @inject SignalRService HubClient
 @inject JSRunetimeService JS
 @inject AuthenticationStateProvider AuthenticationState
-
+@inject NavigationManager Navigation
+<WebSiteClosedTracker/>
 @if (string.IsNullOrEmpty(_error))
 {
     <div class="game-history-wrap">
@@ -92,6 +94,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        if ((await AuthenticationState.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
+        {
+            Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/GameHistory", true);
+            return;
+        }
         await HubClient.GetHubConnectionAsync();
 
         // await HubClient.RegisterConnectionHandlers();

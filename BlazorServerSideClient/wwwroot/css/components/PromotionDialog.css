@@ -1,0 +1,252 @@
+.promotion-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+
+    background:
+            radial-gradient(circle at top, rgba(255, 230, 150, 0.25), transparent 35%),
+            rgba(10, 10, 15, 0.72);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    animation: backdropFadeIn 0.22s ease-out;
+}
+
+.promotion-card {
+    width: min(92vw, 520px);
+
+    padding: clamp(1.25rem, 4vw, 2rem);
+
+    border-radius: 28px;
+
+    background:
+            linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(245, 239, 225, 0.96));
+
+    box-shadow:
+            0 28px 80px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+
+    transform-origin: center;
+    animation: cardPopIn 0.26s cubic-bezier(0.2, 1.2, 0.3, 1);
+}
+
+.promotion-header {
+    text-align: center;
+    margin-bottom: 1.4rem;
+}
+
+.promotion-header h2 {
+    margin: 0;
+
+    color: #1d1b18;
+
+    font-size: clamp(1.45rem, 4vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.promotion-header p {
+    margin: 0.45rem 0 0;
+
+    color: rgba(29, 27, 24, 0.68);
+
+    font-size: clamp(0.9rem, 2.4vw, 1rem);
+}
+
+.promotion-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+}
+
+.promotion-piece {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 132px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+
+    padding: 1rem 0.75rem;
+
+    border: 0;
+    border-radius: 22px;
+
+    color: #fff;
+
+    cursor: pointer;
+
+    box-shadow:
+            0 12px 24px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+    transition:
+            transform 0.22s ease,
+            box-shadow 0.22s ease,
+            filter 0.22s ease;
+}
+
+.promotion-piece::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+            radial-gradient(circle at 30% 18%, rgba(255, 255, 255, 0.42), transparent 28%),
+            linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.18));
+
+    opacity: 0.9;
+}
+
+.promotion-piece::after {
+    content: "";
+
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    right: -28px;
+    bottom: -28px;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.promotion-piece:hover {
+    transform: translateY(-8px) scale(1.035);
+
+    box-shadow:
+            0 22px 38px rgba(0, 0, 0, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+    filter: saturate(1.08);
+}
+
+.promotion-piece:active {
+    transform: translateY(-3px) scale(0.98);
+}
+
+.promotion-piece:focus-visible {
+    outline: 3px solid rgba(255, 215, 120, 0.95);
+    outline-offset: 4px;
+}
+
+.piece-icon,
+.piece-name {
+    position: relative;
+    z-index: 1;
+}
+
+.piece-icon {
+    font-size: clamp(2.35rem, 8vw, 3.4rem);
+    line-height: 1;
+
+    text-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
+}
+
+.piece-name {
+    font-size: clamp(0.78rem, 2.3vw, 0.95rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.queen {
+    background: linear-gradient(145deg, #7f53ac, #512da8);
+}
+
+.rook {
+    background: linear-gradient(145deg, #4b5563, #111827);
+}
+
+.bishop {
+    background: linear-gradient(145deg, #d97706, #92400e);
+}
+
+.knight {
+    background: linear-gradient(145deg, #059669, #065f46);
+}
+
+@media (max-width: 520px) {
+    .promotion-card {
+        border-radius: 24px;
+    }
+
+    .promotion-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .promotion-piece {
+        min-height: 118px;
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 340px) {
+    .promotion-options {
+        grid-template-columns: 1fr;
+    }
+
+    .promotion-piece {
+        min-height: 92px;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding-inline: 1.25rem;
+    }
+
+    .piece-icon {
+        font-size: 2.3rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .promotion-backdrop,
+    .promotion-card {
+        animation: none;
+    }
+
+    .promotion-piece {
+        transition: none;
+    }
+
+    .promotion-piece:hover,
+    .promotion-piece:active {
+        transform: none;
+    }
+}
+
+@keyframes backdropFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes cardPopIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

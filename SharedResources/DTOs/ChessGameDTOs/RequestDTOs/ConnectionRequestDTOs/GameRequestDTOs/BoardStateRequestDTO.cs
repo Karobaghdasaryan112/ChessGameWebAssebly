@@ -1,5 +1,6 @@
 ﻿using SharedResources.ChessGameResource.Enums.Colors;
 using SharedResources.ChessGameResource.Enums.Events;
+using SharedResources.ChessGameResource.Enums.FigureTypes;
 using SharedResources.ChessGameResource.Models;
 using SharedResources.Contracts;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.MediatRResponseDTOs;
@@ -8,6 +9,7 @@ namespace SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.G
 {
     public class BoardStateRequestDTO : RequestDTO
     {
+        public FigureType PromotionFigure { get; set; }
         public bool IsOpponentComputer { get; set; }
         public Guid GameId { get; set; }
         public Position? From {  get; set; }

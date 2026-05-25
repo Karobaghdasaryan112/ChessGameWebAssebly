@@ -1,7 +1,9 @@
 ﻿using BlazorServerSideClient.Contracts.Handlers;
 using BlazorServerSideClient.Contracts.Requests;
 using BlazorServerSideClient.Extensions;
+using Microsoft.AspNetCore.SignalR.Client;
 using SharedResources.ChessGameResource.Enums.Users;
+using SharedResources.ChessGameResource.Models;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.GameRequestDTOs;
 using SharedResources.DTOs.ChessGameDTOs.ResponseDTOs.ConnectionResponsDTOs.GameResponseDTOs;
@@ -31,6 +33,12 @@ namespace BlazorServerSideClient.Services.Requests
                     guidAndConnections);
 
             return allGamersResult!;
+        }
+
+        public async Task<Board?> GetBoardByIdAsync(Guid boardId)
+        {
+            var hubConnection = await signalRService.GetHubConnectionAsync();
+            return await hubConnection.InvokeAsync<Board?>("SendBoardByIdAsync", boardId);
         }
 
 
@@ -92,8 +100,8 @@ namespace BlazorServerSideClient.Services.Requests
                     "LeaveGameAsync", removeUsersReqeustDTO, JSRunetimeService) ??
                 PipeLineResponse<RemoveUserFromGameResponseDTO>.Emoty;
 
-            if (!leaveResult.Response.IsSuccess)
-                await JSRunetimeService.ShowErrorModal("Unable to leave the game right now. Please try again.");
+            // if (!leaveResult.Response.IsSuccess)
+            //     await JSRunetimeService.ShowErrorModal("Unable to leave the game right now. Please try again.");
 
             return leaveResult;
         }

@@ -157,8 +157,8 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
 
             await _baseHubService._hubContext.Clients.All.SendAsync(
                 "ReceiveUpdatedUsers",
-                OnlinePlayerChangeType.Removed,
-                new KeyValuePair<Guid, UserConnectionDTO>(removeUserConnectionRequestDTO.UserGuid, removedConnection));
+                new KeyValuePair<Guid, UserConnectionDTO>(removeUserConnectionRequestDTO.UserGuid, removedConnection),
+                OnlinePlayerChangeType.Removed);
 
 
             return new PipeLineResponse<RemoveUserConnectionResponseDTO>
@@ -324,9 +324,6 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
             var gameId = request.BoardStateRequestDTO.GameId;
             var currentPlayer = request.Player;
 
-            if (request.BoardStateRequestDTO.IsOpponentComputer)
-            {
-            }
 
             var participants = ActiveGames._connections.Values
                 .Where(c => c.GameId == gameId)
@@ -339,7 +336,10 @@ namespace ChessGame.Infrastructure.Infrastructure.HubServices
 
             foreach (var participant in participants)
             {
-                bool isMe = participant.UserName == currentPlayer;
+                var isMe = participant.UserName == currentPlayer;
+                
+                if (request.Win != null)
+                    isMe = request.Win.Value;
 
                 var boardStateDto = MapToResponseDTO(request, participant.ConnectionId, isMe);
 

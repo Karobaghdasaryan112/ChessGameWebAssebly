@@ -278,6 +278,7 @@ namespace ChessGame.Core.Services.Services.HubServices
             var boardStateRequestDto =
                 new BoardStateRequestDTO
                 {
+                    PromotionFigure = sendMoveConnectionRequestDto.Request.PromotionFigureType,
                     GameId = data.GameId,
                     CutableFigure = null,
                     Player = data.Player,
@@ -295,7 +296,9 @@ namespace ChessGame.Core.Services.Services.HubServices
                                 ? IsReady.IsReadyToCut
                                 : currentPositionBlock.EventColor == EventColors.Castle
                                     ? IsReady.IsReadyToCastle
-                                    : IsReady.None,
+                                    : sendMoveConnectionRequestDto.Request.PromotionFigureType != default
+                                        ? IsReady.IsReadyToPromote
+                                        : IsReady.None,
                     IsOpponentComputer = data.IsOpponentComputer,
                 };
 
@@ -417,7 +420,6 @@ namespace ChessGame.Core.Services.Services.HubServices
 
             if (currentBlock.Figure != null && currentBlock.Figure.FigureColor == figureColor)
             {
-
                 var castlingResult = await GetCastlingMovesAsync(currentBlockFromServer, figureColor, currentBoard);
                 if (castlingResult.Any(c => c.IsCastling))
                 {
@@ -435,7 +437,6 @@ namespace ChessGame.Core.Services.Services.HubServices
                 (currentBlockFromServer.EventColor != EventColors.Cut &&
                  currentBlockFromServer.EventColor != EventColors.Move))
                 return errorResponse;
-
 
 
             successResponse.Data.ClickedBlock = currentBlockFromServer;

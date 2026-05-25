@@ -158,6 +158,16 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
                 if (isKingMateStateRequest is { IsSuccess: true, Data.IsKingMate: true })
                 {
                     var kingMateLogicResponse = await mediatR.Send(kingMateCommand, cancellationToken);
+                    
+                    await connectionService.SendBoardStateToClient(new BoardStateSenderRequestDTO
+                    {
+                        connectionId = null,
+                        BoardStateRequestDTO = clientBoardStateAfterAiMove,
+                        Player = request.RequestDTO.BoardRequestDTO.Player,
+                        IsMyConnection = true,
+                        Win = false
+                    });
+
                     return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                         new AIMoveLogicResponseDTO()
                         {
@@ -185,7 +195,7 @@ namespace ChessGame.Core.Services.MediatR.Handlers.Commands
 
             return ResponseDTO<AIMoveLogicResponseDTO, ChessGameResponseMessage>.CreateSuccessResponse(
                 new AIMoveLogicResponseDTO()
-                {   
+                {
                     MoveResponseDTO = new MoveResponseDTO()
                     {
                         IsReadyToEvent = IsReady.IsReadyToMove,

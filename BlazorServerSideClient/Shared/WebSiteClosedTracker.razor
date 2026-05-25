@@ -1,0 +1,75 @@
+@using System.Security.Claims
+@using BlazorServerSideClient.Contracts.Requests
+@using BlazorServerSideClient.Services
+@using SharedResources.DTOs.ChessGameDTOs.RequestDTOs.ConnectionRequestDTOs.UserConnectionRequestDTOs
+@using SharedResources.PipeLine.PipeLineContext
+@implements IAsyncDisposable
+
+@inject AuthenticationStateProvider AuthenticationState
+@inject IJSRuntime JsRunTime
+@inject SignalRService SignalRService
+@inject IConnectionReqeustService ConnectionService
+
+@code {
+    private DotNetObjectReference<WebSiteClosedTracker>? _dotNetRef;
+    private bool _registered;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_registered)
+        {
+            _registered = true;
+
+            _dotNetRef = DotNetObjectReference.Create(this);
+
+            await JsRunTime.InvokeVoidAsync(
+                "browserCloseHandler.register",
+                _dotNetRef);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnBrowserClosed()
+    {
+        var authState = await AuthenticationState.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            return;
+        }
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return;
+        }
+
+        var connection = await SignalRService.GetHubConnectionAsync();
+
+        if (string.IsNullOrWhiteSpace(connection.ConnectionId))
+        {
+            return;
+        }
+
+        var removeUserConnectionRequestDto = new RemoveUserConnectionRequestDTO
+        {
+            connectionId = null!,
+            UserGuid = new Guid(userId),
+            ConnectionId = connection.ConnectionId
+        };
+
+        await ConnectionService.RemoveConnectionAsync(
+            new PipeLineRequest<RemoveUserConnectionRequestDTO>
+            {
+                Request = removeUserConnectionRequestDto
+            });
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _dotNetRef?.Dispose();
+        return ValueTask.CompletedTask;
+    }
+}

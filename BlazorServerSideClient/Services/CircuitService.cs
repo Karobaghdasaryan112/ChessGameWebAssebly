@@ -19,62 +19,11 @@ sealed class GameCircuitHandler(
 {
     public GameCircuitState GameCircuitState = gameCircuitState;
 
-    public override async Task OnConnectionDownAsync(
+    public override Task OnConnectionDownAsync(
         Circuit circuit,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            logger.LogInformation("Blazor circuit connection DOWN: {CircuitId}", circuit.Id);
-
-            await Task.Delay(TimeSpan.FromSeconds(6), cancellationToken);
-
-            if (GameCircuitState.UserId is null || GameCircuitState.GameId is null)
-            {
-                logger.LogWarning(
-                    "Skipping disconnect cleanup because UserId or GameId is null. CircuitId: {CircuitId}, UserId: {UserId}, GameId: {GameId}",
-                    circuit.Id,
-                    GameCircuitState.UserId,
-                    GameCircuitState.GameId);
-
-                return;
-            }
-
-            var removeUsersFromGameRequestDto = new RemoveUsersFromGameReqeustDTO
-            {
-                connectionId = null,
-                CurerntPlayerGuid = (Guid)GameCircuitState.UserId,
-                GameId = (Guid)GameCircuitState.GameId,
-                IsLeaveWebSite = true,
-            };
-
-            await gameService.LeaveGameAsync(removeUsersFromGameRequestDto);
-
-            var removeUserConnectionRequestDto = new RemoveUserConnectionRequestDTO
-            {
-                connectionId = null,
-                UserGuid = (Guid)GameCircuitState.UserId,
-                GameId = (Guid)GameCircuitState.GameId
-            };
-
-            await connectionService.RemoveConnectionAsync(
-                new PipeLineRequest<RemoveUserConnectionRequestDTO>
-                {
-                    Request = removeUserConnectionRequestDto
-                });
-
-            GameCircuitState.GameId = default;
-
-            logger.LogInformation("Disconnect cleanup completed. CircuitId: {CircuitId}", circuit.Id);
-        }
-        catch (OperationCanceledException)
-        {
-            logger.LogInformation("Connection down cleanup was cancelled: {CircuitId}", circuit.Id);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Unhandled exception during connection down cleanup: {CircuitId}", circuit.Id);
-        }
+        return Task.CompletedTask;
     }
 
 
@@ -117,20 +66,51 @@ sealed class GameCircuitHandler(
         Circuit circuit,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Circuit closed: {CircuitId}", circuit.Id);
+        try
+        {
+            logger.LogInformation("Blazor circuit connection DOWN: {CircuitId}", circuit.Id);
 
-        if (GameCircuitState.UserId is null)
-            return;
+            await Task.Delay(TimeSpan.FromSeconds(6), cancellationToken);
 
-        await connectionService.RemoveConnectionAsync(
-            new PipeLineRequest<RemoveUserConnectionRequestDTO>
+            if (GameCircuitState.UserId is null || GameCircuitState.GameId is null)
             {
-                Request = new RemoveUserConnectionRequestDTO
-                {
-                    connectionId = null,
-                    UserGuid = (Guid)GameCircuitState.UserId,
-                    GameId = (Guid)GameCircuitState.GameId
-                }
-            });
+                logger.LogWarning(
+                    "Skipping disconnect cleanup because UserId or GameId is null. CircuitId: {CircuitId}, UserId: {UserId}, GameId: {GameId}",
+                    circuit.Id,
+                    GameCircuitState.UserId,
+                    GameCircuitState.GameId);
+
+                return;
+            }
+
+            var removeUsersFromGameRequestDto = new RemoveUsersFromGameReqeustDTO
+            {
+                connectionId = null,
+                CurerntPlayerGuid = (Guid)GameCircuitState.UserId,
+                GameId = (Guid)GameCircuitState.GameId,
+                IsLeaveWebSite = true,
+            };
+
+            await gameService.LeaveGameAsync(removeUsersFromGameRequestDto);
+
+            var removeUserConnectionRequestDto = new RemoveUserConnectionRequestDTO
+            {
+                connectionId = null,
+                UserGuid = (Guid)GameCircuitState.UserId,
+                GameId = (Guid)GameCircuitState.GameId
+            };
+
+            GameCircuitState.GameId = default;
+
+            logger.LogInformation("Disconnect cleanup completed. CircuitId: {CircuitId}", circuit.Id);
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("Connection down cleanup was cancelled: {CircuitId}", circuit.Id);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception during connection down cleanup: {CircuitId}", circuit.Id);
+        }
     }
 }

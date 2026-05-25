@@ -18,14 +18,13 @@
 @inject NavigationManager Navigation
 @inject SignalRService SignalRService
 
-@attribute [Authorize]
 @implements IDisposable
 
 <PageTitle>Live Lobby</PageTitle>
 
 <ErrorModal/>
 <DashboardInvitationRequest/>
-
+<WebSiteClosedTracker/>
 <section class="lobby-page">
     <div class="lobby-background-orb orb-one"></div>
     <div class="lobby-background-orb orb-two"></div>
@@ -304,6 +303,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (_user.Identity?.IsAuthenticated != true)
+        {
+            Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+            return;
+        }
+
+
         ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
 
         try
@@ -311,11 +317,6 @@
             var authState = await AuthStateProvider.GetAuthenticationStateAsync();
             _user = authState.User;
 
-            if (_user.Identity?.IsAuthenticated != true)
-            {
-                Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
-                return;
-            }
 
             var userIdValue = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
