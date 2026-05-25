@@ -303,13 +303,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (_user.Identity?.IsAuthenticated != true)
-        {
-            Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
-            return;
-        }
-
-
         ConnectionHandler.OnlinePlayersUpdated += HandleOnlinePlayersUpdated;
 
         try
@@ -317,6 +310,11 @@
             var authState = await AuthStateProvider.GetAuthenticationStateAsync();
             _user = authState.User;
 
+            if (_user.Identity?.IsAuthenticated != true)
+            {
+                Navigation.NavigateTo("/Identity/Account/Login?returnUrl=/Dashboard", true);
+                return;
+            }
 
             var userIdValue = _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
